@@ -9,8 +9,7 @@
     background-color: #0f0f0f;
     color: #ffffff;
     font-family: 'Segoe UI', sans-serif;
-    margin: 0;
-    padding: 0 20px 40px;
+    margin: 0; padding: 0;
   }
   header {
     background: linear-gradient(90deg, #5f00ba, #9c27b0);
@@ -31,143 +30,131 @@
     text-decoration: none;
     font-size: 1.2em;
   }
-  .products {
-    margin-top: 20px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
-    gap: 15px;
+  .content {
+    padding: 30px;
+    max-width: 900px;
+    margin: auto;
   }
-  .product {
+  .service {
     background-color: #1e1e1e;
+    border-left: 4px solid #9c27b0;
+    padding: 15px;
+    margin-bottom: 20px;
     border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 0 10px #9c27b0;
-    transition: transform 0.3s ease;
-    cursor: pointer;
   }
-  .product:hover {
-    transform: scale(1.05);
-  }
-  .product h3 {
+  .service h3 {
     margin-top: 0;
-    font-size: 1.4em;
+    font-size: 1.3em;
   }
   .emoji {
     font-size: 1.5em;
     margin-right: 10px;
   }
-  /* Search */
-  #search-container {
-    margin-top: 20px;
-    text-align: center;
-  }
-  #searchInput {
-    width: 100%;
-    max-width: 400px;
-    padding: 10px;
-    font-size: 1.1em;
-    border-radius: 8px;
-    border: none;
-    outline: none;
-    box-shadow: 0 0 10px #9c27b0;
-  }
-  /* Content */
-  .content {
-    margin-top: 30px;
-  }
-  /* Form */
-  #auth-form {
+  /* Giriş/kayıt form stili */
+  #auth-section {
     background-color: #1e1e1e;
-    max-width: 400px;
-    margin: 30px auto;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px #9c27b0;
-  }
-  #auth-form input {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
     border-radius: 8px;
+    margin-bottom: 30px;
+  }
+  #auth-section h2 {
+    margin-top: 0;
+  }
+  #auth-section input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 4px;
     border: none;
     font-size: 1em;
   }
-  #auth-form button {
-    width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    border-radius: 8px;
-    border: none;
+  #auth-section button {
     background: #9c27b0;
+    border: none;
     color: white;
-    font-size: 1.1em;
+    padding: 12px 20px;
+    border-radius: 4px;
     cursor: pointer;
+    font-size: 1em;
+    margin-top: 10px;
   }
-  #auth-form button:hover {
+  #auth-section button:hover {
     background: #5f00ba;
   }
-  #user-info {
-    text-align: center;
-    margin-top: 15px;
-    font-size: 1.2em;
+  #auth-toggle {
+    color: #9c27b0;
+    cursor: pointer;
+    margin-top: 10px;
+    display: inline-block;
   }
-  /* Order form container */
-  #order-form-container {
-    max-width: 700px;
-    margin: 40px auto;
+  #user-info {
+    margin-bottom: 20px;
+  }
+  /* Sipariş form stili */
+  #order-section {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
   }
   iframe {
     width: 100%;
-    height: 700px;
+    height: 600px;
     border: none;
-    border-radius: 10px;
-    box-shadow: 0 0 15px #9c27b0;
+    border-radius: 8px;
   }
-  /* Chatbot */
-  #chatbot-container {
-    max-width: 600px;
-    margin: 40px auto;
+  /* Yapay zeka chatbot */
+  #chatbot {
     background-color: #1e1e1e;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px #9c27b0;
+    border-radius: 8px;
+    max-width: 900px;
+    margin: 30px auto;
+    color: #eee;
   }
-  #chatbot-messages {
-    height: 250px;
+  #chatlog {
+    height: 200px;
     overflow-y: auto;
-    background-color: #0f0f0f;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    font-size: 1em;
+    background: #111;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
   }
-  #chatbot-input {
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
+  #chatlog div {
+    margin-bottom: 10px;
+  }
+  #chatlog .user {
+    color: #9c27b0;
+  }
+  #chatlog .bot {
+    color: #7b7b7b;
+  }
+  #chat-input {
+    width: calc(100% - 100px);
+    padding: 10px;
+    border-radius: 4px;
     border: none;
     font-size: 1em;
-    box-sizing: border-box;
   }
-  #chatbot-send {
-    margin-top: 10px;
-    width: 100%;
-    padding: 12px;
+  #chat-send {
+    width: 80px;
+    padding: 10px;
     background: #9c27b0;
     border: none;
-    border-radius: 8px;
     color: white;
-    font-size: 1.1em;
+    border-radius: 4px;
     cursor: pointer;
+    font-weight: bold;
   }
-  #chatbot-send:hover {
+  #chat-send:hover {
     background: #5f00ba;
   }
 </style>
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<!-- Firebase SDK CDN -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics-compat.js"></script>
 
 </head>
 <body>
@@ -181,207 +168,222 @@
   </div>
 </header>
 
-<!-- Search -->
-<div id="search-container">
-  <input type="text" id="searchInput" placeholder="Ürün ara..." oninput="searchProducts()" />
-</div>
+<div class="content">
 
-<!-- Ürün Listesi -->
-<div class="products" id="products-list">
-  <div class="product" data-name="Bruteforce saldırısı">
-    <h3><span class="emoji">🌐</span>Bruteforce saldırısı</h3>
-    <p><strong>100 TL</strong></p>
-    <small>%60 doğruluk oranı</small>
-  </div>
-  <div class="product" data-name="DDoS saldırısı">
-    <h3><span class="emoji">🚇</span>DDoS saldırısı</h3>
-    <p><strong>400 TL</strong></p>
-    <small>Etik kapsamda deneyiniz</small>
-  </div>
-  <div class="product" data-name="Scriptler">
-    <h3><span class="emoji">💻</span>Scriptler</h3>
-    <p><strong>150 TL</strong></p>
-    <small>İstediğiniz script yazılır dm</small>
-  </div>
-  <div class="product" data-name="Datalar">
-    <h3><span class="emoji">🗂️</span>Datalar</h3>
-    <p><strong>750 TL</strong></p>
-    <small>Akbank, predunyam, hesap.com.tr, PUBG, Valorant hesapları</small>
-  </div>
-  <div class="product" data-name="SMS bomber">
-    <h3><span class="emoji">✉️</span>SMS bomber</h3>
-    <p><strong>200 TL</strong></p>
-    <small>İstediğiniz kişiye yapılır, DM</small>
-  </div>
-  <div class="product" data-name="Discord tool">
-    <h3><span class="emoji">🖥️</span>Discord tool</h3>
-    <p><strong>200 TL</strong></p>
-    <small>Hesap kapatma, DM</small>
-  </div>
-  <div class="product" data-name="Fake e-posta">
-    <h3><span class="emoji">📨</span>Fake e-posta</h3>
-    <p><strong>100 TL</strong></p>
-    <small>Tüm platformlarda çalışır</small>
-  </div>
-  <div class="product" data-name="Instagram tool">
-    <h3><span class="emoji">🖲️</span>Instagram tool</h3>
-    <p><strong>200 TL</strong></p>
-    <small>Hesap kapatma %70 doğruluk oranı</small>
-  </div>
-</div>
+  <!-- Site ürünleri bölümü -->
+  <section id="products">
+    <h2 style="text-align:center; margin-bottom: 20px;">Satılık Hizmetlerimiz</h2>
+    <div class="service"><span class="emoji">🕶️</span>Yazılıma dair pek çok işlem belirli ücret ile yapılabilir</div>
+    <div class="service"><span class="emoji">🌐</span>Bruteforce saldırısı – <strong>100 TL</strong><br>%60 doğruluk oranı</div>
+    <div class="service"><span class="emoji">🚇</span>DDoS saldırısı – <strong>400 TL</strong><br>Etik kapsamda deneyiniz</div>
+    <div class="service"><span class="emoji">💻</span>Scriptler – <strong>150 TL</strong><br>İstediğiniz script yazılır dm</div>
+    <div class="service"><span class="emoji">🗂️</span>Datalar – <strong>750 TL</strong><br>Akbank, predunyam, hesap.com.tr, PUBG, Valorant hesapları</div>
+    <div class="service"><span class="emoji">✉️</span>SMS bomber – <strong>200 TL</strong><br>İstediğiniz kişiye yapılır, DM</div>
+    <div class="service"><span class="emoji">🖥️</span>Discord tool – <strong>200 TL</strong><br>Hesap kapatma, DM</div>
+    <div class="service"><span class="emoji">📨</span>Fake e-posta – <strong>100 TL</strong><br>Tüm platformlarda çalışır</div>
+    <div class="service"><span class="emoji">🖲️</span>Instagram tool – <strong>200 TL</strong><br>Hesap kapatma %70 doğruluk</div>
+    <div class="service"><span class="emoji">🖲️</span>TikTok tool – <strong>200 TL</strong><br>Hesap kapatma %60 doğruluk</div>
+    <div class="service"><strong>📣</strong>Yukarıda gördüğünüz gibi tüm işlemler yapılır. DM ile iletişime geçin.</div>
+  </section>
 
-<!-- Firebase Auth Form -->
-<div id="auth-form">
-  <h2>Kullanıcı Girişi / Kayıt</h2>
-  <input type="email" id="email" placeholder="E-posta" required />
-  <input type="password" id="password" placeholder="Şifre" required />
-  <button id="loginBtn">Giriş Yap</button>
-  <button id="signupBtn">Kayıt Ol</button>
-  <div id="user-info"></div>
-  <button id="logoutBtn" style="display:none; margin-top:10px;">Çıkış Yap</button>
-</div>
+  <!-- Kullanıcı Giriş/Kayıt -->
+  <section id="auth-section">
+    <h2 id="auth-title">Giriş Yap</h2>
+    <div id="user-info" style="display:none;">
+      <p>Hoşgeldin, <span id="user-email"></span>! <button id="logout-btn">Çıkış Yap</button></p>
+    </div>
+    <input type="email" id="email" placeholder="E-posta" required />
+    <input type="password" id
+<input type="password" id="password" placeholder="Şifre" required />
+    <button id="auth-btn">Giriş Yap</button>
+    <p id="auth-toggle">Kayıt olmak için tıklayın</p>
+    <p id="auth-message" style="color:#f44336;"></p>
+  </section>
 
-<!-- Sipariş Formu -->
-<div id="order-form-container">
-  <h2>Sipariş Formu</h2>
-  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSem4UJLI_E3W44fhB0d26HdJqMrkDvCAixvvnaQKugzkRmeSg/viewform?embedded=true" loading="lazy"></iframe>
-</div>
+  <!-- Sipariş Formu -->
+  <section id="order-section">
+    <h2>Sipariş Formu</h2>
+    <iframe
+      src="https://docs.google.com/forms/d/e/1FAIpQLSem4UJLI_E3W44fhB0d26HdJqMrkDvCAixvvnaQKugzkRmeSg/viewform?embedded=true"
+      frameborder="0"
+      marginheight="0"
+      marginwidth="0"
+      title="Sipariş Formu"
+    >
+      Yükleniyor…
+    </iframe>
+  </section>
 
-<!-- Yapay Zeka Bot -->
-<div id="chatbot-container">
-  <h2>SPECTER Yapay Zeka Bot</h2>
-  <div id="chatbot-messages"></div>
-  <input type="text" id="chatbot-input" placeholder="Bir şey sor..." />
-  <button id="chatbot-send">Gönder</button>
+  <!-- Yapay Zeka Chatbot -->
+  <section id="chatbot">
+    <h2>Yapay Zeka Destekli Bilgi Asistanı</h2>
+    <div id="chatlog"></div>
+    <input type="text" id="chat-input" placeholder="Sorunuzu buraya yazın..." />
+    <button id="chat-send">Gönder</button>
+  </section>
+
 </div>
 
 <script>
-  // Ürün arama fonksiyonu
-  function searchProducts() {
-    const input = document.getElementById('searchInput').value.toLowerCase();
-    const products = document.querySelectorAll('.product');
-    products.forEach(p => {
-      const name = p.getAttribute('data-name').toLowerCase();
-      p.style.display = name.includes(input) ? 'block' : 'none';
-    });
-  }
-
-  // Firebase config (Firebase projenizdeki gerçek değerleri girin)
+  // Firebase config (senin verdiğin)
   const firebaseConfig = {
-    apiKey: "API_KEYINIZ",
-    authDomain: "PROJE_ID.firebaseapp.com",
-    projectId: "PROJE_ID",
-    storageBucket: "PROJE_ID.appspot.com",
-    messagingSenderId: "SENDER_ID",
-    appId: "APP_ID",
+    apiKey: "AIzaSyDDgoJW-l4_BgdtAKbHKJGQRNIkY98mlZI",
+    authDomain: "alim-satim-sitem.firebaseapp.com",
+    projectId: "alim-satim-sitem",
+    storageBucket: "alim-satim-sitem.firebasestorage.app",
+    messagingSenderId: "1036171043700",
+    appId: "1:1036171043700:web:b6e5b863d0125206178221",
+    measurementId: "G-RV797CV5JG"
   };
 
-  // Initialize Firebase
+  // Firebase başlat
   firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
   const auth = firebase.auth();
 
-  const loginBtn = document.getElementById('loginBtn');
-  const signupBtn = document.getElementById('signupBtn');
-  const logoutBtn = document.getElementById('logoutBtn');
+  // Elementler
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+  const authBtn = document.getElementById('auth-btn');
+  const authToggle = document.getElementById('auth-toggle');
+  const authTitle = document.getElementById('auth-title');
+  const authMessage = document.getElementById('auth-message');
   const userInfo = document.getElementById('user-info');
+  const userEmailSpan = document.getElementById('user-email');
+  const logoutBtn = document.getElementById('logout-btn');
 
-  loginBtn.addEventListener('click', () => {
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value.trim();
-    auth.signInWithEmailAndPassword(email, password)
-      .then(userCredential => {
-        alert('Giriş başarılı');
-        updateUI(userCredential.user);
-      })
-      .catch(error => alert(error.message));
+  let isLogin = true; // Giriş mi? Kayıt mı?
+
+  authToggle.addEventListener('click', () => {
+    isLogin = !isLogin;
+    if (isLogin) {
+      authTitle.textContent = 'Giriş Yap';
+      authBtn.textContent = 'Giriş Yap';
+      authToggle.textContent = 'Kayıt olmak için tıklayın';
+      authMessage.textContent = '';
+    } else {
+      authTitle.textContent = 'Kayıt Ol';
+      authBtn.textContent = 'Kayıt Ol';
+      authToggle.textContent = 'Zaten üyeyim, giriş yapmak istiyorum';
+      authMessage.textContent = '';
+    }
   });
 
-  signupBtn.addEventListener('click', () => {
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value.trim();
-    auth.createUserWithEmailAndPassword(email, password)
-      .then(userCredential => {
-        alert('Kayıt başarılı');
-        updateUI(userCredential.user);
-      })
-      .catch(error => alert(error.message));
+  authBtn.addEventListener('click', () => {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+
+    if (!email || !password) {
+      authMessage.textContent = 'Lütfen e-posta ve şifre giriniz.';
+      return;
+    }
+
+    authMessage.textContent = 'İşlem yapılıyor...';
+
+    if (isLogin) {
+      // Giriş yap
+      auth.signInWithEmailAndPassword(email, password)
+        .then(userCredential => {
+          authMessage.style.color = 'lightgreen';
+          authMessage.textContent = 'Başarıyla giriş yapıldı!';
+          updateUserUI(userCredential.user);
+        })
+        .catch(error => {
+          authMessage.style.color = '#f44336';
+          authMessage.textContent = error.message;
+        });
+    } else {
+      // Kayıt ol
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(userCredential => {
+          authMessage.style.color = 'lightgreen';
+          authMessage.textContent = 'Başarıyla kayıt olundu!';
+          updateUserUI(userCredential.user);
+        })
+        .catch(error => {
+          authMessage.style.color = '#f44336';
+          authMessage.textContent = error.message;
+        });
+    }
   });
 
   logoutBtn.addEventListener('click', () => {
     auth.signOut().then(() => {
-      updateUI(null);
+      userInfo.style.display = 'none';
+      emailInput.style.display = 'block';
+      passwordInput.style.display = 'block';
+      authBtn.style.display = 'inline-block';
+      authToggle.style.display = 'inline-block';
+      authMessage.textContent = '';
+      emailInput.value = '';
+      passwordInput.value = '';
     });
   });
 
-  auth.onAuthStateChanged(user => {
-    updateUI(user);
-  });
-
-  function updateUI(user) {
+  function updateUserUI(user) {
     if (user) {
-      userInfo.textContent = `${user.email} olarak giriş yaptınız.`;
-      loginBtn.style.display = 'none';
-      signupBtn.style.display = 'none';
-      logoutBtn.style.display = 'block';
-    } else {
-      userInfo.textContent = 'Giriş yapmadınız.';
-      loginBtn.style.display = 'inline-block';
-      signupBtn.style.display = 'inline-block';
-      logoutBtn.style.display = 'none';
+      userEmailSpan.textContent = user.email;
+      userInfo.style.display = 'block';
+      emailInput.style.display = 'none';
+      passwordInput.style.display = 'none';
+      authBtn.style.display = 'none';
+      authToggle.style.display = 'none';
+      authMessage.textContent = '';
     }
   }
 
-  // Bas
-// Basit yapay zeka bot (statik cevaplar örneği)
-  const chatbotMessages = document.getElementById('chatbot-messages');
-  const chatbotInput = document.getElementById('chatbot-input');
-  const chatbotSend = document.getElementById('chatbot-send');
-
-  chatbotSend.addEventListener('click', sendMessage);
-  chatbotInput.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') sendMessage();
+  // Sayfa yüklendiğinde kullanıcı varsa ara, göster
+  auth.onAuthStateChanged(user => {
+    updateUserUI(user);
   });
 
-  function appendMessage(sender, text) {
-    const msg = document.createElement('div');
-    msg.style.marginBottom = '10px';
-    msg.style.whiteSpace = 'pre-wrap';
-    if (sender === 'user') {
-      msg.style.textAlign = 'right';
-      msg.style.color = '#9c27b0';
-      msg.textContent = `Sen: ${text}`;
-    } else {
-      msg.style.textAlign = 'left';
-      msg.style.color = '#ddd';
-      msg.textContent = `Bot: ${text}`;
+  // Basit Yapay Zeka Chatbot
+  const chatLog = document.getElementById('chatlog');
+  const chatInput = document.getElementById('chat-input');
+  const chatSend = document.getElementById('chat-send');
+
+  function botResponse(input) {
+    const text = input.toLowerCase();
+    if (text.includes('merhaba') || text.includes('selam')) {
+      return 'Merhaba! Size nasıl yardımcı olabilirim? Sitemiz "SPECTER(:AdMiN" tarafından yapılmıştır.';
     }
-    chatbotMessages.appendChild(msg);
-    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    if (text.includes('kim yaptı') || text.includes('yapan')) {
+      return 'Bu siteyi SPECTER(:AdMiN tasarladı ve geliştirdi.';
+    }
+    if (text.includes('hizmetler')) {
+      return 'Sunulan hizmetler: Bruteforce, DDoS, Script, SMS bomber, Discord tool, Fake e-posta ve daha fazlası.';
+    }
+    if (text.includes('sipariş')) {
+      return 'Sipariş vermek için yukarıdaki formu kullanabilirsiniz.';
+    }
+    return 'Üzgünüm, bunu anlayamadım. Başka bir şey sorabilir misiniz?';
   }
 
-  function sendMessage() {
-    const text = chatbotInput.value.trim();
-    if (!text) return;
-    appendMessage('user', text);
-    chatbotInput.value = '';
-
-    // Basit cevap örneği (buraya daha gelişmiş AI API bağlanabilir)
-    let response = "Anlayamadım, lütfen başka bir şey sor.";
-    const lc = text.toLowerCase();
-
-    if (lc.includes('merhaba') || lc.includes('selam')) {
-      response = 'Merhaba! Size nasıl yardımcı olabilirim?';
-    } else if (lc.includes('fiyat')) {
-      response = 'Ürün fiyatlarımız ürün listesinde yer almaktadır. Yardımcı olabilirsem sorunuzu detaylandırın lütfen.';
-    } else if (lc.includes('sipariş')) {
-      response = 'Sipariş vermek için yukarıdaki sipariş formunu kullanabilirsiniz.';
-    } else if (lc.includes('nasıl')) {
-      response = 'Burada ürünlerimizi görebilir, üye olarak sipariş verebilirsiniz.';
-    }
-
-    setTimeout(() => appendMessage('bot', response), 700);
+  function appendMessage(sender, message) {
+    const div = document.createElement('div');
+    div.className = sender;
+    div.textContent = (sender === 'user' ? 'Sen: ' : 'Bot: ') + message;
+    chatLog.appendChild(div);
+    chatLog.scrollTop = chatLog.scrollHeight;
   }
+
+  chatSend.addEventListener('click', () => {
+    const message = chatInput.value.trim();
+    if (!message) return;
+    appendMessage('user', message);
+    chatInput.value = '';
+    setTimeout(() => {
+      const response = botResponse(message);
+      appendMessage('bot', response);
+    }, 500);
+  });
+
+  chatInput.addEventListener('keypress', e => {
+    if (e.key === 'Enter') {
+      chatSend.click();
+    }
+  });
+
 </script>
-
 </body>
 </html>
