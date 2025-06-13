@@ -83,5 +83,76 @@
         <div class="service"><span class="emoji">🖲️</span>TikTok tool – <strong>200 TL</strong><br>Hesap kapatma %60 doğruluk</div>
         <div class="service"><strong>📣</strong>Yukarıda gördüğünüz gibi tüm işlemler yapılır. DM ile iletişime geçin.</div>
     </div>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Giriş/Kayıt Sayfası</title>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDDgoJW-l4_BgdtAKbHKJGQRNIkY98mlZI",
+      authDomain: "alim-satim-sitem.firebaseapp.com",
+      projectId: "alim-satim-sitem",
+      storageBucket: "alim-satim-sitem.firebasestorage.app",
+      messagingSenderId: "1036171043700",
+      appId: "1:1036171043700:web:b6e5b863d0125206178221",
+      measurementId: "G-RV797CV5JG"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    window.registerUser = function() {
+      const email = document.getElementById('registerEmail').value;
+      const password = document.getElementById('registerPassword').value;
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(userCredential => {
+          document.getElementById('status').innerText = "Kayıt başarılı! Hoşgeldin, " + userCredential.user.email;
+        })
+        .catch(error => {
+          document.getElementById('status').innerText = "Kayıt hatası: " + error.message;
+        });
+    };
+
+    window.loginUser = function() {
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then(userCredential => {
+          document.getElementById('status').innerText = "Giriş başarılı! Hoşgeldin, " + userCredential.user.email;
+        })
+        .catch(error => {
+          document.getElementById('status').innerText = "Giriş hatası: " + error.message;
+        });
+    };
+
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        document.getElementById('status').innerText = "Giriş yapıldı: " + user.email;
+      } else {
+        document.getElementById('status').innerText = "Henüz giriş yapılmadı.";
+      }
+    });
+  </script>
+</head>
+<body>
+
+  <h2>Kayıt Ol</h2>
+  <input type="email" id="registerEmail" placeholder="E-posta" />
+  <input type="password" id="registerPassword" placeholder="Şifre" />
+  <button onclick="registerUser()">Kayıt Ol</button>
+
+  <h2>Giriş Yap</h2>
+  <input type="email" id="loginEmail" placeholder="E-posta" />
+  <input type="password" id="loginPassword" placeholder="Şifre" />
+  <button onclick="loginUser()">Giriş Yap</button>
+
+  <h3 id="status">Durum: Henüz giriş yapılmadı.</h3>
+
 </body>
 </html>
