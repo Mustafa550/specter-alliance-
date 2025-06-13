@@ -1,443 +1,171 @@
-<!DOCTYPE html>
-<html lang="tr">
+<!DOCTYPE html><html lang="tr">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPECTER-ALLIANCE</title>
     <style>
-        /* Temel site stili */
         body {
-            background-color: #0f0f0f;
-            color: #ffffff;
+            margin: 0;
+            padding: 0;
             font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            padding: 0 20px 40px 20px;
-        }
-        header {
-            background: linear-gradient(90deg, #5f00ba, #9c27b0);
-            padding: 20px;
-            text-align: center;
-        }
-        header h1 {
-            font-size: 2.5em;
-            margin: 0;
-            letter-spacing: 2px;
-        }
-        .links {
-            margin-top: 10px;
-        }
-        .links a {
-            margin: 0 10px;
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 1.2em;
-        }
-        .content {
-            padding: 30px 0 0 0;
-            max-width: 900px;
-            margin: auto;
-        }
-        .service {
-            background-color: #1e1e1e;
-            border-left: 4px solid #9c27b0;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-        }
-        .service h3 {
-            margin-top: 0;
-            font-size: 1.3em;
-        }
-        .emoji {
-            font-size: 1.5em;
-            margin-right: 10px;
-        }
-        /* Giriş ve Kayıt bölümü */
-        #authSection {
-            background: #222;
-            padding: 20px;
-            border-radius: 8px;
-            max-width: 400px;
-            margin: 30px auto;
-            box-sizing: border-box;
-        }
-        #authSection h2 {
-            text-align: center;
-            margin-bottom: 15px;
-        }
-        #authSection input {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border: none;
-            border-radius: 5px;
-            font-size: 1em;
-        }
-        #authSection button {
-            width: 100%;
-            padding: 12px;
-            background: #9c27b0;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.1em;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        #authSection button:hover {
-            background: #7b1fa2;
-        }
-        #authToggle {
-            background: transparent;
-            color: #9c27b0;
-            border: none;
-            margin-top: 10px;
-            cursor: pointer;
-            text-decoration: underline;
-        }
-        /* Sipariş formu */
-        #orderSection {
-            background: #222;
-            padding: 20px;
-            border-radius: 8px;
-            max-width: 600px;
-            margin: 30px auto;
-            box-sizing: border-box;
-        }
-        #orderSection h2 {
-            text-align: center;
-            margin-bottom: 15px;
-        }
-        #orderForm input, #orderForm select {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border: none;
-            border-radius: 5px;
-            font-size: 1em;
-        }
-        #orderForm button {
-            width: 100%;
-            padding: 12px;
-            background: #9c27b0;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.1em;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        #orderForm button:hover {
-            background: #7b1fa2;
-        }
-        /* Sipariş listesi */
-        #ordersList {
-            max-width: 600px;
-            margin: 20px auto;
-            background: #222;
-            border-radius: 8px;
-            padding: 15px;
-            box-sizing: border-box;
-        }
-        #ordersList h3 {
-            margin-top: 0;
-            text-align: center;
-        }
-        .orderItem {
-            background: #1e1e1e;
-            margin: 8px 0;
-            padding: 10px;
-            border-left: 4px solid #9c27b0;
-            border-radius: 5px;
-        }
-        /* Hata ve başarı mesajları */
-        .message {
-            text-align: center;
-            margin: 10px 0 0 0;
-            font-weight: bold;
-        }
-        .message.error {
-            color: #f44336;
-        }
-        .message.success {
-            color: #4caf50;
-        }
-    </style>
+            background-color: #0f0f0f;
+            color: #fff;
+            transition: background-color 0.3s, color 0.3s;
+        }header {
+        background: linear-gradient(90deg, #5f00ba, #9c27b0);
+        padding: 20px;
+        text-align: center;
+    }
+
+    header h1 {
+        font-size: 2.5em;
+        margin: 0;
+    }
+
+    .links a {
+        margin: 0 10px;
+        color: #fff;
+        text-decoration: none;
+        font-size: 1.2em;
+    }
+
+    .content {
+        padding: 30px;
+    }
+
+    .service {
+        background-color: #1e1e1e;
+        border-left: 5px solid #9c27b0;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(156, 39, 176, 0.4);
+    }
+
+    .service strong {
+        color: #ff4081;
+    }
+
+    .dark-mode {
+        background-color: #ffffff;
+        color: #000000;
+    }
+
+    #darkModeBtn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 15px;
+        background: #9c27b0;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    #scrollTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 70px;
+        right: 20px;
+        z-index: 99;
+        border: none;
+        outline: none;
+        background-color: #9c27b0;
+        color: white;
+        cursor: pointer;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    #ai-helper {
+        background-color: #1e1e1e;
+        padding: 15px;
+        margin-top: 20px;
+        border-left: 5px solid #5f00ba;
+        border-radius: 10px;
+    }
+
+    .timer {
+        background-color: #2e2e2e;
+        padding: 10px;
+        margin-bottom: 20px;
+        text-align: center;
+        font-weight: bold;
+        border-radius: 8px;
+    }
+</style>
+
 </head>
 <body>
     <header>
         <h1>SPECTER-ALLIANCE</h1>
         <div class="links">
-            <a href="https://t.me/+q8CKIGgevUtkMDk8" target="_blank">📨 Telegram</a>
-            <a href="https://www.instagram.com/siber_aura/profilecard/?igsh=MWVnbnl0bmg0NzN0YQ==" target="_blank">📸 Instagram</a>
-            <a href="https://chat.whatsapp.com/LE1gfy2hT1OAw8iWWlXplN" target="_blank">💬 WhatsApp</a>
+            <a href="#">📨 Telegram</a>
+            <a href="#">📸 Instagram</a>
+            <a href="#">💬 WhatsApp</a>
         </div>
-    </header>
+    </header><div class="content">
 
-    <div class="content">
+    <div class="timer" id="countdown"></div>
 
-        <!-- Site hizmetleri -->
-        <div class="service"><span class="emoji">🕶️</span>Yazılıma dair pek çok işlem belirli ücret ile yapılabilir</div>
-        <div class="service"><span class="emoji">🌐</span>Bruteforce saldırısı – <strong>100 TL</strong><br>%60 doğruluk oranı</div>
-        <div class="service"><span class="emoji">🚇</span>DDoS saldırısı – <strong>400 TL</strong><br>Etik kapsamda deneyiniz</div>
-        <div class="service"><span class="emoji">💻</span>Scriptler – <strong>150 TL</strong><br>İstediğiniz script yazılır dm</div>
-        <div class="service"><span class="emoji">🗂️</span>Datalar – <strong>750 TL</strong><br>Akbank, predunyam, hesap.com.tr, PUBG, Valorant hesapları</div>
-        <div class="service"><span class="emoji">✉️</span>SMS bomber – <strong>200 TL</strong><br>İstediğiniz kişiye yapılır, DM</div>
-        <div class="service"><span class="emoji">🖥️</span>Discord tool – <strong>200 TL</strong><br>Hesap kapatma, DM</div>
-        <div class="service"><span class="emoji">📨</span>Fake e-posta – <strong>100 TL</strong><br>Tüm platformlarda çalışır</div>
-        <div class="service"><span class="emoji">🖲️</span>Instagram tool – <strong>200 TL</strong><br>Hesap kapatma %70 doğruluk</div>
-        <div class="service"><span class="emoji">🖲️</span>TikTok tool – <strong>200 TL</strong><br>Hesap kapatma %60 doğruluk</div>
-        <div class="service"><strong>📣</strong>Yukarıda gördüğünüz gibi tüm işlemler yapılır. DM ile iletişime geçin.</div>
+    <div class="service"><strong>🕶️</strong> Yazılıma dair pek çok işlem belirli ücret ile yapılabilir</div>
+    <div class="service"><strong>🌐</strong> Bruteforce saldırısı – <strong>100 TL</strong> (%60 doğruluk oranı)</div>
+    <div class="service"><strong>🚇</strong> DDoS saldırısı – <strong>400 TL</strong> (Etik kapsamda deneyiniz)</div>
+    <div class="service"><strong>💻</strong> Scriptler – <strong>150 TL</strong> (İstediğiniz script yazılır DM)</div>
+    <div class="service"><strong>🗂️</strong> Datalar – <strong>750 TL</strong> (Veritabanı erişimleri)</div>
 
-        <!-- Giriş / Kayıt bölümü -->
-        <div id="authSection">
-            <h2 id="authTitle">Giriş Yap</h2>
-            <input type="text" id="username" placeholder="Kullanıcı adı" />
-            <input type="password" id="password" placeholder="Şifre" />
-            <button id="authButton">Giriş Yap</button>
-            <button id="authToggle">Kayıt Ol</button>
-            <div id="authMessage" class="message"></div>
-        </div>
+    <div class="service"><strong>📩</strong> Sipariş Formu:</div>
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSem4UJLI_E3W44fhB0d26HdJqMrkDvCAixvvnaQKugzkRmeSg/viewform?embedded=true" width="100%" height="500" frameborder="0" marginheight="0" marginwidth="0">Yükleniyor…</iframe>
 
-        <!-- Sipariş formu -->
-        <div id="orderSection" style="display:none;">
-            <h2>Sipariş Formu</h2>
-            <form id="orderForm">
-                <label for="serviceSelect">Hizmet Seçin (1-9):</label>
-                <select id="serviceSelect" required>
-                    <option value="">Seçiniz</option>
-                    <option value="1">1 - Bruteforce saldırısı</option>
-                    <option value="2">2 - DDoS saldırısı</option>
-                    <option value="3">3 - Scriptler</option>
-                    <option value="4">4 - Datalar</option>
-                    <option value="5">5 - SMS bomber</option>
-                    <option value="6">6 - Discord tool</option>
-                    <option value="7">7 - Fake e-posta</option>
-                    <option value="8">8 - Instagram tool</option>
-                    <option value="9">9 - TikTok tool</option>
-                </select>
-                <input type="text" id="orderDetails" placeholder="Sipariş detaylarını girin" required />
-                <button type="submit">Siparişi Gönder</button>
-            </form>
-            <div id="orderMessage" class="message"></div>
-        </div>
-
-        <!-- Sipariş Listesi -->
-        <div id="ordersList" style="display:none;">
-            <h3>Siparişleriniz</h3>
-            <div id="ordersContainer"></div>
-        </div>
-
+    <div id="ai-helper">
+        <h3>💡 Siteden Yardım Alın</h3>
+        <p>Bu site, SPECTER(:AdMiN tarafından geliştirilen, etik siber güvenlik çözümlerini ve yazılım hizmetlerini tanıtır. Satın alım yapmadan önce Telegram üzerinden doğrulama önerilir.</p>
     </div>
+</div>
 
-    <script>
-        // Yerel değişkenler
-        let isLoginMode = true; // true = giriş, false = kayıt
+<button id="darkModeBtn">🌙 Karanlık Mod</button>
+<button onclick="scrollToTop()" id="scrollTopBtn">⬆️ Yukarı</button>
 
-        // DOM elemanları
-        const authSection = document.getElementById('authSection');
-        const authTitle = document.getElementById('authTitle');
-        const authButton = document.getElementById('authButton');
-        const authToggle = document.getElementById('authToggle');
-        const usernameInput = document.getElementById('username');
-        const passwordInput = document.getElementById('password');
-        const authMessage = document.getElementById('authMessage');
-
-        const orderSection = document.getElementById('orderSection');
-        const orderForm = document.getElementById('orderForm');
-        const serviceSelect = document.getElementById('serviceSelect');
-        const orderDetails = document.getElementById('orderDetails');
-        const orderMessage = document.getElementById('orderMessage');
-
-        const ordersList = document.getElementById('ordersList');
-        const ordersContainer = document.getElementById('ordersContainer');
-
-        // Kullanıcılar LocalStorage key
-        const USERS_KEY = 'specter_users';
-        // Aktif kullanıcı LocalStorage key
-        const LOGGED_USER_KEY = 'specter_logged_user';
-        // Siparişler LocalStorage key
-        const ORDERS_KEY = 'specter_orders';
-
-        // Sayfa yüklendiğinde kontrol et kullanıcı var mı diye
-        window.onload = ()
 <script>
-    window.onload = () => {
-        const loggedUser = localStorage.getItem(LOGGED_USER_KEY);
-        if(loggedUser) {
-            showOrderSection(loggedUser);
+    // Dark Mode
+    const darkBtn = document.getElementById('darkModeBtn');
+    darkBtn.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+    });
+
+    // Scroll to Top
+    const scrollBtn = document.getElementById('scrollTopBtn');
+    window.onscroll = function () {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            scrollBtn.style.display = 'block';
         } else {
-            showAuthSection();
+            scrollBtn.style.display = 'none';
         }
     };
+    function scrollToTop() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
 
-    // Giriş/kayıt modu değiştir
-    authToggle.addEventListener('click', () => {
-        isLoginMode = !isLoginMode;
-        if(isLoginMode){
-            authTitle.textContent = 'Giriş Yap';
-            authButton.textContent = 'Giriş Yap';
-            authToggle.textContent = 'Kayıt Ol';
-            authMessage.textContent = '';
-        } else {
-            authTitle.textContent = 'Kayıt Ol';
-            authButton.textContent = 'Kayıt Ol';
-            authToggle.textContent = 'Giriş Yap';
-            authMessage.textContent = '';
-        }
-    });
-
-    // Giriş veya kayıt işlemi
-    authButton.addEventListener('click', () => {
-        const username = usernameInput.value.trim();
-        const password = passwordInput.value.trim();
-
-        if(username.length < 3){
-            authMessage.textContent = 'Kullanıcı adı en az 3 karakter olmalı.';
-            authMessage.className = 'message error';
-            return;
-        }
-        if(password.length < 4){
-            authMessage.textContent = 'Şifre en az 4 karakter olmalı.';
-            authMessage.className = 'message error';
-            return;
-        }
-
-        let users = JSON.parse(localStorage.getItem(USERS_KEY)) || {};
-
-        if(isLoginMode){
-            // Giriş
-            if(users[username] && users[username] === password){
-                localStorage.setItem(LOGGED_USER_KEY, username);
-                authMessage.textContent = 'Giriş başarılı!';
-                authMessage.className = 'message success';
-                showOrderSection(username);
-            } else {
-                authMessage.textContent = 'Kullanıcı adı veya şifre yanlış.';
-                authMessage.className = 'message error';
+    // Timer
+    function countdown() {
+        const countDownDate = new Date().getTime() + (2 * 60 * 60 * 1000); // 2 saat
+        const x = setInterval(function () {
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById("countdown").innerHTML = `⏰ Kampanya Bitişine: ${hours}s ${minutes}d ${seconds}s`;
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("countdown").innerHTML = "⏰ Kampanya sona erdi!";
             }
-        } else {
-            // Kayıt
-            if(users[username]){
-                authMessage.textContent = 'Bu kullanıcı adı zaten kayıtlı.';
-                authMessage.className = 'message error';
-                return;
-            }
-            users[username] = password;
-            localStorage.setItem(USERS_KEY, JSON.stringify(users));
-            localStorage.setItem(LOGGED_USER_KEY, username);
-            authMessage.textContent = 'Kayıt başarılı! Giriş yapıldı.';
-            authMessage.className = 'message success';
-            showOrderSection(username);
-        }
-    });
-
-    // Sipariş form gönderme
-    orderForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        orderMessage.textContent = '';
-
-        const service = serviceSelect.value;
-        const details = orderDetails.value.trim();
-
-        if(!service){
-            orderMessage.textContent = 'Lütfen bir hizmet seçin.';
-            orderMessage.className = 'message error';
-            return;
-        }
-        if(details.length < 5){
-            orderMessage.textContent = 'Sipariş detayları en az 5 karakter olmalı.';
-            orderMessage.className = 'message error';
-            return;
-        }
-
-        const username = localStorage.getItem(LOGGED_USER_KEY);
-        if(!username){
-            orderMessage.textContent = 'Lütfen giriş yapın.';
-            orderMessage.className = 'message error';
-            return;
-        }
-
-        // Siparişleri al
-        let orders = JSON.parse(localStorage.getItem(ORDERS_KEY)) || {};
-        if(!orders[username]){
-            orders[username] = [];
-        }
-        orders[username].push({
-            service: service,
-            details: details,
-            date: new Date().toLocaleString()
-        });
-        localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
-        orderMessage.textContent = 'Siparişiniz başarıyla gönderildi!';
-        orderMessage.className = 'message success';
-
-        // Formu temizle
-        orderForm.reset();
-
-        // Listeyi güncelle
-        renderOrders(username);
-    });
-
-    // Sipariş listesini göster
-    function renderOrders(username){
-        const orders = JSON.parse(localStorage.getItem(ORDERS_KEY)) || {};
-        const userOrders = orders[username] || [];
-        ordersContainer.innerHTML = '';
-
-        if(userOrders.length === 0){
-            ordersContainer.innerHTML = '<p>Henüz siparişiniz yok.</p>';
-            return;
-        }
-
-        userOrders.forEach((order, i) => {
-            const div = document.createElement('div');
-            div.className = 'orderItem';
-            div.innerHTML = `<strong>Sipariş #${i+1}</strong><br>
-                Hizmet: ${order.service}<br>
-                Detaylar: ${order.details}<br>
-                Tarih: ${order.date}`;
-            ordersContainer.appendChild(div);
-        });
+        }, 1000);
     }
-
-    // Giriş yapıldıktan sonra gösterilecek
-    function showOrderSection(username){
-        authSection.style.display = 'none';
-        orderSection.style.display = 'block';
-        ordersList.style.display = 'block';
-
-        renderOrders(username);
-
-        // Üstte kullanıcının ismini göster (opsiyonel)
-        if(!document.getElementById('welcomeUser')){
-            const welcome = document.createElement('div');
-            welcome.id = 'welcomeUser';
-            welcome.style.textAlign = 'center';
-            welcome.style.marginTop = '10px';
-            welcome.style.color = '#9c27b0';
-            welcome.textContent = `Hoşgeldin, ${username}! (Çıkış yapmak için tıkla)`;
-            welcome.style.cursor = 'pointer';
-            welcome.style.fontWeight = 'bold';
-            authSection.parentNode.insertBefore(welcome, authSection.nextSibling);
-
-            welcome.addEventListener('click', () => {
-                localStorage.removeItem(LOGGED_USER_KEY);
-                location.reload();
-            });
-        }
-    }
-
-    // Giriş yapılmamışsa göster
-    function showAuthSection(){
-        authSection.style.display = 'block';
-        orderSection.style.display = 'none';
-        ordersList.style.display = 'none';
-
-        // Hoşgeldin mesajını kaldır
-        const welcome = document.getElementById('welcomeUser');
-        if(welcome){
-            welcome.remove();
-        }
-    }
+    countdown();
 </script>
+
+</body>
+</html>
