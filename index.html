@@ -5,97 +5,84 @@
     <title>SPECTER-ALLIANCE</title>
     <style>
         body {
+            background-color: #0f0f0f;
+            color: #ffffff;
+            font-family: 'Segoe UI', sans-serif;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #0f0f0f;
-            color: #fff;
-            transition: background-color 0.3s, color 0.3s;
-        }header {
-        background: linear-gradient(90deg, #5f00ba, #9c27b0);
-        padding: 20px;
-        text-align: center;
-    }
-
-    header h1 {
-        font-size: 2.5em;
-        margin: 0;
-    }
-
-    .links a {
-        margin: 0 10px;
-        color: #fff;
-        text-decoration: none;
-        font-size: 1.2em;
-    }
-
-    .content {
-        padding: 30px;
-    }
-
-    .service {
-        background-color: #1e1e1e;
-        border-left: 5px solid #9c27b0;
-        padding: 15px;
-        margin-bottom: 15px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(156, 39, 176, 0.4);
-    }
-
-    .service strong {
-        color: #ff4081;
-    }
-
-    .dark-mode {
-        background-color: #ffffff;
-        color: #000000;
-    }
-
-    #darkModeBtn {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        padding: 10px 15px;
-        background: #9c27b0;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    #scrollTopBtn {
-        display: none;
-        position: fixed;
-        bottom: 70px;
-        right: 20px;
-        z-index: 99;
-        border: none;
-        outline: none;
-        background-color: #9c27b0;
-        color: white;
-        cursor: pointer;
-        padding: 10px;
-        border-radius: 5px;
-    }
-
-    #ai-helper {
-        background-color: #1e1e1e;
-        padding: 15px;
-        margin-top: 20px;
-        border-left: 5px solid #5f00ba;
-        border-radius: 10px;
-    }
-
-    .timer {
-        background-color: #2e2e2e;
-        padding: 10px;
-        margin-bottom: 20px;
-        text-align: center;
-        font-weight: bold;
-        border-radius: 8px;
-    }
-</style>
-
+        }
+        header {
+            background: linear-gradient(90deg, #5f00ba, #9c27b0);
+            padding: 20px;
+            text-align: center;
+        }
+        header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+        .links {
+            margin-top: 10px;
+        }
+        .links a {
+            margin: 0 10px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.2em;
+        }
+        .content {
+            padding: 30px;
+        }
+        .service {
+            background-color: #1e1e1e;
+            border-left: 4px solid #9c27b0;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        .emoji {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+        .form-section, .info-box, .ai-box, .search-bar, .visitor-box, .quote-box, .theme-toggle {
+            margin: 30px auto;
+            max-width: 700px;
+            padding: 20px;
+            background-color: #1e1e1e;
+            border-radius: 10px;
+        }
+        iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+        }
+        .copy-button {
+            margin-top: 10px;
+            background-color: #9c27b0;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #backToTop {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #9c27b0;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -105,66 +92,95 @@
             <a href="#">📸 Instagram</a>
             <a href="#">💬 WhatsApp</a>
         </div>
-    </header><div class="content">
-
-    <div class="timer" id="countdown"></div>
-
-    <div class="service"><strong>🕶️</strong> Yazılıma dair pek çok işlem belirli ücret ile yapılabilir</div>
-    <div class="service"><strong>🌐</strong> Bruteforce saldırısı – <strong>100 TL</strong> (%60 doğruluk oranı)</div>
-    <div class="service"><strong>🚇</strong> DDoS saldırısı – <strong>400 TL</strong> (Etik kapsamda deneyiniz)</div>
-    <div class="service"><strong>💻</strong> Scriptler – <strong>150 TL</strong> (İstediğiniz script yazılır DM)</div>
-    <div class="service"><strong>🗂️</strong> Datalar – <strong>750 TL</strong> (Veritabanı erişimleri)</div>
-
-    <div class="service"><strong>📩</strong> Sipariş Formu:</div>
-    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSem4UJLI_E3W44fhB0d26HdJqMrkDvCAixvvnaQKugzkRmeSg/viewform?embedded=true" width="100%" height="500" frameborder="0" marginheight="0" marginwidth="0">Yükleniyor…</iframe>
-
-    <div id="ai-helper">
-        <h3>💡 Siteden Yardım Alın</h3>
-        <p>Bu site, SPECTER(:AdMiN tarafından geliştirilen, etik siber güvenlik çözümlerini ve yazılım hizmetlerini tanıtır. Satın alım yapmadan önce Telegram üzerinden doğrulama önerilir.</p>
-    </div>
+    </header><div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Hizmet ara...">
 </div>
 
-<button id="darkModeBtn">🌙 Karanlık Mod</button>
-<button onclick="scrollToTop()" id="scrollTopBtn">⬆️ Yukarı</button>
+<div class="content" id="services">
+    <div class="service">🕶️ Yazılıma dair pek çok işlem belirli ücret ile yapılabilir</div>
+    <div class="service">🌐 Bruteforce saldırısı – <strong>100 TL</strong> – %60 doğruluk oranı</div>
+    <div class="service">🚇 DDoS saldırısı – <strong>400 TL</strong> – Etik kapsamda deneyiniz</div>
+    <div class="service">💻 Scriptler – <strong>150 TL</strong> – İstenilen script yazılır</div>
+    <div class="service">🗂️ Datalar – <strong>750 TL</strong> – Akbank, PUBG, Valorant vb.</div>
+    <div class="service">✉️ SMS Bomber – <strong>200 TL</strong> – DM ile iletişim</div>
+    <div class="service">🖥️ Discord Tool – <strong>200 TL</strong> – Hesap kapatma</div>
+    <div class="service">📨 Fake eposta – <strong>100 TL</strong> – Tüm platformlar</div>
+    <div class="service">🖲️ Instagram Tool – <strong>200 TL</strong> – %70 doğruluk</div>
+    <div class="service">🖲️ TikTok Tool – <strong>200 TL</strong> – %60 doğruluk</div>
+</div>
+
+<div class="form-section">
+    <h2>📦 Sipariş Formu</h2>
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSem4UJLI_E3W44fhB0d26HdJqMrkDvCAixvvnaQKugzkRmeSg/viewform?embedded=true">Yükleniyor…</iframe>
+</div>
+
+<div class="info-box">
+    <h2>💳 Ödeme Bilgileri</h2>
+    <p>Papara: 1234567890</p>
+    <button class="copy-button" onclick="copyText('1234567890')">Papara Numarasını Kopyala</button>
+</div>
+
+<div class="visitor-box">
+    <h2>👁️ Ziyaret Sayısı</h2>
+    <p>Bu site <span id="visitorCount">0</span> kez ziyaret edildi (tarayıcında).</p>
+</div>
+
+<div class="quote-box">
+    <h2>💬 Günün Sözü</h2>
+    <p id="quote">Yükleniyor...</p>
+</div>
+
+<div class="ai-box">
+    <h2>🤖 Yapay Zeka Bilgi Kutusu</h2>
+    <p>Bu site <strong>SPECTER (:AdMiN)</strong> tarafından geliştirilen bir beyaz şapkalı hacker topluluğu projesidir.</p>
+</div>
+
+<div class="theme-toggle">
+    <h2>🎨 Tema</h2>
+    <button onclick="toggleTheme()" class="copy-button">Tema Değiştir</button>
+</div>
+
+<button id="backToTop" onclick="scrollToTop()">⬆</button>
 
 <script>
-    // Dark Mode
-    const darkBtn = document.getElementById('darkModeBtn');
-    darkBtn.addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
+    // Arama
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        let filter = this.value.toLowerCase();
+        let services = document.querySelectorAll('.service');
+        services.forEach(service => {
+            service.style.display = service.textContent.toLowerCase().includes(filter) ? '' : 'none';
+        });
     });
 
-    // Scroll to Top
-    const scrollBtn = document.getElementById('scrollTopBtn');
-    window.onscroll = function () {
-        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-            scrollBtn.style.display = 'block';
-        } else {
-            scrollBtn.style.display = 'none';
-        }
-    };
-    function scrollToTop() {
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
+    // Kopyala
+    function copyText(text) {
+        navigator.clipboard.writeText(text);
+        alert("Kopyalandı: " + text);
     }
 
-    // Timer
-    function countdown() {
-        const countDownDate = new Date().getTime() + (2 * 60 * 60 * 1000); // 2 saat
-        const x = setInterval(function () {
-            const now = new Date().getTime();
-            const distance = countDownDate - now;
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            document.getElementById("countdown").innerHTML = `⏰ Kampanya Bitişine: ${hours}s ${minutes}d ${seconds}s`;
-            if (distance < 0) {
-                clearInterval(x);
-                document.getElementById("countdown").innerHTML = "⏰ Kampanya sona erdi!";
-            }
-        }, 1000);
+    // Ziyaretçi sayacı
+    let count = localStorage.getItem('visits') || 0;
+    count++;
+    localStorage.setItem('visits', count);
+    document.getElementById('visitorCount').textContent = count;
+
+    // Günün sözü
+    fetch('https://api.quotable.io/random')
+        .then(response => response.json())
+        .then(data => document.getElementById('quote').textContent = data.content);
+
+    // Tema değiştir
+    function toggleTheme() {
+        document.body.classList.toggle('light');
     }
-    countdown();
+
+    // Yukarı çık
+    window.onscroll = () => {
+        document.getElementById("backToTop").style.display = (window.scrollY > 200) ? "block" : "none";
+    };
+    function scrollToTop() {
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    }
 </script>
 
 </body>
