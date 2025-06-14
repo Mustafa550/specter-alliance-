@@ -1,187 +1,177 @@
 <!DOCTYPE html><html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gelişmiş Sipariş Sitesi</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gelişmiş Tek Sayfa Site</title>
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #0f0f0f;
-      color: #d0ffd0;
+      background-color: #000;
+      color: #0f0;
     }
     header {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      background-color: #1a1a1a;
-      display: flex;
-      justify-content: space-between;
+      background-color: #111;
       padding: 10px 20px;
-      z-index: 1000;
-    }
-    header button {
-      background-color: #00aa00;
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      margin-left: 10px;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-    .content {
-      padding-top: 70px;
-      max-width: 1000px;
-      margin: auto;
-    }
-    .product {
-      border: 1px solid #444;
-      border-radius: 10px;
-      padding: 15px;
-      margin: 10px 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: #1d1d1d;
+      z-index: 999;
     }
-    .product button {
-      background-color: #009900;
+    header .actions {
+      display: flex;
+      gap: 10px;
+    }
+    button {
+      background-color: #0f0;
+      color: black;
       border: none;
-      padding: 6px 10px;
-      color: white;
-      border-radius: 5px;
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 4px;
     }
-    #sepet, #profilBox, #authBox {
-      background-color: #1d1d1d;
-      padding: 15px;
-      margin-top: 20px;
-      border-radius: 10px;
+    .content {
+      padding-top: 70px;
     }
-    #chatbox {
-      margin-top: 30px;
-      padding: 15px;
-      background-color: #1a1a1a;
-      border-radius: 10px;
+    .product {
+      border: 1px solid #0f0;
+      padding: 10px;
+      margin: 10px;
+      display: inline-block;
+      width: 200px;
+    }
+    #cart {
+      background-color: #111;
+      padding: 10px;
+    }
+    .chatbot-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #0f0;
+      color: #000;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    #chatbot {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 300px;
+      background-color: #111;
+      color: #0f0;
+      border: 1px solid #0f0;
+      padding: 10px;
+      z-index: 1001;
     }
     input, textarea {
       width: 100%;
       margin: 5px 0;
-      padding: 8px;
-      border-radius: 5px;
-      border: 1px solid #333;
-      background-color: #111;
-      color: #d0ffd0;
-    }
-    @media screen and (max-width: 600px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+      padding: 5px;
     }
   </style>
 </head>
 <body>
   <header>
-    <div>
-      <strong>Sitemiz</strong>
+    <h3>Sitemiz</h3>
+    <div class="actions">
+      <button onclick="showLogin()">Giriş Yap</button>
+      <button onclick="showCart()">Sepet</button>
+      <button onclick="showProfile()">Profil</button>
     </div>
-    <div>
-      <button onclick="toggleAuthBox()">Giriş/Kayıt</button>
-      <button onclick="toggleProfilBox()">Profil</button>
-      <button onclick="toggleSepet()">Sepet</button>
-    </div>
-  </header>  <div class="content">
-    <div id="authBox" style="display:none">
-      <h3>Giriş/Kayıt</h3>
-      <input type="text" id="username" placeholder="Kullanıcı adı" />
-      <input type="email" id="email" placeholder="E-posta" />
-      <input type="tel" id="phone" placeholder="Telefon numarası" />
-      <button onclick="login()">Giriş Yap</button>
-    </div><div id="profilBox" style="display:none">
-  <h3>Profil Bilgileri</h3>
-  <p id="profilInfo"></p>
-</div>
-
-<h2>Ürünler</h2>
-<div id="urunler"></div>
-
-<div id="sepet" style="display:none">
-  <h3>Sepetiniz</h3>
-  <ul id="sepetListe"></ul>
-  <form id="siparisForm" target="_blank" action="https://docs.google.com/forms/d/e/1FAIpQLSdydediRlB8C-3Phizf6lAEjT0nYrJX1__RtEcg2UvgZ06HzA/formResponse" method="POST">
-    <input name="entry.123456" type="text" placeholder="Kullanıcı adınız" required />
-    <input name="entry.654321" type="email" placeholder="E-posta" required />
-    <input name="entry.789123" type="tel" placeholder="Telefon numarası" required />
-    <textarea name="entry.321987" id="siparisDetay" placeholder="Sipariş detayları otomatik doldurulur"></textarea>
-    <button type="submit">Siparişi Gönder</button>
-  </form>
-</div>
-
-<div id="chatbox">
-  <h3>Yapay Zeka Asistanı</h3>
-  <div id="chatOutput" style="height:150px; overflow:auto; border:1px solid #333; padding:10px;"></div>
-  <input type="text" id="chatInput" placeholder="Bir şey sor..." />
-  <button onclick="aiCevapla()">Sor</button>
-</div>
-
+  </header>  <div class="content" id="products">
+    <!-- Ürünler -->
+  </div>  <div id="cart" style="display:none"></div>
+  <div id="loginForm" style="display:none">
+    <h3>Giriş Yap / Kayıt Ol</h3>
+    <input placeholder="Kullanıcı Adı">
+    <input placeholder="Şifre" type="password">
+    <button onclick="alert('Giriş Başarılı!')">Giriş Yap</button>
+  </div>  <div id="profile" style="display:none">
+    <h3>Profil</h3>
+    <p>Kullanıcı: ornekuser</p>
+    <img src="https://i.pravatar.cc/50" alt="avatar">
+  </div>  <div class="chatbot-button" onclick="toggleChatbot()">💬</div>
+  <div id="chatbot">
+    <h4>Yapay Zeka</h4>
+    <textarea id="userInput" rows="2" placeholder="Bir şey sor...">Sen ne işe yarıyorsun?</textarea>
+    <button onclick="chatResponse()">Gönder</button>
+    <p id="chatReply"></p>
   </div>  <script>
-    const urunler = [
-      "Bruteforce Saldırısı - 100 TL",
-      "DDoS Saldırı - 400 TL",
-      "Script Hazırlama - 150 TL",
-      "Veri Paketleri - 750 TL",
-      "SMS Bomber - 200 TL",
-      "Discord Tool - 200 TL",
-      "Fake Email - 100 TL",
-      "Instagram Tool - 200 TL",
-      "TikTok Tool - 200 TL"
+    const productList = [
+      { name: "BruteForce", price: 100 },
+      { name: "DDoS Saldırısı", price: 400 },
+      { name: "Script Yazımı", price: 150 },
+      { name: "Datalar (Akbank vb.)", price: 750 },
+      { name: "SMS Bomber", price: 200 },
+      { name: "Discord Tool", price: 200 },
+      { name: "Fake E-Posta", price: 100 },
+      { name: "Instagram Tool", price: 200 },
+      { name: "TikTok Tool", price: 200 }
     ];
 
-    const sepet = [];
+    const cart = [];
 
-    window.onload = () => {
-      let html = '';
-      urunler.forEach((u, i) => {
-        html += `<div class='product'><span>${u}</span><button onclick='sepeteEkle(${i})'>Sepete Ekle</button></div>`;
+    function renderProducts() {
+      const container = document.getElementById('products');
+      productList.forEach((p, i) => {
+        const el = document.createElement('div');
+        el.className = 'product';
+        el.innerHTML = `<h4>${p.name}</h4><p>${p.price} TL</p><button onclick="addToCart(${i})">Sepete Ekle</button>`;
+        container.appendChild(el);
       });
-      document.getElementById("urunler").innerHTML = html;
     }
 
-    function sepeteEkle(i) {
-      sepet.push(urunler[i]);
-      document.getElementById("sepetListe").innerHTML = sepet.map(i => `<li>${i}</li>`).join('');
-      document.getElementById("siparisDetay").value = sepet.join(', ');
+    function addToCart(index) {
+      const item = productList[index];
+      cart.push(item);
+      alert(item.name + ' sepete eklendi!');
     }
 
-    function toggleSepet() {
-      const e = document.getElementById("sepet");
-      e.style.display = e.style.display === "none" ? "block" : "none";
-    }
-    function toggleProfilBox() {
-      const e = document.getElementById("profilBox");
-      e.style.display = e.style.display === "none" ? "block" : "none";
-    }
-    function toggleAuthBox() {
-      const e = document.getElementById("authBox");
-      e.style.display = e.style.display === "none" ? "block" : "none";
+    function showCart() {
+      const cartDiv = document.getElementById('cart');
+      cartDiv.innerHTML = '<h3>Sepetiniz</h3>';
+      cart.forEach((c, i) => {
+        cartDiv.innerHTML += `<p>${c.name} - ${c.price} TL <button onclick="removeItem(${i})">Sil</button></p>`;
+      });
+      cartDiv.style.display = 'block';
     }
 
-    function login() {
-      const user = document.getElementById("username").value;
-      const email = document.getElementById("email").value;
-      const tel = document.getElementById("phone").value;
-      document.getElementById("profilInfo").innerText = `Kullanıcı: ${user}\nE-posta: ${email}\nTelefon: ${tel}`;
-      alert("Giriş yapıldı!");
+    function removeItem(i) {
+      cart.splice(i, 1);
+      showCart();
     }
 
-    function aiCevapla() {
-      const soru = document.getElementById("chatInput").value.toLowerCase();
-      let yanit = "Üzgünüm, bu konuda bilgim yok.";
-      if (soru.includes("ne işe yararsın")) yanit = "Ben, sitede sipariş, yardım ve bilgi verme konusunda yardımcı bir yapay zeka asistanıyım.";
-      else if (soru.includes("sipariş ver")) yanit = "Sipariş vermek için ürün seçip sepete ekleyip formu doldurman yeterlidir.";
-      else if (soru.includes("selam")) yanit = "Merhaba! Size nasıl yardımcı olabilirim?";
-      document.getElementById("chatOutput").innerHTML += `<p><strong>Sen:</strong> ${soru}</p><p><strong>Bot:</strong> ${yanit}</p>`;
+    function showLogin() {
+      document.getElementById('loginForm').style.display = 'block';
     }
+    function showProfile() {
+      document.getElementById('profile').style.display = 'block';
+    }
+    function toggleChatbot() {
+      const bot = document.getElementById('chatbot');
+      bot.style.display = bot.style.display === 'block' ? 'none' : 'block';
+    }
+    function chatResponse() {
+      const input = document.getElementById('userInput').value.toLowerCase();
+      let reply = 'Üzgünüm, anlayamadım.';
+      if (input.includes('ne işe yarıyorsun')) reply = 'Ben bir yapay zeka destekli asistanım. Ürün ve site hakkında sorularınızı cevaplayabilirim.';
+      if (input.includes('sepet')) reply = 'Sepete ürün ekleyebilir ve silebilirsiniz.';
+      document.getElementById('chatReply').innerText = reply;
+    }
+
+    window.onload = renderProducts;
   </script></body>
 </html>
