@@ -3,289 +3,385 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Alım Satım Sitem - WhatsApp Ödeme</title>
+<title>Alım-Satım Site</title>
 <style>
+  /* Temel renkler ve genel yapı */
   body {
     margin: 0; padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #0a0f07;
-    color: #a4d488;
+    background: #0b0f0b;
+    color: #b7f098;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     overflow-x: hidden;
   }
-  a { color: #78c24b; text-decoration:none; }
+  a { color: #b7f098; text-decoration: none; }
   a:hover { text-decoration: underline; }
-  button {
-    cursor: pointer;
-    background: #78c24b;
-    border: none;
-    color: #0a0f07;
-    padding: 8px 15px;
-    border-radius: 5px;
-    font-weight: bold;
-    transition: background 0.3s;
-  }
-  button:hover {
-    background: #a4d488;
-  }
+
+  /* Üst bar sabit */
   header {
     position: fixed;
     top: 0; left: 0; right: 0;
-    background: #121b0a;
+    height: 60px;
+    background: #122212;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
-    box-shadow: 0 2px 6px #060a03aa;
-    z-index: 1000;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 9999;
+    box-shadow: 0 2px 5px #080e08;
   }
-  header .logo {
-    font-size: 1.8em;
-    font-weight: bold;
-    color: #a4d488;
+  header h1 {
+    font-weight: 700;
+    font-size: 22px;
   }
-  nav {
+
+  /* Menü öğeleri: profil, sepet, giriş */
+  .menu {
     display: flex;
-    gap: 15px;
+    gap: 20px;
+    align-items: center;
   }
-  nav > div {
-    position: relative;
+  .menu button {
+    background: #1b311b;
+    border: none;
+    color: #b7f098;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
   }
-  nav > div > button {
-    background: transparent;
-    color: #a4d488;
-    border: 2px solid #78c24b;
-    padding: 5px 12px;
+  .menu button:hover {
+    background: #2c4b2c;
   }
-  nav > div > button:hover {
-    background: #78c24b;
-    color: #0a0f07;
+  .menu button:focus {
+    outline: none;
+    box-shadow: 0 0 8px #7ef27e;
   }
-  /* Dropdown kutular */
-  .dropdown-content {
-    position: absolute;
-    top: 40px;
-    right: 0;
-    background: #121b0a;
-    border: 1px solid #78c24b;
-    border-radius: 6px;
+  .menu button img {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+  }
+
+  /* Açılır kutular */
+  .dropdown {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    background: #122212;
+    border: 1px solid #2c4b2c;
+    border-radius: 10px;
     padding: 15px;
-    width: 320px;
-    box-shadow: 0 2px 10px #060a03cc;
+    width: 280px;
+    max-height: 350px;
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(30,80,30,0.8);
     display: none;
-    z-index: 1001;
+    z-index: 9998;
   }
-  .dropdown-content.active {
+
+  /* Profil kutusu */
+  #profileDropdown p {
+    margin: 8px 0;
+  }
+  #profileDropdown strong {
+    color: #8ef28e;
+  }
+
+  /* Giriş formu */
+  #loginDropdown label {
     display: block;
+    margin-top: 10px;
+    font-weight: 600;
   }
-  /* Profil */
-  .profile-box {
+  #loginDropdown input {
+    width: 100%;
+    padding: 7px 8px;
+    margin-top: 4px;
+    border-radius: 6px;
+    border: 1px solid #2c4b2c;
+    background: #0b0f0b;
+    color: #b7f098;
+  }
+  #loginDropdown button {
+    margin-top: 15px;
+    width: 100%;
+    background: #4caf50;
+    border: none;
+    padding: 10px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #0b0f0b;
+  }
+  #loginDropdown button:hover {
+    background: #6cdb6c;
+  }
+
+  /* Ürünler grid */
+  main {
+    padding: 80px 20px 120px 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .product-card {
+    background: #122212;
+    border-radius: 14px;
+    box-shadow: 0 3px 10px rgba(30,80,30,0.7);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #b7f098;
+    transition: transform 0.3s ease;
+  }
+  .product-card:hover {
+    transform: scale(1.05);
+  }
+  .product-emoji {
+    font-size: 40px;
     text-align: center;
   }
-  .profile-box img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    margin-bottom: 10px;
-    border: 2px solid #78c24b;
+  .product-name {
+    font-weight: 700;
+    font-size: 20px;
+    margin: 10px 0 6px 0;
+    text-align: center;
   }
-  .profile-box p {
-    margin: 5px 0;
+  .product-desc {
+    font-size: 14px;
+    color: #a2d3a2;
+    min-height: 48px;
+    text-align: center;
   }
-  /* Sepet */
-  .cart-items {
-    max-height: 200px;
-    overflow-y: auto;
+  .product-price {
+    margin-top: 10px;
+    font-weight: 700;
+    font-size: 18px;
+    color: #80f080;
+    text-align: center;
+  }
+  .add-cart-btn {
+    margin-top: 12px;
+    background: #267326;
+    border: none;
+    padding: 10px;
+    font-weight: 700;
+    color: #c4f5c4;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.25s ease;
+    user-select: none;
+  }
+  .add-cart-btn:hover {
+    background: #3ea63e;
+  }
+
+  /* Sepet kutusu */
+  #cartDropdown {
+    right: 320px;
+    width: 320px;
+    max-height: 400px;
+    display: none;
+    flex-direction: column;
+  }
+  #cartDropdown h3 {
+    margin-top: 0;
+    border-bottom: 1px solid #2c4b2c;
+    padding-bottom: 8px;
   }
   .cart-item {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 8px;
-    border-bottom: 1px solid #78c24b33;
-    padding-bottom: 5px;
-  }
-  .cart-item button {
-    background: #a4d488;
-    color: #0a0f07;
-    padding: 3px 7px;
-    border-radius: 4px;
-    font-size: 0.9em;
-  }
-  .cart-total {
-    margin-top: 10px;
-    font-weight: bold;
-    text-align: right;
-    color: #78c24b;
-  }
-  /* Ürün Listesi */
-  main {
-    margin-top: 70px;
-    padding: 20px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
-    gap: 20px;
-  }
-  .product {
-    background: #121b0a;
-    border: 1px solid #78c24b;
-    border-radius: 10px;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
     align-items: center;
-    transition: box-shadow 0.3s ease;
+    margin: 8px 0;
+    border-bottom: 1px solid #2c4b2c;
+    padding-bottom: 6px;
   }
-  .product:hover {
-    box-shadow: 0 0 15px #78c24bcc;
-  }
-  .product img {
-    width: 150px;
-    height: 150px;
-    border-radius: 10px;
-    object-fit: contain;
-    margin-bottom: 10px;
-  }
-  .product h3 {
-    margin: 5px 0;
-    font-size: 1.2em;
-  }
-  .product p {
-    font-size: 0.9em;
-    flex-grow: 1;
-    text-align: center;
-  }
-  .product .price {
-    margin: 10px 0;
-    font-weight: bold;
-    font-size: 1.1em;
-    color: #a4d488;
-  }
-  .product button {
-    width: 100%;
-  }
-  /* Giriş/Kayıt Formu */
-  form input, form select {
-    width: 100%;
-    padding: 7px 10px;
-    margin: 7px 0 15px 0;
-    border-radius: 5px;
-    border: 1px solid #78c24b;
-    background: #0a0f07;
-    color: #a4d488;
+  .cart-item-name {
     font-weight: 600;
+    color: #9ef49e;
   }
-  form input::placeholder {
-    color: #78c24b88;
+  .cart-item-price {
+    font-weight: 700;
+    color: #7cf07c;
   }
-  form label {
-    font-weight: bold;
+  .cart-item-qty {
+    display: flex;
+    align-items: center;
+    gap: 6px;
   }
-  /* Chatbot Kutu */
-  #chatbot-toggle {
+  .qty-btn {
+    background: #2c4b2c;
+    border: none;
+    padding: 3px 8px;
+    color: #b7f098;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: 700;
+  }
+  .qty-btn:hover {
+    background: #4caf50;
+  }
+  #cartTotal {
+    margin-top: 12px;
+    font-weight: 700;
+    font-size: 18px;
+    text-align: right;
+    color: #7cf07c;
+  }
+  #checkoutBtn {
+    margin-top: 15px;
+    width: 100%;
+    background: #4caf50;
+    border: none;
+    padding: 10px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #0b0f0b;
+  }
+  #checkoutBtn:hover {
+    background: #6cdb6c;
+  }
+
+  /* ChatGPT küçük kutu ve popup */
+  #chatbotToggle {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background: #78c24b;
-    color: #0a0f07;
+    background: #267326;
+    width: 50px; height: 50px;
     border-radius: 50%;
-    width: 55px;
-    height: 55px;
+    box-shadow: 0 0 15px #3ea63e;
+    cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 26px;
-    cursor: pointer;
-    box-shadow: 0 4px 8px #00000088;
-    z-index: 1050;
+    font-size: 28px;
+    color: #0b0f0b;
+    user-select: none;
     transition: background 0.3s ease;
+    z-index: 99999;
   }
-  #chatbot-toggle:hover {
-    background: #a4d488;
+  #chatbotToggle:hover {
+    background: #3ea63e;
   }
-  #chatbot {
+  #chatbotWindow {
     position: fixed;
     bottom: 80px;
     right: 20px;
-    width: 350px;
-    max-width: 90vw;
-    height: 450px;
-    background: #121b0a;
-    border: 2px solid #78c24b;
-    border-radius: 15px;
-    box-shadow: 0 0 15px #78c24bcc;
+    width: 320px;
+    max-height: 450px;
+    background: #122212;
+    border-radius: 14px;
+    box-shadow: 0 5px 20px rgba(30,80,30,0.9);
     display: none;
     flex-direction: column;
-    z-index: 1050;
+    z-index: 99998;
   }
-  #chatbot.active {
-    display: flex;
-  }
-  #chatbot header {
-    background: #78c24b;
-    color: #0a0f07;
-    padding: 12px 15px;
-    font-weight: bold;
-    border-radius: 13px 13px 0 0;
+  #chatbotHeader {
+    padding: 10px
+ #chatbotHeader {
+    padding: 10px 15px;
+    background: #1b311b;
+    color: #b7f098;
+    font-weight: 700;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  #chatbot header button {
+  #chatbotHeader button {
     background: transparent;
     border: none;
-    font-size: 20px;
-    color: #0a0f07;
+    color: #b7f098;
+    font-size: 18px;
     cursor: pointer;
+    font-weight: 700;
   }
-  #chatbot-messages {
-    flex-grow: 1;
-    padding: 10px;
+  #chatbotMessages {
+    flex: 1;
     overflow-y: auto;
-    color: #a4d488;
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #d4f7d4;
   }
-  #chatbot-input {
+  .chatbotMessage {
+    margin-bottom: 12px;
+  }
+  .chatbotMessage.user {
+    text-align: right;
+    color: #aef2a7;
+  }
+  .chatbotMessage.bot {
+    text-align: left;
+    color: #b7f098;
+  }
+  #chatbotInputArea {
+    padding: 10px 15px;
+    border-top: 1px solid #2c4b2c;
     display: flex;
-    padding: 10px;
-    border-top: 1px solid #78c24b44;
+    gap: 8px;
   }
-  #chatbot-input input {
-    flex-grow: 1;
-    padding: 8px 12px;
-    border-radius: 10px;
-    border: 1px solid #78c24b;
-    background: #0a0f07;
-    color: #a4d488;
-    font-weight: 600;
+  #chatbotInput {
+    flex: 1;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid #2c4b2c;
+    background: #0b0f0b;
+    color: #b7f098;
+    font-size: 14px;
   }
- #chatbot-input button {
-    margin-left: 10px;
-    padding: 8px 15px;
-    background: #78c24b;
+  #chatbotSendBtn {
+    background: #4caf50;
     border: none;
-    color: #0a0f07;
-    font-weight: bold;
-    border-radius: 10px;
+    color: #0b0f0b;
+    font-weight: 700;
+    padding: 8px 15px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: background 0.25s ease;
   }
-  #chatbot-input button:hover {
-    background: #a4d488;
+  #chatbotSendBtn:hover {
+    background: #6cdb6c;
   }
+
+  /* Scrollbar stilleri */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #3ea63e;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #122212;
+  }
+
   /* Responsive */
-  @media (max-width: 600px) {
+  @media (max-width: 480px) {
     main {
       grid-template-columns: 1fr;
-      padding: 15px;
+      padding: 80px 10px 100px 10px;
     }
-    nav > div > .dropdown-content {
-      width: 90vw !important;
-      right: 5vw !important;
-      left: 5vw !important;
+    #cartDropdown {
+      right: 10px;
+      width: 280px;
     }
-    #chatbot {
-      width: 90vw;
-      height: 400px;
-      right: 5vw;
-      bottom: 70px;
+    #profileDropdown, #loginDropdown {
+      width: 280px;
+      right: 10px;
+    }
+    #chatbotWindow {
+      width: 280px;
+      right: 10px;
     }
   }
 </style>
@@ -293,334 +389,433 @@
 <body>
 
 <header>
-  <div class="logo">Alım Satım</div>
-  <nav>
-    <div>
-      <button id="profileBtn">Profil</button>
-      <div class="dropdown-content" id="profileDropdown">
-        <div class="profile-box">
-          <img src="https://i.pravatar.cc/60" alt="Avatar" />
-          <p><strong>Hoşgeldiniz!</strong></p>
-          <p>Kullanıcı: <span id="usernameDisplay">Misafir</span></p>
-          <button id="logoutBtn" style="background:#a44343;color:#fff;">Çıkış Yap</button>
-        </div>
-      </div>
-    </div>
-    <div>
-      <button id="cartBtn">Sepet (<span id="cartCount">0</span>)</button>
-      <div class="dropdown-content" id="cartDropdown">
-        <div class="cart-items" id="cartItems"></div>
-        <div class="cart-total">Toplam: <span id="cartTotal">0</span>₺</div>
-        <button id="checkoutBtn" style="width:100%; margin-top:10px;">Ödeme Yöntemine Geç</button>
-      </div>
-    </div>
-    <div>
-      <button id="loginBtn">Giriş / Kayıt</button>
-      <div class="dropdown-content" id="loginDropdown">
-        <form id="loginForm">
-          <label for="usernameInput">Kullanıcı Adı</label>
-          <input type="text" id="usernameInput" placeholder="Kullanıcı adınızı girin" required />
-          <label for="passwordInput">Şifre</label>
-          <input type="password" id="passwordInput" placeholder="Şifrenizi girin" required />
-          <button type="submit">Giriş Yap</button>
-        </form>
-      </div>
-    </div>
-  </nav>
+  <h1>Yeşil Alışveriş</h1>
+  <div class="menu">
+    <button id="profileBtn">
+      <img src="https://i.pravatar.cc/40" alt="Avatar" />
+      <span id="usernameDisplay">Misafir</span>
+    </button>
+    <button id="cartBtn">Sepet 🛒 (<span id="cartCount">0</span>)</button>
+    <button id="loginBtn">Giriş / Kayıt</button>
+  </div>
 </header>
 
-<main id="productList">
-  <!-- Ürünler buraya JS ile eklenecek -->
-</main>
-
-<!-- Chatbot -->
-<div id="chatbot-toggle" title="ChatGPT">
-  💬
+<!-- Profil Dropdown -->
+<div class="dropdown" id="profileDropdown">
+  <p><strong>Kullanıcı Adı:</strong> <span id="profileUsername">Misafir</span></p>
+  <p><strong>E-posta:</strong> <span id="profileEmail">-</span></p>
+  <p><strong>Telefon:</strong> <span id="profilePhone">-</span></p>
+  <button id="logoutBtn" style="background:#a94442; color:#fff; width:100%; margin-top:15px; cursor:pointer; border:none; border-radius:8px; padding:8px;">Çıkış Yap</button>
 </div>
-<div id="chatbot">
-  <header>
+
+<!-- Sepet Dropdown -->
+<div class="dropdown" id="cartDropdown">
+  <h3>Sepetiniz</h3>
+  <div id="cartItemsContainer"></div>
+  <p id="cartTotal">Toplam: 0 ₺</p>
+  <button id="checkoutBtn">Ödeme Yöntemine Geç</button>
+</div>
+
+<!-- Giriş/Kayıt Dropdown -->
+<div class="dropdown" id="loginDropdown">
+  <label for="loginUsername">Kullanıcı Adı</label>
+  <input type="text" id="loginUsername" placeholder="Kullanıcı adı girin" />
+  <label for="loginEmail">E-posta</label>
+  <input type="email" id="loginEmail" placeholder="E-posta adresinizi girin" />
+  <label for="loginPhone">Telefon Numarası</label>
+  <input type="tel" id="loginPhone" placeholder="Örn: 05551234567" />
+  <button id="loginSubmitBtn">Giriş / Kayıt Ol</button>
+</div>
+
+<!-- Ürünler -->
+<main id="productsContainer"></main>
+
+<!-- ChatGPT Toggle -->
+<div id="chatbotToggle" title="Chatbot">&#128172;</div>
+
+<!-- ChatGPT Window -->
+<div id="chatbotWindow">
+  <div id="chatbotHeader">
     ChatGPT
-    <button id="chatbot-close">&times;</button>
-  </header>
-  <div id="chatbot-messages"></div>
-  <div id="chatbot-input">
-    <input type="text" id="chatInput" placeholder="Mesajınızı yazın..." autocomplete="off" />
-    <button id="chatSendBtn">Gönder</button>
+    <button id="chatbotCloseBtn" title="Kapat">&times;</button>
+  </div>
+  <div id="chatbotMessages"></div>
+  <div id="chatbotInputArea">
+    <input type="text" id="chatbotInput" placeholder="Bir şeyler yaz..." autocomplete="off" />
+    <button id="chatbotSendBtn">Gönder</button>
   </div>
 </div>
 
 <script>
-  // Sabitler
-  const whatsappNumber = "905426354386"; // +90 başı olmadan tam numara
-  const productData = [
-    {id:1, name:"Ürün 1", price:100, img:"https://via.placeholder.com/150?text=Ürün+1", desc:"Kaliteli ürün 1 açıklaması."},
-    {id:2, name:"Ürün 2", price:150, img:"https://via.placeholder.com/150?text=Ürün+2", desc:"Kaliteli ürün 2 açıklaması."},
-    {id:3, name:"Ürün 3", price:200, img:"https://via.placeholder.com/150?text=Ürün+3", desc:"Kaliteli ürün 3 açıklaması."},
-    {id:4, name:"Ürün 4", price:250, img:"https://via.placeholder.com/150?text=Ürün+4", desc:"Kaliteli ürün 4 açıklaması."},
-    {id:5, name:"Ürün 5", price:300, img:"https://via.placeholder.com/150?text=Ürün+5", desc:"Kaliteli ürün 5 açıklaması."},
-    {id:6, name:"Ürün 6", price:350, img:"https://via.placeholder.com/150?text=Ürün+6", desc:"Kaliteli ürün 6 açıklaması."},
-    {id:7, name:"Ürün 7", price:400, img:"https://via.placeholder.com/150?text=Ürün+7", desc:"Kaliteli ürün 7 açıklaması."},
-    {id:8, name:"Ürün 8", price:450, img:"https://via.placeholder.com/150?text=Ürün+8", desc:"Kaliteli ürün 8 açıklaması."},
-    {id:9, name:"Ürün 9", price:500, img:"https://via.placeholder.com/150?text=Ürün+9", desc:"Kaliteli ürün 9 açıklaması."}
+  // Ürün verisi (emoji, isim, açıklama ve fiyat)
+  const products = [
+    {id:1, emoji:"🍏", name:"Yeşil Elma 🍏", desc:"Taze ve lezzetli yeşil elma - kg başına", price:15},
+    {id:2, emoji:"🥒", name:"Salatalık 🥒", desc:"Organik salatalık, doğal bahçe ürünü", price:8},
+    {id:3, emoji:"🥦", name:"Brokoli 🥦", desc:"Vitamin deposu taze brokoli", price:12},
+    {id:4, emoji:"🍵", name:"Yeşil Çay 🍵", desc:"Sağlıklı ve doğal yeşil çay paketi", price:25},
+    {id:5, emoji:"🧴", name:"Doğal El Sabunu 🧴", desc:"El yapımı organik sabun", price:30},
+    {id:6, emoji:"🌿", name:"Nane 🌿", desc:"Taze nane demeti", price:5},
+    {id:7, emoji:"🥝", name:"Kivi 🥝", desc:"Tatlı ve sulu kivi - kg başına", price:20},
+    {id:8, emoji:"🥬", name:"Marul 🥬", desc:"Taze marul yaprakları", price:10},
+    {id:9, emoji:"🍈", name:"Kavun 🍈", desc:"Tatlı kavun, mevsim ürünü", price:18},
   ];
 
-  // Sepet verisi
-  let cart = [];
+  // LocalStorage sepet anahtarı
+  const CART_KEY = 'myGreenShopCart';
 
-  // DOM elemanları
-  const productList = document.getElementById("productList");
-  const cartBtn = document.getElementById("cartBtn");
-  const cartDropdown = document.getElementById("cartDropdown");
-  const cartItemsContainer = document.getElementById("cartItems");
-  const cartCountSpan = document.getElementById("cartCount");
-  const cartTotalSpan = document.getElementById("cartTotal");
-  const checkoutBtn = document.getElementById("checkoutBtn");
+  // Kullanıcı bilgileri simülasyonu
+  let user = {
+    username: null,
+    email: null,
+    phone: null,
+    loggedIn: false
+  };
 
-  const profileBtn = document.getElementById("profileBtn");
-  const profileDropdown = document.getElementById("profileDropdown");
-  const usernameDisplay = document.getElementById("usernameDisplay");
-  const logoutBtn = document.getElementById("logoutBtn");
+  // DOM elementler
+  const productsContainer = document.getElementById('productsContainer');
+  const profileBtn = document.getElementById('profileBtn');
+  const cartBtn = document.getElementById('cartBtn');
+  const loginBtn = document.getElementById('loginBtn');
 
-  const loginBtn = document.getElementById("loginBtn");
-  const loginDropdown = document.getElementById("loginDropdown");
-  const loginForm = document.getElementById("loginForm");
-  const usernameInput = document.getElementById("usernameInput");
+  const profileDropdown = document.getElementById('profileDropdown');
+  const cartDropdown = document.getElementById('cartDropdown');
+  const loginDropdown = document.getElementById('loginDropdown');
 
-  // Chatbot DOM
-  const chatbotToggle = document.getElementById("chatbot-toggle");
-  const chatbot = document.getElementById("chatbot");
-  const chatbotClose = document.getElementById("chatbot-close");
-  const chatbotMessages = document.getElementById("chatbot-messages");
-  const chatInput = document.getElementById("chatInput");
-  const chatSendBtn = document.getElementById("chatSendBtn");
+  const usernameDisplay = document.getElementById('usernameDisplay');
+  const profileUsername = document.getElementById('profileUsername');
+  const profileEmail = document.getElementById('profileEmail');
+  const profilePhone = document.getElementById('profilePhone');
+  const logoutBtn = document.getElementById('logoutBtn');
 
-  // Kullanıcı durumu (basit simülasyon)
-  let loggedInUser = null;
+  const loginUsername = document.getElementById('loginUsername');
+  const loginEmail = document.getElementById('loginEmail');
+  const loginPhone = document.getElementById('loginPhone');
+  const loginSubmitBtn = document.getElementById('loginSubmitBtn');
 
-  // Ürünleri yükle
-  function loadProducts() {
-    productList.innerHTML = "";
-    productData.forEach(product => {
-      const div = document.createElement("div");
-      div.className = "product";
-      div.innerHTML = `
-        <img src="${product.img}" alt="${product.name}" />
-        <h3>${product.name}</h3>
-        <p>${product.desc}</p>
-        <div class="price">${product.price}₺</div>
-        <button data-id="${product.id}">Sepete Ekle</button>
+  const cartCount = document.getElementById('cartCount');
+  const cartItemsContainer = document.getElementById('cartItemsContainer');
+  const cartTotal = document.getElementById('cartTotal');
+  const checkoutBtn = document.getElementById('checkoutBtn');
+
+  const chatbotToggle = document.getElementById
+const chatbotToggle = document.getElementById('chatbotToggle');
+  const chatbotWindow = document.getElementById('chatbotWindow');
+  const chatbotCloseBtn = document.getElementById('chatbotCloseBtn');
+  const chatbotMessages = document.getElementById('chatbotMessages');
+  const chatbotInput = document.getElementById('chatbotInput');
+  const chatbotSendBtn = document.getElementById('chatbotSendBtn');
+
+  // Sepet verisini localStorage'dan al veya boş dizi ata
+  let cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+
+  // Ürünleri sayfaya yazdır
+  function renderProducts() {
+    productsContainer.innerHTML = '';
+    products.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'product-card';
+      card.innerHTML = `
+        <div class="product-emoji">${p.emoji}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc">${p.desc} - <strong>${p.price}₺</strong></div>
+        <button class="add-cart-btn" data-id="${p.id}">Sepete Ekle</button>
       `;
-      productList.appendChild(div);
+      productsContainer.appendChild(card);
     });
   }
 
-  // Sepete ekle
-  function addToCart(id) {
-    const product = productData.find(p => p.id === id);
-    if (!product) return;
-    const exist = cart.find(item => item.id === id);
-    if (exist) {
-      exist.qty++;
-    } else {
-      cart.push({ ...product, qty: 1 });
-    }
-    updateCartUI();
+  // Sepet sayısını güncelle
+  function updateCartCount() {
+    const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+    cartCount.textContent = totalCount;
   }
 
-  // Sepetten çıkar
-  function removeFromCart(id) {
-    const index = cart.findIndex(item => item.id === id);
-    if (index === -1) return;
-    if (cart[index].qty > 1) {
-      cart[index].qty--;
-    } else {
-      cart.splice(index, 1);
-    }
-    updateCartUI();
-  }
-
-  // Sepet UI güncelle
-  function updateCartUI() {
-    cartItemsContainer.innerHTML = "";
-    let total = 0;
-    cart.forEach(item => {
-      total += item.price * item.qty;
-      const itemDiv = document.createElement("div");
-      itemDiv.className = "cart-item";
-      itemDiv.innerHTML = `
-        <span>${item.name} x${item.qty}</span>
-        <span>
-          ${(item.price * item.qty).toFixed(2)}₺ 
-          <button data-id="${item.id}">Çıkar</button>
-        </span>
-      `;
-      cartItemsContainer.appendChild(itemDiv);
-    });
-    cartCountSpan.textContent = cart.reduce((acc, i) => acc + i.qty, 0);
-    cartTotalSpan.textContent = total
-.toFixed(2);
-  }
-
-  // Sepeti temizle
-  function clearCart() {
-    cart = [];
-    updateCartUI();
-  }
-
-  // WhatsApp ödeme linki oluştur ve aç
-  function openWhatsAppPayment() {
+  // Sepeti sayfada göster
+  function renderCart() {
+    cartItemsContainer.innerHTML = '';
     if (cart.length === 0) {
-      alert("Sepetiniz boş, ödeme yapamazsınız.");
+      cartItemsContainer.innerHTML = '<p>Sepetiniz boş.</p>';
+      cartTotal.textContent = 'Toplam: 0 ₺';
       return;
     }
-    let message = "Merhaba, aşağıdaki ürünleri satın almak istiyorum:%0A";
+    let totalPrice = 0;
     cart.forEach(item => {
-      message += `- ${item.name} x${item.qty} = ${(item.price * item.qty).toFixed(2)}₺%0A`;
+      const product = products.find(p => p.id === item.id);
+      if (!product) return;
+      const itemTotal = product.price * item.qty;
+      totalPrice += itemTotal;
+
+      const div = document.createElement('div');
+      div.className = 'cart-item';
+      div.innerHTML = `
+        <div class="cart-item-name">${product.name}</div>
+        <div class="cart-item-qty">
+          <button class="qty-btn" data-id="${item.id}" data-action="dec">-</button>
+          <span>${item.qty}</span>
+          <button class="qty-btn" data-id="${item.id}" data-action="inc">+</button>
+        </div>
+        <div class="cart-item-price">${itemTotal}₺</div>
+      `;
+      cartItemsContainer.appendChild(div);
     });
-    const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0).toFixed(2);
-    message += `Toplam: ${total}₺%0ALütfen ödeme işlemini başlatalım.`;
-    // WhatsApp API URL (telefon numarası başında 90 var, + işareti yok)
-    const url = `https://wa.me/${whatsappNumber}?text=${message}`;
-    window.open(url, "_blank");
+    cartTotal.textContent = `Toplam: ${totalPrice} ₺`;
   }
 
-  // Dropdown aç/kapa fonksiyonu
-  function toggleDropdown(dropdown) {
-    const isActive = dropdown.classList.contains("active");
-    // Tüm dropdownları kapat
-    document.querySelectorAll(".dropdown-content").forEach(dc => dc.classList.remove("active"));
-    // Eğer kapalıysa aç
-    if (!isActive) {
-      dropdown.classList.add("active");
+  // Sepeti localStorage'a kaydet
+  function saveCart() {
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  }
+
+  // Sepete ürün ekle
+  function addToCart(productId) {
+    const found = cart.find(item => item.id === productId);
+    if (found) {
+      found.qty++;
+    } else {
+      cart.push({id: productId, qty: 1});
+    }
+    saveCart();
+    updateCartCount();
+    renderCart();
+  }
+
+  // Sepet miktarını değiştir
+  function changeCartQty(productId, action) {
+    const item = cart.find(i => i.id === productId);
+    if (!item) return;
+    if (action === 'inc') {
+      item.qty++;
+    } else if (action === 'dec') {
+      item.qty--;
+      if (item.qty < 1) {
+        cart = cart.filter(i => i.id !== productId);
+      }
+    }
+    saveCart();
+    updateCartCount();
+    renderCart();
+  }
+
+  // Kullanıcı giriş yapmış mı?
+  function updateUserUI() {
+    if (user.loggedIn) {
+      usernameDisplay.textContent = user.username;
+      profileUsername.textContent = user.username;
+      profileEmail.textContent = user.email || '-';
+      profilePhone.textContent = user.phone || '-';
+      profileBtn.style.display = 'flex';
+      loginBtn.style.display = 'none';
+    } else {
+      usernameDisplay.textContent = 'Misafir';
+      profileUsername.textContent = 'Misafir';
+      profileEmail.textContent = '-';
+      profilePhone.textContent = '-';
+      profileBtn.style.display = 'none';
+      loginBtn.style.display = 'inline-flex';
+      // Dropdownları kapat
+      profileDropdown.style.display = 'none';
     }
   }
 
-  // Login işlemi (basit simülasyon)
-  function login(username) {
-    loggedInUser = username;
-    usernameDisplay.textContent = username;
-    loginDropdown.classList.remove("active");
-    profileDropdown.classList.remove("active");
-    loginBtn.textContent = "Profil";
-    alert(`Hoşgeldiniz, ${username}!`);
-  }
-
-  // Logout işlemi
-  function logout() {
-    loggedInUser = null;
-    usernameDisplay.textContent = "Misafir";
-    loginBtn.textContent = "Giriş / Kayıt";
-    profileDropdown.classList.remove("active");
-    alert("Başarıyla çıkış yaptınız.");
+  // Dropdownları kapat
+  function closeAllDropdowns() {
+    profileDropdown.style.display = 'none';
+    cartDropdown.style.display = 'none';
+    loginDropdown.style.display = 'none';
   }
 
   // Event Listeners
-  document.addEventListener("click", (e) => {
-    // Dropdown dışına tıklayınca kapat
-    if (!e.target.closest("nav > div")) {
-      document.querySelectorAll(".dropdown-content").forEach(dc => dc.classList.remove("active"));
-    }
-  });
 
-  profileBtn.addEventListener("click", () => {
-    if (loggedInUser) {
-      toggleDropdown(profileDropdown);
-    } else {
-      // Giriş yapılmamışsa login dropdown aç
-      toggleDropdown(loginDropdown);
-    }
-  });
-
-  loginBtn.addEventListener("click", () => {
-    if (loggedInUser) {
-      toggleDropdown(profileDropdown);
-    } else {
-      toggleDropdown(loginDropdown);
-    }
-  });
-
-  logoutBtn.addEventListener("click", () => {
-    logout();
-  });
-
-  cartBtn.addEventListener("click", () => {
-    toggleDropdown(cartDropdown);
-  });
-
-  checkoutBtn.addEventListener("click", () => {
-    openWhatsAppPayment();
-  });
-
-  productList.addEventListener("click", (e) => {
-    if (e.target.tagName === "BUTTON") {
-      const id = parseInt(e.target.getAttribute("data-id"));
+  // Ürün sepete ekle butonları
+  productsContainer.addEventListener('click', e => {
+    if (e.target.classList.contains('add-cart-btn')) {
+      const id = parseInt(e.target.getAttribute('data-id'));
       addToCart(id);
+      // Sepet açılır
+      cartDropdown.style.display = 'flex';
+      profileDropdown.style.display = 'none';
+      loginDropdown.style.display = 'none';
     }
   });
 
-  cartItemsContainer.addEventListener("click", (e) => {
-    if (e.target.tagName === "BUTTON") {
-      const id = parseInt(e.target.getAttribute("data-id"));
-      removeFromCart(id);
+  // Menü butonları
+  profileBtn.addEventListener('click', () => {
+    if (profileDropdown.style.display === 'block' || profileDropdown.style.display === 'flex') {
+      profileDropdown.style.display = 'none';
+    } else {
+      profileDropdown.style.display = 'block';
+      cartDropdown.style.display = 'none';
+      loginDropdown.style.display = 'none';
     }
   });
 
-  loginForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const username = usernameInput.value.trim();
-    if (username.length < 3) {
-      alert("Kullanıcı adı en az 3 karakter olmalı.");
+  cartBtn.addEventListener('click', () => {
+    if (cartDropdown.style.display === 'flex') {
+      cartDropdown.style.display = 'none';
+    } else {
+      cartDropdown.style.display = 'flex';
+      profileDropdown.style.display = 'none';
+      loginDropdown.style.display = 'none';
+    }
+  });
+
+  loginBtn.addEventListener('click', () => {
+    if (loginDropdown.style.display === 'block') {
+      loginDropdown.style.display = 'none';
+    } else {
+      loginDropdown.style.display = 'block';
+      profileDropdown.style.display = 'none';
+      cartDropdown.style.display = 'none';
+    }
+  });
+
+  // Sepet miktar arttır-azalt
+  cartItemsContainer.addEventListener('click', e => {
+    if (e.target.classList.contains('qty-btn')) {
+      const id = parseInt(e.target.getAttribute('data-id'));
+      const action = e.target.getAttribute('data-action');
+      changeCartQty(id, action);
+    }
+  });
+
+  // Checkout (Ödeme Yöntemine Geç)
+  checkoutBtn.addEventListener('click', () => {
+    if (cart.length === 0) {
+      alert('Sepetiniz boş!');
       return;
     }
-    login(username);
-    loginForm.reset();
+    // Whatsapp sohbetini aç: telefon numarası + mesajla
+    const phone = '905426354386'; // Telefon numaran (0542 635 43 86) => uluslararası format 90 ile
+    // Sepet detaylarını mesaj olarak gönderelim
+    let message = 'Merhaba, aşağıdaki ürünleri satın almak istiyorum:%0A';
+    cart.forEach(item => {
+      const prod = products.find(p => p.id === item.id);
+      if (prod) {
+        message += `- ${prod.name} x${item.qty} (${prod.price * item.qty}₺)%0A`;
+      }
+    });
+    const total = cart.reduce((sum, i) => {
+      const prod = products.find(p => p.id === i.id);
+      return prod ? sum + prod.price * i.qty : sum;
+    }, 0);
+    message += `Toplam: ${total}₺`;
+    const url = `https://wa.me/${phone}?text=${message}`;
+    window.open(url, '_blank');
+  });
+
+  // Giriş / Kayıt işlemi (basit simülasyon)
+  loginSubmitBtn.addEventListener('click', () => {
+    const usernameVal = loginUsername.value.trim();
+    const emailVal = loginEmail.value.trim();
+    const phoneVal = loginPhone.value.trim();
+    if (!usernameVal || !emailVal || !phoneVal) {
+      alert('Lütfen tüm alanları doldurun.');
+      return;
+    }
+    user = {
+      username: usernameVal,
+      email: emailVal,
+      phone: phoneVal,
+      loggedIn: true
+    };
+    updateUserUI();
+    loginDropdown.style.display = 'none';
+    loginUsername.value = '';
+    loginEmail.value = '';
+    loginPhone.value = '';
+    alert('Başarıyla giriş yapıldı!');
+  });
+
+  // Çıkış yap
+  logoutBtn.addEventListener('click', () => {
+    user = {
+      username: null,
+      email: null,
+      phone: null,
+      loggedIn: false
+    };
+    updateUserUI();
+    profileDropdown.style.display = 'none';
+    alert('Çıkış yapıldı.');
+  });
+
+  // Sayfa dışı tıklamada dropdown kapatma
+  document.addEventListener('click', (e) => {
+    if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target) &&
+        !cartBtn.contains(e.target) && !cartDropdown.contains(e.target) &&
+        !loginBtn.contains(e.target) && !loginDropdown.contains(e.target)) {
+      closeAllDropdowns();
+    }
   });
 
   // Chatbot aç/kapa
-  chatbotToggle.addEventListener("click", () => {
-    chatbot.classList.toggle("active");
-  });
-  chatbotClose.addEventListener("click", () => {
-    chatbot.classList.remove("active");
-  });
-
-  // Chatbot mesaj gönderme simülasyonu
-  chatSendBtn.addEventListener("click", sendChatMessage);
-  chatInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") sendChatMessage();
-  });
-
-  function sendChatMessage() {
-    const msg = chatInput.value.trim();
-    if (!msg) return;
-    appendChatMessage("user", msg);
-    chatInput.value = "";
-    // Simüle cevap (gerçek API entegrasyonu değil)
-    setTimeout(() => {
-      appendChatMessage("bot", "Özür dilerim, şu anda sadece demo modundayım.");
-    }, 1000);
-  }
-
-  function appendChatMessage(sender, message) {
-    const div = document.createElement("div");
-    div.style.marginBottom = "10px";
-    if (sender === "user") {
-      div.style.textAlign = "right";
-      div.style.color = "#78c24b";
-      div.textContent = message;
+  chatbotToggle.addEventListener('click', () => {
+    if (chatbotWindow.style.display === 'flex') {
+      chatbotWindow.style.display = 'none';
     } else {
-      div.style.textAlign = "left";
-      div.style.color = "#a4d488";
-      div.textContent = message;
+      chatbotWindow.style.display = 'flex';
+      chatbotInput.focus();
     }
-    chatbotMessages.appendChild(div);
+  });
+  chatbotCloseBtn.addEventListener('click', () => {
+    chatbotWindow.style.display = 'none';
+  });
+
+  // Chatbot mesaj ekle
+  function addChatbot
+ // Chatbot mesaj ekle
+  function addChatbotMessage(text, sender = 'bot') {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `chatbotMessage ${sender}`;
+    msgDiv.textContent = text;
+    chatbotMessages.appendChild(msgDiv);
     chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
   }
 
-  // Başlangıçta ürünleri yükle ve sepeti sıfırla
-  loadProducts();
-  updateCartUI();
+  // Kullanıcı mesajını chatbot ekranına ekle ve cevapla
+  function handleUserMessage() {
+    const text = chatbotInput.value.trim();
+    if (!text) return;
+    addChatbotMessage(text, 'user');
+    chatbotInput.value = '';
+    // Basit cevap simülasyonu, burada gerçek API entegrasyonu yapılabilir
+    setTimeout(() => {
+      const reply = generateBotReply(text);
+      addChatbotMessage(reply, 'bot');
+    }, 800);
+  }
 
+  // Basit bot cevap fonksiyonu (daha gelişmiş yapay zeka için API kullanılabilir)
+  function generateBotReply(input) {
+    input = input.toLowerCase();
+    if (input.includes('merhaba') || input.includes('selam')) {
+      return 'Merhaba! Size nasıl yardımcı olabilirim?';
+    } else if (input.includes('ürün') || input.includes('sepet')) {
+      return 'Ürünlerimiz hakkında bilgi almak veya sepetinizi görmek için menüyü kullanabilirsiniz.';
+    } else if (input.includes('teşekkür')) {
+      return 'Rica ederim! Başka sorunuz olursa yazabilirsiniz.';
+    } else {
+      return 'Üzgünüm, bunu anlayamadım. Lütfen başka bir şey sorar mısınız?';
+    }
+  }
+
+  // Chatbot gönder butonu ve Enter ile mesaj gönderimi
+  chatbotSendBtn.addEventListener('click', handleUserMessage);
+  chatbotInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleUserMessage();
+    }
+  });
+
+  // Sayfa yüklendiğinde
+  window.addEventListener('load', () => {
+    renderProducts();
+    updateCartCount();
+    renderCart();
+    updateUserUI();
+    chatbotWindow.style.display = 'none'; // Başlangıçta gizli
+  });
 </script>
 
 </body>
