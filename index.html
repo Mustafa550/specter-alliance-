@@ -1,500 +1,146 @@
-<!DOCTYPE html>
-<html lang="tr">
+<!DOCTYPE html><html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Etik Hacker Grubu - SPECTER(:AdMiN</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpeCTeR | Yazılım Hizmetleri</title>
   <style>
-    /* Temel koyu tema stili */
     body {
-      background-color: #121212;
-      color: #eee;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0; padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #ffffff;
+      color: #333;
+      margin: 0;
+      padding: 0;
     }
     header {
-      background: #222;
-      padding: 20px;
-      text-align: center;
-      font-size: 2em;
-      font-weight: bold;
-      letter-spacing: 3px;
-      color: #4caf50;
-    }
-    #content {
-      max-width: 960px;
-      margin: 20px auto;
-      padding: 0 10px;
-    }
-    /* Ürün kartları */
-    .products {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-      margin-bottom: 40px;
-    }
-    .product-card {
-      background: #1e1e1e;
-      border-radius: 12px;
-      box-shadow: 0 0 15px #4caf50;
-      width: 220px;
-      padding: 20px;
-      text-align: center;
-      transition: transform 0.2s ease;
-      cursor: pointer;
-    }
-    .product-card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 25px #81c784;
-    }
-    .product-icon {
-      font-size: 48px;
-      margin-bottom: 15px;
-      color: #4caf50;
-    }
-    .product-title {
-      font-size: 1.3em;
-      margin-bottom: 10px;
-      font-weight: 600;
-    }
-    .product-desc {
-      font-size: 0.9em;
-      color: #ccc;
-    }
-
-    /* Giriş/Kayıt bölümü */
-    #auth-section {
-      background: #1e1e1e;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px #4caf50;
-      margin-bottom: 40px;
-      max-width: 400px;
-      margin-left: auto;
-      margin-right: auto;
+      background-color: #0f0;
+      color: #000;
+      padding: 1em;
       text-align: center;
     }
-    #auth-section h2 {
-      margin-bottom: 15px;
-      color: #4caf50;
-    }
-    #auth-section input {
-      width: 90%;
-      padding: 10px;
-      margin: 8px 0;
-      border: none;
-      border-radius: 8px;
-      font-size: 1em;
-      background: #121212;
-      color: #eee;
-      outline: none;
-    }
-    #auth-section button {
-      width: 95%;
-      padding: 12px;
-      background: #4caf50;
-      border: none;
-      border-radius: 8px;
-      font-size: 1.1em;
-      color: #121212;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: background 0.3s ease;
-    }
-    #auth-section button:hover {
-      background: #81c784;
-    }
-    #auth-toggle {
-      margin-top: 12px;
-      color: #81c784;
-      cursor: pointer;
-      user-select: none;
-    }
-    #auth-message {
-      margin-top: 10px;
-      min-height: 24px;
-      font-weight: 600;
-    }
-    #user-info {
-      margin-top: 15px;
-      color: #a5d6a7;
-      display: none;
-    }
-    #logout-btn {
-      margin-top: 12px;
-      padding: 8px 20px;
-      background: #f44336;
-      border: none;
-      border-radius: 8px;
-      color: #fff;
-      cursor: pointer;
-    }
-    #logout-btn:hover {
-      background: #ef5350;
-    }
-
-    /* Sipariş Formu */
-    #order-section {
-      max-width: 640px;
-      margin: 0 auto 60px;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 0 15px #4caf50;
-    }
-    #order-section h2 {
+    nav, footer {
       text-align: center;
-      margin: 20px 0;
-      color: #4caf50;
+      padding: 1em;
+      background-color: #eee;
     }
-    #order-section iframe {
-      width: 100%;
-      height: 650px;
+    .product {
+      border: 1px solid #ccc;
+      padding: 1em;
+      margin: 1em;
+      background-color: #f9f9f9;
+    }
+    #darkModeToggle {
+      position: fixed;
+      top: 1em;
+      right: 1em;
+      background-color: #222;
+      color: white;
       border: none;
+      padding: 0.5em;
+      cursor: pointer;
+    }
+    #clock {
+      text-align: center;
+      font-size: 1.2em;
+      margin-top: 1em;
+    }
+    #search {
       display: block;
+      margin: 1em auto;
+      padding: 0.5em;
+      width: 80%;
+      max-width: 400px;
     }
-
-    /* Chatbot bölümü */
-    #chatbot {
-      max-width: 640px;
-      margin: 0 auto 40px;
-      background: #1e1e1e;
-      border-radius: 12px;
-      box-shadow: 0 0 15px #4caf50;
-      padding: 15px;
-    }
-    #chatbot h2 {
-      text-align: center;
-      color: #4caf50;
-      margin-bottom: 15px;
+    .chat-box {
+      margin: 2em auto;
+      max-width: 500px;
+      border: 1px solid #ccc;
+      padding: 1em;
     }
     #chatlog {
-      background: #121212;
-      height: 250px;
-      overflow-y: auto;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 0.9em;
-      color: #eee;
-      margin-bottom: 10px;
-      border: 1px solid #4caf50;
+      border: 1px solid #ddd;
+      height: 150px;
+      overflow-y: scroll;
+      margin-bottom: 1em;
+      padding: 0.5em;
     }
-    #chatlog div.user {
-      text-align: right;
-      margin-bottom: 8px;
-      color: #81c784;
+    #game {
+      text-align: center;
+      margin: 2em;
     }
-    #chatlog div.bot {
-      text-align: left;
-      margin-bottom: 8px;
-      color: #aed581;
-    }
-    #chat-input {
-      width: calc(100% - 90px);
-      padding: 10px;
-      border-radius: 8px 0 0 8px;
-      border: none;
-      font-size: 1em;
-      outline: none;
-      background: #121212;
-      color: #eee;
-      border: 1px solid #4caf50;
-      border-right: none;
-    }
-    #chat-send {
-      width: 80px;
-      padding: 10px;
-      border: none;
-      background: #4caf50;
-      color: #121212;
-      font-weight: bold;
-      cursor: pointer;
-      border-radius: 0 8px 8px 0;
-      transition: background 0.3s ease;
-    }
-    #chat-send:hover {
-      background: #81c784;
-    }
-    @media (max-width: 700px) {
-      .products {
-        flex-direction: column;
-        align-items: center;
-      }
-      .product-card {
-        width: 90%;
-      }
-      #order-section iframe {
-        height: 550px;
-      }
-      #chatbot {
-        width: 95%;
-      }
+    #game button {
+      font-size: 1.2em;
+      margin: 1em;
+      padding: 0.5em 1em;
     }
   </style>
 </head>
 <body>
-
-<header>Etik Hacker Grubu - SPECTER(:AdMiN)</header>
-
-<div id="content">
-
-  <!-- Ürünler -->
-  <section class="products">
-    <div class="product-card">
-      <div class="product-icon">🔐</div>
-      <div class="product-title">Bruteforce</div>
-      <div class="product-desc">Güvenlik testleri için hızlı ve etkili.</div>
-    </div>
-    <div class="product-card">
-      <div class="product-icon">🌐</div>
-      <div class="product-title">DDoS Tool</div>
-      <div class="product-desc">Sistem dayanıklılığını test etmek için.</div>
-    </div>
-    <div class="product-card">
-      <div class="product-icon">📜</div>
-      <div class="product-title">Script Yazılımı</div>
-      <div class="product-desc">Özelleştirilmiş otomasyon çözümleri.</div>
-    </div>
-    <div class="product-card">
-      <div class="product-icon">📱</div>
-      <div class="product-title">SMS Bomber</div>
-      <div class="product-desc">Test amaçlı SMS gönderme aracı.</div>
-    </div>
-    <div class="product-card">
-      <div class="product-icon">🎮</div>
-      <div class="product-title">Discord Tool</div>
-      <div class="product-desc">Sunucu yönetim ve moderasyon araçları.</div>
-    </div>
-    <div class="product-card">
-      <div class="product-icon">📧</div>
-      <div class="product-title">Fake E-Posta</div>
-      <div class="product-desc">Gizlilik için geçici e-posta oluşturma.</div>
-    </div>
-  </section>
-
-  <!-- Giriş/Kayıt -->
-  <section id="auth-section">
-    <h2 id="auth-title">Giriş Yap</h2>
-    <input type="email" id="email" placeholder="E-posta" required />
-    <input type="password" id="password" placeholder="Şifre" required />
-    <button id="auth-btn">Giriş Yap</button>
-    <p id="auth-toggle">Kayıt olmak için tıklayın</p>
-    <p id="auth-message"></p>
-    <div id="user-info">
-      Giriş yapan kullanıcı: <span id="user-email"></span>
-      <br />
-      <button id="logout-btn">Çıkış Yap</button>
-    </div>
-  </section>
-
-  <!-- Sipariş Formu -->
-  <section id="order-section">
-    <h2>Sipariş Formu</h2>
-    <iframe
-      src="https://docs.google.com/forms/d/e/1FAIpQLSem4UJLI_E3W44fhB0d26HdJqMrkDvCAixvvnaQKugzkRmeSg/viewform?embedded=true"
-      frameborder="0"
-      marginheight="0"
-      marginwidth="0"
-      title="Sipariş Formu"
-    >
-      Yükleniyor…
-    </iframe>
-  </section>
-
-  <!-- Yapay Zeka Chatbot -->
-  <section id="chatbot">
-    <h2>Yapay Zeka Destekli Bilgi Asistanı</h2>
+  <header>
+    <h1>SpeCTeR Yazılım Hizmetleri</h1>
+  </header>  <div id="clock"></div>
+  <input type="text" id="search" placeholder="Ürün ara...">  <div id="products">
+    <div class="product">🕶️ Yazılıma dair pek çok işlem belirli ücret ile yapılabilir</div>
+    <div class="product">🌐 Bruteforce saldırısı (100 TL) - %60 doğruluk oranı</div>
+    <div class="product">🚇 DDoS saldırısı (400 TL) - Etik kapsamda deneyiniz</div>
+    <div class="product">💻 Scriptler (150 TL) - İstenilen script yazılır</div>
+    <div class="product">🗂️ Datalar (750 TL) - Akbank, pubg, valorant vs.</div>
+    <div class="product">✉️ SMS Bomber (200 TL) - İstenilen kişiye gönderilir</div>
+    <div class="product">🖥️ Discord Tool (200 TL) - Hesap kapatılabilir</div>
+    <div class="product">📨 Fake E-Posta (100 TL) - Tüm platformlarda çalışır</div>
+    <div class="product">🖲️ Instagram Tool (200 TL) - %70 doğruluk oranı</div>
+    <div class="product">🖲️ TikTok Tool (200 TL) - %60 doğruluk oranı</div>
+  </div>  <div class="chat-box">
+    <h3>Yapay Zeka Asistanı</h3>
     <div id="chatlog"></div>
-    <input type="text" id="chat-input" placeholder="Sorunuzu buraya yazın..." />
-    <button id="chat-send">Gönder</button>
-  </section>
+    <input type="text" id="userInput" placeholder="Bir şey yazın...">
+    <button onclick="chat()">Gönder</button>
+  </div>  <div id="game">
+    <h2>Sayı Tahmin Oyunu</h2>
+    <p>1 ile 10 arasında bir sayı tuttum. Tahmin et!</p>
+    <input type="number" id="guess" min="1" max="10">
+    <button onclick="checkGuess()">Tahmin Et</button>
+    <p id="result"></p>
+  </div>  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfoJCl5z20rTH05PgHZyoJULazavJTwVrUgy1KYFTtkAEUeEA/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Yükleniyor…</iframe><button id="darkModeToggle" onclick="toggleDarkMode()">🌙</button>
 
-</div>
-
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-
-<!-- Firebase SDK devamı ve script -->
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
-
-<script>
-  // Firebase yapılandırması
-  const firebaseConfig = {
-    apiKey: "AIzaSyDDgoJW-l4_BgdtAKbHKJGQRNIkY98mlZI",
-    authDomain: "alim-satim-sitem.firebaseapp.com",
-    projectId: "alim-satim-sitem",
-    storageBucket: "alim-satim-sitem.firebasestorage.app",
-    messagingSenderId: "1036171043700",
-    appId: "1:1036171043700:web:b6e5b863d0125206178221",
-    measurementId: "G-RV797CV5JG"
-  };
-
-  // Firebase başlat
-  const app = firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-
-  // Elementleri seç
-  const authTitle = document.getElementById('auth-title');
-  const emailInput = document.getElementById('email');
-  const passwordInput = document.getElementById('password');
-  const authBtn = document.getElementById('auth-btn');
-  const authToggle = document.getElementById('auth-toggle');
-  const authMessage = document.getElementById('auth-message');
-  const userInfo = document.getElementById('user-info');
-  const userEmailDisplay = document.getElementById('user-email');
-  const logoutBtn = document.getElementById('logout-btn');
-
-  // Giriş/Kayıt modu: true = giriş, false = kayıt
-  let isLoginMode = true;
-
-  // Mod değiştirici
-  authToggle.addEventListener('click', () => {
-    isLoginMode = !isLoginMode;
-    if(isLoginMode) {
-      authTitle.textContent = 'Giriş Yap';
-      authBtn.textContent = 'Giriş Yap';
-      authToggle.textContent = 'Kayıt olmak için tıklayın';
-      authMessage.textContent = '';
-    } else {
-      authTitle.textContent = 'Kayıt Ol';
-      authBtn.textContent = 'Kayıt Ol';
-      authToggle.textContent = 'Zaten hesabınız var mı? Giriş yapın';
-      authMessage.textContent = '';
-    }
-  });
-
-  // Buton tıklaması
-  authBtn.addEventListener('click', () => {
-    const email = emailInput.value.trim();
-    const password = passwordInput.value.trim();
-    authMessage.style.color = 'red';
-
-    if(!email || !password) {
-      authMessage.textContent = 'Lütfen e-posta ve şifre girin.';
-      return;
-    }
-
-    if(isLoginMode) {
-      // Giriş yap
-      auth.signInWithEmailAndPassword(email, password)
-        .then(userCredential => {
-          authMessage.style.color = 'lightgreen';
-          authMessage.textContent = 'Başarıyla giriş yapıldı!';
-          showUser(userCredential.user);
-        })
-        .catch(error => {
-          authMessage.textContent = `Hata: ${error.message}`;
-        });
-    } else {
-      // Kayıt ol
-      auth.createUserWithEmailAndPassword(email, password)
-        .then(userCredential => {
-          authMessage.style.color = 'lightgreen';
-          authMessage.textContent = 'Başarıyla kayıt olundu!';
-          showUser(userCredential.user);
-        })
-        .catch(error => {
-          authMessage.textContent = `Hata: ${error.message}`;
-        });
-    }
-  });
-
-  // Kullanıcı bilgisi göster
-  function showUser(user) {
-    if(user) {
-      userInfo.style.display = 'block';
-      userEmailDisplay.textContent = user.email;
-      // Giriş formunu gizle
-      emailInput.style.display = 'none';
-      passwordInput.style.display = 'none';
-      authBtn.style.display = 'none';
-      authToggle.style.display = 'none';
-      authTitle.textContent = 'Hoşgeldiniz!';
-      authMessage.textContent = '';
-    } else {
-      userInfo.style.display = 'none';
-      emailInput.style.display = 'block';
-      passwordInput.style.display = 'block';
-      authBtn.style.display = 'block';
-      authToggle.style.display = 'block';
-      authTitle.textContent = isLoginMode ? 'Giriş Yap' : 'Kayıt Ol';
-    }
-  }
-
-  // Çıkış yap
-  logoutBtn.addEventListener('click', () => {
-    auth.signOut().then(() => {
-      authMessage.style.color = 'lightgreen';
-      authMessage.textContent = 'Başarıyla çıkış yapıldı.';
-      showUser(null);
+  <footer>
+    <p>&copy; 2025 SpeCTeR | Tüm hakları saklıdır.</p>
+  </footer>  <script>
+    const products = document.querySelectorAll('.product');
+    document.getElementById('search').addEventListener('input', function () {
+      const val = this.value.toLowerCase();
+      products.forEach(p => {
+        p.style.display = p.textContent.toLowerCase().includes(val) ? 'block' : 'none';
+      });
     });
-  });
 
-  // Sayfa yüklendiğinde giriş yapmış kullanıcı var mı kontrol et
-  auth.onAuthStateChanged(user => {
-    if(user) {
-      showUser(user);
-    } else {
-      showUser(null);
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark');
+      document.body.style.backgroundColor = document.body.classList.contains('dark') ? '#000' : '#fff';
+      document.body.style.color = document.body.classList.contains('dark') ? '#fff' : '#000';
     }
-  });
 
-
-  // -- Basit Yapay Zeka Chatbot (API'siz, sabit cevaplar) --
-  const chatlog = document.getElementById('chatlog');
-  const chatInput = document.getElementById('chat-input');
-  const chatSend = document.getElementById('chat-send');
-
-  // Önceden tanımlı cevaplar
-  const botAnswers = {
-    'merhaba': 'Merhaba! Size nasıl yardımcı olabilirim?',
-    'naber': 'İyiyim, teşekkür ederim! Siz nasılsınız?',
-    'kim yaptın': 'Bu site SPECTER(:AdMiN tarafından oluşturuldu.',
-    'yapımcı': 'Yapımcım SPECTER(:AdMiN.',
-    'site hakkında': 'Bu site etik hacker grubunun ürün ve hizmetlerini tanıtmaktadır.',
-    'sipariş nasıl verilir': 'Sipariş formunu doldurarak bize ulaşabilirsiniz.',
-    'yardım': 'Sorularınızı buraya yazabilirsiniz, elimden geldiğince yardımcı olurum.',
-    'teşekkürler': 'Rica ederim, her zaman buradayım!',
-    'hoşçakal': 'Görüşmek üzere! İyi günler!'
-  };
-
-  function addMessage(text, sender) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    div.className = sender;
-    chatlog.appendChild(div);
-    chatlog.scrollTop = chatlog.scrollHeight;
-  }
-
-  function botResponse(input) {
-    input = input.toLowerCase();
-    for(const key in botAnswers) {
-      if(input.includes(key)) {
-        return botAnswers[key];
-      }
+    function updateClock() {
+      document.getElementById('clock').innerText = new Date().toLocaleString();
+      setTimeout(updateClock, 1000);
     }
-    return "Üzgünüm, bunu anlayamadım. Lütfen farklı bir şey deneyin.";
-  }
+    updateClock();
 
-  chatSend.addEventListener('click', () => {
-    const userText = chatInput.value.trim();
-    if(!userText) return;
-
-    addMessage(userText, 'user');
-    chatInput.value = '';
-
-    setTimeout(() => {
-      const reply = botResponse(userText);
-      addMessage(reply, 'bot');
-    }, 600);
-  });
-
-  chatInput.addEventListener('keydown', e => {
-    if(e.key === 'Enter') {
-      chatSend.click();
+    function chat() {
+      const input = document.getElementById("userInput").value.toLowerCase();
+      let response = "Üzgünüm, anlayamadım.";
+      if (input.includes("kim yaptı") || input.includes("sahibi")) response = "Bu site SpeCTeR (AdMiN) tarafından yapılmıştır.";
+      else if (input.includes("ne yapar")) response = "Bu site çeşitli yazılım hizmetleri sunar.";
+      else if (input.includes("merhaba")) response = "Merhaba! Size nasıl yardımcı olabilirim?";
+      document.getElementById("chatlog").innerHTML += `<p><b>Sen:</b> ${input}</p><p><b>Bot:</b> ${response}</p>`;
+      document.getElementById("userInput").value = "";
     }
-  });
-</script>
 
-</body>
+    const randomNum = Math.floor(Math.random() * 10) + 1;
+    function checkGuess() {
+      const guess = parseInt(document.getElementById("guess").value);
+      const result = document.getElementById("result");
+      if (guess === randomNum) result.textContent = "Tebrikler, doğru tahmin!";
+      else result.textContent = "Yanlış tahmin. Tekrar dene!";
+    }
+  </script></body>
 </html>
