@@ -1,228 +1,201 @@
-<!DOCTYPE html><html lang="tr">
+<!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Yazılım Hizmetleri</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dinamik Yazılım Sitesi</title>
   <style>
     body {
       margin: 0;
-      font-family: 'Roboto', sans-serif;
-      background-color: #0a0a0a;
-      color: #00ff88;
+      font-family: Arial, sans-serif;
+      background-color: #0f0f0f;
+      color: #c0ffc0;
     }
     header {
-      background-color: #000;
-      color: #0f0;
-      padding: 10px 20px;
+      background-color: #003300;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 10px 20px;
       position: sticky;
       top: 0;
       z-index: 1000;
     }
-    header .buttons button {
+    .logo { font-size: 1.5rem; font-weight: bold; }
+    .nav-buttons button {
       margin-left: 10px;
-      background: #0f0;
-      color: #000;
+      background-color: #006600;
+      color: white;
       border: none;
-      padding: 8px 12px;
-      border-radius: 5px;
+      padding: 6px 12px;
+      border-radius: 4px;
       cursor: pointer;
     }
-    .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      padding: 20px;
-    }
-    .card {
-      background: #111;
-      border: 2px solid #00ff88;
-      padding: 20px;
+    .container { padding: 20px; }
+    .product {
+      background-color: #1a1a1a;
+      border: 1px solid #00cc00;
       border-radius: 10px;
-      position: relative;
-      transition: transform 0.3s;
+      padding: 15px;
+      margin-bottom: 20px;
     }
-    .card:hover {
-      transform: scale(1.05);
-    }
-    .card button {
-      background: #00ff88;
-      color: #000;
-      padding: 5px 10px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    #cart, #profile {
-      background: #111;
-      border: 1px solid #0f0;
+    .product h3 { margin-top: 0; }
+    .cart-box, .login-box, .profile-box {
+      display: none;
+      position: absolute;
+      right: 20px;
+      background: #002200;
       padding: 10px;
-      margin: 20px;
-      border-radius: 8px;
+      border: 1px solid #00cc00;
+      border-radius: 6px;
+      width: 300px;
+      z-index: 999;
     }
-    #chat-button {
+    .chatbot {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      background: #00ff88;
-      border: none;
-      color: #000;
-      padding: 10px 15px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 20px;
     }
-    #chat-box {
+    .chat-window {
       display: none;
       position: fixed;
       bottom: 70px;
       right: 20px;
       width: 300px;
+      height: 300px;
       background: #1a1a1a;
-      border: 2px solid #00ff88;
-      border-radius: 10px;
+      color: white;
+      border: 1px solid #00cc00;
       padding: 10px;
+      overflow-y: auto;
+      border-radius: 10px;
     }
-    #chat-box textarea {
+    .chat-window input {
       width: 100%;
-      height: 50px;
-      background: #000;
-      color: #0f0;
-      border: 1px solid #0f0;
-      margin-top: 5px;
+      margin-top: 10px;
+      padding: 5px;
+      background: #003300;
+      color: white;
+      border: none;
+      border-radius: 4px;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Yazılım Hizmetleri</h1>
-    <div class="buttons">
-      <button onclick="toggleLogin()">Giriş / Kayıt</button>
-      <button onclick="toggleProfile()">Profil</button>
-      <button onclick="toggleCart()">Sepet</button>
+    <div class="logo">Yazılım Hizmetleri</div>
+    <div class="nav-buttons">
+      <button onclick="toggleBox('login-box')">Giriş/Kayıt</button>
+      <button onclick="toggleBox('profile-box')">Profil</button>
+      <button onclick="toggleBox('cart-box')">Sepet</button>
     </div>
-  </header>  <div class="container" id="product-list"></div>  <div id="cart" style="display:none">
-    <h3>Sepetiniz</h3>
+  </header>  <div class="container" id="product-list">
+    <!-- Ürünler buraya gelecek -->
+  </div>  <div class="cart-box" id="cart-box">
+    <h4>Sepet</h4>
     <ul id="cart-items"></ul>
-    <button onclick="submitOrder()">Siparişi Oluştur</button>
-  </div>  <div id="profile" style="display:none">
-    <h3>Profil</h3>
-    <p><strong>Kullanıcı:</strong> Demo Kullanıcı</p>
-  </div>  <div id="login-box" style="display:none; padding:20px;">
-    <input type="text" id="username" placeholder="Kullanıcı Adı">
-    <input type="password" id="password" placeholder="Şifre">
+    <button onclick="sendOrder()">Siparişi Gönder</button>
+  </div>  <div class="login-box" id="login-box">
+    <h4>Giriş / Kayıt</h4>
+    <input type="text" id="username" placeholder="Kullanıcı Adı" /><br />
+    <input type="text" id="phone" placeholder="Telefon" /><br />
+    <input type="email" id="email" placeholder="Email" /><br />
     <button onclick="loginUser()">Giriş Yap</button>
-  </div><button id="chat-button" onclick="toggleChat()">💬</button>
-
-  <div id="chat-box">
-    <h4>ChatGPT</h4>
+  </div>  <div class="profile-box" id="profile-box">
+    <h4>Profil</h4>
+    <div id="profile-info"></div>
+  </div>  <div class="chatbot">
+    <button onclick="toggleChat()">💬</button>
+  </div>
+  <div class="chat-window" id="chat-window">
     <div id="chat-log"></div>
-    <textarea id="chat-input" placeholder="Sorunuzu yazın..."></textarea>
-    <button onclick="sendChat()">Gönder</button>
+    <input type="text" id="chat-input" placeholder="Yazın..." onkeydown="if(event.key==='Enter'){handleChat()}"/>
   </div>  <script>
     const products = [
-      { name: "Bruteforce Saldırısı", price: 100 },
-      { name: "DDOS Saldırısı", price: 400 },
-      { name: "Script Yazımı", price: 150 },
-      { name: "Datalar (Akbank vs.)", price: 750 },
-      { name: "SMS Bomber", price: 200 },
-      { name: "Discord Tool", price: 200 },
-      { name: "Fake E-Posta", price: 100 },
-      { name: "Instagram Tool", price: 200 },
-      { name: "TikTok Tool", price: 200 }
+      "Bruteforce Saldırısı (100 TL)",
+      "DDoS Saldırısı (400 TL)",
+      "Script Yazımı (150 TL)",
+      "Datalar (750 TL)",
+      "SMS Bomber (200 TL)",
+      "Discord Tool (200 TL)",
+      "Fake E-posta (100 TL)",
+      "Instagram Tool (200 TL)",
+      "TikTok Tool (200 TL)"
     ];
 
-    const cart = [];
+    const prices = [100, 400, 150, 750, 200, 200, 100, 200, 200];
 
-    const renderProducts = () => {
-      const container = document.getElementById('product-list');
-      container.innerHTML = '';
-      products.forEach((p, i) => {
-        container.innerHTML += `
-          <div class="card">
-            <h3>${p.name}</h3>
-            <p>Fiyat: ${p.price} TL</p>
-            <button onclick="addToCart(${i})">Sepete Ekle</button>
-          </div>
-        `;
+    const productList = document.getElementById('product-list');
+    const cartItems = [];
+
+    products.forEach((item, index) => {
+      const div = document.createElement('div');
+      div.className = 'product';
+      div.innerHTML = `<h3>${item}</h3><p>Fiyat: ${prices[index]} TL</p><button onclick="addToCart(${index})">Sepete Ekle</button>`;
+      productList.appendChild(div);
+    });
+
+    function toggleBox(id) {
+      document.querySelectorAll('.cart-box, .login-box, .profile-box').forEach(box => box.style.display = 'none');
+      const el = document.getElementById(id);
+      el.style.display = el.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function addToCart(index) {
+      cartItems.push({ item: products[index], price: prices[index] });
+      renderCart();
+    }
+
+    function renderCart() {
+      const ul = document.getElementById('cart-items');
+      ul.innerHTML = '';
+      cartItems.forEach((item, i) => {
+        const li = document.createElement('li');
+        li.textContent = `${item.item} - ${item.price} TL`;
+        ul.appendChild(li);
       });
-    };
+    }
 
-    const addToCart = (i) => {
-      cart.push(products[i]);
-      updateCart();
-    };
+    function loginUser() {
+      const name = document.getElementById('username').value;
+      const phone = document.getElementById('phone').value;
+      const email = document.getElementById('email').value;
+      document.getElementById('profile-info').innerHTML = `Ad: ${name}<br>Telefon: ${phone}<br>Email: ${email}`;
+      alert('Giriş yapıldı!');
+    }
 
-    const updateCart = () => {
-      const cartList = document.getElementById('cart-items');
-      cartList.innerHTML = '';
-      cart.forEach((item, index) => {
-        cartList.innerHTML += `<li>${item.name} - ${item.price} TL <button onclick="removeItem(${index})">Sil</button></li>`;
-      });
-    };
+    function sendOrder() {
+      const name = document.getElementById('username').value;
+      const phone = document.getElementById('phone').value;
+      const email = document.getElementById('email').value;
 
-    const removeItem = (i) => {
-      cart.splice(i, 1);
-      updateCart();
-    };
+      if (!name || !phone || !email || cartItems.length === 0) {
+        alert("Lütfen tüm bilgileri doldurun ve sepete ürün ekleyin.");
+        return;
+      }
 
-    const submitOrder = () => {
-      const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSdydediRlB8C-3Phizf6lAEjT0nYrJX1__RtEcg2UvgZ06HzA/formResponse';
-      const form = document.createElement('form');
-      form.action = formUrl;
-      form.method = 'POST';
-      form.target = '_blank';
+      const productDetails = cartItems.map(i => i.item).join(', ');
+      const formURL = `https://docs.google.com/forms/d/e/1FAIpQLSdydediRlB8C-3Phizf6lAEjT0nYrJX1__RtEcg2UvgZ06HzA/formResponse?entry.123456=${name}&entry.234567=${phone}&entry.345678=${email}&entry.456789=${productDetails}`;
+      window.open(formURL, '_blank');
+    }
 
-      const summary = cart.map(item => item.name).join(', ');
-      const input = document.createElement('input');
-      input.name = 'entry.123456789'; // buraya doğru name girilmeli
-      input.value = summary;
-      form.appendChild(input);
+    function toggleChat() {
+      const chat = document.getElementById('chat-window');
+      chat.style.display = chat.style.display === 'block' ? 'none' : 'block';
+    }
 
-      document.body.appendChild(form);
-      form.submit();
-    };
-
-    const toggleCart = () => {
-      const el = document.getElementById('cart');
-      el.style.display = el.style.display === 'none' ? 'block' : 'none';
-    };
-
-    const toggleProfile = () => {
-      const el = document.getElementById('profile');
-      el.style.display = el.style.display === 'none' ? 'block' : 'none';
-    };
-
-    const toggleLogin = () => {
-      const el = document.getElementById('login-box');
-      el.style.display = el.style.display === 'none' ? 'block' : 'none';
-    };
-
-    const loginUser = () => {
-      alert('Giriş yapıldı.');
-      toggleLogin();
-    };
-
-    const toggleChat = () => {
-      const el = document.getElementById('chat-box');
-      el.style.display = el.style.display === 'none' ? 'block' : 'none';
-    };
-
-    const sendChat = () => {
-      const input = document.getElementById('chat-input').value;
+    function handleChat() {
+      const input = document.getElementById('chat-input');
+      const msg = input.value;
       const log = document.getElementById('chat-log');
-      log.innerHTML += `<p><strong>Sen:</strong> ${input}</p>`;
-      // Sahte cevap
-      setTimeout(() => {
-        log.innerHTML += `<p><strong>Bot:</strong> Bu konuda yardımcı olamam ama yazılım destek seçeneklerine bakabilirsin.</p>`;
-      }, 1000);
-      document.getElementById('chat-input').value = '';
-    };
+      const response = `Bot: ${generateResponse(msg)}`;
+      log.innerHTML += `<div>Kullanıcı: ${msg}</div><div>${response}</div>`;
+      input.value = '';
+    }
 
-    renderProducts();
+    function generateResponse(input) {
+      if (input.toLowerCase().includes("ne yaparsın")) return "Size yazılım hizmetleri hakkında yardımcı olabilirim.";
+      if (input.toLowerCase().includes("merhaba")) return "Merhaba! Nasıl yardımcı olabilirim?";
+      return "Bu konuda emin değilim, lütfen farklı bir şey sorun.";
+    }
   </script></body>
 </html>
