@@ -1,163 +1,190 @@
-<!DOCTYPE html><html lang="tr">
+<!DOCTYPE html>
+<html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SPECTER Alışveriş Sitesi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🛍️ E-Ticaret Sitesi</title>
   <style>
-    :root {
-      --primary: #0f0; /* yeşil */
-      --background: #111; /* siyah */
-      --text: #fff;
-    }
     body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
       margin: 0;
-      font-family: sans-serif;
-      background: var(--background);
-      color: var(--text);
+      padding: 0;
     }
     header {
-      position: sticky;
-      top: 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #000;
-      padding: 10px 20px;
-      z-index: 1000;
+      background: #222;
+      color: white;
+      padding: 1em;
+      text-align: center;
     }
-    .logo { font-size: 20px; color: var(--primary); }
-    .nav-buttons button {
-      background: var(--primary);
-      border: none;
-      padding: 10px;
-      margin-left: 10px;
-      cursor: pointer;
-      color: #000;
+    .container {
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+    .login {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
     }
     .products {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      padding: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
     }
-    .product {
-      background: #222;
-      border: 1px solid #444;
+    .card {
+      background: #fff;
       border-radius: 10px;
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      padding: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
     }
-    .product button {
-      margin-top: auto;
-      background: var(--primary);
-      color: #000;
+    .card h3 {
+      margin-top: 0;
+    }
+    .btn {
+      background: #007bff;
+      color: white;
+      padding: 8px 16px;
       border: none;
-      padding: 0.5rem;
+      border-radius: 6px;
       cursor: pointer;
+      margin-top: 10px;
     }
-    #cartPanel, #loginPanel, #chatBox {
-      position: fixed;
-      background: #000;
-      color: var(--text);
-      padding: 1rem;
-      border: 1px solid #0f0;
-      display: none;
+    .btn:hover {
+      background: #0056b3;
     }
-    #cartPanel { top: 60px; right: 20px; width: 250px; }
-    #loginPanel { top: 60px; right: 80px; width: 250px; }
-    #chatIcon {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #0f0;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
+    .cart {
+      background: #fff;
+      padding: 15px;
+      margin-top: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    #chatBox {
-      bottom: 80px;
-      right: 20px;
-      width: 300px;
-      height: 400px;
-      overflow: auto;
+    .whatsapp {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .whatsapp a {
+      background: #25D366;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 8px;
+      display: inline-block;
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo">🛍️ Mağazam(etik)</div>
-    <div class="nav-buttons">
-      <button onclick="togglePanel('loginPanel')">Giriş/Kayıt</button>
-      <button onclick="togglePanel('cartPanel')">Sepet</button>
+
+<header>
+  <h1>🛒 Basit E-Ticaret Sitesi</h1>
+</header>
+
+<div class="container">
+  <div class="login">
+    <label>Kullanıcı Adı:</label><br>
+    <input type="text" id="username" required /><br><br>
+    <label>Şifre (en az 6 karakter):</label><br>
+    <input type="password" id="password" required /><br><br>
+    <button class="btn" onclick="login()">Giriş Yap</button>
+  </div>
+
+  <div id="shop" style="display:none;">
+    <h2>🛍️ Ürünler</h2>
+    <div class="products" id="product-list"></div>
+
+    <div class="cart" id="cart">
+      <h3>🧾 Sepet</h3>
+      <ul id="cart-items"></ul>
+      <p><strong>Toplam:</strong> <span id="total">0</span> TL</p>
     </div>
-  </header>  <div id="loginPanel">
-    <h3>Giriş Yap / Kayıt Ol</h3>
-    <input type="text" placeholder="Kullanıcı Adı" /><br /><br />
-    <input type="password" placeholder="Şifre" /><br /><br />
-    <button onclick="alert('Giriş yapıldı!')">Giriş Yap</button>
-  </div>  <div id="cartPanel">
-    <h3>Sepetiniz</h3>
-    <ul id="cartItems"></ul>
-    <button onclick="goToWhatsapp()">Ödemeye Geç</button>
-  </div>  <main class="products" id="productList">
-    <!-- Ürünler JS ile yüklenecek -->
-  </main>  <div id="chatIcon" onclick="togglePanel('chatBox')">💬</div>
-  <div id="chatBox">
-    <h4>ChatBot</h4>
-    <div id="chatContent">Merhaba! Ürünlerimiz: 🖥️ bruteforce, 🗂️ script yapma, 💬 ddos saldırısı👩‍💻🇹🇷...</div>
-  </div>  <script>
-    const products = [
-      { name: "🖥️ bruteforce", desc: "her saldırı yapılır", price: "150 TL" },
-      { name: "🗂️ script yazma", desc: "istediğiniz script yazılır", price: "400 TL" },
-      { name: "💬 ddos saldırısı", desc: "istediginiz siteye saldırı yapılır", price: "300 TL" },
-      { name: "🗂️ datalar", desc: "istediğiniz data verilir", price: "500 TL" },
-      { name: "✉️ sahte eposta", desc: "her plartformlarda çalışan eposta", price: "150 TL" },
-      { name: "👨‍💻 discord tool", desc: "istediğiniz hesap kapatılır %60", price: "250 TL" },
-      { name: "💬 SMS bomber", desc: "istediğiniz kişiye SMS bomber yapılır", price: "200 TL" },
-      { name: "📨 Instagram tool", desc: "toolu direk size veriyoruz", price: "200 TL" },
-      { name: "📨 tıktok tool", desc: "direk toolu veriyoruz", price: "200 TL" },
-    ];
 
-    const productList = document.getElementById("productList");
-    const cartItems = document.getElementById("cartItems");
-    const cart = [];
+    <div class="whatsapp">
+      <a href="#" id="whatsapp-link" target="_blank">📲 Siparişi WhatsApp’tan Gönder</a>
+    </div>
+  </div>
+</div>
 
-    products.forEach((p, index) => {
-      const div = document.createElement("div");
-      div.className = "product";
-      div.innerHTML = `<strong>${p.name}</strong><br>${p.desc}<br><em>${p.price}</em><br><button onclick="addToCart(${index})">Sepete Ekle</button>`;
-      productList.appendChild(div);
+<script>
+  const urunler = [
+    { id: 1, isim: "T-shirt", fiyat: 100 },
+    { id: 2, isim: "Pantolon", fiyat: 120 },
+    { id: 3, isim: "Ceket", fiyat: 300 },
+    { id: 4, isim: "Ayakkabı", fiyat: 250 },
+    { id: 5, isim: "Çanta", fiyat: 200 },
+    { id: 6, isim: "Gömlek", fiyat: 90 },
+    { id: 7, isim: "Sweatshirt", fiyat: 150 },
+    { id: 8, isim: "Mont", fiyat: 400 },
+    { id: 9, isim: "Şapka", fiyat: 60 },
+    { id: 10, isim: "Kemer", fiyat: 75 }
+  ];
+
+  let sepet = [];
+  let kullaniciAdi = "";
+
+  function login() {
+    const user = document.getElementById("username").value;
+    const pass = document.getElementById("password").value;
+
+    if (pass.length < 6) {
+      alert("❌ Şifre çok kısa! En az 6 karakter girin.");
+      return;
+    }
+
+    kullaniciAdi = user;
+    document.querySelector(".login").style.display = "none";
+    document.getElementById("shop").style.display = "block";
+    urunleriGoster();
+  }
+
+  function urunleriGoster() {
+    const list = document.getElementById("product-list");
+    urunler.forEach(urun => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <h3>${urun.isim}</h3>
+        <p>Fiyat: ${urun.fiyat} TL</p>
+        <button class="btn" onclick="sepeteEkle(${urun.id})">Sepete Ekle</button>
+      `;
+      list.appendChild(card);
+    });
+  }
+
+  function sepeteEkle(id) {
+    const urun = urunler.find(u => u.id === id);
+    sepet.push(urun);
+    sepetiGuncelle();
+  }
+
+  function sepetiGuncelle() {
+    const list = document.getElementById("cart-items");
+    const total = document.getElementById("total");
+    const whatsapp = document.getElementById("whatsapp-link");
+
+    list.innerHTML = "";
+    let toplam = 0;
+    let mesaj = `Merhaba, ben ${kullaniciAdi}. Sipariş vermek istiyorum:\n`;
+
+    sepet.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = `${item.isim} - ${item.fiyat} TL`;
+      list.appendChild(li);
+      toplam += item.fiyat;
+      mesaj += `- ${item.isim} (${item.fiyat} TL)\n`;
     });
 
-    function addToCart(index) {
-      cart.push(products[index]);
-      renderCart();
-    }
+    mesaj += `\nToplam Tutar: ${toplam} TL`;
+    total.textContent = toplam;
 
-    function renderCart() {
-      cartItems.innerHTML = "";
-      cart.forEach((item, i) => {
-        const li = document.createElement("li");
-        li.textContent = `${item.name} - ${item.price}`;
-        cartItems.appendChild(li);
-      });
-    }
+    const numara = "905426354386";
+    const link = `https://wa.me/${numara}?text=${encodeURIComponent(mesaj)}`;
+    whatsapp.href = link;
+  }
+</script>
 
-    function goToWhatsapp() {
-      const msg = cart.map(i => `${i.name} - ${i.price}`).join("%0A");
-      const phone = "05426354386";
-      window.open(`https://wa.me/${phone}?text=Sipariş%20vermek%20istiyorum:%0A${msg}`);
-    }
-
-    function togglePanel(id) {
-      const panel = document.getElementById(id);
-      panel.style.display = panel.style.display === "block" ? "none" : "block";
-    }
-  </script></body>
+</body>
 </html>
