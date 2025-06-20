@@ -41,6 +41,11 @@
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
       text-align: center;
     }
+    .card img {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 10px;
+    }
     .card h3 {
       margin-top: 0;
     }
@@ -110,17 +115,17 @@
 
 <script>
   const urunler = [
-    { id: 1, isim: "steam hesap", fiyat: 500 },
-    { id: 2, isim: "disney hesap", fiyat: 250 },
-    { id: 3, isim: "pubg hesap", fiyat: 400 },
-    { id: 4, isim: "predunyam hesap", fiyat: 400 },
-    { id: 5, isim: "sms bomber", fiyat: 250 },
-    { id: 6, isim: "fake no", fiyat: 150 },
-    { id: 7, isim: "fake e-posta", fiyat: 150 },
-    { id: 8, isim: "netflix hesap", fiyat: 300 },
-    { id: 9, isim: "twitter hesap", fiyat: 250 },
-    { id: 10, isim: "itemsatis hesap", fiyat: 250 },
-    { id: 11, isim: "youtube hesap", fiyat: 400 }
+    { id: 1, isim: "steam hesap", fiyat: 500, emoji: "🎮" },
+    { id: 2, isim: "disney hesap", fiyat: 250, emoji: "🧚‍♂️" },
+    { id: 3, isim: "pubg hesap", fiyat: 400, emoji: "🔫" },
+    { id: 4, isim: "predunyam hesap", fiyat: 400, emoji: "🌐" },
+    { id: 5, isim: "sms bomber", fiyat: 250, emoji: "📲" },
+    { id: 6, isim: "fake no", fiyat: 150, emoji: "📞" },
+    { id: 7, isim: "fake e-posta", fiyat: 150, emoji: "📧" },
+    { id: 8, isim: "netflix hesap", fiyat: 300, emoji: "🎬" },
+    { id: 9, isim: "twitter hesap", fiyat: 250, emoji: "🐦" },
+    { id: 10, isim: "itemsatis hesap", fiyat: 250, emoji: "💰" },
+    { id: 11, isim: "youtube hesap", fiyat: 400, emoji: "📺" }
   ];
 
   let sepet = [];
@@ -148,11 +153,12 @@
 
   function urunleriGoster() {
     const list = document.getElementById("product-list");
-    list.innerHTML = ""; // ürünler tekrar yazılmasın
+    list.innerHTML = "";
     urunler.forEach(urun => {
       const card = document.createElement("div");
       card.className = "card";
       card.innerHTML = `
+        <div style="font-size: 40px;">${urun.emoji}</div>
         <h3>${urun.isim}</h3>
         <p>Fiyat: ${urun.fiyat} TL</p>
         <button class="btn" onclick="sepeteEkle(${urun.id})">Sepete Ekle</button>
