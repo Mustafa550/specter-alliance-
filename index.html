@@ -84,7 +84,7 @@
 </header>
 
 <div class="container">
-  <div class="login">
+  <div class="login" id="login-form">
     <label>Kullanıcı Adı:</label><br>
     <input type="text" id="username" required /><br><br>
     <label>Şifre (en az 6 karakter):</label><br>
@@ -119,15 +119,21 @@
     { id: 7, isim: "fake e-posta", fiyat: 150 },
     { id: 8, isim: "netflix hesap", fiyat: 300 },
     { id: 9, isim: "twitter hesap", fiyat: 250 },
-    { id: 10, isim: "itemsatis hesap", fiyat: 250 }
- { id: 11, isim: "youtube hesap", fiyat: 400 } ];
+    { id: 10, isim: "itemsatis hesap", fiyat: 250 },
+    { id: 11, isim: "youtube hesap", fiyat: 400 }
+  ];
 
   let sepet = [];
   let kullaniciAdi = "";
 
   function login() {
-    const user = document.getElementById("username").value;
+    const user = document.getElementById("username").value.trim();
     const pass = document.getElementById("password").value;
+
+    if (!user) {
+      alert("Lütfen kullanıcı adınızı girin.");
+      return;
+    }
 
     if (pass.length < 6) {
       alert("❌ Şifre çok kısa! En az 6 karakter girin.");
@@ -135,13 +141,14 @@
     }
 
     kullaniciAdi = user;
-    document.querySelector(".login").style.display = "none";
+    document.getElementById("login-form").style.display = "none";
     document.getElementById("shop").style.display = "block";
     urunleriGoster();
   }
 
   function urunleriGoster() {
     const list = document.getElementById("product-list");
+    list.innerHTML = ""; // ürünler tekrar yazılmasın
     urunler.forEach(urun => {
       const card = document.createElement("div");
       card.className = "card";
