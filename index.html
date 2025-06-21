@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>🛍️ E-Ticaret Sitesi</title>
+  <title>🛍️ Specter E-Ticaret</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -22,7 +22,7 @@
       max-width: 900px;
       margin: auto;
     }
-    .login {
+    .login, .cart {
       background: white;
       padding: 20px;
       border-radius: 10px;
@@ -42,12 +42,8 @@
       text-align: center;
     }
     .card img {
-      width: 60px;
-      height: 60px;
-      margin-bottom: 10px;
-    }
-    .card h3 {
-      margin-top: 0;
+      max-width: 100px;
+      height: auto;
     }
     .btn {
       background: #007bff;
@@ -60,13 +56,6 @@
     }
     .btn:hover {
       background: #0056b3;
-    }
-    .cart {
-      background: #fff;
-      padding: 15px;
-      margin-top: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     .whatsapp {
       margin-top: 20px;
@@ -89,7 +78,7 @@
 </header>
 
 <div class="container">
-  <div class="login" id="login-form">
+  <div class="login">
     <label>Kullanıcı Adı:</label><br>
     <input type="text" id="username" required /><br><br>
     <label>Şifre (en az 6 karakter):</label><br>
@@ -115,30 +104,24 @@
 
 <script>
   const urunler = [
-    { id: 1, isim: "steam hesap", fiyat: 500, emoji: "🎮" },
-    { id: 2, isim: "disney hesap", fiyat: 250, emoji: "🧚‍♂️" },
-    { id: 3, isim: "pubg hesap", fiyat: 400, emoji: "🔫" },
-    { id: 4, isim: "predunyam hesap", fiyat: 400, emoji: "🌐" },
-    { id: 5, isim: "sms bomber", fiyat: 250, emoji: "📲" },
-    { id: 6, isim: "fake no", fiyat: 150, emoji: "📞" },
-    { id: 7, isim: "fake e-posta", fiyat: 150, emoji: "📧" },
-    { id: 8, isim: "netflix hesap", fiyat: 300, emoji: "🎬" },
-    { id: 9, isim: "twitter hesap", fiyat: 250, emoji: "🐦" },
-    { id: 10, isim: "itemsatis hesap", fiyat: 250, emoji: "💰" },
-    { id: 11, isim: "youtube hesap", fiyat: 400, emoji: "📺" }
+    { id: 1, isim: "Steam Hesap", fiyat: 500, gorsel: "https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg" },
+    { id: 2, isim: "Disney+", fiyat: 250, gorsel: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg" },
+    { id: 3, isim: "PUBG Hesap", fiyat: 400, gorsel: "https://upload.wikimedia.org/wikipedia/en/6/6e/PUBG_Battlegrounds_logo.svg" },
+    { id: 4, isim: "Netflix Hesap", fiyat: 300, gorsel: "https://upload.wikimedia.org/wikipedia/commons/6/69/Netflix_logo.svg" },
+    { id: 5, isim: "SMS Bomber", fiyat: 250, gorsel: "https://cdn-icons-png.flaticon.com/512/3062/3062634.png" },
+    { id: 6, isim: "Fake Numara", fiyat: 150, gorsel: "https://cdn-icons-png.flaticon.com/512/929/929564.png" },
+    { id: 7, isim: "Fake E-posta", fiyat: 150, gorsel: "https://cdn-icons-png.flaticon.com/512/561/561127.png" },
+    { id: 8, isim: "Twitter Hesap", fiyat: 250, gorsel: "https://upload.wikimedia.org/wikipedia/en/6/60/Twitter_Logo_as_of_2021.svg" },
+    { id: 9, isim: "YouTube Hesap", fiyat: 400, gorsel: "https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" },
+    { id: 10, isim: "ItemSatış Hesap", fiyat: 250, gorsel: "https://cdn-icons-png.flaticon.com/512/3105/3105792.png" }
   ];
 
   let sepet = [];
   let kullaniciAdi = "";
 
   function login() {
-    const user = document.getElementById("username").value.trim();
+    const user = document.getElementById("username").value;
     const pass = document.getElementById("password").value;
-
-    if (!user) {
-      alert("Lütfen kullanıcı adınızı girin.");
-      return;
-    }
 
     if (pass.length < 6) {
       alert("❌ Şifre çok kısa! En az 6 karakter girin.");
@@ -146,7 +129,7 @@
     }
 
     kullaniciAdi = user;
-    document.getElementById("login-form").style.display = "none";
+    document.querySelector(".login").style.display = "none";
     document.getElementById("shop").style.display = "block";
     urunleriGoster();
   }
@@ -158,7 +141,7 @@
       const card = document.createElement("div");
       card.className = "card";
       card.innerHTML = `
-        <div style="font-size: 40px;">${urun.emoji}</div>
+        <img src="${urun.gorsel}" alt="${urun.isim}" />
         <h3>${urun.isim}</h3>
         <p>Fiyat: ${urun.fiyat} TL</p>
         <button class="btn" onclick="sepeteEkle(${urun.id})">Sepete Ekle</button>
