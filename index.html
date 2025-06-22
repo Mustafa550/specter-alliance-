@@ -1,186 +1,77 @@
-<!DOCTYPE html>
-<html lang="tr">
+<!DOCTYPE html><html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>🛍️ Specter E-Ticaret</title>
+  <meta charset="UTF-8">
+  <title>Bilet Satış Sitesi (Demo)</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f7fa;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #222;
-      color: white;
-      padding: 1em;
-      text-align: center;
-    }
-    .container {
-      padding: 20px;
-      max-width: 900px;
-      margin: auto;
-    }
-    .login, .cart {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      margin-bottom: 30px;
-    }
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 20px;
-    }
-    .card {
-      background: #fff;
-      border-radius: 10px;
-      padding: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-    .card img {
-      max-width: 100px;
-      height: auto;
-    }
-    .btn {
-      background: #007bff;
-      color: white;
-      padding: 8px 16px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    .btn:hover {
-      background: #0056b3;
-    }
-    .whatsapp {
-      margin-top: 20px;
-      text-align: center;
-    }
-    .whatsapp a {
-      background: #25D366;
-      color: white;
-      padding: 10px 20px;
-      text-decoration: none;
-      border-radius: 8px;
-      display: inline-block;
-    }
+    body { font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px; }
+    h1 { text-align: center; }
+    .ticket { border: 1px solid #ccc; padding: 10px; margin: 10px 0; background: #fff; border-radius: 8px; }
+    .ticket button { float: right; }
+    #cart { margin-top: 30px; }
+    .total { font-weight: bold; }
+    #checkoutBtn { margin-top: 10px; padding: 10px 20px; background: #25D366; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
   </style>
 </head>
 <body>
+  <h1>🎫 Bilet Satış Sitesi (DEMO)</h1>  <div id="tickets"></div>  <div id="cart">
+    <h2>🛒 Sepetiniz</h2>
+    <ul id="cartItems"></ul>
+    <p class="total">Toplam: <span id="totalPrice">0</span> TL</p>
+    <button id="checkoutBtn" onclick="redirectToWhatsApp()">💳 Ödemeye Geç</button>
+  </div>  <script>
+    const tickets = [
+      { name: "Berlin Bileti", price: 7500 },
+      { name: "İstanbul Bileti", price: 1500 },
+      { name: "Ankara Bileti", price: 1200 },
+      { name: "Paris Bileti", price: 8200 },
+      { name: "Londra Bileti", price: 6900 },
+      { name: "New York Bileti", price: 9800 }
+    ];
 
-<header>
-  <h1>🛒 Specter E-Ticaret Sitesi</h1>
-</header>
+    const cart = [];
 
-<div class="container">
-  <div class="login">
-    <label>Kullanıcı Adı:</label><br>
-    <input type="text" id="username" required /><br><br>
-    <label>Şifre (en az 6 karakter):</label><br>
-    <input type="password" id="password" required /><br><br>
-    <button class="btn" onclick="login()">Giriş Yap</button>
-  </div>
-
-  <div id="shop" style="display:none;">
-    <h2>🛍️ Ürünler</h2>
-    <div class="products" id="product-list"></div>
-
-    <div class="cart" id="cart">
-      <h3>🧾 Sepet</h3>
-      <ul id="cart-items"></ul>
-      <p><strong>Toplam:</strong> <span id="total">0</span> TL</p>
-    </div>
-
-    <div class="whatsapp">
-      <a href="#" id="whatsapp-link" target="_blank">📲 Siparişi WhatsApp’tan Gönder</a>
-    </div>
-  </div>
-</div>
-
-<script>
-  const urunler = [
-    { id: 1, isim: "Steam Hesap", fiyat: 500, gorsel: "https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg" },
-    { id: 2, isim: "Disney+", fiyat: 250, gorsel: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg" },
-    { id: 3, isim: "PUBG Hesap", fiyat: 400, gorsel: "https://upload.wikimedia.org/wikipedia/en/6/6e/PUBG_Battlegrounds_logo.svg" },
-    { id: 4, isim: "Netflix Hesap", fiyat: 300, gorsel: "https://upload.wikimedia.org/wikipedia/commons/6/69/Netflix_logo.svg" },
-    { id: 5, isim: "SMS Bomber", fiyat: 250, gorsel: "https://cdn-icons-png.flaticon.com/512/3062/3062634.png" },
-    { id: 6, isim: "Fake Numara", fiyat: 150, gorsel: "https://cdn-icons-png.flaticon.com/512/929/929564.png" },
-    { id: 7, isim: "Fake E-posta", fiyat: 150, gorsel: "https://cdn-icons-png.flaticon.com/512/561/561127.png" },
-    { id: 8, isim: "Twitter Hesap", fiyat: 250, gorsel: "https://upload.wikimedia.org/wikipedia/en/6/60/Twitter_Logo_as_of_2021.svg" },
-    { id: 9, isim: "YouTube Hesap", fiyat: 400, gorsel: "https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" },
-    { id: 10, isim: "ItemSatış Hesap", fiyat: 250, gorsel: "https://cdn-icons-png.flaticon.com/512/3105/3105792.png" }
-  ];
-
-  let sepet = [];
-  let kullaniciAdi = "";
-
-  function login() {
-    const user = document.getElementById("username").value;
-    const pass = document.getElementById("password").value;
-
-    if (pass.length < 6) {
-      alert("❌ Şifre çok kısa! En az 6 karakter girin.");
-      return;
+    function renderTickets() {
+      const ticketDiv = document.getElementById("tickets");
+      tickets.forEach((ticket, index) => {
+        const div = document.createElement("div");
+        div.className = "ticket";
+        div.innerHTML = `${ticket.name} - ${ticket.price} TL <button onclick="addToCart(${index})">Ekle</button>`;
+        ticketDiv.appendChild(div);
+      });
     }
 
-    kullaniciAdi = user;
-    document.querySelector(".login").style.display = "none";
-    document.getElementById("shop").style.display = "block";
-    urunleriGoster();
-  }
+    function addToCart(index) {
+      cart.push(tickets[index]);
+      updateCart();
+    }
 
-  function urunleriGoster() {
-    const list = document.getElementById("product-list");
-    list.innerHTML = "";
-    urunler.forEach(urun => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <img src="${urun.gorsel}" alt="${urun.isim}" />
-        <h3>${urun.isim}</h3>
-        <p>Fiyat: ${urun.fiyat} TL</p>
-        <button class="btn" onclick="sepeteEkle(${urun.id})">Sepete Ekle</button>
-      `;
-      list.appendChild(card);
-    });
-  }
+    function updateCart() {
+      const cartItems = document.getElementById("cartItems");
+      const totalPrice = document.getElementById("totalPrice");
+      cartItems.innerHTML = "";
+      let total = 0;
+      cart.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = `${item.name} - ${item.price} TL`;
+        cartItems.appendChild(li);
+        total += item.price;
+      });
+      totalPrice.textContent = total;
+    }
 
-  function sepeteEkle(id) {
-    const urun = urunler.find(u => u.id === id);
-    sepet.push(urun);
-    sepetiGuncelle();
-  }
+    function redirectToWhatsApp() {
+      let message = "Merhaba, aşağıdaki biletleri satın almak istiyorum:\n";
+      let total = 0;
+      cart.forEach(item => {
+        message += `- ${item.name} (${item.price} TL)\n`;
+        total += item.price;
+      });
+      message += `Toplam Tutar: ${total} TL`;
+      const phone = "639120053046";
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+      window.open(url, '_blank');
+    }
 
-  function sepetiGuncelle() {
-    const list = document.getElementById("cart-items");
-    const total = document.getElementById("total");
-    const whatsapp = document.getElementById("whatsapp-link");
-
-    list.innerHTML = "";
-    let toplam = 0;
-    let mesaj = `Merhaba, ben ${kullaniciAdi}. Sipariş vermek istiyorum:\n`;
-
-    sepet.forEach(item => {
-      const li = document.createElement("li");
-      li.textContent = `${item.isim} - ${item.fiyat} TL`;
-      list.appendChild(li);
-      toplam += item.fiyat;
-      mesaj += `- ${item.isim} (${item.fiyat} TL)\n`;
-    });
-
-    mesaj += `\nToplam Tutar: ${toplam} TL`;
-    total.textContent = toplam;
-
-    const numara = "905426354386";
-    const link = `https://wa.me/${numara}?text=${encodeURIComponent(mesaj)}`;
-    whatsapp.href = link;
-  }
-</script>
-
-</body>
+    renderTickets();
+  </script></body>
 </html>
