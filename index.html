@@ -1,186 +1,479 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>🛍️ Specter E-Ticaret</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f7fa;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #222;
-      color: white;
-      padding: 1em;
-      text-align: center;
-    }
-    .container {
-      padding: 20px;
-      max-width: 900px;
-      margin: auto;
-    }
-    .login, .cart {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      margin-bottom: 30px;
-    }
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 20px;
-    }
-    .card {
-      background: #fff;
-      border-radius: 10px;
-      padding: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-    .card img {
-      max-width: 100px;
-      height: auto;
-    }
-    .btn {
-      background: #007bff;
-      color: white;
-      padding: 8px 16px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    .btn:hover {
-      background: #0056b3;
-    }
-    .whatsapp {
-      margin-top: 20px;
-      text-align: center;
-    }
-    .whatsapp a {
-      background: #25D366;
-      color: white;
-      padding: 10px 20px;
-      text-decoration: none;
-      border-radius: 8px;
-      display: inline-block;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCC Generator | Virtual Credit Cards for Testing</title>
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --danger: #d63031;
+            --success: #00b894;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: var(--light);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        nav ul li a.active {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Page Content Styles */
+        .page-content {
+            padding: 3rem 0;
+            min-height: 60vh;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--dark);
+            text-align: center;
+        }
+
+        /* FAQ Styles */
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-answer.show {
+            padding: 1.5rem;
+            max-height: 500px;
+        }
+
+        /* Contact Form Styles */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* Footer Styles */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-column ul li a {
+            color: #bbb;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #444;
+            color: #bbb;
+            font-size: 0.9rem;
+        }
+
+        .watermark {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            z-index: 1000;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            nav ul li {
+                margin: 0.5rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">VCC<span>Generator</span></div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html" class="active">Home</a></li>
+                        <li><a href="features.html">Features</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
 
-<header>
-  <h1>🛒 Specter E-Ticaret Sitesi</h1>
-</header>
+    <!-- Main Content (Changes based on page) -->
+    <main class="page-content">
+        <div class="container">
+            <!-- Home Page Content -->
+            <div id="home-page">
+                <h1 class="page-title">Free Virtual Credit Card Generator</h1>
+                <!-- Your existing card generator content goes here -->
+            </div>
 
-<div class="container">
-  <div class="login">
-    <label>Kullanıcı Adı:</label><br>
-    <input type="text" id="username" required /><br><br>
-    <label>Şifre (en az 6 karakter):</label><br>
-    <input type="password" id="password" required /><br><br>
-    <button class="btn" onclick="login()">Giriş Yap</button>
-  </div>
+            <!-- Features Page Content -->
+            <div id="features-page" style="display: none;">
+                <h1 class="page-title">Our Features</h1>
+                <div class="features-grid">
+                    <!-- Your features content goes here -->
+                </div>
+            </div>
 
-  <div id="shop" style="display:none;">
-    <h2>🛍️ Ürünler</h2>
-    <div class="products" id="product-list"></div>
+            <!-- FAQ Page Content -->
+            <div id="faq-page" style="display: none;">
+                <h1 class="page-title">Frequently Asked Questions</h1>
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            What is a virtual credit card?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>A virtual credit card is a randomly generated card number that follows the same format as real credit cards but cannot be used for actual transactions. These are used for testing payment systems and software development.</p>
+                        </div>
+                    </div>
 
-    <div class="cart" id="cart">
-      <h3>🧾 Sepet</h3>
-      <ul id="cart-items"></ul>
-      <p><strong>Toplam:</strong> <span id="total">0</span> TL</p>
-    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            Are these cards valid for real purchases?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>No, all cards generated on this site are for testing purposes only. They pass Luhn algorithm validation but will not work for real transactions.</p>
+                        </div>
+                    </div>
 
-    <div class="whatsapp">
-      <a href="#" id="whatsapp-link" target="_blank">📲 Siparişi WhatsApp’tan Gönder</a>
-    </div>
-  </div>
-</div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            Who can use this tool?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>This tool is designed for developers testing payment gateways, QA testers verifying checkout processes, and businesses needing dummy payment data for training or demonstration purposes.</p>
+                        </div>
+                    </div>
 
-<script>
-  const urunler = [
-    { id: 1, isim: "Steam Hesap", fiyat: 500, gorsel: "https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg" },
-    { id: 2, isim: "Disney+", fiyat: 250, gorsel: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg" },
-    { id: 3, isim: "PUBG Hesap", fiyat: 400, gorsel: "https://upload.wikimedia.org/wikipedia/en/6/6e/PUBG_Battlegrounds_logo.svg" },
-    { id: 4, isim: "Netflix Hesap", fiyat: 300, gorsel: "https://upload.wikimedia.org/wikipedia/commons/6/69/Netflix_logo.svg" },
-    { id: 5, isim: "SMS Bomber", fiyat: 250, gorsel: "https://cdn-icons-png.flaticon.com/512/3062/3062634.png" },
-    { id: 6, isim: "Fake Numara", fiyat: 150, gorsel: "https://cdn-icons-png.flaticon.com/512/929/929564.png" },
-    { id: 7, isim: "Fake E-posta", fiyat: 150, gorsel: "https://cdn-icons-png.flaticon.com/512/561/561127.png" },
-    { id: 8, isim: "Twitter Hesap", fiyat: 250, gorsel: "https://upload.wikimedia.org/wikipedia/en/6/60/Twitter_Logo_as_of_2021.svg" },
-    { id: 9, isim: "YouTube Hesap", fiyat: 400, gorsel: "https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" },
-    { id: 10, isim: "ItemSatış Hesap", fiyat: 250, gorsel: "https://cdn-icons-png.flaticon.com/512/3105/3105792.png" }
-  ];
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            Is this service free?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Yes, our basic card generation service is completely free. We may offer premium features in the future but will always maintain a free tier.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-  let sepet = [];
-  let kullaniciAdi = "";
+            <!-- Contact Page Content -->
+            <div id="contact-page" style="display: none;">
+                <h1 class="page-title">Contact Us</h1>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
 
-  function login() {
-    const user = document.getElementById("username").value;
-    const pass = document.getElementById("password").value;
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
 
-    if (pass.length < 6) {
-      alert("❌ Şifre çok kısa! En az 6 karakter girin.");
-      return;
-    }
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" required>
+                        </div>
 
-    kullaniciAdi = user;
-    document.querySelector(".login").style.display = "none";
-    document.getElementById("shop").style.display = "block";
-    urunleriGoster();
-  }
+                        <div class="form-group">
+                            <label for="message">Your Message</label>
+                            <textarea id="message" name="message" required></textarea>
+                        </div>
 
-  function urunleriGoster() {
-    const list = document.getElementById("product-list");
-    list.innerHTML = "";
-    urunler.forEach(urun => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <img src="${urun.gorsel}" alt="${urun.isim}" />
-        <h3>${urun.isim}</h3>
-        <p>Fiyat: ${urun.fiyat} TL</p>
-        <button class="btn" onclick="sepeteEkle(${urun.id})">Sepete Ekle</button>
-      `;
-      list.appendChild(card);
-    });
-  }
+                        <button type="submit" class="btn btn-block">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
 
-  function sepeteEkle(id) {
-    const urun = urunler.find(u => u.id === id);
-    sepet.push(urun);
-    sepetiGuncelle();
-  }
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>VCC Generator</h3>
+                    <p>The best free virtual credit card generator for testing and development purposes.</p>
+                </div>
 
-  function sepetiGuncelle() {
-    const list = document.getElementById("cart-items");
-    const total = document.getElementById("total");
-    const whatsapp = document.getElementById("whatsapp-link");
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="features.html">Features</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
 
-    list.innerHTML = "";
-    let toplam = 0;
-    let mesaj = `Merhaba, ben ${kullaniciAdi}. Sipariş vermek istiyorum:\n`;
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="disclaimer.html">Disclaimer</a></li>
+                    </ul>
+                </div>
 
-    sepet.forEach(item => {
-      const li = document.createElement("li");
-      li.textContent = `${item.isim} - ${item.fiyat} TL`;
-      list.appendChild(li);
-      toplam += item.fiyat;
-      mesaj += `- ${item.isim} (${item.fiyat} TL)\n`;
-    });
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> support@vccgenerator.com</li>
+                        <li><i class="fas fa-globe"></i> www.vccgenerator.com</li>
+                    </ul>
+                </div>
+            </div>
 
-    mesaj += `\nToplam Tutar: ${toplam} TL`;
-    total.textContent = toplam;
+            <div class="copyright">
+                <p>&copy; 2023 VCC Generator. All rights reserved. | For educational purposes only.</p>
+            </div>
+        </div>
+    </footer>
 
-    const numara = "905426354386";
-    const link = `https://wa.me/${numara}?text=${encodeURIComponent(mesaj)}`;
-    whatsapp.href = link;
-  }
-</script>
+    <div class="watermark">B4Brown</div>
 
+    <script>
+        // Simple page routing
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get current page from URL
+            const path = window.location.pathname.split('/').pop() || 'index.html';
+
+            // Hide all pages
+            document.querySelectorAll('[id$="-page"]').forEach(page => {
+                page.style.display = 'none';
+            });
+
+            // Show current page
+            if (path === 'index.html' || path === '') {
+                document.getElementById('home-page').style.display = 'block';
+            } else if (path === 'features.html') {
+                document.getElementById('features-page').style.display = 'block';
+                updateActiveNav('features.html');
+            } else if (path === 'faq.html') {
+                document.getElementById('faq-page').style.display = 'block';
+                setupFAQToggle();
+                updateActiveNav('faq.html');
+            } else if (path === 'contact.html') {
+                document.getElementById('contact-page').style.display = 'block';
+                updateActiveNav('contact.html');
+            } else {
+                document.getElementById('home-page').style.display = 'block';
+            }
+
+            // Update active navigation link
+            function updateActiveNav(activePage) {
+                document.querySelectorAll('nav a').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === activePage) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            // FAQ toggle functionality
+            function setupFAQToggle() {
+                const questions = document.querySelectorAll('.faq-question');
+                questions.forEach(question => {
+                    question.addEventListener('click', () => {
+                        const answer = question.nextElementSibling;
+                        const icon = question.querySelector('i');
+
+                        answer.classList.toggle('show');
+                        icon.classList.toggle('fa-chevron-down');
+                        icon.classList.toggle('fa-chevron-up');
+                    });
+                });
+            }
+
+            // Contact form submission
+            const contactForm = document.getElementById('contactForm');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('Thank you for your message! We will get back to you soon.');
+                    this.reset();
+                });
+            }
+        });
+    </script>
 </body>
 </html>
