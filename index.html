@@ -1,186 +1,525 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>🛍️ Specter E-Ticaret</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f7fa;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #222;
-      color: white;
-      padding: 1em;
-      text-align: center;
-    }
-    .container {
-      padding: 20px;
-      max-width: 900px;
-      margin: auto;
-    }
-    .login, .cart {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      margin-bottom: 30px;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Specter E-Ticaret | Tam Sistem</title>
+<style>
+  /* Genel Stil */
+  body {
+    font-family: Arial, sans-serif;
+    background: #f5f7fa;
+    margin: 0; padding: 0;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+  }
+  header {
+    background: #222;
+    color: white;
+    padding: 1em;
+    text-align: center;
+    font-size: 24px;
+  }
+  main {
+    flex: 1;
+    max-width: 960px;
+    margin: 20px auto;
+    padding: 10px;
+  }
+  button.btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  button.btn:disabled {
+    background: #999;
+    cursor: not-allowed;
+  }
+  button.btn:hover:not(:disabled) {
+    background: #0056b3;
+  }
+  input, select {
+    width: 100%;
+    padding: 8px;
+    margin: 6px 0 12px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  .hidden { display: none; }
+
+  /* Formlar */
+  .form-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+  }
+  .form-switch {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .form-switch button {
+    margin: 0 10px;
+  }
+
+  /* Ürünler */
+  .products {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
+    gap: 20px;
+  }
+  .card {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+  .card img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 10px;
+  }
+  .card h3 {
+    margin: 10px 0 5px;
+  }
+  .card p {
+    margin: 0 0 10px;
+    font-weight: bold;
+  }
+
+  /* Sepet */
+  .cart {
+    background: white;
+    padding: 15px;
+    margin-top: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  .cart ul {
+    list-style-type: none;
+    padding-left: 0;
+    max-height: 250px;
+    overflow-y: auto;
+  }
+  .cart li {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 4px;
+  }
+  .cart li button {
+    background: #dc3545;
+    padding: 2px 8px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
+  .cart li button:hover {
+    background: #b52b3a;
+  }
+  .total {
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: right;
+  }
+
+  /* WhatsApp Butonu */
+  .whatsapp {
+    margin-top: 20px;
+    text-align: center;
+  }
+  .whatsapp a {
+    background: #25D366;
+    color: white;
+    padding: 12px 24px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    display: inline-block;
+  }
+
+  /* Responsive */
+  @media(max-width: 600px) {
     .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 20px;
+      grid-template-columns: 1fr 1fr;
     }
-    .card {
-      background: #fff;
-      border-radius: 10px;
-      padding: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-    .card img {
-      max-width: 100px;
-      height: auto;
-    }
-    .btn {
-      background: #007bff;
-      color: white;
-      padding: 8px 16px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    .btn:hover {
-      background: #0056b3;
-    }
-    .whatsapp {
-      margin-top: 20px;
-      text-align: center;
-    }
-    .whatsapp a {
-      background: #25D366;
-      color: white;
-      padding: 10px 20px;
-      text-decoration: none;
-      border-radius: 8px;
-      display: inline-block;
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
 
-<header>
-  <h1>🛒 Specter E-Ticaret Sitesi</h1>
-</header>
+<header>🛒 Specter E-Ticaret Sitesi</header>
 
-<div class="container">
-  <div class="login">
-    <label>Kullanıcı Adı:</label><br>
-    <input type="text" id="username" required /><br><br>
-    <label>Şifre (en az 6 karakter):</label><br>
-    <input type="password" id="password" required /><br><br>
-    <button class="btn" onclick="login()">Giriş Yap</button>
+<main>
+
+<!-- Giriş/Kayıt Bölümü -->
+<div class="form-container" id="auth-section">
+  <div class="form-switch">
+    <button id="btn-login-switch" class="btn">Giriş Yap</button>
+    <button id="btn-register-switch" class="btn">Kayıt Ol</button>
   </div>
 
-  <div id="shop" style="display:none;">
-    <h2>🛍️ Ürünler</h2>
-    <div class="products" id="product-list"></div>
+  <!-- Giriş Formu -->
+  <form id="login-form">
+    <label for="login-username">Kullanıcı Adı veya E-posta:</label>
+    <input type="text" id="login-username" required />
+    <label for="login-password">Şifre:</label>
+    <input type="password" id="login-password" minlength="6" required />
+    <button type="submit" class="btn">Giriş Yap</button>
+    <p style="margin-top:10px; font-size:14px;">
+      <a href="#" id="forgot-password-link">Şifremi Unuttum</a>
+    </p>
+  </form>
 
-    <div class="cart" id="cart">
-      <h3>🧾 Sepet</h3>
-      <ul id="cart-items"></ul>
-      <p><strong>Toplam:</strong> <span id="total">0</span> TL</p>
-    </div>
+  <!-- Kayıt Formu -->
+  <form id="register-form" class="hidden">
+    <label for="register-email">E-posta:</label>
+    <input type="email" id="register-email" required />
+    <label for="register-username">Kullanıcı Adı:</label>
+    <input type="text" id="register-username" required />
+    <label for="register-password">Şifre (en az 6 karakter):</label>
+    <input type="password" id="register-password" minlength="6" required />
+    <button type="submit" class="btn">Kayıt Ol</button>
+  </form>
 
+  <!-- Şifre Sıfırlama Formu -->
+  <form id="reset-form" class="hidden">
+    <label for="reset-email">Kayıtlı E-posta Adresinizi Girin:</label>
+    <input type="email" id="reset-email" required />
+    <button type="submit" class="btn">Şifre Sıfırlama Linki Gönder</button>
+    <p style="margin-top:10px; font-size:14px;">
+      <a href="#" id="back-to-login">Giriş Sayfasına Dön</a>
+    </p>
+  </form>
+</div>
+
+<!-- Alışveriş Bölümü -->
+<div id="shop-section" class="hidden">
+
+  <h2>🛍️ Ürünler</h2>
+  <div class="products" id="product-list"></div>
+
+  <div class="cart" id="cart">
+    <h3>🧾 Sepetiniz</h3>
+    <ul id="cart-items"></ul>
+    <p class="total">Toplam: <span id="total">0</span> TL</p>
     <div class="whatsapp">
-      <a href="#" id="whatsapp-link" target="_blank">📲 Siparişi WhatsApp’tan Gönder</a>
+      <a href="#" id="whatsapp-link" target="_blank">📲 WhatsApp ile Siparişi Gönder</a>
     </div>
   </div>
+  <button class="btn" id="logout-btn" style="margin-top:20px; background:#dc3545;">Çıkış Yap</button>
 </div>
 
 <script>
+(() => {
   const urunler = [
-    { id: 1, isim: "Steam Hesap", fiyat: 500, gorsel: "https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg" },
-    { id: 2, isim: "Disney+", fiyat: 250, gorsel: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg" },
-    { id: 3, isim: "PUBG Hesap", fiyat: 400, gorsel: "https://upload.wikimedia.org/wikipedia/en/6/6e/PUBG_Battlegrounds_logo.svg" },
-    { id: 4, isim: "Netflix Hesap", fiyat: 300, gorsel: "https://upload.wikimedia.org/wikipedia/commons/6/69/Netflix_logo.svg" },
-    { id: 5, isim: "SMS Bomber", fiyat: 250, gorsel: "https://cdn-icons-png.flaticon.com/512/3062/3062634.png" },
-    { id: 6, isim: "Fake Numara", fiyat: 150, gorsel: "https://cdn-icons-png.flaticon.com/512/929/929564.png" },
-    { id: 7, isim: "Fake E-posta", fiyat: 150, gorsel: "https://cdn-icons-png.flaticon.com/512/561/561127.png" },
-    { id: 8, isim: "Twitter Hesap", fiyat: 250, gorsel: "https://upload.wikimedia.org/wikipedia/en/6/60/Twitter_Logo_as_of_2021.svg" },
-    { id: 9, isim: "YouTube Hesap", fiyat: 400, gorsel: "https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" },
-    { id: 10, isim: "ItemSatış Hesap", fiyat: 250, gorsel: "https://cdn-icons-png.flaticon.com/512/3105/3105792.png" }
+    {id:1, isim:"Steam Hesap", fiyat:500, stok:5, resim:"https://cdn-icons-png.flaticon.com/512/5968/5968705.png"},
+    {id:2, isim:"Disney Hesap", fiyat:250, stok:4, resim:"https://cdn-icons-png.flaticon.com/512/732/732200.png"},
+    {id:3, isim:"PUBG Hesap", fiyat:400, stok:6, resim:"https://cdn-icons-png.flaticon.com/512/2301/2301122.png"},
+    {id:4, isim:"Predunyam Hesap", fiyat:400, stok:3, resim:"https://cdn-icons-png.flaticon.com/512/732/732212.png"},
+    {id:5, isim:"SMS Bomber", fiyat:250, stok:2, resim:"https://cdn-icons-png.flaticon.com/512/3062/3062634.png"},
+    {id:6, isim:"Fake No", fiyat:150, stok:7, resim:"https://cdn-icons-png.flaticon.com/512/888/888879.png"},
+    {id:7, isim:"Fake E-posta", fiyat:150, stok:5, resim:"https://cdn-icons-png.flaticon.com/512/732/732200.png"},
+    {id:8, isim:"Netflix Hesap", fiyat:300, stok:8, resim:"https://cdn-icons-png.flaticon.com/512/732/732221.png"},
+    {id:9, isim:"Twitter Hesap", fiyat:250, stok:6, resim:"https://cdn-icons-png.flaticon.com/512/733/733579.png"},
+    {id:10, isim:"Itemsatis Hesap", fiyat:250, stok:4, resim:"https://cdn-icons-png.flaticon.com/512/126/126486.png"},
+    {id:11, isim:"Youtube Hesap", fiyat:400, stok:5, resim:"https://cdn-icons-png.flaticon.com/512/1384/1384060.png"}
   ];
 
-  let sepet = [];
-  let kullaniciAdi = "";
+  // LocalStorage keyler
+  const LS_USER = "specter_user";
+  const LS_CART = "specter_cart";
 
-  function login() {
-    const user = document.getElementById("username").value;
-    const pass = document.getElementById("password").value;
+  // Elementler
+  const authSection = document.getElementById("auth-section");
+  const loginForm = document.getElementById("login-form");
+  const registerForm = document.getElementById("register-form");
+  const resetForm = document.getElementById("reset-form");
+  const btnLoginSwitch = document.getElementById("btn-login-switch");
+  const btnRegisterSwitch = document.getElementById("btn-register-switch");
+  const forgotPasswordLink = document.getElementById("forgot-password-link");
+  const backToLoginLink = document.getElementById("back-to-login");
 
-    if (pass.length < 6) {
-      alert("❌ Şifre çok kısa! En az 6 karakter girin.");
-      return;
-    }
+  const shopSection = document.getElementById("shop-section");
+  const productList = document.getElementById("product-list");
+  const cartItems = document.getElementById("cart-items");
+  const totalEl = document.getElementById("total");
+  const whatsappLink = document.getElementById("whatsapp-link");
+  const logoutBtn = document.getElementById("logout-btn");
 
-    kullaniciAdi = user;
-    document.querySelector(".login").style.display = "none";
-    document.getElementById("shop").style.display = "block";
-    urunleriGoster();
+  // Kullanıcılar (localde saklanıyor)
+  // Bu bir demo, gerçek projede backend şart.
+  let users = JSON.parse(localStorage.getItem("specter_users") || "[]");
+
+  // Mevcut kullanıcı ve sepet
+  let currentUser = null;
+  let cart = [];
+
+  // Yardımcı fonksiyonlar
+  function saveUsers() {
+    localStorage.setItem("specter_users", JSON.stringify(users));
+  }
+  function saveCurrentUser(user) {
+    localStorage.setItem(LS_USER, JSON.stringify(user));
+  }
+  function loadCurrentUser() {
+    const u = localStorage.getItem(LS_USER);
+    return u ? JSON.parse(u) : null;
+  }
+  function saveCart() {
+    localStorage.setItem(LS_CART, JSON.stringify(cart));
+  }
+  function loadCart() {
+    const c = localStorage.getItem(LS_CART);
+    return c ? JSON.parse(c) : [];
   }
 
-  function urunleriGoster() {
-    const list = document.getElementById("product-list");
-    list.innerHTML = "";
+  // Form göster/gizle fonksiyonları
+  function showLogin() {
+    loginForm.classList.remove("hidden");
+    registerForm.classList.add("hidden");
+    resetForm.classList.add("hidden");
+  }
+  function showRegister() {
+    loginForm.classList.add("hidden");
+    registerForm.classList.remove("hidden");
+    resetForm.classList.add("hidden");
+  }
+  function showReset() {
+    loginForm.classList.add("hidden");
+    registerForm.classList.add("hidden");
+    resetForm.classList.remove("hidden");
+  }
+
+  // Ürünleri göster
+  function renderProducts() {
+    productList.innerHTML = "";
     urunler.forEach(urun => {
       const card = document.createElement("div");
       card.className = "card";
-      card.innerHTML = `
-        <img src="${urun.gorsel}" alt="${urun.isim}" />
-        <h3>${urun.isim}</h3>
-        <p>Fiyat: ${urun.fiyat} TL</p>
-        <button class="btn" onclick="sepeteEkle(${urun.id})">Sepete Ekle</button>
-      `;
-      list.appendChild(card);
+
+      const img = document.createElement("img");
+      img.src = urun.resim;
+      img.alt = urun.isim;
+      card.appendChild(img);
+
+      const title = document.createElement("h3");
+      title.textContent = urun.isim;
+      card.appendChild(title);
+
+      const price = document.createElement("p");
+      price.textContent = urun.fiyat + " TL";
+      card.appendChild(price);
+
+      const stokDurum = document.createElement("p");
+      stokDurum.style.fontWeight = "normal";
+      stokDurum.style.color = urun.stok > 0 ? "green" : "red";
+      stokDurum.textContent = urun.stok > 0 ? `Stok: ${urun.stok}` : "Stokta yok";
+      card.appendChild(stokDurum);
+
+      const btn = document.createElement("button");
+      btn.className = "btn";
+      btn.textContent = "Sepete Ekle";
+      btn.disabled = urun.stok === 0;
+      btn.onclick = () => addToCart(urun.id);
+      card.appendChild(btn);
+
+      productList.appendChild(card);
     });
   }
 
-  function sepeteEkle(id) {
-    const urun = urunler.find(u => u.id === id);
-    sepet.push(urun);
-    sepetiGuncelle();
+  // Sepete ekle
+  function addToCart(id) {
+    let urun = urunler.find(u => u.id === id);
+    if(!urun || urun.stok === 0) return alert("Ürün stokta yok!");
+
+    // Stok azaldıysa azalt
+    const sepetteUrun = cart.find(c => c.id === id);
+    if(sepetteUrun)
+   if (sepetteUrun.qty >= urun.stok) {
+      return alert("Bu üründen stokta yeterince yok.");
+    }
+    // Sepette yoksa ekle, varsa miktar artır
+    if (sepetteUrun) {
+      sepetteUrun.qty++;
+    } else {
+      cart.push({ id: urun.id, isim: urun.isim, fiyat: urun.fiyat, qty: 1 });
+    }
+    saveCart();
+    renderCart();
   }
 
-  function sepetiGuncelle() {
-    const list = document.getElementById("cart-items");
-    const total = document.getElementById("total");
-    const whatsapp = document.getElementById("whatsapp-link");
+  // Sepeti göster
+  function renderCart() {
+    cartItems.innerHTML = "";
+    if(cart.length === 0) {
+      cartItems.innerHTML = "<li>Sepetiniz boş.</li>";
+      totalEl.textContent = "0";
+      updateWhatsappLink();
+      return;
+    }
 
-    list.innerHTML = "";
     let toplam = 0;
-    let mesaj = `Merhaba, ben ${kullaniciAdi}. Sipariş vermek istiyorum:\n`;
-
-    sepet.forEach(item => {
+    cart.forEach(item => {
+      toplam += item.fiyat * item.qty;
       const li = document.createElement("li");
-      li.textContent = `${item.isim} - ${item.fiyat} TL`;
-      list.appendChild(li);
-      toplam += item.fiyat;
-      mesaj += `- ${item.isim} (${item.fiyat} TL)\n`;
+      li.textContent = `${item.isim} x${item.qty} - ${item.fiyat * item.qty} TL`;
+
+      const removeBtn = document.createElement("button");
+      removeBtn.textContent = "×";
+      removeBtn.title = "Sepetten çıkar";
+      removeBtn.onclick = () => removeFromCart(item.id);
+      li.appendChild(removeBtn);
+
+      cartItems.appendChild(li);
     });
-
-    mesaj += `\nToplam Tutar: ${toplam} TL`;
-    total.textContent = toplam;
-
-    const numara = "905426354386";
-    const link = `https://wa.me/${numara}?text=${encodeURIComponent(mesaj)}`;
-    whatsapp.href = link;
+    totalEl.textContent = toplam.toFixed(2);
+    updateWhatsappLink();
   }
+
+  // Sepetten çıkar
+  function removeFromCart(id) {
+    cart = cart.filter(item => item.id !== id);
+    saveCart();
+    renderCart();
+  }
+
+  // WhatsApp link güncelle
+  function updateWhatsappLink() {
+    if(cart.length === 0) {
+      whatsappLink.href = "#";
+      whatsappLink.textContent = "Sepetiniz boş, sipariş gönderemezsiniz.";
+      whatsappLink.style.background = "#999";
+      whatsappLink.style.pointerEvents = "none";
+      return;
+    }
+    whatsappLink.style.background = "#25D366";
+    whatsappLink.style.pointerEvents = "auto";
+    let mesaj = "Merhaba, aşağıdaki ürünlerden sipariş vermek istiyorum:%0A";
+    cart.forEach(item => {
+      mesaj += `- ${item.isim} x${item.qty}: ${item.fiyat * item.qty} TL%0A`;
+    });
+    const toplam = cart.reduce((acc, item) => acc + item.fiyat * item.qty, 0);
+    mesaj += `%0AToplam: ${toplam.toFixed(2)} TL%0ALütfen dönüş yapar mısınız?`;
+    // WhatsApp numarasını buraya kendi numaranızla değiştirin
+    const telefonNumarasi = "905XXXXXXXXX";
+    whatsappLink.href = `https://wa.me/${telefonNumarasi}?text=${mesaj}`;
+    whatsappLink.textContent = "📲 WhatsApp ile Siparişi Gönder";
+  }
+
+  // Giriş işlemi
+  loginForm.addEventListener("submit", e => {
+    e.preventDefault();
+    const usernameInput = document.getElementById("login-username").value.trim();
+    const passwordInput = document.getElementById("login-password").value;
+
+    const user = users.find(u =>
+      (u.username === usernameInput || u.email === usernameInput) && u.password === passwordInput
+    );
+
+    if(user) {
+      alert("Giriş başarılı, hoşgeldiniz " + user.username + "!");
+      currentUser = user;
+      saveCurrentUser(user);
+      cart = loadCart();
+      authSection.classList.add("hidden");
+      shopSection.classList.remove("hidden");
+      renderProducts();
+      renderCart();
+    } else {
+      alert("Kullanıcı adı/e-posta veya şifre hatalı!");
+    }
+  });
+
+  // Kayıt işlemi
+  registerForm.addEventListener("submit", e => {
+    e.preventDefault();
+    const email = document.getElementById("register-email").value.trim();
+    const username = document.getElementById("register-username").value.trim();
+    const password = document.getElementById("register-password").value;
+
+    // Basit doğrulamalar
+    if(users.find(u => u.email === email)) {
+      return alert("Bu e-posta zaten kayıtlı.");
+    }
+    if(users.find(u => u.username === username)) {
+      return alert("Bu kullanıcı adı zaten alınmış.");
+    }
+    if(password.length < 6) {
+      return alert("Şifre en az 6 karakter olmalı.");
+    }
+
+    const yeniKullanici = { email, username, password };
+    users.push(yeniKullanici);
+    saveUsers();
+    alert("Kayıt başarılı! Giriş yapabilirsiniz.");
+    showLogin();
+  });
+
+  // Şifre sıfırlama (demo olarak sadece bilgilendirme)
+  resetForm.addEventListener("submit", e => {
+    e.preventDefault();
+    const email = document.getElementById("reset-email").value.trim();
+    const user = users.find(u => u.email === email);
+    if(user) {
+      alert("Şifre sıfırlama linki e-posta adresinize gönderildi (demo).");
+    } else {
+      alert("Bu e-posta adresi kayıtlı değil.");
+    }
+  });
+
+  // Formlar arası geçiş butonları
+  btnLoginSwitch.onclick = () => showLogin();
+  btnRegisterSwitch.onclick = () => showRegister();
+  forgotPasswordLink.onclick = e => {
+    e.preventDefault();
+    showReset();
+  };
+  backToLoginLink.onclick = e => {
+    e.preventDefault();
+    showLogin();
+  };
+
+  // Çıkış yap
+  logoutBtn.onclick = () => {
+    currentUser = null;
+    cart = [];
+    localStorage.removeItem(LS_USER);
+    localStorage.removeItem(LS_CART);
+    shopSection.classList.add("hidden");
+    authSection.classList.remove("hidden");
+    alert("Başarıyla çıkış yaptınız.");
+  };
+
+  // Sayfa yüklenirken mevcut kullanıcı var mı kontrol et
+  window.addEventListener("load", () => {
+    const user = loadCurrentUser();
+    if(user) {
+      currentUser = user;
+      cart = loadCart();
+      authSection.classList.add("hidden");
+      shopSection.classList.remove("hidden");
+      renderProducts();
+      renderCart();
+    } else {
+      showLogin();
+    }
+  });
+})();
 </script>
+
+</main>
 
 </body>
 </html>
