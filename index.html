@@ -413,7 +413,7 @@
     const toplam = cart.reduce((acc, item) => acc + item.fiyat * item.qty, 0);
     mesaj += `%0AToplam: ${toplam.toFixed(2)} TL%0ALütfen dönüş yapar mısınız?`;
     // WhatsApp numarasını buraya kendi numaranızla değiştirin
-    const telefonNumarasi = "905XXXXXXXXX";
+    const telefonNumarasi = "905426354386";
     whatsappLink.href = `https://wa.me/${telefonNumarasi}?text=${mesaj}`;
     whatsappLink.textContent = "📲 WhatsApp ile Siparişi Gönder";
   }
