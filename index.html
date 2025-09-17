@@ -1,371 +1,439 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Gerçek E-Ticaret (Demo)</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mega E-Ticaret Platformu</title>
 <style>
-:root{--primary:#0d6efd;--muted:#f6f7fb}
-*{box-sizing:border-box}
-body{font-family:Inter,Roboto,Arial,sans-serif;margin:0;background:var(--muted);color:#222}
-.header{background:var(--primary);color:#fff;padding:14px}
-.container{max-width:1100px;margin:18px auto;padding:12px}
-.header .brand{font-weight:700}
-.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.control{display:flex;gap:8px;align-items:center}
-.input{padding:8px;border-radius:6px;border:1px solid #ddd}
-.btn{background:var(--primary);color:#fff;padding:8px 10px;border-radius:6px;border:none;cursor:pointer}
-.btn.ghost{background:transparent;color:var(--primary);border:1px solid rgba(13,110,253,0.12)}
-.card{background:#fff;padding:12px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.06);margin-bottom:12px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
-.product-card img{width:100%;height:140px;object-fit:contain;border-radius:6px}
-.product-card h3{margin:4px 0;font-size:16px}
-.layout{display:flex;gap:12px}
-.side{width:300px}
-@media(max-width:900px){ .layout{flex-direction:column} .side{width:100%} }
-.small{font-size:13px;color:#666}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;padding:12px}
-.modal .box{background:#fff;padding:12px;border-radius:8px;width:100%;max-width:800px;max-height:90vh;overflow:auto}
-.cart-list{list-style:none;padding:0;margin:0;max-height:280px;overflow:auto}
-.cart-list li{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #eee}
-.footer{padding:12px;text-align:center;color:#666;margin-top:16px}
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f4f4f9;
+    color: #333;
+  }
+  header {
+    background: #0d6efd;
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  header h1 {
+    margin: 0;
+    font-size: 24px;
+  }
+  header nav button {
+    margin-left: 10px;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  header nav button.login-btn { background: #198754; color: white; }
+  header nav button.register-btn { background: #ffc107; color: black; }
+  header nav button.logout-btn { background: #dc3545; color: white; }
+  main {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 15px;
+  }
+  .categories {
+    margin-bottom: 20px;
+  }
+  .categories button {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    background: #6c757d;
+    color: white;
+    cursor: pointer;
+  }
+  .categories button.active { background: #0d6efd; }
+  #product-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  .card {
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    padding: 15px;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .card img {
+    width: 100%;
+    height: 150px;
+    object-fit: contain;
+    margin-bottom: 10px;
+  }
+  .card h3 { margin: 0 0 8px 0; font-size: 18px; }
+  .card p { margin: 0 0 8px 0; font-size: 14px; }
+  .card button {
+    background: #0d6efd;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: auto;
+  }
+  .card button:disabled { background: #6c757d; cursor: not-allowed; }
+  #cart-section {
+    background: #e9ecef;
+    padding: 15px;
+    border-radius: 6px;
+    margin-top: 30px;
+  }
+  #cart-items {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  #cart-items li {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid #ccc;
+  }
+  #cart-items li button {
+    background: #dc3545;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+    line-height: 18px;
+    padding: 0;
+    text-align: center;
+  }
+  #whatsapp-link {
+    display: inline-block;
+    background: #25D366;
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-top: 10px;
+  }
+  #whatsapp-link:disabled {
+    background: #a6d8a8;
+    pointer-events: none;
+  }
+  .hidden { display: none !important; }
+  form input, form textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0 10px 0;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  form button {
+    background: #0d6efd;
+    color: white;
+    border: none;
+    padding: 10px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  form button:hover { background: #0b5ed7; }
+  .comments { margin-top: 10px; font-size: 13px; max-height: 120px; overflow-y: auto; border-top: 1px solid #ddd; padding-top: 5px; }
+  .comment { border-bottom: 1px solid #eee; padding: 4px 0; }
+  .comment-date { font-size: 11px; color: #666; margin-left: 5px; }
 </style>
 </head>
 <body>
-<header class="header">
-  <div class="container topbar">
-    <div>
-      <div class="brand">Gerçek E-Ticaret</div>
-      <div class="small">Kayıt/giriş, şifre sıfırlama (mail ile) — Backend gerçek SQLite</div>
-    </div>
-    <div class="control">
-      <input id="search" class="input" placeholder="Ürün ara..." />
-      <button id="btn-login" class="btn ghost">Giriş / Kayıt</button>
-      <div id="user-area" class="small" style="margin-left:8px">Misafir</div>
-    </div>
-  </div>
+
+<header>
+  <h1>MegaShop</h1>
+  <nav id="nav-buttons">
+    <button class="login-btn" id="btn-login">Giriş Yap</button>
+    <button class="register-btn" id="btn-register">Kayıt Ol</button>
+  </nav>
 </header>
 
-<main class="container">
-  <div class="layout">
-    <aside class="side">
-      <div class="card">
-        <h3>Kategoriler</h3>
-        <div id="categories" style="display:flex;flex-direction:column;gap:6px;margin-top:8px"></div>
-      </div>
-
-      <div class="card" style="margin-top:12px">
-        <h3>Sepet</h3>
-        <ul id="cart-list" class="cart-list"></ul>
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
-          <div>Toplam: <strong id="cart-total">0</strong> TL</div>
-          <button id="btn-place-order" class="btn">Sipariş Ver</button>
-        </div>
-        <div style="margin-top:8px">
-          <button id="btn-wa" class="btn ghost">WhatsApp ile Gönder</button>
-        </div>
-      </div>
-
-      <div class="card" style="margin-top:12px">
-        <h4>Profil</h4>
-        <div id="profile-box" class="small">Giriş yapılmadı</div>
-        <div style="margin-top:8px">
-          <button id="btn-logout" class="btn ghost" style="display:none">Çıkış Yap</button>
-        </div>
-      </div>
-    </aside>
-
-    <section style="flex:1">
-      <div class="card" style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center">
-        <div>
-          <h3 style="margin:0">Ürünler</h3>
-          <div class="small">Kategori seç, arama yap veya detaydan ekle</div>
-        </div>
-        <div style="display:flex;gap:8px;align-items:center">
-          <select id="sort" class="input">
-            <option value="">Sırala</option>
-            <option value="price-asc">Fiyat ↑</option>
-            <option value="price-desc">Fiyat ↓</option>
-          </select>
-        </div>
-      </div>
-
-      <div id="products" class="grid"></div>
-    </section>
+<main>
+  <!-- Auth Section -->
+  <div id="auth-section" class="hidden">
+    <form id="login-form">
+      <h2>Giriş Yap</h2>
+      <input type="text" id="login-username" placeholder="Kullanıcı adı veya E-posta" required>
+      <input type="password" id="login-password" placeholder="Şifre" required>
+      <button type="submit">Giriş</button>
+      <p><a href="#" id="forgot-password">Şifremi Unuttum</a></p>
+    </form>
+    <form id="register-form" class="hidden">
+      <h2>Kayıt Ol</h2>
+      <input type="email" id="register-email" placeholder="E-posta" required>
+      <input type="text" id="register-username" placeholder="Kullanıcı adı" required>
+      <input type="password" id="register-password" placeholder="Şifre (6+ karakter)" required>
+      <button type="submit">Kayıt Ol</button>
+    </form>
+    <form id="reset-form" class="hidden">
+      <h2>Şifre Sıfırlama</h2>
+      <input type="email" id="reset-email" placeholder="Kayıtlı E-posta" required>
+      <button type="submit">Sıfırlama Linki Gönder</button>
+      <p><a href="#" id="back-to-login">Girişe Dön</a></p>
+    </form>
   </div>
 
-  <div id="modals"></div>
-  <div class="footer">Bu proje gerçek API ile çalışır. Şifre sıfırlama e-posta göndermek için .env'de SMTP bilgilerini koy.</div>
+  <!-- Product Section -->
+  <div id="shop-section" class="hidden">
+    <div class="categories">
+      <button data-cat="all" class="active">Tüm Kategoriler</button>
+      <button data-cat="telefon">Telefon</button>
+      <button data-cat="oyun">Oyun Hesapları</button>
+      <button data-cat="aksesuar">Aksesuar</button>
+      <button data-cat="yazilim">Yazılım</button>
+    </div>
+
+    <div id="product-list"></div>
+
+    <div id="cart-section">
+      <h2>Sepetim</h2>
+      <ul id="cart-items"></ul>
+      <p>Toplam: <span id="total">0</span> TL</p>
+      <a id="whatsapp-link" href="#" target="_blank" rel="noopener noreferrer">WhatsApp ile Sipariş Gönder</a>
+      <br>
+      <button id="logout-btn" class="logout-btn">Çıkış Yap</button>
+    </div>
+  </div>
 </main>
 
 <script>
-/* frontend app.js (inline) */
-const API = '/api';
-let token = localStorage.getItem('token') || null;
-let currentUser = JSON.parse(localStorage.getItem('user') || 'null');
-let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+(() => {
+  const products = [
+    {id:1, name:"iPhone 13", price:12000, stock:10, category:"telefon", img:"https://cdn-icons-png.flaticon.com/512/3062/3062634.png"},
+    {id:2, name:"Samsung Galaxy S22", price:10000, stock:15, category:"telefon", img:"https://cdn-icons-png.flaticon.com/512/888/888879.png"},
+    {id:3, name:"Valorant Hesap", price:250, stock:20, category:"oyun", img:"https://cdn-icons-png.flaticon.com/512/5968/5968705.png"},
+    {id:4, name:"Steam Hesap", price:300, stock:12, category:"oyun", img:"https://cdn-icons-png.flaticon.com/512/732/732200.png"},
+    {id:5, name:"Gaming Mouse", price:450, stock:30, category:"aksesuar", img:"https://cdn-icons-png.flaticon.com/512/2301/2301122.png"},
+    {id:6, name:"Mechanical Keyboard", price:700, stock:25, category:"aksesuar", img:"https://cdn-icons-png.flaticon.com/512/732/732212.png"},
+    {id:7, name:"Photoshop Lisansı", price:1200, stock:5, category:"yazilim", img:"https://cdn-icons-png.flaticon.com/512/732/732221.png"},
+    {id:8, name:"Microsoft Office", price:800, stock:10, category:"yazilim", img:"https://cdn-icons-png.flaticon.com/512/733/733579.png"}
+  ];
 
-function authHeader() { return token ? { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' }; }
-const el = id => document.getElementById(id);
+  const LS_USER = "shop_user";
+  const LS_CART = "shop_cart";
+  const LS_USERS = "shop_users";
+  const LS_COMMENTS = "shop_comments";
 
-// init
-document.addEventListener('DOMContentLoaded', () => {
-  setupUI();
-  loadCategories();
-  loadProducts();
-  renderCart();
-});
+  const authSection = document.getElementById("auth-section");
+  const shopSection = document.getElementById("shop-section");
 
-function setupUI() {
-  el('btn-login').onclick = showAuthModal;
-  el('btn-place-order').onclick = placeOrder;
-  el('btn-wa').onclick = waOrder;
-  el('btn-logout').onclick = logout;
-  el('search').addEventListener('keydown', e => { if (e.key==='Enter') loadProducts(); });
-  el('sort').addEventListener('change', loadProducts);
-  updateUserArea();
-}
+  const loginForm = document.getElementById("login-form");
+  const registerForm = document.getElementById("register-form");
+  const resetForm = document.getElementById("reset-form");
 
-function updateUserArea(){
-  const ua = el('user-area');
-  if (token && currentUser) {
-    ua.textContent = currentUser.username;
-    el('profile-box').innerHTML = `<strong>${currentUser.username}</strong><div class="small">${currentUser.email||''}</div>`;
-    el('btn-logout').style.display = 'inline-block';
-  } else {
-    ua.textContent = 'Misafir';
-    el('profile-box').textContent = 'Giriş yapılmadı';
-    el('btn-logout').style.display = 'none';
+  const btnLogin = document.getElementById("btn-login");
+  const btnRegister = document.getElementById("btn-register");
+  const forgotPassword = document.getElementById("forgot-password");
+  const backToLogin = document.getElementById("back-to-login");
+  const logoutBtn = document.getElementById("logout-btn");
+
+  const productList = document.getElementById("product-list");
+  const cartItemsEl = document.getElementById("cart-items");
+  const totalEl = document.getElementById("total");
+  const whatsappLink = document.getElementById("whatsapp-link");
+  const categoryButtons = document.querySelectorAll(".categories button");
+
+  let currentUser = null;
+  let cart = [];
+  let comments = {};
+
+  function saveUsers(users){ localStorage.setItem(LS_USERS, JSON.stringify(users)); }
+  function loadUsers(){ return JSON.parse(localStorage.getItem(LS_USERS)||"[]"); }
+  function saveCurrentUser(u){ if(u)localStorage.setItem(LS_USER, JSON.stringify(u)); else localStorage.removeItem(LS_USER);}
+  function loadCurrentUser(){ return JSON.parse(localStorage.getItem(LS_USER)||"null"); }
+  function saveCart(c){ localStorage.setItem(LS_CART, JSON.stringify(c)); }
+  function loadCart(){ return JSON.parse(localStorage.getItem(LS_CART)||"[]"); }
+  function saveComments(c){ localStorage.setItem(LS_COMMENTS, JSON.stringify(c)); }
+  function loadComments(){ return JSON.parse(localStorage.getItem(LS_COMMENTS)||"{}"); }
+
+  function loginUser(username,password){ return loadUsers().find(u => (u.username===username || u.email===username) && u.password===password); }
+  function registerUser(email,username,password){
+    const users=loadUsers();
+    if(users.some(u=>u.email===email))return {success:false,msg:"Bu e-posta zaten kayıtlı."};
+    if(users.some(u=>u.username===username))return {success:false,msg:"Bu kullanıcı adı zaten alınmış."};
+    users.push({email,username,password});
+    saveUsers(users); return {success:true};
   }
-}
 
-async function apiGet(path) {
-  const res = await fetch(API + path, { headers: authHeader() });
-  if (!res.ok) throw await res.json();
-  return await res.json();
-}
+  btnLogin.onclick=()=>{ authSection.classList.remove("hidden"); loginForm.classList.remove("hidden"); registerForm.classList.add("hidden"); resetForm.classList.add("hidden"); }
+  btnRegister.onclick=()=>{ authSection.classList.remove("hidden"); registerForm.classList.remove("hidden"); loginForm.classList.add("hidden"); resetForm.classList.add("hidden"); }
+  forgotPassword.onclick=(e)=>{ e.preventDefault(); loginForm.classList.add("hidden"); registerForm.classList.add("hidden"); resetForm.classList.remove("hidden"); }
+  backToLogin.onclick=(e)=>{ e.preventDefault(); loginForm.classList.remove("hidden"); registerForm.classList.add("hidden"); resetForm.classList.add("hidden"); }
 
-async function loadCategories() {
-  try {
-    const cats = await apiGet('/categories');
-    const box = el('categories'); box.innerHTML='';
-    const all = document.createElement('button'); all.className='btn ghost'; all.textContent='Tümü'; all.onclick = ()=>loadProducts();
-    box.appendChild(all);
-    cats.forEach(c => {
-      const b = document.createElement('button'); b.className='btn ghost'; b.textContent=c.name; b.onclick=()=>loadProducts(c.name);
-      box.appendChild(b);
+  resetForm.onsubmit=e=>{ e.preventDefault(); alert("Şifre sıfırlama linki gönderildi (demo)."); backToLogin.click(); }
+
+  registerForm.onsubmit=e=>{
+    e.preventDefault();
+    const email=document.getElementById("register-email").value.trim();
+    const username=document.getElementById("register-username").value.trim();
+    const password=document.getElementById("register-password").value.trim();
+    if(password.length<6)return alert("Şifre 6 karakterden kısa olamaz.");
+    const res=registerUser(email,username,password);
+    if(!res.success)return alert(res.msg);
+    alert("Kayıt başarılı! Giriş yapabilirsiniz."); btnLogin.click();
+  }
+
+  loginForm.onsubmit=e=>{
+    e.preventDefault();
+    const username=document.getElementById("login-username").value.trim();
+    const password=document.getElementById("login-password").value.trim();
+    const user=loginUser(username,password);
+    if(!user)return alert("Kullanıcı adı veya şifre yanlış.");
+    currentUser=user; saveCurrentUser(user); loadApp();
+  }
+
+  logoutBtn.onclick=()=>{ currentUser=null; saveCurrentUser(null); cart=[]; saveCart(cart); comments={}; saveComments(comments); location.reload(); }
+
+  function updateCart(){
+    cartItemsEl.innerHTML=""; let toplam=0;
+    cart.forEach(item=>{
+      const p=products.find(u=>u.id===item.id);
+      if(!p)return;
+      const li=document.createElement("li");
+      li.textContent=`${p.name} x${item.qty} - ${p.price*item.qty} TL`;
+      const btnRemove=document.createElement("button"); btnRemove.textContent="X";
+      btnRemove.onclick=()=>{ cart=cart.filter(c=>c.id!==item.id); saveCart(cart); renderProducts(); updateCart(); }
+      li.appendChild(btnRemove); cartItemsEl.appendChild(li);
+      toplam+=p.price*item.qty;
     });
-  } catch (e) { console.warn(e); }
-}
+    totalEl.textContent=toplam; updateWhatsappLink();
+  }
 
-async function loadProducts(category) {
-  try {
-    const q = encodeURIComponent(el('search').value || '');
-    const url = '/products?q=' + q + (category ? '&category=' + encodeURIComponent(category) : '');
-    const rows = await apiGet(url);
-    const sort = el('sort').value;
-    if (sort === 'price-asc') rows.sort((a,b)=>a.price-b.price);
-    if (sort === 'price-desc') rows.sort((a,b)=>b.price-a.price);
-    renderProducts(rows);
-  } catch (e) { console.warn(e); }
-}
+  function updateWhatsappLink(){
+    if(cart.length===0){ whatsappLink.href="#"; whatsappLink.style.pointerEvents="none"; whatsappLink.style.background="#a6d8a8"; return; }
+    whatsappLink.style.pointerEvents="auto"; whatsappLink.style.background="#25D366";
+    const text=cart.map(i=>{ const p=products.find(u=>u.id===i.id); return `${p.name} x${i.qty}`; }).join("\n");
+    const msg=`Merhaba, aşağıdaki ürünlerden sipariş vermek istiyorum:\n${text}\nAdım: ${currentUser.username}\nE-posta: ${currentUser.email}`;
+    whatsappLink.href=`https://wa.me/905426354386?text=${encodeURIComponent(msg)}`;
+  }
 
-function renderProducts(rows) {
-  const div = el('products'); div.innerHTML = '';
-  rows.forEach(p => {
-    const card = document.createElement('div'); card.className='card product-card';
-    const img = document.createElement('img'); img.src = p.image || '/public/placeholder.png';
-    const h = document.createElement('h3'); h.textContent = p.name;
-    const desc = document.createElement('div'); desc.className='small'; desc.textContent = p.description || '';
-    const price = document.createElement('div'); price.innerHTML = `<strong>${p.price} TL</strong>`;
-    const stock = document.createElement('div'); stock.className='small'; stock.textContent = 'Stok: ' + p.stock;
-    const btn = document.createElement('button'); btn.className='btn'; btn.textContent='Detay & Ekle'; btn.onclick = ()=>openProductModal(p.id);
-    card.appendChild(img); card.appendChild(h); card.appendChild(desc); card.appendChild(price); card.appendChild(stock); card.appendChild(btn);
-    div.appendChild(card);
+  function renderProducts(category="all"){
+    productList.innerHTML="";
+    const filtered=category==="all"?products:products.filter(p=>p.category===category);
+    filtered.forEach(p=>{
+      const card=document.createElement("div"); card.className="card";
+      const img=document.createElement("img"); img.src=p.img; img.alt=p.name;
+      const title=document.createElement("h3"); title.textContent=p.name;
+      const price=document.createElement("p"); price.textContent=`${p.price} TL`;
+      const stock=document.createElement("p"); stock.textContent=p.stock>0?`Stok: ${p.stock}`:"Stokta Yok"; stock.style.color=p.stock>0?"green":"red";
+      const commentsDiv=document.createElement("div"); commentsDiv.className="comments";
+      const pComments=comments[p.id]||[];
+      if(pComments.length===0){ const nc=document.createElement("p"); nc.textContent="Henüz yorum yok."; commentsDiv.appendChild(nc);}
+      else pComments.forEach(c=>{ const cd=document.createElement("div"); cd.className="comment"; cd.innerHTML=`<strong>${c.user}</strong><span class="comment-date">(${new Date(c.date).toLocaleString()})</span><div class="comment-text">${c.text}</div>`; commentsDiv.appendChild(cd); });
+      const commentForm=document.createElement("form"); commentForm.className="comment-form";
+      const commentInput=document.createElement("textarea"); commentInput.placeholder="Yorum yazın..."; commentInput.required=true;
+      const commentSubmit=document.createElement("button"); commentSubmit.type="submit"; commentSubmit.className="btn"; commentSubmit.textContent="Gönder";
+      commentForm.appendChild(commentInput); commentForm.appendChild(commentSubmit);
+      commentForm.onsubmit=e=>{ e.preventDefault(); const txt=commentInput.value.trim(); if(txt.length===0)return alert("Yorum boş olamaz."); if(!comments[p.id])comments[p.id]=[]; comments[p.id].push({user:currentUser.username,date:new Date().toISOString(),text:txt}); saveComments(comments); commentInput.value=""; renderProducts(category);}
+      const addBtn=document.createElement("button"); addBtn.textContent=p.stock>0?"Sepete Ekle":"Stokta Yok"; addBtn.disabled=p.stock===0;
+      addBtn.onclick=()=>{ const m=cart.find(c=>c.id===p.id); if(m){ if(m.qty<p.stock)m.qty++; else alert("Stok sınırına ulaşıldı."); } else cart.push({id:p.id,qty:1}); saveCart(cart); updateCart();}
+      card.appendChild(img); card.appendChild(title); card.appendChild(price); card.appendChild(stock); card.append
+card.appendChild(commentsDiv);
+      card.appendChild(commentForm);
+      card.appendChild(addBtn);
+      productList.appendChild(card);
+    });
+  }
+
+  // Kategori butonlarını bağla
+  categoryButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      categoryButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cat = btn.getAttribute('data-cat');
+      renderProducts(cat);
+    });
   });
-}
 
-async function openProductModal(id) {
-  try {
-    const p = await apiGet('/products/' + id);
-    const m = document.createElement('div'); m.className='modal';
-    const box = document.createElement('div'); box.className='box';
-    box.innerHTML = `<div style="display:flex;gap:12px">
-      <div style="flex:1"><img src="${p.image||'/public/placeholder.png'}" style="width:100%;height:280px;object-fit:contain;border-radius:6px" /></div>
-      <div style="flex:1">
-        <h2>${p.name}</h2>
-        <div class="small">${p.category_name||''}</div>
-        <p>${p.description||''}</p>
-        <p><strong>${p.price} TL</strong></p>
-        <p class="small">Stok: ${p.stock}</p>
-        <div style="display:flex;gap:8px;margin-top:8px">
-          <input id="qty-${id}" class="input" type="number" min="1" max="${p.stock}" value="1" style="width:100px" />
-          <button id="add-${id}" class="btn">Sepete Ekle</button>
-          <button id="close-${id}" class="btn ghost">Kapat</button>
-        </div>
-        <div style="margin-top:12px"><h4>Yorumlar</h4><div id="comments-${id}" class="small">Yükleniyor...</div></div>
-      </div>
-    </div>`;
-    m.appendChild(box); document.getElementById('modals').appendChild(m);
-    document.getElementById('close-'+id).onclick = ()=>m.remove();
-    document.getElementById('add-'+id).onclick = ()=>{ const q = Number(document.getElementById('qty-'+id).value)||1; addToCart(id,q); m.remove(); };
-    // load comments
-    const comments = await apiGet('/comments/product/' + id);
-    const cd = document.getElementById('comments-'+id); cd.innerHTML='';
-    if (comments.length === 0) cd.textContent = 'Henüz yorum yok.';
-    comments.forEach(c => {
-      const d = document.createElement('div'); d.className='comment';
-      d.innerHTML = `<strong>${c.username}</strong> <div class="small">${new Date(c.created_at).toLocaleString()}</div><div>${c.text}</div>`;
-      cd.appendChild(d);
-    });
-    if (token && currentUser) {
-      const ta = document.createElement('textarea'); ta.placeholder='Yorum yaz...';
-      const b = document.createElement('button'); b.className='btn'; b.textContent='Yorum Gönder';
-      b.onclick = async () => {
-        const txt = ta.value.trim(); if (!txt) return alert('Yorum boş');
-        try {
-          const res = await fetch(API + '/comments/product/' + id, { method:'POST', headers: authHeader(), body: JSON.stringify({ text: txt }) });
-          const j = await res.json(); if (!res.ok) throw j;
-          alert('Yorum gönderildi'); m.remove(); openProductModal(id);
-        } catch (e) { alert(e.error || 'Yorum hatası'); }
+  // LocalStorage fonksiyonları (kısa tekrar)
+  function saveCartLocal() { saveCart(cart); }
+  function loadCartLocal() { cart = loadCart(); }
+  function loadCommentsLocal() { comments = loadComments(); }
+  function loadUserLocal() { currentUser = loadCurrentUser(); }
+
+  // Uygulama başlangıcı (UI kontrol, görünürlükler)
+  function loadApp() {
+    loadUserLocal();
+    loadCartLocal();
+    loadCommentsLocal();
+
+    if (currentUser) {
+      // Giriş yapılmış görünümü
+      authSection.classList.add("hidden");
+      shopSection.classList.remove("hidden");
+      // header butonlarını gizle
+      document.getElementById("nav-buttons").innerHTML = `<div style="display:flex;align-items:center;gap:10px">
+        <strong style="color:white">${currentUser.username}</strong>
+        <button id="nav-logout" class="logout-btn">Çıkış</button>
+      </div>`;
+      document.getElementById("nav-logout").onclick = () => {
+        logoutBtn.click();
       };
-      cd.appendChild(ta); cd.appendChild(b);
+    } else {
+      // Giriş yapılmamış
+      authSection.classList.remove("hidden");
+      shopSection.classList.remove("hidden"); // site herkese açık, istediğin gibi
+      // Show register/login in header
+      document.getElementById("nav-buttons").innerHTML = `<button class="login-btn" id="btn-login">Giriş Yap</button>
+        <button class="register-btn" id="btn-register">Kayıt Ol</button>`;
+      // re-bind header buttons
+      document.getElementById("btn-login").onclick = () => { authSection.classList.remove("hidden"); loginForm.classList.remove("hidden"); registerForm.classList.add("hidden"); resetForm.classList.add("hidden"); };
+      document.getElementById("btn-register").onclick = () => { authSection.classList.remove("hidden"); registerForm.classList.remove("hidden"); loginForm.classList.add("hidden"); resetForm.classList.add("hidden"); };
     }
-  } catch (e) { console.warn(e); }
-}
 
-function addToCart(id, qty=1) {
-  const existing = cart.find(i=>i.id===id);
-  if (existing) existing.adet += qty; else cart.push({ id:id, adet: qty });
-  saveCart(); renderCart();
-}
+    // Render ürünler ve sepet
+    renderProducts(document.querySelector('.categories button.active')?.getAttribute('data-cat') || 'all');
+    updateCart();
+  }
 
-function saveCart() { localStorage.setItem('cart', JSON.stringify(cart)); }
+  // Kullanıcı kaydeden ve yükleyen yardımcı (başlangıçta örnek admin eklemek istersen)
+  function ensureDefaultUsers() {
+    const users = loadUsers();
+    if (users.length === 0) {
+      users.push({ email: 'admin@example.com', username: 'admin', password: 'admin1234' });
+      users.push({ email: 'demo@example.com', username: 'demo', password: 'demo123' });
+      saveUsers(users);
+    }
+  }
 
-async function renderCart() {
-  const cl = el('cart-list'); cl.innerHTML='';
-  if (cart.length === 0) { cl.innerHTML = '<li>Sepet boş</li>'; el('cart-total').textContent = '0'; return; }
-  const products = await apiGet('/products');
-  let total = 0;
-  cart.forEach(item => {
-    const p = products.find(x=>x.id===item.id);
-    const li = document.createElement('li');
-    li.innerHTML = `<div><strong>${p.name}</strong><div class="small">${p.price} TL x ${item.adet}</div></div>`;
-    const actions = document.createElement('div'); actions.style.display='flex'; actions.style.gap='6px';
-    const inc = document.createElement('button'); inc.className='btn ghost'; inc.textContent='+'; inc.onclick = ()=>{ item.adet++; saveCart(); renderCart(); };
-    const dec = document.createElement('button'); dec.className='btn ghost'; dec.textContent='-'; dec.onclick = ()=>{ item.adet--; if (item.adet<=0) cart = cart.filter(c=>c!==item); saveCart(); renderCart(); };
-    const rem = document.createElement('button'); rem.className='btn ghost'; rem.textContent='X'; rem.onclick = ()=>{ cart = cart.filter(c=>c!==item); saveCart(); renderCart(); };
-    actions.appendChild(inc); actions.appendChild(dec); actions.appendChild(rem);
-    li.appendChild(actions); cl.appendChild(li);
-    total += p.price * item.adet;
+  // Yükleme ve başlangıç
+  ensureDefaultUsers();
+  loadApp();
+
+  // Sayfada sağ altta sürekli cart toplamını güncelle (opsiyonel)
+  setInterval(() => {
+    updateCart();
+  }, 5000);
+
+  // Basit UX: dışarı tıklayınca auth formunu gizle (mobilde kolaylık)
+  document.addEventListener('click', (e) => {
+    const authArea = document.getElementById('auth-section');
+    if (!authArea.contains(e.target) && !document.getElementById('nav-buttons').contains(e.target)) {
+      // authSection.classList.add('hidden'); // yorumda bırakıyorum, istersen aç
+    }
   });
-  el('cart-total').textContent = total;
-}
 
-async function placeOrder() {
-  if (!token || !currentUser) return alert('Sipariş için giriş yapın');
-  if (cart.length === 0) return alert('Sepet boş');
-  try {
-    const products = await apiGet('/products');
-    let total = 0;
-    cart.forEach(i => { const p = products.find(x=>x.id===i.id); total += p.price * i.adet; });
-    const res = await fetch(API + '/orders', { method:'POST', headers: authHeader(), body: JSON.stringify({ items: cart, total }) });
-    const j = await res.json();
-    if (!res.ok) throw j;
-    alert('Sipariş oluşturuldu. ID: ' + j.orderId);
-    cart = []; saveCart(); renderCart();
-  } catch (e) { alert(e.error || 'Sipariş hatası'); console.warn(e); }
-}
+  // Küçük güvenlik notu (client-side saklanan şifreler plaintext): Bu örnek sadece demo/yerel kullanım içindir.
+  // Gerçek prod uygulamasında parolalar server tarafında bcrypt ile hashlenmeli, localStorage kullanılmamalıdır.
 
-function waOrder() {
-  if (cart.length === 0) return alert('Sepet boş');
-  apiGet('/products').then(products => {
-    let total=0; const lines = ['Merhaba, sipariş vermek istiyorum:'];
-    cart.forEach(i => { const p = products.find(x=>x.id===i.id); lines.push(`${p.name} x${i.adet}`); total += p.price * i.adet; });
-    lines.push('', `Toplam: ${total} TL`);
-    if (currentUser) lines.push(`Müşteri: ${currentUser.username} (${currentUser.email||''})`);
-    const msg = encodeURIComponent(lines.join('\n'));
-    const waNum = (window.__env && window.__env.WHATSAPP_NUMBER) || '905555555555';
-    window.open(`https://wa.me/${waNum}?text=${msg}`, '_blank');
-  }).catch(e=>console.warn(e));
-}
-
-// AUTH modal (register/login/reset)
-function showAuthModal() {
-  const m = document.createElement('div'); m.className='modal'; const box = document.createElement('div'); box.className='box';
-  box.innerHTML = `<h2>Giriş / Kayıt</h2>
-  <div style="display:flex;gap:12px">
-    <div style="flex:1">
-      <h4>Giriş</h4>
-      <input id="login-username" class="input" placeholder="Kullanıcı adı veya e-posta" />
-      <input id="login-password" type="password" class="input" placeholder="Şifre" />
-      <div style="display:flex;gap:8px;margin-top:8px">
-        <button id="do-login" class="btn">Giriş Yap</button>
-        <button id="show-reset" class="btn ghost">Şifremi Unuttum</button>
-      </div>
-    </div>
-    <div style="flex:1">
-      <h4>Kayıt</h4>
-      <input id="reg-email" class="input" placeholder="E-posta" />
-      <input id="reg-username" class="input" placeholder="Kullanıcı adı" />
-      <input id="reg-password" type="password" class="input" placeholder="Şifre (6+)" />
-      <div style="margin-top:8px"><button id="do-register" class="btn">Kayıt Ol</button></div>
-    </div>
-  </div>
-  <div style="text-align:right;margin-top:8px"><button id="close-auth" class="btn ghost">Kapat</button></div>`;
-  m.appendChild(box); document.getElementById('modals').appendChild(m);
-  document.getElementById('close-auth').onclick = ()=>m.remove();
-  document.getElementById('do-register').onclick = async () => {
-    const email = el('reg-email').value.trim();
-    const username = el('reg-username').value.trim();
-    const password = el('reg-password').value.trim();
-    if (!username || !password) return alert('Eksik alan');
-    try {
-      const res = await fetch(API + '/auth/register', { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify({ email, username, password }) });
-      const j = await res.json();
-      if (!res.ok) throw j;
-      token = j.token; currentUser = j.user; localStorage.setItem('token', token); localStorage.setItem('user', JSON.stringify(currentUser));
-      alert('Kayıt başarılı, giriş yapıldı'); m.remove(); updateUserArea(); renderCart();
-    } catch (e) { alert(e.error || 'Kayıt hatası'); console.warn(e); }
-  };
-  document.getElementById('do-login').onclick = async () => {
-    const username = el('login-username').value.trim(); const password = el('login-password').value.trim();
-    if (!username || !password) return alert('Eksik alan');
-    try {
-      const res = await fetch(API + '/auth/login', { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify({ username, password }) });
-      const j = await res.json(); if (!res.ok) throw j;
-      token = j.token; currentUser = j.user; localStorage.setItem('token', token); localStorage.setItem('user', JSON.stringify(currentUser));
-      alert('Giriş başarılı'); m.remove(); updateUserArea();
-    } catch (e) { alert(e.error || 'Giriş hatası'); console.warn(e); }
-  };
-  document.getElementById('show-reset').onclick = ()=> { m.remove(); showResetModal(); };
-}
-
-function showResetModal() {
-  const m = document.createElement('div'); m.className='modal'; const box = document.createElement('div'); box.className='box';
-  box.innerHTML = `<h3>Şifre Sıfırlama</h3><p class="small">Kayıtlı e-posta gir. SMTP ayarlıysa mail atar, değilse token sunucu konsoluna yazılır.</p>
-  <input id="reset-email" class="input" placeholder="E-posta" />
-  <div style="margin-top:8px;display:flex;gap:8px"><button id="do-reset" class="btn">Link Gönder</button><button id="close-reset" class="btn ghost">Kapat</button></div>`;
-  m.appendChild(box); document.getElementById('modals').appendChild(m);
-  document.getElementById('close-reset').onclick = ()=>m.remove();
-  document.getElementById('do-reset').onclick = async () => {
-    const email = el('reset-email').value.trim(); if (!email) return alert('E-posta gerekli');
-    try {
-      const res = await fetch(API + '/auth/request-reset', { method:'POST', headers:{ 'Content-Type':'application/json'}, body: JSON.stringify({ email }) });
-      const j = await res.json(); if (!res.ok) throw j;
-      alert(j.msg || 'İşlem tamamlandı.'); m.remove();
-    } catch (e) { alert(e.error || 'Hata'); console.warn(e); }
-  };
-}
-
-function logout() {
-  token = null; currentUser = null; localStorage.removeItem('token'); localStorage.removeItem('user'); updateUserArea(); alert('Çıkış yapıldı');
-}
-
-if (token && localStorage.getItem('user')) { currentUser = JSON.parse(localStorage.getItem('user')); updateUserArea(); }
-
-el('btn-login').onclick = showAuthModal;
-
+})(); // IIFE sonu
 </script>
+
 </body>
 </html>
