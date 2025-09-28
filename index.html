@@ -1,23 +1,20 @@
-#!/data/data/com.termux/files/usr/bin/python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import os
 import time
-import random
 import json
 import hashlib
 from flask import Flask, request, render_template_string, session, redirect, url_for, flash
 import requests
-from colorama import init, Fore, Style
-
-# Colorama başlatma (terminal log için)
-init()
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # Flask uygulaması
 app = Flask(__name__)
 app.secret_key = 'necroz31_hacker_secret_2025'  # Oturum için güvenlik anahtarı
 
 # Kullanıcı veritabanı (yerel JSON simülasyonu)
-users_file = '/sdcard/necroz31_users.json'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+users_file = os.path.join(BASE_DIR, 'users.json')
 if not os.path.exists(users_file):
     with open(users_file, 'w', encoding='utf-8') as f:
         json.dump({}, f)
@@ -29,10 +26,10 @@ CHECKER_API_URL = 'https://api.chkr.cc/'
 def yaz_log(mesaj):
     zaman_damgasi = time.strftime("%Y-%m-%d %H:%M:%S")
     log_mesaji = f"[{zaman_damgasi}] NECROZ31 CHECKER {mesaj}"
-    print(Fore.GREEN + log_mesaji + Style.RESET_ALL)
-    log_dizini = "/sdcard/.necroz31_checker_logs"
+    print(log_mesaji)  # Terminal yerine dosya yazımı
+    log_dizini = os.path.join(BASE_DIR, 'logs')
     os.makedirs(log_dizini, exist_ok=True)
-    with open(f"{log_dizini}/checker_log_{zaman_damgasi.split()[0]}.txt", "a", encoding="utf-8") as f:
+    with open(os.path.join(log_dizini, f'checker_log_{zaman_damgasi.split()[0]}.txt'), 'a', encoding='utf-8') as f:
         f.write(f"{log_mesaji}\n")
 
 # Kullanıcı kayıt fonksiyonu
@@ -295,10 +292,10 @@ def settings():
 def logs():
     if 'username' not in session:
         return redirect(url_for('index'))
-    log_dizini = "/sdcard/.necroz31_checker_logs"
+    log_dizini = os.path.join(BASE_DIR, 'logs')
     if os.path.exists(log_dizini):
         log_dosyasi = max([f for f in os.listdir(log_dizini) if f.endswith(".txt")], key=lambda x: os.path.getctime(os.path.join(log_dizini, x)))
-        with open(os.path.join(log_dizini, log_dosyasi), "r", encoding="utf-8") as f:
+        with open(os.path.join(log_dizini, log_dosyasi), 'r', encoding='utf-8') as f:
             log_icerik = f.read()
     else:
         log_icerik = "Log bulunamadı."
@@ -336,10 +333,10 @@ def logout():
     return redirect(url_for('dashboard'))
 
 if __name__ == '__main__':
-    # Terminalde başlatma mesajı
-    print(Fore.RED + "==========================================", end="", flush=True)
-    print(Fore.GREEN + "=== NECROZ31 CHECKER SİSTEMİ BAŞLATILIYOR ===", end="", flush=True)
-    print(Fore.RED + "==========================================" + Style.RESET_ALL, end="", flush=True)
+    # Başlatma mesajı
+    print("==========================================")
+    print("=== NECROZ31 CHECKER SİSTEMİ BAŞLATILIYOR ===")
+    print("==========================================")
     yaz_log("Sistem başlatıldı")
-    # Flask uygulamasını çalıştır
+    # Flask uygulamasını çalıştır (web sunucusu için)
     app.run(host='0.0.0.0', port=5000, debug=False)
