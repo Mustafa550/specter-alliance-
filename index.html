@@ -2,22 +2,26 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>DEARSIBER CC Power Checker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEARSIBER CC Checker</title>
     <style>
-        body { margin: 0; font-family: Arial; background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff, #ffff00); animation: rainbow 5s infinite; color: white; }
-        @keyframes rainbow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        h1 { text-align: center; color: white; text-shadow: 0 0 10px #fff, 0 0 20px #ff00ff; animation: glow 2s ease-in-out infinite; font-size: 3em; }
+        body { margin: 0; font-family: Arial, sans-serif; background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff, #ffff00); animation: rainbow 10s infinite linear; color: white; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 10px; box-sizing: border-box; }
+        @keyframes rainbow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 200% 50%; } }
+        h1 { text-align: center; color: white; text-shadow: 0 0 10px #fff, 0 0 20px #ff00ff; animation: glow 2s ease-in-out infinite; font-size: 2em; margin-bottom: 20px; }
         @keyframes glow { from { text-shadow: 0 0 5px #fff; } to { text-shadow: 0 0 20px #ff00ff; } }
-        .container { max-width: 600px; margin: 20px auto; background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; }
-        input, button, textarea { width: 100%; padding: 10px; margin: 5px 0; border: none; border-radius: 5px; box-sizing: border-box; }
-        button { background: linear-gradient(45deg, #ff0000, #00ff00); color: white; cursor: pointer; font-weight: bold; }
+        .container { max-width: 100%; width: 100%; background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.5); margin-bottom: 20px; }
+        input, button, textarea { width: 100%; padding: 10px; margin: 5px 0; border: 2px solid #ff00ff; border-radius: 5px; box-sizing: border-box; background: rgba(255,255,255,0.2); color: white; font-size: 1em; }
+        button { background: linear-gradient(45deg, #ff0000, #00ff00); color: white; cursor: pointer; font-weight: bold; border: none; animation: buttonGlow 2s infinite; }
+        @keyframes buttonGlow { 0% { box-shadow: 0 0 5px #ff00ff; } 50% { box-shadow: 0 0 20px #ff00ff; } 100% { box-shadow: 0 0 5px #ff00ff; } }
         .hidden { display: none; }
-        #results { color: white; white-space: pre-wrap; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 5px; margin: 10px 0; }
-        .footer { position: fixed; bottom: 0; width: 100%; text-align: center; color: white; padding: 5px; background: rgba(0,0,0,0.5); }
+        #results { color: white; white-space: pre-wrap; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 5px; margin: 10px 0; font-size: 0.9em; overflow: auto; }
+        .footer { text-align: center; color: white; width: 100%; padding: 10px 0; background: rgba(0,0,0,0.5); box-shadow: 0 -2px 10px rgba(0,0,0,0.5); position: fixed; bottom: 0; left: 0; font-size: 0.9em; }
         .footer a { color: white; text-decoration: none; animation: blink 1s infinite; }
-        @keyframes blink { 50% { opacity: 0; } }
-        .stats { text-align: center; color: yellow; font-weight: bold; margin: 10px 0; }
-        .ip-info { text-align: center; color: cyan; margin: 10px 0; }
+        @keyframes blink { 50% { opacity: 0.5; } }
+        .stats { text-align: center; color: yellow; font-weight: bold; margin: 10px 0; font-size: 1em; }
+        .ip-info { text-align: center; color: cyan; margin: 10px 0; font-size: 0.9em; }
+        form { margin-bottom: 20px; }
+        label { color: white; font-size: 1em; }
     </style>
 </head>
 <body>
@@ -38,12 +42,13 @@
         <div class="ip-info" id="ipInfo">IP: Loading...</div>
         <div class="stats" id="userInfo">Welcome, Guest! Checks: 150 | Creates: 100 | Live: 0 | Checked: 0</div>
         <form>
-            <textarea id="cards" placeholder="kart|ay|yıl|cvv (satır satır)"></textarea>
+            <textarea id="cards" placeholder="kart|ay|yıl|cvv (satır satır)" style="height: 100px;"></textarea>
+            <label for="fileUpload">Upload TXT:</label>
             <input type="file" id="fileUpload" accept=".txt">
             <button type="button" onclick="checkCards()">Check Cards</button>
         </form>
         <form>
-            <input type="number" id="count" placeholder="Cards to generate" min="1" max="10">
+            <input type="number" id="count" placeholder="Number of cards" min="1" max="10">
             <button type="button" onclick="generateCards()">Generate Cards</button>
         </form>
         <div id="results"></div>
@@ -58,11 +63,11 @@
         let ip = null;
         let BINS = { Visa: ["4539", "4916"], Mastercard: ["51", "55"], Garanti: ["403799"], Ziraat: ["404937"] };
 
-        // IP al
         fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => {
             ip = d.ip;
             document.getElementById('ipInfo').textContent = `IP: ${ip}`;
-            if (localStorage.getItem('bannedIPs') && localStorage.getItem('bannedIPs').includes(ip)) {
+            let bannedIPs = JSON.parse(localStorage.getItem('bannedIPs') || '[]');
+            if (bannedIPs.includes(ip)) {
                 alert('IP banned!');
                 location.reload();
             }
@@ -103,9 +108,14 @@
             if (code === sessionStorage.getItem('code')) {
                 users[email] = { password: password, ip: ip, registered: Date.now() };
                 localStorage.setItem('users', JSON.stringify(users));
-                if (Object.keys(users).length > 1 && ip in users) {
+                let accounts = Object.values(users).filter(u => u.ip === ip).length;
+                if (accounts > 1) {
                     alert('IP banned for multiple accounts!');
-                    localStorage.setItem('bannedIPs', JSON.stringify(localStorage.getItem('bannedIPs') ? JSON.parse(localStorage.getItem('bannedIPs')) + ',' + ip : ip));
+                    let bannedIPs = JSON.parse(localStorage.getItem('bannedIPs') || '[]');
+                    bannedIPs.push(ip);
+                    localStorage.setItem('bannedIPs', JSON.stringify(bannedIPs));
+                    delete users[email];
+                    localStorage.setItem('users', JSON.stringify(users));
                     location.reload();
                 }
                 document.getElementById('verifyCode').classList.add('hidden');
@@ -121,15 +131,14 @@
             let email = document.getElementById('email').value;
             let password = document.getElementById('password').value;
             if (users[email] && users[email].password === password) {
-                if (users[email].ip && users[email].ip !== ip) {
-                    alert('IP banned! Only 1 account per IP.');
+                let accounts = Object.values(users).filter(u => u.ip === ip).length;
+                if (accounts > 1) {
+                    alert('IP banned for multiple accounts!');
                     return;
                 }
-                users[email].ip = ip;
-                localStorage.setItem('users', JSON.stringify(users));
                 document.getElementById('loginForm').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
-                document.getElementById('userInfo').textContent = `Welcome, ${email}! Checks: ${limits.checks} | Creates: ${limits.creates} | Live: ${limits.live} | Checked: ${limits.checked}`;
+                document.getElementById('userInfo').textContent = `Welcome, ${email}! Checks: ${limits.checks} | Creates: {limits.creates} | Live: {limits.live} | Checked: {limits.checked}`;
             } else {
                 alert('Invalid login!');
             }
@@ -137,7 +146,7 @@
 
         function luhnCheck(cardNum) {
             let digits = cardNum.split('').map(Number);
-            let sum = digits.reverse().reduce((acc, digit, idx) => acc + (idx % 2 === 0 ? digit * 2 % 9 || digit * 2 - 9 : digit), 0);
+            let sum = digits.reduceRight((acc, digit, idx) => acc + (idx % 2 === 1 ? digit * 2 % 9 || digit * 2 - 9 : digit), 0);
             return sum % 10 === 0;
         }
 
@@ -155,7 +164,6 @@
                 } else resolve('');
             });
             let results = [];
-            limits.checked += cards.split('\n').length;
             for (let card of cards.split('\n')) {
                 card = card.trim();
                 if (card) {
@@ -165,14 +173,14 @@
                         let binResponse = await fetch(`https://api.bincheck.io/v1/bins/${bin}?api_key=free`);
                         let binData = await binResponse.json();
                         if (binData.success) {
-                            if (Math.random() < 0.30) {
+                            let ninjaResponse = await fetch(`https://api.api-ninjas.com/v1/bin?bin=${bin}`, {
+                                headers: { 'X-Api-Key': 'free_key' }
+                            });
+                            let ninjaData = await ninjaResponse.json();
+                            if (ninjaData && ninjaData.brand && Math.random() < 0.30) {
                                 results.push(`${card}: Live`);
                                 limits.live++;
                             } else {
-                                let ninjaResponse = await fetch(`https://api.api-ninjas.com/v1/bin?bin=${bin}`, {
-                                    headers: { 'X-Api-Key': 'free' }
-                                });
-                                let ninjaData = await ninjaResponse.json();
                                 results.push(`${card}: Dead`);
                             }
                         } else {
@@ -182,6 +190,7 @@
                         results.push(`${card}: Dead (Luhn failed)`);
                     }
                     limits.checks--;
+                    limits.checked++;
                 }
             }
             document.getElementById('results').textContent = results.join('\n');
@@ -196,8 +205,7 @@
             let count = Math.min(document.getElementById('count').value || 1, 10);
             let cards = [];
             for (let i = 0; i < count && limits.creates > 0; i++) {
-                let bank = Object.keys(BINS)[Math.floor(Math.random() * Object.keys(BINS).length)];
-                let bin = BINS[bank][Math.floor(Math.random() * BINS[bank].length)];
+                let bin = BINS[Object.keys(BINS)[Math.floor(Math.random() * Object.keys(BINS).length)]][Math.floor(Math.random() * BINS[Object.keys(BINS)[0]].length)];
                 let num = Array(16 - bin.length).fill().map(() => Math.floor(Math.random() * 10)).join('');
                 let cardNum = bin + num;
                 if (!luhnCheck(cardNum)) {
@@ -211,7 +219,6 @@
                 limits.creates--;
             }
             document.getElementById('results').textContent = cards.join('\n');
-            document.getElementById('userInfo').textContent = `Welcome, Guest! Checks: ${limits.checks} | Creates: ${limits.creates} | Live: ${limits.live} | Checked: ${limits.checked}`;
         }
     </script>
 </body>
