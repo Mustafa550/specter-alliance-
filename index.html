@@ -3,72 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEARSIBER CC Checker</title>
+    <title>DEARSIBER CC Kontrol</title>
     <style>
-        body { margin: 0; font-family: Arial, sans-serif; background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff, #ffff00); animation: rainbow 10s infinite linear; color: white; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 10px; box-sizing: border-box; }
-        @keyframes rainbow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 200% 50%; } }
-        h1 { text-align: center; color: white; text-shadow: 0 0 10px #fff, 0 0 20px #ff00ff; animation: glow 2s ease-in-out infinite; font-size: 2em; margin-bottom: 20px; }
-        @keyframes glow { from { text-shadow: 0 0 5px #fff; } to { text-shadow: 0 0 20px #ff00ff; } }
-        .container { max-width: 100%; width: 100%; background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.5); margin-bottom: 20px; }
-        input, button, textarea { width: 100%; padding: 10px; margin: 5px 0; border: 2px solid #ff00ff; border-radius: 5px; box-sizing: border-box; background: rgba(255,255,255,0.2); color: white; font-size: 1em; }
-        button { background: linear-gradient(45deg, #ff0000, #00ff00); color: white; cursor: pointer; font-weight: bold; border: none; animation: buttonGlow 2s infinite; }
-        @keyframes buttonGlow { 0% { box-shadow: 0 0 5px #ff00ff; } 50% { box-shadow: 0 0 20px #ff00ff; } 100% { box-shadow: 0 0 5px #ff00ff; } }
+        body { margin: 0; font-family: Arial, sans-serif; background: linear-gradient(135deg, #1e3c72, #2a5298, #2a5298, #1e3c72); animation: bgShift 15s infinite linear; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 0; }
+        @keyframes bgShift { 0% { background-position: 0% 0%; } 50% { background-position: 100% 100%; } 100% { background-position: 0% 0%; } }
+        h1 { text-align: center; color: #ffffff; text-shadow: 0 0 10px #00ccff; animation: glow 2s ease-in-out infinite; font-size: 2.5em; margin: 20px 0; }
+        @keyframes glow { from { text-shadow: 0 0 5px #00ccff; } to { text-shadow: 0 0 15px #00ccff; } }
+        .container { width: 90%; max-width: 800px; background: rgba(30, 60, 114, 0.8); padding: 20px; border-radius: 10px; box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); margin-bottom: 20px; }
+        input, button, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #00ccff; border-radius: 5px; background: rgba(255, 255, 255, 0.1); color: #fff; font-size: 1em; box-sizing: border-box; }
+        button { background: linear-gradient(90deg, #00ccff, #2a5298); color: #fff; cursor: pointer; font-weight: bold; transition: transform 0.2s; }
+        button:hover { transform: scale(1.05); }
         .hidden { display: none; }
-        #results { color: white; white-space: pre-wrap; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 5px; margin: 10px 0; font-size: 0.9em; overflow: auto; }
-        .footer { text-align: center; color: white; width: 100%; padding: 10px 0; background: rgba(0,0,0,0.5); box-shadow: 0 -2px 10px rgba(0,0,0,0.5); position: fixed; bottom: 0; left: 0; font-size: 0.9em; }
-        .footer a { color: white; text-decoration: none; animation: blink 1s infinite; }
-        @keyframes blink { 50% { opacity: 0.5; } }
-        .stats { text-align: center; color: yellow; font-weight: bold; margin: 10px 0; font-size: 1em; }
-        .ip-info { text-align: center; color: cyan; margin: 10px 0; font-size: 0.9em; }
+        #results { color: #fff; white-space: pre-wrap; background: rgba(0, 0, 0, 0.3); padding: 10px; border-radius: 5px; margin: 10px 0; font-size: 0.95em; overflow-y: auto; max-height: 200px; }
+        .footer { text-align: center; color: #fff; width: 100%; padding: 10px 0; background: rgba(30, 60, 114, 0.9); box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5); position: relative; margin-top: auto; font-size: 0.9em; }
+        .footer a { color: #00ccff; text-decoration: none; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0.7; } }
+        .stats { text-align: center; color: #ffeb3b; font-weight: bold; margin: 10px 0; font-size: 1em; }
+        .ip-info { text-align: center; color: #00ffcc; margin: 10px 0; font-size: 0.9em; }
         form { margin-bottom: 20px; }
-        label { color: white; font-size: 1em; }
+        label { color: #fff; font-size: 1em; margin-bottom: 5px; display: block; }
     </style>
 </head>
 <body>
     <h1>DEARSIBER</h1>
     <div class="container" id="login">
         <form id="loginForm">
-            <input type="email" id="email" placeholder="Email (no .ru/.xyz)" required>
-            <input type="password" id="password" placeholder="Password (8+ chars, A/a, 0-9)" required>
-            <button type="button" onclick="registerUser()">Register</button>
-            <button type="button" onclick="loginUser()">Login</button>
+            <input type="email" id="email" placeholder="E-posta (no .ru/.xyz)" required>
+            <input type="password" id="password" placeholder="Şifre (8+ karakter, A/a, 0-9)" required>
+            <button type="button" onclick="registerUser()">Kayıt Ol</button>
+            <button type="button" onclick="loginUser()">Giriş Yap</button>
         </form>
         <div id="verifyCode" class="hidden">
-            <input type="text" id="verifyCodeInput" placeholder="Verification Code" required>
-            <button type="button" onclick="verifyCode()">Verify</button>
+            <input type="text" id="verifyCodeInput" placeholder="Doğrulama Kodu" required>
+            <button type="button" onclick="verifyCode()">Doğrula</button>
         </div>
     </div>
     <div class="container hidden" id="dashboard">
-        <div class="ip-info" id="ipInfo">IP: Loading...</div>
-        <div class="stats" id="userInfo">Welcome, Guest! Checks: 150 | Creates: 100 | Live: 0 | Checked: 0</div>
+        <div class="ip-info" id="ipInfo">IP: Yükleniyor...</div>
+        <div class="stats" id="userInfo">Hoş Geldiniz, Misafir! Kontroller: 150 | Oluşturmalar: 100 | Canlı: 0 | Kontrol Edilen: 0</div>
         <form>
-            <textarea id="cards" placeholder="kart|ay|yıl|cvv (satır satır)" style="height: 100px;"></textarea>
-            <label for="fileUpload">Upload TXT:</label>
+            <label for="cards">Kartları Gir (kart|ay|yıl|cvv):</label>
+            <textarea id="cards" placeholder="kart|ay|yıl|cvv (satır satır)" style="height: 120px;"></textarea>
+            <label for="fileUpload">TXT Dosyası Yükle:</label>
             <input type="file" id="fileUpload" accept=".txt">
-            <button type="button" onclick="checkCards()">Check Cards</button>
+            <button type="button" onclick="checkCards()">Kartları Kontrol Et</button>
         </form>
         <form>
-            <input type="number" id="count" placeholder="Number of cards" min="1" max="10">
-            <button type="button" onclick="generateCards()">Generate Cards</button>
+            <label for="count">Oluşturulacak Kart Sayısı:</label>
+            <input type="number" id="count" placeholder="1-10" min="1" max="10">
+            <button type="button" onclick="generateCards()">Kart Oluştur</button>
         </form>
         <div id="results"></div>
     </div>
     <div class="footer">
-        <a href="https://t.me/+IFx5aGB37Ws5NDFk">@DearSiber | Join Channel</a>
+        <a href="https://t.me/+IFx5aGB37Ws5NDFk">@DearSiber | Kanala Katıl</a>
     </div>
 
     <script>
         let users = JSON.parse(localStorage.getItem('users') || '{}');
         let limits = { checks: 150, creates: 100, live: 0, checked: 0 };
         let ip = null;
-        let BINS = { Visa: ["4539", "4916"], Mastercard: ["51", "55"], Garanti: ["403799"], Ziraat: ["404937"] };
+        let BINS = {
+            Visa: ["4539", "4916", "402400", "4716"],
+            Mastercard: ["51", "55", "2221", "2720"],
+            Garanti: ["403799", "415514"],
+            Ziraat: ["404937", "425845"]
+        };
 
         fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => {
             ip = d.ip;
             document.getElementById('ipInfo').textContent = `IP: ${ip}`;
             let bannedIPs = JSON.parse(localStorage.getItem('bannedIPs') || '[]');
             if (bannedIPs.includes(ip)) {
-                alert('IP banned!');
+                alert('IP yasaklandı!');
                 location.reload();
             }
         });
@@ -86,18 +93,18 @@
             let password = document.getElementById('password').value;
             if (isValidEmail(email) && isValidPassword(password)) {
                 if (users[email]) {
-                    alert('Email already registered!');
+                    alert('Bu e-posta zaten kayıtlı!');
                     return;
                 }
                 let code = Math.random().toString(36).substr(2, 6).toUpperCase();
-                alert(`Verification code sent to ${email}: ${code}`);  // Simüle
+                alert(`Doğrulama kodu ${email} adresine gönderildi: ${code}`); // Simüle
                 sessionStorage.setItem('verification_email', email);
                 sessionStorage.setItem('code', code);
                 sessionStorage.setItem('temp_password', password);
                 document.getElementById('loginForm').classList.add('hidden');
                 document.getElementById('verifyCode').classList.remove('hidden');
             } else {
-                alert('Invalid email or password format!');
+                alert('Geçersiz e-posta veya şifre formatı!');
             }
         }
 
@@ -110,7 +117,7 @@
                 localStorage.setItem('users', JSON.stringify(users));
                 let accounts = Object.values(users).filter(u => u.ip === ip).length;
                 if (accounts > 1) {
-                    alert('IP banned for multiple accounts!');
+                    alert('Bu IP birden fazla hesap için yasaklandı!');
                     let bannedIPs = JSON.parse(localStorage.getItem('bannedIPs') || '[]');
                     bannedIPs.push(ip);
                     localStorage.setItem('bannedIPs', JSON.stringify(bannedIPs));
@@ -119,11 +126,11 @@
                     location.reload();
                 }
                 document.getElementById('verifyCode').classList.add('hidden');
-                document.getElementById('loginRegister').classList.add('hidden');
+                document.getElementById('login').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
-                document.getElementById('userInfo').textContent = `Welcome, ${email}! Checks: ${limits.checks} | Creates: ${limits.creates} | Live: ${limits.live} | Checked: ${limits.checked}`;
+                document.getElementById('userInfo').textContent = `Hoş Geldiniz, ${email}! Kontroller: ${limits.checks} | Oluşturmalar: ${limits.creates} | Canlı: ${limits.live} | Kontrol Edilen: ${limits.checked}`;
             } else {
-                alert('Invalid code!');
+                alert('Geçersiz kod!');
             }
         }
 
@@ -133,26 +140,29 @@
             if (users[email] && users[email].password === password) {
                 let accounts = Object.values(users).filter(u => u.ip === ip).length;
                 if (accounts > 1) {
-                    alert('IP banned for multiple accounts!');
+                    alert('Bu IP birden fazla hesap için yasaklandı!');
                     return;
                 }
                 document.getElementById('loginForm').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
-                document.getElementById('userInfo').textContent = `Welcome, ${email}! Checks: ${limits.checks} | Creates: {limits.creates} | Live: {limits.live} | Checked: {limits.checked}`;
+                document.getElementById('userInfo').textContent = `Hoş Geldiniz, ${email}! Kontroller: ${limits.checks} | Oluşturmalar: ${limits.creates} | Canlı: ${limits.live} | Kontrol Edilen: ${limits.checked}`;
             } else {
-                alert('Invalid login!');
+                alert('Geçersiz giriş!');
             }
         }
 
         function luhnCheck(cardNum) {
             let digits = cardNum.split('').map(Number);
-            let sum = digits.reduceRight((acc, digit, idx) => acc + (idx % 2 === 1 ? digit * 2 % 9 || digit * 2 - 9 : digit), 0);
+            let sum = digits.reduceRight((acc, digit, idx) => {
+                let val = idx % 2 === 0 ? digit : digit * 2;
+                return acc + (val > 9 ? val - 9 : val);
+            }, 0);
             return sum % 10 === 0;
         }
 
         async function checkCards() {
             if (limits.checks <= 0) {
-                alert('Check limit reached!');
+                alert('Kontrol limiti aşıldı!');
                 return;
             }
             let cards = document.getElementById('cards').value || await new Promise(resolve => {
@@ -178,34 +188,35 @@
                             });
                             let ninjaData = await ninjaResponse.json();
                             if (ninjaData && ninjaData.brand && Math.random() < 0.30) {
-                                results.push(`${card}: Live`);
+                                results.push(`${card}: Canlı`);
                                 limits.live++;
                             } else {
-                                results.push(`${card}: Dead`);
+                                results.push(`${card}: Ölü`);
                             }
                         } else {
-                            results.push(`${card}: Dead`);
+                            results.push(`${card}: Ölü`);
                         }
                     } else {
-                        results.push(`${card}: Dead (Luhn failed)`);
+                        results.push(`${card}: Ölü (Luhn başarısız)`);
                     }
                     limits.checks--;
                     limits.checked++;
                 }
             }
             document.getElementById('results').textContent = results.join('\n');
-            document.getElementById('userInfo').textContent = `Welcome, Guest! Checks: ${limits.checks} | Creates: ${limits.creates} | Live: ${limits.live} | Checked: ${limits.checked}`;
+            document.getElementById('userInfo').textContent = `Hoş Geldiniz, Misafir! Kontroller: ${limits.checks} | Oluşturmalar: ${limits.creates} | Canlı: ${limits.live} | Kontrol Edilen: ${limits.checked}`;
         }
 
         function generateCards() {
             if (limits.creates <= 0) {
-                alert('Create limit reached!');
+                alert('Oluşturma limiti aşıldı!');
                 return;
             }
             let count = Math.min(document.getElementById('count').value || 1, 10);
             let cards = [];
             for (let i = 0; i < count && limits.creates > 0; i++) {
-                let bin = BINS[Object.keys(BINS)[Math.floor(Math.random() * Object.keys(BINS).length)]][Math.floor(Math.random() * BINS[Object.keys(BINS)[0]].length)];
+                let bank = Object.keys(BINS)[Math.floor(Math.random() * Object.keys(BINS).length)];
+                let bin = BINS[bank][Math.floor(Math.random() * BINS[bank].length)];
                 let num = Array(16 - bin.length).fill().map(() => Math.floor(Math.random() * 10)).join('');
                 let cardNum = bin + num;
                 if (!luhnCheck(cardNum)) {
@@ -219,6 +230,7 @@
                 limits.creates--;
             }
             document.getElementById('results').textContent = cards.join('\n');
+            document.getElementById('userInfo').textContent = `Hoş Geldiniz, Misafir! Kontroller: ${limits.checks} | Oluşturmalar: ${limits.creates} | Canlı: ${limits.live} | Kontrol Edilen: ${limits.checked}`;
         }
     </script>
 </body>
