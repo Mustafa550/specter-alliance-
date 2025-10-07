@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DEARCHECKER</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/otpauth/9.1.2/otpauth.min.js"></script>
     <style>
         body { margin: 0; font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #1a2a6c, #2e4a9e); animation: bgGlow 12s infinite linear; min-height: 100vh; display: flex; flex-direction: column; }
         @keyframes bgGlow { 0% { background-position: 0% 0%; } 50% { background-position: 100% 100%; } 100% { background-position: 0% 0%; } }
@@ -32,7 +31,7 @@
         <form id="loginForm">
             <label>Kullanıcı Adı:</label><input type="text" id="loginUsername" required>
             <label>Şifre:</label><input type="password" id="loginPassword" required>
-            <label>2FA Kod:</label><input type="text" id="login2FA" required>
+            <label>Doğrulama Kodu:</label><input type="text" id="loginCode" required>
             <button type="button" onclick="login()">Giriş Yap</button>
         </form>
         <button type="button" onclick="showRegister()" style="background: #2e4a9e;">Kayıt Ol</button>
@@ -48,11 +47,10 @@
             <button type="button" onclick="register()">Kayıt Ol</button>
         </form>
     </div>
-    <div class="container hidden" id="twoFactor">
-        <form id="twoFactorForm">
-            <label>2FA Kodunu Girin:</label><input type="text" id="twoFACode" required>
-            <button type="button" onclick="verify2FA()">Doğrula</button>
-        </form>
+    <div class="container hidden" id="codeDisplay">
+        <p>Doğrulama Kodunuz: <strong id="displayCode"></strong></p>
+        <p><strong>Bu kodu kaybetmeyin, kaybederseniz hesap erişiminizi kaybedersiniz!</strong></p>
+        <button type="button" onclick="showLogin()">Giriş Ekranına Dön</button>
     </div>
     <div class="container hidden" id="adminLogin">
         <form id="adminForm">
@@ -98,7 +96,7 @@
         <p><button onclick="toggleNotifications()">Bildirim Ayarları</button></p>
         <p><button onclick="changeTheme()">Tema Seçimi</button></p>
         <p><button onclick="setSecurityQuestions()">Güvenlik Soruları</button></p>
-        <p><button onclick="enable2FA()">İki Faktör Doğrulama</button></p>
+        <p><button onclick="setAltVerification()">Alternatif Doğrulama</button></p>
         <p><button onclick="showStats()">Kullanım İstatistikleri</button></p>
         <p><button onclick="adminLoginFromSettings()">Admin Paneli Giriş</button></p>
         <p><button onclick="logout()">Çıkış Yap</button></p>
@@ -117,7 +115,6 @@
         let ip = null, adminMode = false, currentUser = null;
         let adminUser = { username: 'sansar31', password: 'sansar3131' };
         let allCards = [];
-        let secret = null;
 
         fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => {
             ip = d.ip; document.getElementById('ipInfo').textContent = `IP: ${ip}`;
@@ -126,43 +123,31 @@
 
         function isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.(com|org|net)$/.test(email) && !email.endsWith('.ru'); }
         function isValidPassword(pass) { return pass.length >= 8 && /[A-Z]/.test(pass) && /[a-z]/.test(pass) && /\d/.test(pass); }
+        function generateCode() { return Math.floor(100000 + Math.random() * 900000).toString().substr(0, 6); }
 
         function register() {
             let name = document.getElementById('name').value, surname = document.getElementById('surname').value,
                 city = document.getElementById('city').value, username = document.getElementById('username').value,
                 email = document.getElementById('email').value, password = document.getElementById('password').value;
             if (isValidEmail(email) && isValidPassword(password) && !users[username]) {
-                secret = new OTPAuth.TOTP({ issuer: 'DEARCHECKER', label: username, algorithm: 'SHA1', digits: 6, period: 30, secret: OTPAuth.Secret.fromRandom() });
-                users[username] = { name, surname, city, email, password, ip, registered: Date.now(), secret: secret.secret.base32 };
+                let code = generateCode();
+                users[username] = { name, surname, city, email, password, ip, registered: Date.now(), code };
                 localStorage.setItem('users', JSON.stringify(users));
-                alert('Kayıt başarılı! 2FA kodunu Google Authenticator ile alabilirsiniz.');
+                document.getElementById('displayCode').textContent = code;
                 document.getElementById('register').classList.add('hidden');
-                document.getElementById('twoFactor').classList.remove('hidden');
+                document.getElementById('codeDisplay').classList.remove('hidden');
             } else alert('Geçersiz bilgi veya kullanıcı mevcut!');
-        }
-
-        function verify2FA() {
-            let code = document.getElementById('twoFACode').value;
-            let userSecret = users[document.getElementById('username').value].secret;
-            let totp = new OTPAuth.TOTP({ issuer: 'DEARCHECKER', label: document.getElementById('username').value, algorithm: 'SHA1', digits: 6, period: 30, secret: OTPAuth.Secret.fromBase32(userSecret) });
-            if (totp.validate({ token: code }) !== null) {
-                document.getElementById('twoFactor').classList.add('hidden');
-                document.getElementById('login').classList.remove('hidden');
-            } else alert('Geçersiz 2FA kodu!');
         }
 
         function login() {
             let username = document.getElementById('loginUsername').value, password = document.getElementById('loginPassword').value,
-                code = document.getElementById('login2FA').value;
-            if (users[username] && users[username].password === password && (users[username].ip === ip || !users[username].ip)) {
-                let totp = new OTPAuth.TOTP({ issuer: 'DEARCHECKER', label: username, algorithm: 'SHA1', digits: 6, period: 30, secret: OTPAuth.Secret.fromBase32(users[username].secret) });
-                if (totp.validate({ token: code }) !== null) {
-                    users[username].ip = ip; localStorage.setItem('users', JSON.stringify(users));
-                    document.getElementById('login').classList.add('hidden');
-                    document.getElementById('dashboard').classList.remove('hidden');
-                    currentUser = username; updateStats(username);
-                } else alert('Hatalı 2FA kodu!');
-            } else alert('Hatalı kullanıcı adı veya şifre!');
+                code = document.getElementById('loginCode').value;
+            if (users[username] && users[username].password === password && users[username].code === code && (users[username].ip === ip || !users[username].ip)) {
+                users[username].ip = ip; localStorage.setItem('users', JSON.stringify(users));
+                document.getElementById('login').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                currentUser = username; updateStats(username);
+            } else alert('Hatalı kullanıcı adı, şifre veya doğrulama kodu!');
         }
 
         function adminLogin() {
@@ -249,6 +234,7 @@
 
         function logout() { currentUser = null; location.reload(); }
         function showRegister() { document.getElementById('login').classList.add('hidden'); document.getElementById('register').classList.remove('hidden'); }
+        function showLogin() { document.getElementById('codeDisplay').classList.add('hidden'); document.getElementById('login').classList.remove('hidden'); }
         function showAdmin() { document.getElementById('login').classList.add('hidden'); document.getElementById('adminLogin').classList.remove('hidden'); }
         function toggleMenu() {
             let settings = document.getElementById('settings');
@@ -265,7 +251,7 @@
         function toggleNotifications() { alert('Bildirim ayarları güncellendi!'); }
         function changeTheme() { alert('Tema değiştirildi!'); }
         function setSecurityQuestions() { alert('Güvenlik soruları eklendi!'); }
-        function enable2FA() { alert('2FA zaten aktif!'); }
+        function setAltVerification() { alert('Alternatif doğrulama eklendi!'); }
         function showStats() { alert('Kullanım istatistikleri: 50 kontrol, 20 canlı.'); }
         function adminLoginFromSettings() { showAdmin(); }
     </script>
