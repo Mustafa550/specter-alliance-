@@ -65,9 +65,6 @@
             BankofAmerica: ["4147", "4213", "4313", "414700", "421300", "414710", "421320", "414750", "421370"]
         };
 
-        // IP Al
-        fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => ip = d.ip);
-
         // Luhn Kontrolü
         function luhnCheck(cardNum) {
             let digits = cardNum.split('').map(Number);
@@ -100,19 +97,20 @@
                     try {
                         let controller = new AbortController();
                         let timeout = setTimeout(() => controller.abort(), 5000); // 5 saniye timeout
-                        let [binResp, ninjaResp, codeResp, binlistResp] = await Promise.all([
-                            fetch(`https://lookup.binlist.net/${bin}`, { signal: controller.signal }).then(r => r.json()),
-                            fetch(`https://api.apilayer.com/bincheck/${bin}`, { headers: { 'apikey': 'free_key' }, signal: controller.signal }).then(r => r.json()),
-                            fetch(`https://api.bincodes.com/v1/bin/${bin}?key=free_key`, { signal: controller.signal }).then(r => r.json()),
-                            fetch(`https://bin-ip-checker.p.rapidapi.com/?bin=${bin}`, { headers: { 'X-RapidAPI-Key': 'free_key' }, signal: controller.signal }).then(r => r.json())
-                        ]);
+                        let binResp = await fetch(`https://lookup.binlist.net/${bin}`, { signal: controller.signal });
+                        let binData = await binResp.json();
+                        let ninjaResp = await fetch(`https://api.apilayer.com/bincheck/${bin}`, { 
+                            headers: { 'apikey': 'YOUR_API_LAYER_KEY' }, 
+                            signal: controller.signal 
+                        });
+                        let ninjaData = await ninjaResp.json();
                         clearTimeout(timeout);
-                        if (binResp && ninjaResp.valid && codeResp.valid && binlistResp.success) {
-                            let isLive = Math.random() < 0.65;
+                        if (binData && ninjaData.valid_for_card && ninjaData.card_type) {
+                            let isLive = Math.random() < 0.65; // %65 Live oranı
                             if (isLive) {
-                                let cardType = ninjaResp.scheme || (num.length === 15 ? 'Amex' : binResp.type);
-                                let bankName = binResp.bank?.name || codeResp.bank || 'Unknown Bank';
-                                let country = binResp.country?.alpha2 || 'Unknown';
+                                let cardType = ninjaData.card_type || (num.length === 15 ? 'Amex' : 'Visa');
+                                let bankName = binData.bank?.name || 'Unknown Bank';
+                                let country = binData.country?.alpha2 || 'Unknown';
                                 let balance = (Math.random() * 10000).toFixed(2) + ' ' + (country === 'TR' ? 'TRY' : 'USD');
                                 let level = Math.random() < 0.3 ? 'Gold' : (Math.random() < 0.5 ? 'Platinum' : 'Standard');
                                 liveCards.push(`✅ Approved | ${num}|${month}|${year}|${cvv} | ${balance} | ${bankName} | ${cardType} ${level} | ${country}`);
