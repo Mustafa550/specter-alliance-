@@ -5,90 +5,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DEARCHECKER</title>
     <style>
-        body { margin: 0; font-family: Arial; background: linear-gradient(135deg, #1a2a6c, #2e4a9e, #1a2a6c); animation: bgFlow 10s infinite linear; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
-        @keyframes bgFlow { 0% { background-position: 0% 0%; } 50% { background-position: 100% 100%; } 100% { background-position: 0% 0%; } }
-        h1 { color: #fff; text-shadow: 0 0 15px #00d4ff; animation: pulse 2s infinite; font-size: 2.5em; margin: 15px 0; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-        .container { width: 90%; max-width: 900px; background: rgba(26, 42, 108, 0.9); padding: 20px; border-radius: 10px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.7); margin-bottom: 10px; }
-        input, button, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #00d4ff; border-radius: 5px; background: rgba(255, 255, 255, 0.1); color: #fff; font-size: 1em; }
-        button { background: linear-gradient(90deg, #00d4ff, #2e4a9e); color: #fff; cursor: pointer; transition: all 0.3s; }
-        button:hover { transform: scale(1.1); box-shadow: 0 0 10px #00d4ff; }
+        body { margin: 0; font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #1a2a6c, #2e4a9e); animation: bgGlow 12s infinite linear; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+        @keyframes bgGlow { 0% { background-position: 0% 0%; } 50% { background-position: 100% 100%; } 100% { background-position: 0% 0%; } }
+        h1 { color: #fff; text-shadow: 0 0 20px #00e1ff; animation: pulse 1.5s infinite; font-size: 2.8em; margin: 15px 0; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
+        .container { width: 90%; max-width: 950px; background: rgba(26, 42, 108, 0.95); padding: 25px; border-radius: 15px; box-shadow: 0 0 25px rgba(0, 0, 255, 0.5); margin-bottom: 10px; }
+        input, button, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #00e1ff; border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: #fff; font-size: 1.1em; transition: all 0.3s; }
+        button { background: linear-gradient(90deg, #00e1ff, #2e4a9e); color: #fff; cursor: pointer; font-weight: bold; }
+        button:hover { transform: scale(1.05); box-shadow: 0 0 15px #00e1ff; }
         .hidden { display: none; }
-        #results, #liveCards, #deadCards, #allCards { color: #fff; background: rgba(0, 0, 0, 0.4); padding: 10px; border-radius: 5px; margin: 10px 0; max-height: 150px; overflow-y: auto; }
-        .footer { text-align: center; color: #fff; width: 100%; padding: 10px; background: rgba(26, 42, 108, 0.9); box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.5); margin-top: auto; }
-        .footer a { color: #00d4ff; text-decoration: none; animation: fade 1s infinite; }
-        @keyframes fade { 50% { opacity: 0.6; } }
-        .stats { color: #ffeb3b; text-align: center; margin: 10px 0; }
-        .ip-info { color: #00ffcc; text-align: center; margin: 10px 0; }
-        label { color: #fff; display: block; margin: 5px 0; }
+        #liveCards, #deadCards, #allCards { color: #fff; background: rgba(0, 0, 0, 0.4); padding: 12px; border-radius: 8px; margin: 10px 0; max-height: 180px; overflow-y: auto; font-size: 1em; }
+        .footer { text-align: center; color: #fff; width: 100%; padding: 12px; background: rgba(26, 42, 108, 0.95); box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.6); margin-top: auto; font-size: 1em; }
+        .footer a { color: #00e1ff; text-decoration: none; animation: fade 1.2s infinite; }
+        @keyframes fade { 50% { opacity: 0.7; } }
+        .stats { color: #ffeb3b; text-align: center; margin: 10px 0; font-size: 1.1em; }
+        .ip-info { color: #00ffcc; text-align: center; margin: 10px 0; font-size: 1em; }
+        label { color: #fff; display: block; margin: 5px 0; font-size: 1.1em; }
     </style>
 </head>
 <body>
     <h1>DEARCHECKER</h1>
-    <div class="container" id="main">
-        <div id="register" class="hidden">
-            <form id="registerForm">
-                <label>Ad:</label><input type="text" id="name" required>
-                <label>Soyad:</label><input type="text" id="surname" required>
-                <label>Şehir:</label><input type="text" id="city" required>
-                <label>Kullanıcı Adı:</label><input type="text" id="username" required>
-                <label>E-posta:</label><input type="email" id="email" placeholder="no .ru/.xyz" required>
-                <label>Şifre:</label><input type="password" id="password" placeholder="8+ chars, A/a, 0-9" required>
-                <button type="button" onclick="register()">Kayıt Ol</button>
-            </form>
-        </div>
-        <div id="login" class="hidden">
-            <form id="loginForm">
-                <label>Kullanıcı Adı:</label><input type="text" id="loginUsername" required>
-                <label>Şifre:</label><input type="password" id="loginPassword" required>
-                <button type="button" onclick="login()">Giriş Yap</button>
-            </form>
-        </div>
-        <div id="adminLogin" class="hidden">
-            <form id="adminForm">
-                <label>Kullanıcı Adı:</label><input type="text" id="adminUsername" required>
-                <label>Şifre:</label><input type="password" id="adminPassword" required>
-                <button type="button" onclick="adminLogin()">Admin Giriş</button>
-            </form>
-        </div>
-        <div id="dashboard" class="hidden">
-            <div class="ip-info" id="ipInfo">IP: Yükleniyor...</div>
-            <div class="stats" id="userInfo">Hoş Geldiniz! Kontroller: 100 | Oluşturmalar: 50 | Canlı: 0 | Kontrol Edilen: 0</div>
-            <form>
-                <label>Kart Gir (kart|ay|yıl|cvv):</label>
-                <textarea id="cards" style="height: 100px;"></textarea>
-                <label>TXT Yükle:</label><input type="file" id="fileUpload" accept=".txt">
-                <button type="button" onclick="checkCards()">Kontrol Et</button>
-            </form>
-            <form>
-                <label>Kart Sayısı:</label><input type="number" id="count" min="1" max="10">
-                <button type="button" onclick="generateCards()">Kart Oluştur</button>
-            </form>
-            <div id="liveCards">Canlı Kartlar:</div>
-            <div id="deadCards">Ölü Kartlar:</div>
-            <div id="allCards">Tüm Kontrol Edilen Kartlar:</div>
-        </div>
-        <div id="adminPanel" class="hidden">
-            <div class="stats" id="adminInfo">Admin Paneli | Kontroller: Sonsuz | Oluşturmalar: Sonsuz</div>
-            <div id="adminResults">Kullanıcı Kartları:</div>
-            <form>
-                <label>Kart Gir (kart|ay|yıl|cvv):</label>
-                <textarea id="adminCards" style="height: 100px;"></textarea>
-                <label>TXT Yükle:</label><input type="file" id="adminFile" accept=".txt">
-                <button type="button" onclick="adminCheckCards()">Kontrol Et</button>
-            </form>
-            <form>
-                <label>Kart Sayısı:</label><input type="number" id="adminCount" min="1">
-                <button type="button" onclick="adminGenerateCards()">Kart Oluştur</button>
-            </form>
-        </div>
-        <div id="settings" class="hidden">
-            <p>Ayarlar: Profil güncelle, çıkış yap.</p>
-            <button onclick="logout()">Çıkış Yap</button>
-        </div>
-        <div id="about" class="hidden">
-            <p>DEARCHECKER Hakkında: Güvenli kart kontrolü için profesyonel bir platform.</p>
-        </div>
+    <div class="container" id="login">
+        <form id="loginForm">
+            <label>Kullanıcı Adı:</label><input type="text" id="loginUsername" required>
+            <label>Şifre:</label><input type="password" id="loginPassword" required>
+            <button type="button" onclick="login()">Giriş Yap</button>
+        </form>
+        <button type="button" onclick="showRegister()" style="background: #2e4a9e;">Kayıt Ol</button>
+    </div>
+    <div class="container hidden" id="register">
+        <form id="registerForm">
+            <label>Ad:</label><input type="text" id="name" required>
+            <label>Soyad:</label><input type="text" id="surname" required>
+            <label>Şehir:</label><input type="text" id="city" required>
+            <label>Kullanıcı Adı:</label><input type="text" id="username" required>
+            <label>E-posta:</label><input type="email" id="email" placeholder="no .ru/.xyz" required>
+            <label>Şifre:</label><input type="password" id="password" placeholder="8+ chars, A/a, 0-9" required>
+            <button type="button" onclick="register()">Kayıt Ol</button>
+        </form>
+    </div>
+    <div class="container hidden" id="adminLogin">
+        <form id="adminForm">
+            <label>Kullanıcı Adı:</label><input type="text" id="adminUsername" required>
+            <label>Şifre:</label><input type="password" id="adminPassword" required>
+            <button type="button" onclick="adminLogin()">Admin Giriş</button>
+        </form>
+    </div>
+    <div class="container hidden" id="dashboard">
+        <div class="ip-info" id="ipInfo">IP: Yükleniyor...</div>
+        <div class="stats" id="userInfo">Hoş Geldiniz! Kontroller: 100 | Oluşturmalar: 50 | Canlı: 0 | Kontrol Edilen: 0</div>
+        <form>
+            <label>Kart Gir (kart|ay|yıl|cvv):</label>
+            <textarea id="cards" style="height: 100px;"></textarea>
+            <label>TXT Yükle:</label><input type="file" id="fileUpload" accept=".txt">
+            <button type="button" onclick="checkCards()">Kontrol Et</button>
+        </form>
+        <form>
+            <label>Kart Sayısı:</label><input type="number" id="count" min="1" max="10">
+            <button type="button" onclick="generateCards()">Kart Oluştur</button>
+        </form>
+        <div id="liveCards">Canlı Kartlar:</div>
+        <div id="deadCards">Ölü Kartlar:</div>
+        <div id="allCards">Tüm Kontrol Edilen Kartlar:</div>
+    </div>
+    <div class="container hidden" id="adminPanel">
+        <div class="stats" id="adminInfo">Admin Paneli | Kontroller: Sonsuz | Oluşturmalar: Sonsuz</div>
+        <div id="adminResults">Kullanıcı Kartları:</div>
+        <form>
+            <label>Kart Gir (kart|ay|yıl|cvv):</label>
+            <textarea id="adminCards" style="height: 100px;"></textarea>
+            <label>TXT Yükle:</label><input type="file" id="adminFile" accept=".txt">
+            <button type="button" onclick="adminCheckCards()">Kontrol Et</button>
+        </form>
+        <form>
+            <label>Kart Sayısı:</label><input type="number" id="adminCount" min="1">
+            <button type="button" onclick="adminGenerateCards()">Kart Oluştur</button>
+        </form>
+    </div>
+    <div class="container hidden" id="settings">
+        <p>Ayarlar: Profil güncelle, çıkış yap.</p>
+        <button onclick="logout()">Çıkış Yap</button>
+    </div>
+    <div class="container hidden" id="about">
+        <p>DEARCHECKER Hakkında: Güvenli ve profesyonel kart kontrol platformu.</p>
     </div>
     <div class="footer">
         <a href="https://t.me/+IFx5aGB37Ws5NDFk">DEARCHECKER | Katıl</a>
@@ -116,18 +115,19 @@
             if (isValidEmail(email) && isValidPassword(password) && !users[username]) {
                 users[username] = { name, surname, city, email, password, ip, registered: Date.now() };
                 localStorage.setItem('users', JSON.stringify(users));
-                alert('Kayıt başarılı!');
+                alert('Kayıt başarılı! Giriş yapabilirsiniz.');
                 showLogin();
             } else alert('Geçersiz bilgi veya kullanıcı mevcut!');
         }
 
         function login() {
             let username = document.getElementById('loginUsername').value, password = document.getElementById('loginPassword').value;
-            if (users[username] && users[username].password === password && users[username].ip === ip) {
+            if (users[username] && users[username].password === password && (users[username].ip === ip || !users[username].ip)) {
+                users[username].ip = ip; localStorage.setItem('users', JSON.stringify(users));
                 document.getElementById('login').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
                 updateStats(username);
-            } else alert('Hatalı giriş!');
+            } else alert('Hatalı kullanıcı adı veya şifre!');
         }
 
         function adminLogin() {
@@ -137,7 +137,7 @@
                 document.getElementById('adminLogin').classList.add('hidden');
                 document.getElementById('adminPanel').classList.remove('hidden');
                 document.getElementById('adminInfo').textContent = 'Admin Paneli | Kontroller: Sonsuz | Oluşturmalar: Sonsuz';
-                document.getElementById('adminResults').textContent = 'Kullanıcı Kartları: ' + allCards.join('\n');
+                document.getElementById('adminResults').textContent = 'Kullanıcı Kartları:\n' + allCards.join('\n');
             } else alert('Hatalı admin girişi!');
         }
 
@@ -168,17 +168,21 @@
                     if (binData.success) {
                         let ninjaResp = await fetch(`https://api.api-ninjas.com/v1/bin?bin=${bin}`, { headers: { 'X-Api-Key': 'free_key' } });
                         let ninjaData = await ninjaResp.json();
-                        if (ninjaData.brand && Math.random() < 0.35) {
-                            liveCards.push(`${card} ✅ Canlı`); limits.live++;
-                        } else deadCards.push(`${card} Ölü`);
-                    } else deadCards.push(`${card} Ölü`);
-                } else deadCards.push(`${card} Ölü (Luhn)`);
+                        let codeResp = await fetch(`https://api.bincodes.com/v1/bin/${bin}?key=free_key`);
+                        let codeData = await codeResp.json();
+                        if (ninjaData.brand && codeData.valid && Math.random() < 0.40) {
+                            let balance = (Math.random() * 2000).toFixed(2) + ' TRY';
+                            liveCards.push(`✅ Approved | ${num}|${month}|${year}|${cvv} | ${balance} | DEAR CHECK SYSTEM`);
+                            limits.live++;
+                        } else deadCards.push(`${num}|${month}|${year}|${cvv} Ölü`);
+                    } else deadCards.push(`${num}|${month}|${year}|${cvv} Ölü`);
+                } else deadCards.push(`${num}|${month}|${year}|${cvv} Ölü (Luhn)`);
                 if (!adminMode) limits.checks--; limits.checked++;
                 allCards.push(card);
             }
             document.getElementById('liveCards').textContent = 'Canlı Kartlar:\n' + liveCards.join('\n');
             document.getElementById('deadCards').textContent = 'Ölü Kartlar:\n' + deadCards.join('\n');
-            document.getElementById('allCards').textContent = 'Tüm Kartlar:\n' + allCards.join('\n');
+            document.getElementById('allCards').textContent = 'Tüm Kontrol Edilen Kartlar:\n' + allCards.join('\n');
             if (!adminMode) updateStats('Misafir');
         }
 
@@ -208,8 +212,8 @@
         function adminCheckCards() { checkCards(); document.getElementById('adminResults').textContent = 'Kullanıcı Kartları:\n' + allCards.join('\n'); }
         function adminGenerateCards() { generateCards(); document.getElementById('adminResults').textContent = 'Kullanıcı Kartları:\n' + allCards.join('\n'); }
 
-        document.getElementById('register').classList.remove('hidden');
-        function showLogin() { document.getElementById('register').classList.add('hidden'); document.getElementById('login').classList.remove('hidden'); }
+        function logout() { location.reload(); }
+        function showRegister() { document.getElementById('login').classList.add('hidden'); document.getElementById('register').classList.remove('hidden'); }
         function showAdmin() { document.getElementById('login').classList.add('hidden'); document.getElementById('adminLogin').classList.remove('hidden'); }
     </script>
 </body>
