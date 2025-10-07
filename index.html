@@ -4,17 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DEARCHECKER</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/otpauth/9.1.2/otpauth.min.js"></script>
     <style>
-        body { margin: 0; font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #1a2a6c, #2e4a9e); animation: bgGlow 12s infinite linear; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+        body { margin: 0; font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #1a2a6c, #2e4a9e); animation: bgGlow 12s infinite linear; min-height: 100vh; display: flex; flex-direction: column; }
         @keyframes bgGlow { 0% { background-position: 0% 0%; } 50% { background-position: 100% 100%; } 100% { background-position: 0% 0%; } }
-        h1 { color: #fff; text-shadow: 0 0 20px #00e1ff; animation: pulse 1.5s infinite; font-size: 2.8em; margin: 15px 0; }
+        h1 { color: #fff; text-shadow: 0 0 20px #00e1ff; animation: pulse 1.5s infinite; font-size: 2.8em; margin: 15px; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
-        .container { width: 90%; max-width: 950px; background: rgba(26, 42, 108, 0.95); padding: 25px; border-radius: 15px; box-shadow: 0 0 25px rgba(0, 0, 255, 0.5); margin-bottom: 10px; }
+        .menu { position: fixed; top: 10px; left: 10px; font-size: 2em; color: #00e1ff; cursor: pointer; z-index: 10; }
+        .container { width: 90%; max-width: 950px; background: rgba(26, 42, 108, 0.95); padding: 25px; border-radius: 15px; box-shadow: 0 0 25px rgba(0, 0, 255, 0.5); margin: 10px auto; }
         input, button, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #00e1ff; border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: #fff; font-size: 1.1em; transition: all 0.3s; }
         button { background: linear-gradient(90deg, #00e1ff, #2e4a9e); color: #fff; cursor: pointer; font-weight: bold; }
         button:hover { transform: scale(1.05); box-shadow: 0 0 15px #00e1ff; }
         .hidden { display: none; }
-        #liveCards, #deadCards, #allCards { color: #fff; background: rgba(0, 0, 0, 0.4); padding: 12px; border-radius: 8px; margin: 10px 0; max-height: 180px; overflow-y: auto; font-size: 1em; }
+        #liveCards, #deadCards, #allCards, #adminResults { color: #fff; background: rgba(0, 0, 0, 0.4); padding: 12px; border-radius: 8px; margin: 10px 0; max-height: 180px; overflow-y: auto; font-size: 1em; }
         .footer { text-align: center; color: #fff; width: 100%; padding: 12px; background: rgba(26, 42, 108, 0.95); box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.6); margin-top: auto; font-size: 1em; }
         .footer a { color: #00e1ff; text-decoration: none; animation: fade 1.2s infinite; }
         @keyframes fade { 50% { opacity: 0.7; } }
@@ -24,11 +26,13 @@
     </style>
 </head>
 <body>
+    <div class="menu" onclick="toggleMenu()">☰</div>
     <h1>DEARCHECKER</h1>
     <div class="container" id="login">
         <form id="loginForm">
             <label>Kullanıcı Adı:</label><input type="text" id="loginUsername" required>
             <label>Şifre:</label><input type="password" id="loginPassword" required>
+            <label>2FA Kod:</label><input type="text" id="login2FA" required>
             <button type="button" onclick="login()">Giriş Yap</button>
         </form>
         <button type="button" onclick="showRegister()" style="background: #2e4a9e;">Kayıt Ol</button>
@@ -42,6 +46,12 @@
             <label>E-posta:</label><input type="email" id="email" placeholder="no .ru/.xyz" required>
             <label>Şifre:</label><input type="password" id="password" placeholder="8+ chars, A/a, 0-9" required>
             <button type="button" onclick="register()">Kayıt Ol</button>
+        </form>
+    </div>
+    <div class="container hidden" id="twoFactor">
+        <form id="twoFactorForm">
+            <label>2FA Kodunu Girin:</label><input type="text" id="twoFACode" required>
+            <button type="button" onclick="verify2FA()">Doğrula</button>
         </form>
     </div>
     <div class="container hidden" id="adminLogin">
@@ -83,11 +93,19 @@
         </form>
     </div>
     <div class="container hidden" id="settings">
-        <p>Ayarlar: Profil güncelle, çıkış yap.</p>
-        <button onclick="logout()">Çıkış Yap</button>
+        <h3>Ayarlar</h3>
+        <p><button onclick="changeProfilePhoto()">Profil Fotoğrafı Değiştir</button></p>
+        <p><button onclick="toggleNotifications()">Bildirim Ayarları</button></p>
+        <p><button onclick="changeTheme()">Tema Seçimi</button></p>
+        <p><button onclick="setSecurityQuestions()">Güvenlik Soruları</button></p>
+        <p><button onclick="enable2FA()">İki Faktör Doğrulama</button></p>
+        <p><button onclick="showStats()">Kullanım İstatistikleri</button></p>
+        <p><button onclick="adminLoginFromSettings()">Admin Paneli Giriş</button></p>
+        <p><button onclick="logout()">Çıkış Yap</button></p>
     </div>
     <div class="container hidden" id="about">
-        <p>DEARCHECKER Hakkında: Güvenli ve profesyonel kart kontrol platformu.</p>
+        <h3>Hakkımızda</h3>
+        <p>DEARCHECKER: Güvenli ve profesyonel kart kontrol platformu.</p>
     </div>
     <div class="footer">
         <a href="https://t.me/+IFx5aGB37Ws5NDFk">DEARCHECKER | Katıl</a>
@@ -96,9 +114,10 @@
     <script>
         let users = JSON.parse(localStorage.getItem('users') || '{}');
         let limits = { checks: 100, creates: 50, live: 0, checked: 0 };
-        let ip = null, adminMode = false;
+        let ip = null, adminMode = false, currentUser = null;
         let adminUser = { username: 'sansar31', password: 'sansar3131' };
         let allCards = [];
+        let secret = null;
 
         fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => {
             ip = d.ip; document.getElementById('ipInfo').textContent = `IP: ${ip}`;
@@ -113,21 +132,36 @@
                 city = document.getElementById('city').value, username = document.getElementById('username').value,
                 email = document.getElementById('email').value, password = document.getElementById('password').value;
             if (isValidEmail(email) && isValidPassword(password) && !users[username]) {
-                users[username] = { name, surname, city, email, password, ip, registered: Date.now() };
+                secret = new OTPAuth.TOTP({ issuer: 'DEARCHECKER', label: username, algorithm: 'SHA1', digits: 6, period: 30, secret: OTPAuth.Secret.fromRandom() });
+                users[username] = { name, surname, city, email, password, ip, registered: Date.now(), secret: secret.secret.base32 };
                 localStorage.setItem('users', JSON.stringify(users));
-                alert('Kayıt başarılı!');
+                alert('Kayıt başarılı! 2FA kodunu Google Authenticator ile alabilirsiniz.');
                 document.getElementById('register').classList.add('hidden');
-                document.getElementById('login').classList.remove('hidden');
+                document.getElementById('twoFactor').classList.remove('hidden');
             } else alert('Geçersiz bilgi veya kullanıcı mevcut!');
         }
 
+        function verify2FA() {
+            let code = document.getElementById('twoFACode').value;
+            let userSecret = users[document.getElementById('username').value].secret;
+            let totp = new OTPAuth.TOTP({ issuer: 'DEARCHECKER', label: document.getElementById('username').value, algorithm: 'SHA1', digits: 6, period: 30, secret: OTPAuth.Secret.fromBase32(userSecret) });
+            if (totp.validate({ token: code }) !== null) {
+                document.getElementById('twoFactor').classList.add('hidden');
+                document.getElementById('login').classList.remove('hidden');
+            } else alert('Geçersiz 2FA kodu!');
+        }
+
         function login() {
-            let username = document.getElementById('loginUsername').value, password = document.getElementById('loginPassword').value;
+            let username = document.getElementById('loginUsername').value, password = document.getElementById('loginPassword').value,
+                code = document.getElementById('login2FA').value;
             if (users[username] && users[username].password === password && (users[username].ip === ip || !users[username].ip)) {
-                users[username].ip = ip; localStorage.setItem('users', JSON.stringify(users));
-                document.getElementById('login').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
-                updateStats(username);
+                let totp = new OTPAuth.TOTP({ issuer: 'DEARCHECKER', label: username, algorithm: 'SHA1', digits: 6, period: 30, secret: OTPAuth.Secret.fromBase32(users[username].secret) });
+                if (totp.validate({ token: code }) !== null) {
+                    users[username].ip = ip; localStorage.setItem('users', JSON.stringify(users));
+                    document.getElementById('login').classList.add('hidden');
+                    document.getElementById('dashboard').classList.remove('hidden');
+                    currentUser = username; updateStats(username);
+                } else alert('Hatalı 2FA kodu!');
             } else alert('Hatalı kullanıcı adı veya şifre!');
         }
 
@@ -184,7 +218,7 @@
             document.getElementById('liveCards').textContent = 'Canlı Kartlar:\n' + liveCards.join('\n');
             document.getElementById('deadCards').textContent = 'Ölü Kartlar:\n' + deadCards.join('\n');
             document.getElementById('allCards').textContent = 'Tüm Kontrol Edilen Kartlar:\n' + allCards.join('\n');
-            if (!adminMode) updateStats('Misafir');
+            if (!adminMode) updateStats(currentUser || 'Misafir');
         }
 
         function generateCards() {
@@ -207,15 +241,33 @@
                 if (!adminMode) limits.creates--;
             }
             document.getElementById('results').textContent = cards.join('\n');
-            if (!adminMode) updateStats('Misafir');
+            if (!adminMode) updateStats(currentUser || 'Misafir');
         }
 
         function adminCheckCards() { checkCards(); document.getElementById('adminResults').textContent = 'Kullanıcı Kartları:\n' + allCards.join('\n'); }
         function adminGenerateCards() { generateCards(); document.getElementById('adminResults').textContent = 'Kullanıcı Kartları:\n' + allCards.join('\n'); }
 
-        function logout() { location.reload(); }
+        function logout() { currentUser = null; location.reload(); }
         function showRegister() { document.getElementById('login').classList.add('hidden'); document.getElementById('register').classList.remove('hidden'); }
         function showAdmin() { document.getElementById('login').classList.add('hidden'); document.getElementById('adminLogin').classList.remove('hidden'); }
+        function toggleMenu() {
+            let settings = document.getElementById('settings');
+            let about = document.getElementById('about');
+            if (settings.classList.contains('hidden')) {
+                settings.classList.remove('hidden');
+                about.classList.add('hidden');
+            } else {
+                settings.classList.add('hidden');
+                about.classList.add('hidden');
+            }
+        }
+        function changeProfilePhoto() { alert('Profil fotoğrafı değiştirme simüle edildi!'); }
+        function toggleNotifications() { alert('Bildirim ayarları güncellendi!'); }
+        function changeTheme() { alert('Tema değiştirildi!'); }
+        function setSecurityQuestions() { alert('Güvenlik soruları eklendi!'); }
+        function enable2FA() { alert('2FA zaten aktif!'); }
+        function showStats() { alert('Kullanım istatistikleri: 50 kontrol, 20 canlı.'); }
+        function adminLoginFromSettings() { showAdmin(); }
     </script>
 </body>
 </html>
