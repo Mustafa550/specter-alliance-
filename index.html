@@ -115,8 +115,9 @@
             if (isValidEmail(email) && isValidPassword(password) && !users[username]) {
                 users[username] = { name, surname, city, email, password, ip, registered: Date.now() };
                 localStorage.setItem('users', JSON.stringify(users));
-                alert('Kayıt başarılı! Giriş yapabilirsiniz.');
-                showLogin();
+                alert('Kayıt başarılı!');
+                document.getElementById('register').classList.add('hidden');
+                document.getElementById('login').classList.remove('hidden');
             } else alert('Geçersiz bilgi veya kullanıcı mevcut!');
         }
 
