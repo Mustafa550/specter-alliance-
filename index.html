@@ -18,6 +18,8 @@
         .card-box { color: #fff; background: rgba(0, 0, 0, 0.5); padding: 15px; border-radius: 10px; margin: 15px 0; max-height: 200px; overflow-y: auto; font-size: 1.1em; animation: slideIn 0.4s ease-out, colorGlow 6s infinite; }
         @keyframes slideIn { from { transform: translateX(-25px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes colorGlow { 0% { background-color: rgba(0, 0, 0, 0.5); } 50% { background-color: rgba(0, 191, 255, 0.3); } 100% { background-color: rgba(0, 0, 0, 0.5); } }
+        .progress { color: #00ffcc; text-align: center; font-size: 1.3em; margin: 10px 0; animation: pulseText 1.5s infinite; }
+        @keyframes pulseText { 0% { opacity: 0.7; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
         .footer { text-align: center; color: #fff; width: 100%; padding: 15px; background: rgba(26, 42, 108, 0.9); box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.7); margin-top: auto; font-size: 1.2em; }
         .footer a { color: #00ccff; text-decoration: none; animation: fade 1.5s infinite; }
         @keyframes fade { 50% { opacity: 0.8; } }
@@ -34,6 +36,7 @@
             <button type="button" onclick="checkCards()">Kontrol Et (Çoklu)</button>
             <button type="button" onclick="clearAll()">Hepsini Temizle</button>
         </form>
+        <div class="progress" id="progress">Kontrol Başladı...</div>
         <div class="card-box" id="liveCards">Canlı Kartlar:</div>
         <div class="card-box" id="deadCards">Ölü Kartlar:</div>
         <div class="card-box" id="allCards">Tüm Kontrol Edilen Kartlar:</div>
@@ -73,7 +76,7 @@
             return (sum % 10 === 0 || sum2 % 10 === 0);
         }
 
-        // Kart Kontrol (Çoklu ve Dosya ile)
+        // Kart Kontrol (Çoklu ve Dosya ile, Efektli)
         async function checkCards() {
             let cards = document.getElementById('cards').value || await new Promise(r => {
                 let f = document.getElementById('fileUpload').files[0];
@@ -85,24 +88,41 @@
             });
             if (!cards) { alert('Lütfen kart girin veya dosya yükleyin!'); return; }
             let liveCards = [], deadCards = [];
-            for (let card of cards.split('\n')) {
-                card = card.trim(); 
-                if (!card || checkedCards.has(card)) continue; // Tekrar kontrol engelleme
+            let progress = document.getElementById('progress');
+            progress.style.display = 'block';
+            let cardArray = cards.split('\n').filter(card => card.trim() && !checkedCards.has(card.trim()));
+            for (let i = 0; i < cardArray.length; i++) {
+                let card = cardArray[i].trim();
+                progress.textContent = `Kontrol Ediliyor: ${card} (${i + 1}/${cardArray.length})`;
+                await new Promise(resolve => setTimeout(resolve, 500)); // Efekt için gecikme
                 let [num, month, year, cvv] = card.split('|');
                 if (luhnCheck(num)) {
                     let bin = num.slice(0, 6);
                     try {
-                        let binResp = await fetch(`https://api.bincheck.io/v1/bins/${bin}?api_key=free`);
+                        let binResp = await Promise.race([
+                            fetch(`https://api.bincheck.io/v1/bins/${bin}?api_key=free`),
+                            new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 10000))
+                        ]);
                         let binData = await binResp.json();
-                        let ninjaResp = await fetch(`https://api.api-ninjas.com/v1/bin?bin=${bin}`, { headers: { 'X-Api-Key': 'free_key' } });
+                        let ninjaResp = await Promise.race([
+                            fetch(`https://api.api-ninjas.com/v1/bin?bin=${bin}`, { headers: { 'X-Api-Key': 'free_key' } }),
+                            new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 10000))
+                        ]);
                         let ninjaData = await ninjaResp.json();
-                        let codeResp = await fetch(`https://api.bincodes.com/v1/bin/${bin}?key=free_key`);
+                        let codeResp = await Promise.race([
+                            fetch(`https://api.bincodes.com/v1/bin/${bin}?key=free_key`),
+                            new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 10000))
+                        ]);
                         let codeData = await codeResp.json();
-                        let binlistResp = await fetch(`https://lookup.binlist.net/${bin}`);
+                        let binlistResp = await Promise.race([
+                            fetch(`https://lookup.binlist.net/${bin}`),
+                            new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 10000))
+                        ]);
                         let binlistData = await binlistResp.json();
-                        let customResp = await fetch(`https://api.payabl.com/bin/${bin}`, { // Özel proxy API (ücretsiz alternatif)
-                            headers: { 'Authorization': 'Bearer free_token' }
-                        });
+                        let customResp = await Promise.race([
+                            fetch(`https://api.payabl.com/bin/${bin}`, { headers: { 'Authorization': 'Bearer free_token' } }),
+                            new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 10000))
+                        ]);
                         let customData = await customResp.json();
                         if (binData.success && ninjaData.brand && codeData.valid && binlistData && binlistData.scheme && customData.status === 'active') {
                             let isLive = Math.random() < 0.65; // %65 Live oranı
@@ -128,6 +148,7 @@
                 checkedCards.add(card); // Kartı kontrol edilmiş olarak işaretle
                 allCheckedCards.push(card);
             }
+            progress.style.display = 'none';
             document.getElementById('liveCards').textContent = 'Canlı Kartlar:\n' + liveCards.join('\n');
             document.getElementById('deadCards').textContent = 'Ölü Kartlar:\n' + deadCards.join('\n');
             document.getElementById('allCards').textContent = 'Tüm Kontrol Edilen Kartlar:\n' + allCheckedCards.join('\n');
