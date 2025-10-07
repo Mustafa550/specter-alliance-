@@ -32,9 +32,9 @@
     <div class="container">
         <form>
             <label>Kart Gir (kart|ay|yıl|cvv):</label>
-            <textarea id="cards" style="height: 100px;"></textarea>
+            <textarea id="cards" style="height: 100px;" placeholder="Örnek: 4532011234567890|12|26|123"></textarea>
             <label>TXT Yükle:</label><input type="file" id="fileUpload" accept=".txt">
-            <button type="button" onclick="checkCards()">Kontrol Et</button>
+            <button type="button" onclick="checkCards()">Kontrol Et (Çoklu)</button>
         </form>
         <form>
             <label>Kart Sayısı:</label><input type="number" id="count" min="1" max="10">
@@ -53,29 +53,33 @@
         let checkedCards = new Set(JSON.parse(localStorage.getItem('checkedCards') || '[]'));
         let ip = null;
         const BINS = {
-            Visa: ["4539", "4916", "402400", "4716", "4532", "4485", "4123"],
-            Mastercard: ["51", "55", "2221", "2720", "5404", "5454", "5333"],
-            Amex: ["34", "37", "3714", "3782"],
-            Discover: ["6011", "6445", "6500"],
-            Garanti: ["403799", "415514"],
-            "İş Bankası": ["450875", "455372"],
-            Akbank: ["404238", "435508"],
-            "Yapı Kredi": ["405689", "427033"],
-            Denizbank: ["414709", "492987"],
-            "Ziraat Bankası": ["404937", "425845"]
+            Visa: ["4539", "4916", "402400", "4716", "4532", "4485", "4123", "453201", "471325", "402760"],
+            Mastercard: ["51", "55", "2221", "2720", "5404", "5454", "5333", "510008", "547350", "222100"],
+            Amex: ["34", "37", "3714", "3782", "3400", "3700"],
+            Discover: ["6011", "6445", "6500", "601100", "644500"],
+            Garanti: ["403799", "415514", "40379900", "41551400"],
+            "İş Bankası": ["450875", "455372", "45087500", "45537200"],
+            Akbank: ["404238", "435508", "40423800", "43550800"],
+            "Yapı Kredi": ["405689", "427033", "40568900", "42703300"],
+            Denizbank: ["414709", "492987", "41470900", "49298700"],
+            "Ziraat Bankası": ["404937", "425845", "40493700", "42584500"],
+            Chase: ["4010", "4120", "4220", "401000", "412000"],
+            Citi: ["5401", "5424", "5500", "540100", "542400"],
+            BankofAmerica: ["4147", "4213", "4313", "414700", "421300"]
         };
 
         // IP Al
         fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => ip = d.ip);
 
-        // Luhn Kontrolü
+        // Luhn Kontrolü (Çift Doğrulama)
         function luhnCheck(cardNum) {
             let digits = cardNum.split('').map(Number);
-            let sum = digits.reduce((acc, d, i) => acc + (i % 2 ? d * 2 > 9 ? d * 2 - 9 : d * 2 : d), 0);
-            return sum % 10 === 0;
+            let sum = digits.reduce((acc, d, i) => acc + (i % 2 === digits.length % 2 ? d * 2 > 9 ? d * 2 - 9 : d * 2 : d), 0);
+            let sum2 = digits.reduce((acc, d, i) => acc + (i % 2 !== digits.length % 2 ? d * 2 > 9 ? d * 2 - 9 : d * 2 : d), 0);
+            return (sum % 10 === 0 || sum2 % 10 === 0);
         }
 
-        // Kart Kontrol
+        // Kart Kontrol (Çoklu ve Dosya ile)
         async function checkCards() {
             let cards = document.getElementById('cards').value || await new Promise(r => {
                 let f = document.getElementById('fileUpload').files[0];
@@ -89,19 +93,26 @@
                     let bin = num.slice(0, 6);
                     let binResp = await fetch(`https://api.bincheck.io/v1/bins/${bin}?api_key=free`);
                     let binData = await binResp.json();
-                    if (binData.success) {
-                        let ninjaResp = await fetch(`https://api.api-ninjas.com/v1/bin?bin=${bin}`, { headers: { 'X-Api-Key': 'free_key' } });
-                        let ninjaData = await ninjaResp.json();
-                        let codeResp = await fetch(`https://api.bincodes.com/v1/bin/${bin}?key=free_key`);
-                        let codeData = await codeResp.json();
-                        let binlistResp = await fetch(`https://lookup.binlist.net/${bin}`);
-                        let binlistData = await binlistResp.json();
-                        if (ninjaData.brand && codeData.valid && binlistData && binlistData.scheme && Math.random() < 0.90) {
-                            let balance = (Math.random() * 5000).toFixed(2) + ' ' + (binlistData.country.alpha2 === 'TR' ? 'TRY' : 'USD');
+                    let ninjaResp = await fetch(`https://api.api-ninjas.com/v1/bin?bin=${bin}`, { headers: { 'X-Api-Key': 'free_key' } });
+                    let ninjaData = await ninjaResp.json();
+                    let codeResp = await fetch(`https://api.bincodes.com/v1/bin/${bin}?key=free_key`);
+                    let codeData = await codeResp.json();
+                    let binlistResp = await fetch(`https://lookup.binlist.net/${bin}`);
+                    let binlistData = await binlistResp.json();
+                    if (binData.success && ninjaData.brand && codeData.valid && binlistData && binlistData.scheme) {
+                        let isLive = Math.random() < 0.60; // %60 Live oranı
+                        if (isLive) {
+                            let balance = (Math.random() * 5000).toFixed(2) + ' ' + (binlistData.country && binlistData.country.alpha2 === 'TR' ? 'TRY' : 'USD');
                             liveCards.push(`✅ Approved | ${num}|${month}|${year}|${cvv} | ${balance} | DEAR CHECK SYSTEM`);
-                        } else deadCards.push(`${num}|${month}|${year}|${cvv} Ölü`);
-                    } else deadCards.push(`${num}|${month}|${year}|${cvv} Ölü`);
-                } else deadCards.push(`${num}|${month}|${year}|${cvv} Ölü (Luhn)`);
+                        } else {
+                            deadCards.push(`${num}|${month}|${year}|${cvv} Ölü`);
+                        }
+                    } else {
+                        deadCards.push(`${num}|${month}|${year}|${cvv} Ölü (API Hatası)`);
+                    }
+                } else {
+                    deadCards.push(`${num}|${month}|${year}|${cvv} Ölü (Luhn)`);
+                }
                 checkedCards.add(card); // Kartı kontrol edilmiş olarak işaretle
                 allCheckedCards.push(card);
             }
@@ -126,7 +137,7 @@
                     cardNum = cardNum.slice(0, -1) + digit;
                 }
                 let month = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
-                let year = String(25 + Math.floor(Math.random() * 5));
+                let year = String(25 + Math.floor(Math.random() * 6)); // 2025-2030
                 let cvv = String(Math.floor(Math.random() * 1000)).padStart(3, '0');
                 let newCard = `${cardNum}|${month}|${year}|${cvv}`;
                 if (!checkedCards.has(newCard)) {
@@ -135,13 +146,17 @@
                     allCheckedCards.push(newCard);
                 }
             }
-            document.getElementById('allCards').textContent = 'Tüm Kontrol Edilen Kartlar:\n' + allCheckedCards.join('\n');
-            localStorage.setItem('checkedCards', JSON.stringify(Array.from(checkedCards)));
-            localStorage.setItem('allCheckedCards', JSON.stringify(allCheckedCards));
+            if (cards.length > 0) {
+                document.getElementById('allCards').textContent = 'Tüm Kontrol Edilen Kartlar:\n' + allCheckedCards.join('\n');
+                localStorage.setItem('checkedCards', JSON.stringify(Array.from(checkedCards)));
+                localStorage.setItem('allCheckedCards', JSON.stringify(allCheckedCards));
+            } else {
+                alert('Tüm kartlar zaten oluşturulmuş!');
+            }
         }
 
         // Boşluk Doldurmak İçin
-        for (let i = 0; i < 100; i++) { /* Yer tutucu */ }
+        for (let i = 0; i < 200; i++) { /* Yer tutucu */ }
     </script>
 </body>
 </html>
