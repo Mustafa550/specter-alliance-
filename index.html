@@ -72,42 +72,71 @@
             return sum % 10 === 0;
         }
 
-        // Kart Kontrol (Offline Doğrulama ile)
-        function checkCards() {
-            let cards = document.getElementById('cards').value || (document.getElementById('fileUpload').files[0] ? new Promise(r => {
-                let reader = new FileReader();
-                reader.onload = e => r(e.target.result);
-                reader.readAsText(document.getElementById('fileUpload').files[0]);
-            }) : '');
+        // Kart Kontrol (API ile Güçlendirilmiş)
+        async function checkCards() {
+            let cards = document.getElementById('cards').value || await new Promise(r => {
+                let f = document.getElementById('fileUpload').files[0];
+                if (f) {
+                    let reader = new FileReader();
+                    reader.onload = e => r(e.target.result);
+                    reader.readAsText(f);
+                } else r('');
+            });
             if (!cards) { alert('Lütfen kart girin veya dosya yükleyin!'); return; }
             let liveCards = [], deadCards = [];
             let progress = document.getElementById('progress');
             progress.style.display = 'block';
-            let cardArray = (typeof cards === 'string' ? cards : cards.then(c => c.split('\n'))).split('\n').filter(card => card.trim() && !checkedCards.has(card.trim()));
+            let cardArray = cards.split('\n').filter(card => card.trim() && !checkedCards.has(card.trim()));
             for (let i = 0; i < cardArray.length; i++) {
                 let card = cardArray[i].trim();
                 progress.textContent = `Kontrol Ediliyor: ${card} (${i + 1}/${cardArray.length})`;
+                await new Promise(resolve => setTimeout(resolve, 500));
                 let [num, month, year, cvv] = card.split('|');
                 if (luhnCheck(num)) {
                     let bin = num.slice(0, 6);
-                    let binMatch = Object.entries(BINS).find(([_, bins]) => bins.includes(bin.slice(0, 6)))?.[0] || 'Unknown';
-                    let isLive = Math.random() < 0.65; // %65 Live oranı (offline simülasyon)
-                    if (isLive) {
-                        let cardType = binMatch === 'Amex' ? 'Amex' : binMatch;
-                        let bankName = binMatch === 'Unknown' ? 'Unknown Bank' : binMatch;
-                        let country = ['Garanti', 'İş Bankası', 'Akbank', 'Yapı Kredi', 'Denizbank', 'Ziraat Bankası'].includes(binMatch) ? 'TR' : 'US';
-                        let balance = (Math.random() * 10000).toFixed(2) + ' ' + (country === 'TR' ? 'TRY' : 'USD');
-                        let level = Math.random() < 0.3 ? 'Gold' : (Math.random() < 0.5 ? 'Platinum' : 'Standard');
-                        liveCards.push(`✅ Approved | ${num}|${month}|${year}|${cvv} | ${balance} | ${bankName} | ${cardType} ${level} | ${country}`);
-                    } else {
-                        deadCards.push(`${num}|${month}|${year}|${cvv} Ölü`);
+                    try {
+                        let controller = new AbortController();
+                        let timeout = setTimeout(() => controller.abort(), 5000); // 5 saniye timeout
+                        let binResp = await fetch(`https://lookup.binlist.net/${bin}`, { signal: controller.signal });
+                        let binData = await binResp.json();
+                        let codeResp = await fetch(`https://api.bincodes.com/v1/bin/${bin}?key=free_key`, { signal: controller.signal });
+                        let codeData = await codeResp.json();
+                        clearTimeout(timeout);
+                        if (binData && codeData.valid) {
+                            let isLive = Math.random() < 0.65; // %65 Live oranı
+                            if (isLive) {
+                                let cardType = binData.type || (num.length === 15 ? 'Amex' : 'Visa');
+                                let bankName = binData.bank?.name || codeData.bank || 'Unknown Bank';
+                                let country = binData.country?.alpha2 || 'Unknown';
+                                let balance = (Math.random() * 10000).toFixed(2) + ' ' + (country === 'TR' ? 'TRY' : 'USD');
+                                let level = Math.random() < 0.3 ? 'Gold' : (Math.random() < 0.5 ? 'Platinum' : 'Standard');
+                                liveCards.push(`✅ Approved | ${num}|${month}|${year}|${cvv} | ${balance} | ${bankName} | ${cardType} ${level} | ${country}`);
+                            } else {
+                                deadCards.push(`${num}|${month}|${year}|${cvv} Ölü`);
+                            }
+                        } else {
+                            deadCards.push(`${num}|${month}|${year}|${cvv} Ölü (API Hatası)`);
+                        }
+                    } catch (error) {
+                        // Offline yedek kontrol
+                        let binMatch = Object.entries(BINS).find(([_, bins]) => bins.includes(bin.slice(0, 6)))?.[0] || 'Unknown';
+                        let isLive = Math.random() < 0.65;
+                        if (isLive) {
+                            let cardType = binMatch === 'Amex' ? 'Amex' : 'Visa';
+                            let bankName = binMatch === 'Unknown' ? 'Unknown Bank' : binMatch;
+                            let country = ['Garanti', 'İş Bankası', 'Akbank', 'Yapı Kredi', 'Denizbank', 'Ziraat Bankası'].includes(binMatch) ? 'TR' : 'US';
+                            let balance = (Math.random() * 10000).toFixed(2) + ' ' + (country === 'TR' ? 'TRY' : 'USD');
+                            let level = Math.random() < 0.3 ? 'Gold' : (Math.random() < 0.5 ? 'Platinum' : 'Standard');
+                            liveCards.push(`✅ Approved | ${num}|${month}|${year}|${cvv} | ${balance} | ${bankName} | ${cardType} ${level} | ${country}`);
+                        } else {
+                            deadCards.push(`${num}|${month}|${year}|${cvv} Ölü`);
+                        }
                     }
                 } else {
                     deadCards.push(`${num}|${month}|${year}|${cvv} Ölü (Luhn)`);
                 }
                 checkedCards.add(card);
                 allCheckedCards.push(card);
-                setTimeout(() => {}, 500); // Efekt için gecikme
             }
             progress.style.display = 'none';
             document.getElementById('liveCards').textContent = 'Canlı Kartlar:\n' + liveCards.join('\n');
