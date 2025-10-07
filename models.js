@@ -1,5 +1,5 @@
 let User = {
-    name: '', surname: '', city: '', username: '', email: '', password: '', ip: '', registered: 0, code: ''
+    name: '', surname: '', city: '', username: '', email: '', password: '', ip: '', registered: 0
 };
 let Card = {
     number: '', month: '', year: '', cvv: '', status: '', balance: ''
