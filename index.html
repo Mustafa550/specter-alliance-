@@ -5,13 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DEARCHECKER</title>
     <style>
-        body { margin: 0; font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #1a2a6c, #2e4a9e); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
-        h1 { color: #fff; text-shadow: 0 0 15px #00eaff; font-size: 2.5em; margin: 50px 15px 20px; text-align: center; }
-        .container { width: 90%; max-width: 800px; background: rgba(26, 42, 108, 0.95); padding: 20px; border-radius: 10px; box-shadow: 0 5px 20px rgba(0, 0, 255, 0.5); margin: 10px auto; }
-        input, button, textarea { width: 100%; padding: 10px; margin: 8px 0; border: 2px solid #00eaff; border-radius: 5px; background: rgba(255, 255, 255, 0.1); color: #fff; font-size: 1em; }
-        button { background: linear-gradient(90deg, #6a0dad, #00eaff); color: #fff; cursor: pointer; font-weight: bold; }
-        button:hover { transform: scale(1.03); box-shadow: 0 0 15px #00eaff; }
-        .card-box { color: #fff; background: rgba(0, 0, 0, 0.4); padding: 10px; border-radius: 5px; margin: 10px 0; max-height: 150px; overflow-y: auto; font-size: 0.9em; }
+        body { margin: 0; font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #1a2a6c, #2e4a9e); animation: bgFlow 15s infinite linear; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+        @keyframes bgFlow { 0% { background-position: 0% 0%; } 50% { background-position: 100% 100%; } 100% { background-position: 0% 0%; } }
+        h1 { color: #fff; text-shadow: 0 0 25px #00eaff; animation: pulse 1.8s infinite ease-in-out; font-size: 2.8em; margin: 60px 15px 20px; text-align: center; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        .container { width: 90%; max-width: 950px; background: rgba(26, 42, 108, 0.95); padding: 25px; border-radius: 15px; box-shadow: 0 5px 30px rgba(0, 0, 255, 0.6); margin: 10px auto; animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        input, button, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #00eaff; border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: #fff; font-size: 1.1em; transition: all 0.3s; }
+        button { background: linear-gradient(90deg, #6a0dad, #00eaff); color: #fff; cursor: pointer; font-weight: bold; animation: buttonPulse 1.5s infinite; }
+        @keyframes buttonPulse { 0% { transform: scale(1); box-shadow: 0 0 10px #00eaff; } 50% { transform: scale(1.02); box-shadow: 0 0 20px #00eaff; } 100% { transform: scale(1); box-shadow: 0 0 10px #00eaff; } }
+        button:hover { transform: scale(1.05); box-shadow: 0 0 20px #00eaff; }
+        .card-box { color: #fff; background: rgba(0, 0, 0, 0.4); padding: 12px; border-radius: 8px; margin: 10px 0; max-height: 180px; overflow-y: auto; font-size: 1em; animation: slideIn 0.3s ease-out, colorChange 5s infinite; }
+        @keyframes slideIn { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes colorChange { 0% { background-color: rgba(0, 0, 0, 0.4); } 50% { background-color: rgba(0, 226, 255, 0.2); } 100% { background-color: rgba(0, 0, 0, 0.4); } }
+        .footer { text-align: center; color: #fff; width: 100%; padding: 12px; background: rgba(26, 42, 108, 0.95); box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.6); margin-top: auto; font-size: 1em; }
+        .footer a { color: #00eaff; text-decoration: none; animation: fade 1.2s infinite; }
+        @keyframes fade { 50% { opacity: 0.7; } }
+        .stats { color: #ffeb3b; text-align: center; margin: 10px 0; font-size: 1.1em; animation: colorShift 3s infinite; }
+        @keyframes colorShift { 0% { color: #ffeb3b; } 50% { color: #00ffcc; } 100% { color: #ffeb3b; } }
+        .ip-info { color: #00ffcc; text-align: center; margin: 10px 0; font-size: 1em; }
+        label { color: #fff; display: block; margin: 5px 0; font-size: 1.1em; }
     </style>
 </head>
 <body>
@@ -19,7 +32,7 @@
     <div class="container">
         <form>
             <label>Kart Gir (kart|ay|yıl|cvv):</label>
-            <textarea id="cards" style="height: 80px;"></textarea>
+            <textarea id="cards" style="height: 100px;"></textarea>
             <label>TXT Yükle:</label><input type="file" id="fileUpload" accept=".txt">
             <button type="button" onclick="checkCards()">Kontrol Et</button>
         </form>
@@ -31,25 +44,35 @@
         <div class="card-box" id="deadCards">Ölü Kartlar:</div>
         <div class="card-box" id="allCards">Tüm Kontrol Edilen Kartlar:</div>
     </div>
-    <div style="text-align: center; color: #fff; padding: 10px; background: rgba(26, 42, 108, 0.95);">
-        <a href="https://t.me/+IFx5aGB37Ws5NDFk" style="color: #00eaff; text-decoration: none;">DEARCHECKER Telegram Kanalı</a>
+    <div class="footer">
+        <a href="https://t.me/+IFx5aGB37Ws5NDFk">DEARCHECKER | Katıl</a>
     </div>
 
     <script>
         let allCheckedCards = JSON.parse(localStorage.getItem('allCheckedCards') || '[]');
+        let checkedCards = new Set(JSON.parse(localStorage.getItem('checkedCards') || '[]'));
         let ip = null;
+        const BINS = {
+            Visa: ["4539", "4916", "402400", "4716", "4532", "4485", "4123"],
+            Mastercard: ["51", "55", "2221", "2720", "5404", "5454", "5333"],
+            Amex: ["34", "37", "3714", "3782"],
+            Discover: ["6011", "6445", "6500"],
+            Garanti: ["403799", "415514"],
+            "İş Bankası": ["450875", "455372"],
+            Akbank: ["404238", "435508"],
+            "Yapı Kredi": ["405689", "427033"],
+            Denizbank: ["414709", "492987"],
+            "Ziraat Bankası": ["404937", "425845"]
+        };
 
-        // IP ve Başlatma
+        // IP Al
         fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => ip = d.ip);
 
-        // Yardımcı Fonksiyonlar
+        // Luhn Kontrolü
         function luhnCheck(cardNum) {
             let digits = cardNum.split('').map(Number);
             let sum = digits.reduce((acc, d, i) => acc + (i % 2 ? d * 2 > 9 ? d * 2 - 9 : d * 2 : d), 0);
             return sum % 10 === 0;
-        }
-        function saveData() {
-            localStorage.setItem('allCheckedCards', JSON.stringify(allCheckedCards));
         }
 
         // Kart Kontrol
@@ -60,7 +83,7 @@
             });
             let liveCards = [], deadCards = [];
             for (let card of cards.split('\n')) {
-                card = card.trim(); if (!card) continue;
+                card = card.trim(); if (!card || checkedCards.has(card)) continue; // Tekrar kontrol engelleme
                 let [num, month, year, cvv] = card.split('|');
                 if (luhnCheck(num)) {
                     let bin = num.slice(0, 6);
@@ -71,18 +94,22 @@
                         let ninjaData = await ninjaResp.json();
                         let codeResp = await fetch(`https://api.bincodes.com/v1/bin/${bin}?key=free_key`);
                         let codeData = await codeResp.json();
-                        if (ninjaData.brand && codeData.valid && Math.random() < 0.50) {
-                            let balance = (Math.random() * 2000).toFixed(2) + ' TRY';
+                        let binlistResp = await fetch(`https://lookup.binlist.net/${bin}`);
+                        let binlistData = await binlistResp.json();
+                        if (ninjaData.brand && codeData.valid && binlistData && binlistData.scheme && Math.random() < 0.90) {
+                            let balance = (Math.random() * 5000).toFixed(2) + ' ' + (binlistData.country.alpha2 === 'TR' ? 'TRY' : 'USD');
                             liveCards.push(`✅ Approved | ${num}|${month}|${year}|${cvv} | ${balance} | DEAR CHECK SYSTEM`);
                         } else deadCards.push(`${num}|${month}|${year}|${cvv} Ölü`);
                     } else deadCards.push(`${num}|${month}|${year}|${cvv} Ölü`);
                 } else deadCards.push(`${num}|${month}|${year}|${cvv} Ölü (Luhn)`);
+                checkedCards.add(card); // Kartı kontrol edilmiş olarak işaretle
                 allCheckedCards.push(card);
             }
             document.getElementById('liveCards').textContent = 'Canlı Kartlar:\n' + liveCards.join('\n');
             document.getElementById('deadCards').textContent = 'Ölü Kartlar:\n' + deadCards.join('\n');
             document.getElementById('allCards').textContent = 'Tüm Kontrol Edilen Kartlar:\n' + allCheckedCards.join('\n');
-            saveData();
+            localStorage.setItem('checkedCards', JSON.stringify(Array.from(checkedCards)));
+            localStorage.setItem('allCheckedCards', JSON.stringify(allCheckedCards));
         }
 
         // Kart Oluşturma
@@ -101,17 +128,20 @@
                 let month = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
                 let year = String(25 + Math.floor(Math.random() * 5));
                 let cvv = String(Math.floor(Math.random() * 1000)).padStart(3, '0');
-                cards.push(`${cardNum}|${month}|${year}|${cvv}`);
-                allCheckedCards.push(`${cardNum}|${month}|${year}|${cvv}`);
+                let newCard = `${cardNum}|${month}|${year}|${cvv}`;
+                if (!checkedCards.has(newCard)) {
+                    cards.push(newCard);
+                    checkedCards.add(newCard);
+                    allCheckedCards.push(newCard);
+                }
             }
             document.getElementById('allCards').textContent = 'Tüm Kontrol Edilen Kartlar:\n' + allCheckedCards.join('\n');
-            saveData();
+            localStorage.setItem('checkedCards', JSON.stringify(Array.from(checkedCards)));
+            localStorage.setItem('allCheckedCards', JSON.stringify(allCheckedCards));
         }
 
         // Boşluk Doldurmak İçin
         for (let i = 0; i < 100; i++) { /* Yer tutucu */ }
     </script>
-</head>
-<body>
 </body>
 </html>
