@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DEARCHECKER</title>
+    <link rel="stylesheet" href="data.js">
+    <script src="data.js" defer></script>
+    <script src="admin.js" defer></script>
     <style>
         body { margin: 0; font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #1a2a6c, #2e4a9e); animation: bgFlow 15s infinite linear; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
         @keyframes bgFlow { 0% { background-position: 0% 0%; } 50% { background-position: 100% 100%; } 100% { background-position: 0% 0%; } }
@@ -17,7 +20,7 @@
         button { background: linear-gradient(90deg, #6a0dad, #00eaff); color: #fff; cursor: pointer; font-weight: bold; }
         button:hover { transform: scale(1.05); box-shadow: 0 0 20px #00eaff; }
         .hidden { display: none; }
-        #liveCards, #deadCards, #allCards, #adminResults { color: #fff; background: rgba(0, 0, 0, 0.4); padding: 12px; border-radius: 8px; margin: 10px 0; max-height: 180px; overflow-y: auto; font-size: 1em; animation: slideIn 0.3s ease-out; }
+        #liveCards, #deadCards, #allCards { color: #fff; background: rgba(0, 0, 0, 0.4); padding: 12px; border-radius: 8px; margin: 10px 0; max-height: 180px; overflow-y: auto; font-size: 1em; animation: slideIn 0.3s ease-out; }
         @keyframes slideIn { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         .sidebar { position: fixed; top: 0; left: -250px; width: 250px; height: 100%; background: rgba(26, 42, 108, 0.95); padding: 20px; box-shadow: 5px 0 20px rgba(0, 0, 0, 0.5); transition: left 0.3s; z-index: 5; }
         .sidebar.open { left: 0; }
@@ -48,7 +51,7 @@
             <label>Soyad:</label><input type="text" id="surname" required>
             <label>Şehir:</label><input type="text" id="city" required>
             <label>Kullanıcı Adı:</label><input type="text" id="username" required>
-            <label>E-posta:</label><input type="email" id="email" placeholder="no .ru/.xyz" required>
+            <label>E-posta:</label><input type="email" id="email" placeholder="kullanici@gmail.com" required>
             <label>Şifre:</label><input type="password" id="password" placeholder="8+ chars, A/a, 0-9" required>
             <button type="button" onclick="register()">Kayıt Ol</button>
         </form>
@@ -57,13 +60,6 @@
         <p>Doğrulama Kodunuz: <strong id="displayCode"></strong></p>
         <p><strong>Bu kodu kaybetmeyin, kaybederseniz hesap erişiminizi kaybedersiniz!</strong></p>
         <button type="button" onclick="showLogin()">Giriş Ekranına Dön</button>
-    </div>
-    <div class="container hidden" id="adminLogin">
-        <form id="adminForm">
-            <label>Kullanıcı Adı:</label><input type="text" id="adminUsername" required>
-            <label>Şifre:</label><input type="password" id="adminPassword" required>
-            <button type="button" onclick="adminLogin()">Admin Giriş</button>
-        </form>
     </div>
     <div class="container hidden" id="dashboard">
         <div class="ip-info" id="ipInfo">IP: Yükleniyor...</div>
@@ -81,23 +77,6 @@
         <div id="liveCards">Canlı Kartlar:</div>
         <div id="deadCards">Ölü Kartlar:</div>
         <div id="allCards">Tüm Kontrol Edilen Kartlar:</div>
-    </div>
-    <div class="container hidden" id="adminPanel">
-        <div class="stats" id="adminInfo">Admin Paneli | Kontroller: Sonsuz | Oluşturmalar: Sonsuz</div>
-        <div id="adminResults">Tüm Kontrol Edilen Kartlar:</div>
-        <form>
-            <label>Kart Gir (kart|ay|yıl|cvv):</label>
-            <textarea id="adminCards" style="height: 100px;"></textarea>
-            <label>TXT Yükle:</label><input type="file" id="adminFile" accept=".txt">
-            <button type="button" onclick="adminCheckCards()">Kontrol Et</button>
-        </form>
-        <form>
-            <label>Kart Sayısı:</label><input type="number" id="adminCount" min="1">
-            <button type="button" onclick="adminGenerateCards()">Kart Oluştur</button>
-        </form>
-        <button onclick="manageUsers()">Kullanıcı Yönetimi</button>
-        <button onclick="deleteCards()">Kart Sil</button>
-        <button onclick="viewLogs()">Log Görüntüleme</button>
     </div>
     <div class="sidebar hidden" id="settings">
         <h3>Ayarlar</h3>
@@ -118,173 +97,11 @@
     </div>
 
     <script>
-        let users = JSON.parse(localStorage.getItem('users') || '{}');
-        let limits = { checks: 100, creates: 50, live: 0, checked: 0 };
-        let ip = null, adminMode = false, currentUser = null, loginAttempts = {}, allCheckedCards = [];
-        let adminUser = { username: 'sansar31', password: 'sansar3131' };
-
-        fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => {
-            ip = d.ip; document.getElementById('ipInfo').textContent = `IP: ${ip}`;
-            if (JSON.parse(localStorage.getItem('bannedIPs') || '[]').includes(ip)) alert('IP yasak!');
-        });
-
-        function isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.(com|org|net)$/.test(email) && !email.endsWith('.ru'); }
-        function isValidPassword(pass) { return pass.length >= 8 && /[A-Z]/.test(pass) && /[a-z]/.test(pass) && /\d/.test(pass); }
-        function generateCode() { return Math.floor(100000 + Math.random() * 900000).toString().substr(0, 6); }
-        function checkRateLimit() {
-            let now = Date.now(), key = ip;
-            if (!loginAttempts[key]) loginAttempts[key] = [];
-            loginAttempts[key] = loginAttempts[key].filter(t => now - t < 600000); // 10 dk
-            if (loginAttempts[key].length >= 5 && !adminMode) return false;
-            loginAttempts[key].push(now);
-            return true;
-        }
-
-        function register() {
-            let name = document.getElementById('name').value, surname = document.getElementById('surname').value,
-                city = document.getElementById('city').value, username = document.getElementById('username').value,
-                email = document.getElementById('email').value, password = document.getElementById('password').value;
-            if (isValidEmail(email) && isValidPassword(password) && !users[username]) {
-                let code = generateCode();
-                users[username] = { name, surname, city, email, password, ip, registered: Date.now(), code };
-                localStorage.setItem('users', JSON.stringify(users));
-                document.getElementById('displayCode').textContent = code;
-                document.getElementById('register').classList.add('hidden');
-                document.getElementById('codeDisplay').classList.remove('hidden');
-            } else alert('Geçersiz bilgi veya kullanıcı mevcut!');
-        }
-
-        function login() {
-            if (!checkRateLimit()) return alert('10 dakika içinde 5 giriş sınırı aşıldı!');
-            let username = document.getElementById('loginUsername').value, password = document.getElementById('loginPassword').value,
-                code = document.getElementById('loginCode').value;
-            if (users[username] && users[username].password === password && users[username].code === code && (users[username].ip === ip || !users[username].ip)) {
-                users[username].ip = ip; localStorage.setItem('users', JSON.stringify(users));
-                document.getElementById('login').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
-                currentUser = username; updateStats(username);
-            } else alert('Hatalı kullanıcı adı, şifre veya doğrulama kodu!');
-        }
-
-        function adminLogin() {
-            let username = document.getElementById('adminUsername').value, password = document.getElementById('adminPassword').value;
-            if (username === adminUser.username && password === adminUser.password) {
-                adminMode = true; limits = { checks: Infinity, creates: Infinity, live: 0, checked: 0 };
-                document.getElementById('adminLogin').classList.add('hidden');
-                document.getElementById('adminPanel').classList.remove('hidden');
-                // Bedava kartları sil
-                for (let user in users) {
-                    if (users[user].cards) {
-                        users[user].cards = users[user].cards.filter(card => !card.includes('Bedava'));
-                        localStorage.setItem('users', JSON.stringify(users));
-                    }
-                }
-                document.getElementById('adminResults').textContent = 'Tüm Kontrol Edilen Kartlar:\n' + allCheckedCards.join('\n');
-            } else alert('Hatalı admin girişi!');
-        }
-
-        function updateStats(user) {
-            document.getElementById('userInfo').textContent = `Hoş Geldiniz, ${user}! Kontroller: ${limits.checks} | Oluşturmalar: ${limits.creates} | Canlı: ${limits.live} | Kontrol Edilen: ${limits.checked}`;
-        }
-
-        function luhnCheck(cardNum) {
-            let digits = cardNum.split('').map(Number);
-            let sum = digits.reduce((acc, d, i) => acc + (i % 2 ? d * 2 > 9 ? d * 2 - 9 : d * 2 : d), 0);
-            return sum % 10 === 0;
-        }
-
-        async function checkCards() {
-            if (!adminMode && limits.checks <= 0) return alert('Kontrol limiti bitti!');
-            let cards = document.getElementById('cards').value || await new Promise(r => {
-                let f = document.getElementById('fileUpload').files[0];
-                if (f) { let reader = new FileReader(); reader.onload = e => r(e.target.result); reader.readAsText(f); } else r('');
-            });
-            let liveCards = [], deadCards = [];
-            for (let card of cards.split('\n')) {
-                card = card.trim(); if (!card) continue;
-                let [num, month, year, cvv] = card.split('|');
-                if (luhnCheck(num)) {
-                    let bin = num.slice(0, 6);
-                    let binResp = await fetch(`https://api.bincheck.io/v1/bins/${bin}?api_key=free`);
-                    let binData = await binResp.json();
-                    if (binData.success) {
-                        let ninjaResp = await fetch(`https://api.api-ninjas.com/v1/bin?bin=${bin}`, { headers: { 'X-Api-Key': 'free_key' } });
-                        let ninjaData = await ninjaResp.json();
-                        let codeResp = await fetch(`https://api.bincodes.com/v1/bin/${bin}?key=free_key`);
-                        let codeData = await codeResp.json();
-                        if (ninjaData.brand && codeData.valid && Math.random() < 0.40) {
-                            let balance = (Math.random() * 2000).toFixed(2) + ' TRY';
-                            liveCards.push(`✅ Approved | ${num}|${month}|${year}|${cvv} | ${balance} | DEAR CHECK SYSTEM`);
-                            limits.live++;
-                        } else deadCards.push(`${num}|${month}|${year}|${cvv} Ölü`);
-                    } else deadCards.push(`${num}|${month}|${year}|${cvv} Ölü`);
-                } else deadCards.push(`${num}|${month}|${year}|${cvv} Ölü (Luhn)`);
-                if (!adminMode) limits.checks--; limits.checked++;
-                allCheckedCards.push(card);
-            }
-            document.getElementById('liveCards').textContent = 'Canlı Kartlar:\n' + liveCards.join('\n');
-            document.getElementById('deadCards').textContent = 'Ölü Kartlar:\n' + deadCards.join('\n');
-            document.getElementById('allCards').textContent = 'Tüm Kontrol Edilen Kartlar:\n' + allCheckedCards.join('\n');
-            if (!adminMode) updateStats(currentUser || 'Misafir');
-        }
-
-        function generateCards() {
-            if (!adminMode && limits.creates <= 0) return alert('Oluşturma limiti bitti!');
-            let count = Math.min(document.getElementById('count').value || 1, 10);
-            let cards = [];
-            for (let i = 0; i < count; i++) {
-                let bank = Object.keys(BINS)[Math.floor(Math.random() * Object.keys(BINS).length)];
-                let bin = BINS[bank][Math.floor(Math.random() * BINS[bank].length)];
-                let num = Array(16 - bin.length).fill().map(() => Math.floor(Math.random() * 10)).join('');
-                let cardNum = bin + num;
-                if (!luhnCheck(cardNum)) {
-                    let digit = (10 - (parseInt(cardNum.split('').reverse().slice(1).reduce((s, d, i) => s + (i % 2 ? d * 2 % 9 || d * 2 - 9 : d), 0)) % 10)) % 10;
-                    cardNum = cardNum.slice(0, -1) + digit;
-                }
-                let month = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
-                let year = String(25 + Math.floor(Math.random() * 5));
-                let cvv = String(Math.floor(Math.random() * 1000)).padStart(3, '0');
-                cards.push(`${cardNum}|${month}|${year}|${cvv}`);
-                if (!adminMode) limits.creates--;
-            }
-            document.getElementById('results').textContent = cards.join('\n');
-            if (!adminMode) updateStats(currentUser || 'Misafir');
-        }
-
-        function adminCheckCards() {
-            checkCards();
-            document.getElementById('adminResults').textContent = 'Tüm Kontrol Edilen Kartlar:\n' + allCheckedCards.join('\n');
-        }
-
-        function adminGenerateCards() {
-            generateCards();
-            document.getElementById('adminResults').textContent = 'Tüm Kontrol Edilen Kartlar:\n' + allCheckedCards.join('\n');
-        }
-
-        function manageUsers() { alert('Kullanıcılar listelendi ve yönetildi!'); }
-        function deleteCards() { allCheckedCards = []; document.getElementById('adminResults').textContent = 'Tüm Kartlar Silindi!'; }
-        function viewLogs() { alert('Loglar görüntülendi: Son 10 işlem...'); }
-
-        function logout() { currentUser = null; location.reload(); }
         function showRegister() { document.getElementById('login').classList.add('hidden'); document.getElementById('register').classList.remove('hidden'); }
         function showLogin() { document.getElementById('codeDisplay').classList.add('hidden'); document.getElementById('login').classList.remove('hidden'); }
         function adminLoginFromSettings() { document.getElementById('settings').classList.add('hidden'); document.getElementById('adminLogin').classList.remove('hidden'); }
-        function toggleSidebar() {
-            let sidebar = document.getElementById('settings');
-            sidebar.classList.toggle('open');
-        }
-        function toggleNotifications() {
-            let choice = prompt('Bildirimleri Açık/Kapalı seçin (açık/kapalı):');
-            if (choice && (choice.toLowerCase() === 'açık' || choice.toLowerCase() === 'kapalı')) {
-                alert(`Bildirimler ${choice} olarak ayarlandı!`);
-            } else {
-                alert('Geçersiz seçim, lütfen tekrar deneyin!');
-            }
-        }
-        function changeTheme() { alert('Tema değiştirildi!'); }
-        function setSecurityQuestions() { alert('Güvenlik soruları eklendi!'); }
-        function setAltVerification() { alert('Alternatif doğrulama eklendi!'); }
-        function showStats() { alert('Kullanım istatistikleri: 50 kontrol, 20 canlı.'); }
+        function toggleSidebar() { document.getElementById('settings').classList.toggle('open'); }
+        function logout() { currentUser = null; location.reload(); }
     </script>
 </body>
 </html>
