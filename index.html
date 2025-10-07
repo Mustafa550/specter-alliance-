@@ -43,6 +43,7 @@
         <div class="card-box" id="liveCards">Canlı Kartlar:</div>
         <div class="card-box" id="deadCards">Ölü Kartlar:</div>
         <div class="card-box" id="allCards">Tüm Kontrol Edilen Kartlar:</div>
+        <div class="card-box" id="generatedCards">Oluşturulan Kartlar:</div>
     </div>
     <div class="footer">
         <a href="https://t.me/+IFx5aGB37Ws5NDFk">DEARCHECKER | Katıl</a>
@@ -51,6 +52,7 @@
     <script>
         let allCheckedCards = JSON.parse(localStorage.getItem('allCheckedCards') || '[]');
         let checkedCards = new Set(JSON.parse(localStorage.getItem('checkedCards') || '[]'));
+        let generatedCards = JSON.parse(localStorage.getItem('generatedCards') || '[]');
         let ip = null;
         const BINS = {
             Visa: ["4539", "4916", "402400", "4716", "4532", "4485", "4123", "453201", "471325", "402760"],
@@ -83,32 +85,42 @@
         async function checkCards() {
             let cards = document.getElementById('cards').value || await new Promise(r => {
                 let f = document.getElementById('fileUpload').files[0];
-                if (f) { let reader = new FileReader(); reader.onload = e => r(e.target.result); reader.readAsText(f); } else r('');
+                if (f) { 
+                    let reader = new FileReader(); 
+                    reader.onload = e => r(e.target.result); 
+                    reader.readAsText(f); 
+                } else r('');
             });
+            if (!cards) { alert('Lütfen kart girin veya dosya yükleyin!'); return; }
             let liveCards = [], deadCards = [];
             for (let card of cards.split('\n')) {
-                card = card.trim(); if (!card || checkedCards.has(card)) continue; // Tekrar kontrol engelleme
+                card = card.trim(); 
+                if (!card || checkedCards.has(card)) continue; // Tekrar kontrol engelleme
                 let [num, month, year, cvv] = card.split('|');
                 if (luhnCheck(num)) {
                     let bin = num.slice(0, 6);
-                    let binResp = await fetch(`https://api.bincheck.io/v1/bins/${bin}?api_key=free`);
-                    let binData = await binResp.json();
-                    let ninjaResp = await fetch(`https://api.api-ninjas.com/v1/bin?bin=${bin}`, { headers: { 'X-Api-Key': 'free_key' } });
-                    let ninjaData = await ninjaResp.json();
-                    let codeResp = await fetch(`https://api.bincodes.com/v1/bin/${bin}?key=free_key`);
-                    let codeData = await codeResp.json();
-                    let binlistResp = await fetch(`https://lookup.binlist.net/${bin}`);
-                    let binlistData = await binlistResp.json();
-                    if (binData.success && ninjaData.brand && codeData.valid && binlistData && binlistData.scheme) {
-                        let isLive = Math.random() < 0.60; // %60 Live oranı
-                        if (isLive) {
-                            let balance = (Math.random() * 5000).toFixed(2) + ' ' + (binlistData.country && binlistData.country.alpha2 === 'TR' ? 'TRY' : 'USD');
-                            liveCards.push(`✅ Approved | ${num}|${month}|${year}|${cvv} | ${balance} | DEAR CHECK SYSTEM`);
+                    try {
+                        let binResp = await fetch(`https://api.bincheck.io/v1/bins/${bin}?api_key=free`);
+                        let binData = await binResp.json();
+                        let ninjaResp = await fetch(`https://api.api-ninjas.com/v1/bin?bin=${bin}`, { headers: { 'X-Api-Key': 'free_key' } });
+                        let ninjaData = await ninjaResp.json();
+                        let codeResp = await fetch(`https://api.bincodes.com/v1/bin/${bin}?key=free_key`);
+                        let codeData = await codeResp.json();
+                        let binlistResp = await fetch(`https://lookup.binlist.net/${bin}`);
+                        let binlistData = await binlistResp.json();
+                        if (binData.success && ninjaData.brand && codeData.valid && binlistData && binlistData.scheme) {
+                            let isLive = Math.random() < 0.60; // %60 Live oranı
+                            if (isLive) {
+                                let balance = (Math.random() * 5000).toFixed(2) + ' ' + (binlistData.country && binlistData.country.alpha2 === 'TR' ? 'TRY' : 'USD');
+                                liveCards.push(`✅ Approved | ${num}|${month}|${year}|${cvv} | ${balance} | DEAR CHECK SYSTEM`);
+                            } else {
+                                deadCards.push(`${num}|${month}|${year}|${cvv} Ölü`);
+                            }
                         } else {
-                            deadCards.push(`${num}|${month}|${year}|${cvv} Ölü`);
+                            deadCards.push(`${num}|${month}|${year}|${cvv} Ölü (API Hatası)`);
                         }
-                    } else {
-                        deadCards.push(`${num}|${month}|${year}|${cvv} Ölü (API Hatası)`);
+                    } catch (error) {
+                        deadCards.push(`${num}|${month}|${year}|${cvv} Ölü (Bağlantı Hatası)`);
                     }
                 } else {
                     deadCards.push(`${num}|${month}|${year}|${cvv} Ölü (Luhn)`);
@@ -126,7 +138,7 @@
         // Kart Oluşturma
         function generateCards() {
             let count = Math.min(document.getElementById('count').value || 1, 10);
-            let cards = [];
+            let newCards = [];
             for (let i = 0; i < count; i++) {
                 let bank = Object.keys(BINS)[Math.floor(Math.random() * Object.keys(BINS).length)];
                 let bin = BINS[bank][Math.floor(Math.random() * BINS[bank].length)];
@@ -140,18 +152,21 @@
                 let year = String(25 + Math.floor(Math.random() * 6)); // 2025-2030
                 let cvv = String(Math.floor(Math.random() * 1000)).padStart(3, '0');
                 let newCard = `${cardNum}|${month}|${year}|${cvv}`;
-                if (!checkedCards.has(newCard)) {
-                    cards.push(newCard);
+                if (!checkedCards.has(newCard) && !generatedCards.includes(newCard)) {
+                    newCards.push(newCard);
+                    generatedCards.push(newCard);
                     checkedCards.add(newCard);
                     allCheckedCards.push(newCard);
                 }
             }
-            if (cards.length > 0) {
+            if (newCards.length > 0) {
+                document.getElementById('generatedCards').textContent = 'Oluşturulan Kartlar:\n' + generatedCards.join('\n');
                 document.getElementById('allCards').textContent = 'Tüm Kontrol Edilen Kartlar:\n' + allCheckedCards.join('\n');
+                localStorage.setItem('generatedCards', JSON.stringify(generatedCards));
                 localStorage.setItem('checkedCards', JSON.stringify(Array.from(checkedCards)));
                 localStorage.setItem('allCheckedCards', JSON.stringify(allCheckedCards));
             } else {
-                alert('Tüm kartlar zaten oluşturulmuş!');
+                alert('Tüm kartlar zaten oluşturulmuş veya kontrol edilmiş!');
             }
         }
 
