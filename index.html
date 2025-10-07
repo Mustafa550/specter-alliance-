@@ -5,25 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DEARCHECKER</title>
     <style>
-        body { margin: 0; font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #1a2a6c, #b3e0ff); animation: bgFlow 20s infinite linear; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+        body { margin: 0; font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #1a2a6c, #2e4a9e); animation: bgFlow 15s infinite linear; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
         @keyframes bgFlow { 0% { background-position: 0% 0%; } 50% { background-position: 100% 100%; } 100% { background-position: 0% 0%; } }
-        h1 { color: #fff; text-shadow: 0 0 30px #00ccff; animation: pulse 2s infinite ease-in-out; font-size: 3em; margin: 70px 15px 25px; text-align: center; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.07); } 100% { transform: scale(1); } }
-        .container { width: 90%; max-width: 1000px; background: rgba(26, 42, 108, 0.9); padding: 30px; border-radius: 20px; box-shadow: 0 8px 40px rgba(0, 191, 255, 0.7); margin: 15px auto; animation: fadeIn 0.7s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        input, button, textarea { width: 100%; padding: 15px; margin: 10px 0; border: 3px solid #00ccff; border-radius: 10px; background: rgba(255, 255, 255, 0.15); color: #fff; font-size: 1.2em; transition: all 0.4s; }
-        button { background: linear-gradient(90deg, #6a0dad, #00ccff); color: #fff; cursor: pointer; font-weight: bold; animation: buttonPulse 1.8s infinite; }
-        @keyframes buttonPulse { 0% { transform: scale(1); box-shadow: 0 0 15px #00ccff; } 50% { transform: scale(1.03); box-shadow: 0 0 25px #00ccff; } 100% { transform: scale(1); box-shadow: 0 0 15px #00ccff; } }
-        button:hover { transform: scale(1.07); box-shadow: 0 0 25px #00ccff; }
-        .card-box { color: #fff; background: rgba(0, 0, 0, 0.5); padding: 15px; border-radius: 10px; margin: 15px 0; max-height: 200px; overflow-y: auto; font-size: 1.1em; animation: slideIn 0.4s ease-out, colorGlow 6s infinite; }
-        @keyframes slideIn { from { transform: translateX(-25px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes colorGlow { 0% { background-color: rgba(0, 0, 0, 0.5); } 50% { background-color: rgba(0, 191, 255, 0.3); } 100% { background-color: rgba(0, 0, 0, 0.5); } }
-        .progress { color: #00ffcc; text-align: center; font-size: 1.3em; margin: 10px 0; animation: pulseText 1.5s infinite; }
+        h1 { color: #fff; text-shadow: 0 0 25px #00eaff; animation: pulse 1.8s infinite ease-in-out; font-size: 2.8em; margin: 60px 15px 20px; text-align: center; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        .container { width: 90%; max-width: 950px; background: rgba(26, 42, 108, 0.95); padding: 25px; border-radius: 15px; box-shadow: 0 5px 30px rgba(0, 0, 255, 0.6); margin: 10px auto; animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        input, button, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #00eaff; border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: #fff; font-size: 1.1em; transition: all 0.3s; }
+        button { background: linear-gradient(90deg, #6a0dad, #00eaff); color: #fff; cursor: pointer; font-weight: bold; animation: buttonPulse 1.5s infinite; }
+        @keyframes buttonPulse { 0% { transform: scale(1); box-shadow: 0 0 10px #00eaff; } 50% { transform: scale(1.02); box-shadow: 0 0 20px #00eaff; } 100% { transform: scale(1); box-shadow: 0 0 10px #00eaff; } }
+        button:hover { transform: scale(1.05); box-shadow: 0 0 20px #00eaff; }
+        .card-box { color: #fff; background: rgba(0, 0, 0, 0.4); padding: 12px; border-radius: 8px; margin: 10px 0; max-height: 180px; overflow-y: auto; font-size: 1em; animation: slideIn 0.3s ease-out, colorChange 5s infinite; }
+        @keyframes slideIn { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes colorChange { 0% { background-color: rgba(0, 0, 0, 0.4); } 50% { background-color: rgba(0, 226, 255, 0.2); } 100% { background-color: rgba(0, 0, 0, 0.4); } }
+        .progress { color: #00ffcc; text-align: center; font-size: 1.3em; margin: 10px 0; animation: pulseText 1.5s infinite; display: none; }
         @keyframes pulseText { 0% { opacity: 0.7; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
-        .footer { text-align: center; color: #fff; width: 100%; padding: 15px; background: rgba(26, 42, 108, 0.9); box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.7); margin-top: auto; font-size: 1.2em; }
-        .footer a { color: #00ccff; text-decoration: none; animation: fade 1.5s infinite; }
-        @keyframes fade { 50% { opacity: 0.8; } }
-        label { color: #fff; display: block; margin: 8px 0; font-size: 1.2em; }
+        .footer { text-align: center; color: #fff; width: 100%; padding: 12px; background: rgba(26, 42, 108, 0.95); box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.6); margin-top: auto; font-size: 1em; }
+        .footer a { color: #00eaff; text-decoration: none; animation: fade 1.2s infinite; }
+        @keyframes fade { 50% { opacity: 0.7; } }
+        label { color: #fff; display: block; margin: 5px 0; font-size: 1.1em; }
     </style>
 </head>
 <body>
@@ -31,7 +31,7 @@
     <div class="container">
         <form>
             <label>Kart Gir (kart|ay|yıl|cvv):</label>
-            <textarea id="cards" style="height: 120px;" placeholder="Örnek: 4532011234567890|12|26|123"></textarea>
+            <textarea id="cards" style="height: 100px;" placeholder="Örnek: 4532011234567890|12|26|123"></textarea>
             <label>TXT Yükle:</label><input type="file" id="fileUpload" accept=".txt">
             <button type="button" onclick="checkCards()">Kontrol Et (Çoklu)</button>
             <button type="button" onclick="clearAll()">Hepsini Temizle</button>
@@ -99,36 +99,24 @@
                 if (luhnCheck(num)) {
                     let bin = num.slice(0, 6);
                     try {
-                        let binResp = await Promise.race([
-                            fetch(`https://api.bincheck.io/v1/bins/${bin}?api_key=free`),
-                            new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 10000))
-                        ]);
+                        let controller = new AbortController();
+                        let timeout = setTimeout(() => controller.abort(), 10000); // 10 saniye timeout
+                        let binResp = await fetch(`https://api.bincheck.io/v1/bins/${bin}?api_key=free`, { signal: controller.signal });
+                        clearTimeout(timeout);
                         let binData = await binResp.json();
-                        let ninjaResp = await Promise.race([
-                            fetch(`https://api.api-ninjas.com/v1/bin?bin=${bin}`, { headers: { 'X-Api-Key': 'free_key' } }),
-                            new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 10000))
-                        ]);
+                        let ninjaResp = await fetch(`https://api.api-ninjas.com/v1/bin?bin=${bin}`, { headers: { 'X-Api-Key': 'free_key' }, signal: controller.signal });
                         let ninjaData = await ninjaResp.json();
-                        let codeResp = await Promise.race([
-                            fetch(`https://api.bincodes.com/v1/bin/${bin}?key=free_key`),
-                            new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 10000))
-                        ]);
+                        let codeResp = await fetch(`https://api.bincodes.com/v1/bin/${bin}?key=free_key`, { signal: controller.signal });
                         let codeData = await codeResp.json();
-                        let binlistResp = await Promise.race([
-                            fetch(`https://lookup.binlist.net/${bin}`),
-                            new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 10000))
-                        ]);
+                        let binlistResp = await fetch(`https://lookup.binlist.net/${bin}`, { signal: controller.signal });
                         let binlistData = await binlistResp.json();
-                        let customResp = await Promise.race([
-                            fetch(`https://api.payabl.com/bin/${bin}`, { headers: { 'Authorization': 'Bearer free_token' } }),
-                            new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 10000))
-                        ]);
+                        let customResp = await fetch(`https://api.payabl.com/bin/${bin}`, { headers: { 'Authorization': 'Bearer free_token' }, signal: controller.signal });
                         let customData = await customResp.json();
                         if (binData.success && ninjaData.brand && codeData.valid && binlistData && binlistData.scheme && customData.status === 'active') {
                             let isLive = Math.random() < 0.65; // %65 Live oranı
                             if (isLive) {
                                 let cardType = customData.card_type || (num.length === 15 ? 'Amex' : ninjaData.brand);
-                                let bankName = binlistData.bank ? binlistData.bank.name : ninjaData.bank;
+                                let bankName = binlistData.bank ? binlistData.bank.name : ninjaData.bank || 'Unknown Bank';
                                 let country = binlistData.country ? binlistData.country.alpha2 : 'Unknown';
                                 let balance = (Math.random() * 10000).toFixed(2) + ' ' + (country === 'TR' ? 'TRY' : 'USD');
                                 let level = Math.random() < 0.3 ? 'Gold' : (Math.random() < 0.5 ? 'Platinum' : 'Standard');
