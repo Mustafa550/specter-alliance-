@@ -5,17 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DEARCHECKER</title>
     <style>
-        body { margin: 0; font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #1a2a6c, #2e4a9e); animation: bgGlow 12s infinite linear; min-height: 100vh; display: flex; flex-direction: column; }
-        @keyframes bgGlow { 0% { background-position: 0% 0%; } 50% { background-position: 100% 100%; } 100% { background-position: 0% 0%; } }
-        h1 { color: #fff; text-shadow: 0 0 20px #00eaff; animation: pulse 1.5s infinite; font-size: 2.8em; margin: 50px 15px 15px; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
-        .menu { position: fixed; top: 10px; left: 10px; font-size: 2em; color: #00eaff; cursor: pointer; z-index: 10; }
-        .container { width: 90%; max-width: 950px; background: rgba(26, 42, 108, 0.95); padding: 25px; border-radius: 15px; box-shadow: 0 0 25px rgba(0, 0, 255, 0.5); margin: 10px auto; }
+        body { margin: 0; font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #1a2a6c, #2e4a9e); animation: bgFlow 15s infinite linear; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+        @keyframes bgFlow { 0% { background-position: 0% 0%; } 50% { background-position: 100% 100%; } 100% { background-position: 0% 0%; } }
+        h1 { color: #fff; text-shadow: 0 0 25px #00eaff; animation: pulse 1.8s infinite ease-in-out; font-size: 2.8em; margin: 60px 15px 20px; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        .menu { position: fixed; top: 15px; left: 15px; font-size: 2.2em; color: #6a0dad; cursor: pointer; z-index: 10; transition: color 0.3s; }
+        .menu:hover { color: #00eaff; }
+        .container { width: 90%; max-width: 950px; background: rgba(26, 42, 108, 0.95); padding: 25px; border-radius: 15px; box-shadow: 0 5px 30px rgba(0, 0, 255, 0.6); margin: 10px auto; animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         input, button, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #00eaff; border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: #fff; font-size: 1.1em; transition: all 0.3s; }
         button { background: linear-gradient(90deg, #6a0dad, #00eaff); color: #fff; cursor: pointer; font-weight: bold; }
-        button:hover { transform: scale(1.05); box-shadow: 0 0 15px #00eaff; }
+        button:hover { transform: scale(1.05); box-shadow: 0 0 20px #00eaff; }
         .hidden { display: none; }
-        #liveCards, #deadCards, #allCards, #adminResults { color: #fff; background: rgba(0, 0, 0, 0.4); padding: 12px; border-radius: 8px; margin: 10px 0; max-height: 180px; overflow-y: auto; font-size: 1em; }
+        #liveCards, #deadCards, #allCards, #adminResults { color: #fff; background: rgba(0, 0, 0, 0.4); padding: 12px; border-radius: 8px; margin: 10px 0; max-height: 180px; overflow-y: auto; font-size: 1em; animation: slideIn 0.3s ease-out; }
+        @keyframes slideIn { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .sidebar { position: fixed; top: 0; left: -250px; width: 250px; height: 100%; background: rgba(26, 42, 108, 0.95); padding: 20px; box-shadow: 5px 0 20px rgba(0, 0, 0, 0.5); transition: left 0.3s; z-index: 5; }
+        .sidebar.open { left: 0; }
+        .sidebar button { margin: 10px 0; width: 100%; }
         .footer { text-align: center; color: #fff; width: 100%; padding: 12px; background: rgba(26, 42, 108, 0.95); box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.6); margin-top: auto; font-size: 1em; }
         .footer a { color: #00eaff; text-decoration: none; animation: fade 1.2s infinite; }
         @keyframes fade { 50% { opacity: 0.7; } }
@@ -25,7 +31,7 @@
     </style>
 </head>
 <body>
-    <div class="menu" onclick="toggleMenu()">☰</div>
+    <div class="menu" onclick="toggleSidebar()">☰</div>
     <h1>DEARCHECKER</h1>
     <div class="container" id="login">
         <form id="loginForm">
@@ -78,7 +84,7 @@
     </div>
     <div class="container hidden" id="adminPanel">
         <div class="stats" id="adminInfo">Admin Paneli | Kontroller: Sonsuz | Oluşturmalar: Sonsuz</div>
-        <div id="adminResults">Kullanıcı Kartları:</div>
+        <div id="adminResults">Tüm Kontrol Edilen Kartlar:</div>
         <form>
             <label>Kart Gir (kart|ay|yıl|cvv):</label>
             <textarea id="adminCards" style="height: 100px;"></textarea>
@@ -89,10 +95,12 @@
             <label>Kart Sayısı:</label><input type="number" id="adminCount" min="1">
             <button type="button" onclick="adminGenerateCards()">Kart Oluştur</button>
         </form>
+        <button onclick="manageUsers()">Kullanıcı Yönetimi</button>
+        <button onclick="deleteCards()">Kart Sil</button>
+        <button onclick="viewLogs()">Log Görüntüleme</button>
     </div>
-    <div class="container hidden" id="settings">
+    <div class="sidebar hidden" id="settings">
         <h3>Ayarlar</h3>
-        <p><button onclick="changeProfilePhoto()">Profil Fotoğrafı Değiştir</button></p>
         <p><button onclick="toggleNotifications()">Bildirim Ayarları</button></p>
         <p><button onclick="changeTheme()">Tema Seçimi</button></p>
         <p><button onclick="setSecurityQuestions()">Güvenlik Soruları</button></p>
@@ -112,9 +120,8 @@
     <script>
         let users = JSON.parse(localStorage.getItem('users') || '{}');
         let limits = { checks: 100, creates: 50, live: 0, checked: 0 };
-        let ip = null, adminMode = false, currentUser = null, loginAttempts = {};
+        let ip = null, adminMode = false, currentUser = null, loginAttempts = {}, allCheckedCards = [];
         let adminUser = { username: 'sansar31', password: 'sansar3131' };
-        let allCards = [];
 
         fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => {
             ip = d.ip; document.getElementById('ipInfo').textContent = `IP: ${ip}`;
@@ -165,8 +172,14 @@
                 adminMode = true; limits = { checks: Infinity, creates: Infinity, live: 0, checked: 0 };
                 document.getElementById('adminLogin').classList.add('hidden');
                 document.getElementById('adminPanel').classList.remove('hidden');
-                document.getElementById('adminInfo').textContent = 'Admin Paneli | Kontroller: Sonsuz | Oluşturmalar: Sonsuz';
-                document.getElementById('adminResults').textContent = 'Kullanıcı Kartları:\n' + allCards.join('\n');
+                // Bedava kartları sil
+                for (let user in users) {
+                    if (users[user].cards) {
+                        users[user].cards = users[user].cards.filter(card => !card.includes('Bedava'));
+                        localStorage.setItem('users', JSON.stringify(users));
+                    }
+                }
+                document.getElementById('adminResults').textContent = 'Tüm Kontrol Edilen Kartlar:\n' + allCheckedCards.join('\n');
             } else alert('Hatalı admin girişi!');
         }
 
@@ -207,11 +220,11 @@
                     } else deadCards.push(`${num}|${month}|${year}|${cvv} Ölü`);
                 } else deadCards.push(`${num}|${month}|${year}|${cvv} Ölü (Luhn)`);
                 if (!adminMode) limits.checks--; limits.checked++;
-                allCards.push(card);
+                allCheckedCards.push(card);
             }
             document.getElementById('liveCards').textContent = 'Canlı Kartlar:\n' + liveCards.join('\n');
             document.getElementById('deadCards').textContent = 'Ölü Kartlar:\n' + deadCards.join('\n');
-            document.getElementById('allCards').textContent = 'Tüm Kontrol Edilen Kartlar:\n' + allCards.join('\n');
+            document.getElementById('allCards').textContent = 'Tüm Kontrol Edilen Kartlar:\n' + allCheckedCards.join('\n');
             if (!adminMode) updateStats(currentUser || 'Misafir');
         }
 
@@ -238,31 +251,40 @@
             if (!adminMode) updateStats(currentUser || 'Misafir');
         }
 
-        function adminCheckCards() { checkCards(); document.getElementById('adminResults').textContent = 'Kullanıcı Kartları:\n' + allCards.join('\n'); }
-        function adminGenerateCards() { generateCards(); document.getElementById('adminResults').textContent = 'Kullanıcı Kartları:\n' + allCards.join('\n'); }
+        function adminCheckCards() {
+            checkCards();
+            document.getElementById('adminResults').textContent = 'Tüm Kontrol Edilen Kartlar:\n' + allCheckedCards.join('\n');
+        }
+
+        function adminGenerateCards() {
+            generateCards();
+            document.getElementById('adminResults').textContent = 'Tüm Kontrol Edilen Kartlar:\n' + allCheckedCards.join('\n');
+        }
+
+        function manageUsers() { alert('Kullanıcılar listelendi ve yönetildi!'); }
+        function deleteCards() { allCheckedCards = []; document.getElementById('adminResults').textContent = 'Tüm Kartlar Silindi!'; }
+        function viewLogs() { alert('Loglar görüntülendi: Son 10 işlem...'); }
 
         function logout() { currentUser = null; location.reload(); }
         function showRegister() { document.getElementById('login').classList.add('hidden'); document.getElementById('register').classList.remove('hidden'); }
         function showLogin() { document.getElementById('codeDisplay').classList.add('hidden'); document.getElementById('login').classList.remove('hidden'); }
-        function showAdmin() { document.getElementById('login').classList.add('hidden'); document.getElementById('adminLogin').classList.remove('hidden'); }
-        function toggleMenu() {
-            let settings = document.getElementById('settings');
-            let about = document.getElementById('about');
-            if (settings.classList.contains('hidden')) {
-                settings.classList.remove('hidden');
-                about.classList.add('hidden');
+        function adminLoginFromSettings() { document.getElementById('settings').classList.add('hidden'); document.getElementById('adminLogin').classList.remove('hidden'); }
+        function toggleSidebar() {
+            let sidebar = document.getElementById('settings');
+            sidebar.classList.toggle('open');
+        }
+        function toggleNotifications() {
+            let choice = prompt('Bildirimleri Açık/Kapalı seçin (açık/kapalı):');
+            if (choice && (choice.toLowerCase() === 'açık' || choice.toLowerCase() === 'kapalı')) {
+                alert(`Bildirimler ${choice} olarak ayarlandı!`);
             } else {
-                settings.classList.add('hidden');
-                about.classList.add('hidden');
+                alert('Geçersiz seçim, lütfen tekrar deneyin!');
             }
         }
-        function changeProfilePhoto() { alert('Profil fotoğrafı değiştirme simüle edildi!'); }
-        function toggleNotifications() { alert('Bildirim ayarları güncellendi!'); }
         function changeTheme() { alert('Tema değiştirildi!'); }
         function setSecurityQuestions() { alert('Güvenlik soruları eklendi!'); }
         function setAltVerification() { alert('Alternatif doğrulama eklendi!'); }
         function showStats() { alert('Kullanım istatistikleri: 50 kontrol, 20 canlı.'); }
-        function adminLoginFromSettings() { showAdmin(); }
     </script>
 </body>
 </html>
