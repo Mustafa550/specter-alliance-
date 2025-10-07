@@ -12,7 +12,6 @@ function saveData() {
 
 function isValidEmail(email) { return email.endsWith('@gmail.com') && /^[^\s@]+@gmail\.com$/.test(email); }
 function isValidPassword(pass) { return pass.length >= 8 && /[A-Z]/.test(pass) && /[a-z]/.test(pass) && /\d/.test(pass); }
-function generateCode() { return Math.floor(100000 + Math.random() * 900000).toString().substr(0, 6); }
 function checkIPLimit(ip, username) {
     for (let user in users) {
         if (users[user].ip === ip && user !== username) return false;
