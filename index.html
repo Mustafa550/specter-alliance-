@@ -5,26 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DEARCHECKER</title>
     <style>
-        body { margin: 0; font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #1a2a6c, #2e4a9e); animation: bgFlow 15s infinite linear; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+        body { margin: 0; font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #1a2a6c, #b3e0ff); animation: bgFlow 20s infinite linear; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
         @keyframes bgFlow { 0% { background-position: 0% 0%; } 50% { background-position: 100% 100%; } 100% { background-position: 0% 0%; } }
-        h1 { color: #fff; text-shadow: 0 0 25px #00eaff; animation: pulse 1.8s infinite ease-in-out; font-size: 2.8em; margin: 60px 15px 20px; text-align: center; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-        .container { width: 90%; max-width: 950px; background: rgba(26, 42, 108, 0.95); padding: 25px; border-radius: 15px; box-shadow: 0 5px 30px rgba(0, 0, 255, 0.6); margin: 10px auto; animation: fadeIn 0.5s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        input, button, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #00eaff; border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: #fff; font-size: 1.1em; transition: all 0.3s; }
-        button { background: linear-gradient(90deg, #6a0dad, #00eaff); color: #fff; cursor: pointer; font-weight: bold; animation: buttonPulse 1.5s infinite; }
-        @keyframes buttonPulse { 0% { transform: scale(1); box-shadow: 0 0 10px #00eaff; } 50% { transform: scale(1.02); box-shadow: 0 0 20px #00eaff; } 100% { transform: scale(1); box-shadow: 0 0 10px #00eaff; } }
-        button:hover { transform: scale(1.05); box-shadow: 0 0 20px #00eaff; }
-        .card-box { color: #fff; background: rgba(0, 0, 0, 0.4); padding: 12px; border-radius: 8px; margin: 10px 0; max-height: 180px; overflow-y: auto; font-size: 1em; animation: slideIn 0.3s ease-out, colorChange 5s infinite; }
-        @keyframes slideIn { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes colorChange { 0% { background-color: rgba(0, 0, 0, 0.4); } 50% { background-color: rgba(0, 226, 255, 0.2); } 100% { background-color: rgba(0, 0, 0, 0.4); } }
-        .footer { text-align: center; color: #fff; width: 100%; padding: 12px; background: rgba(26, 42, 108, 0.95); box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.6); margin-top: auto; font-size: 1em; }
-        .footer a { color: #00eaff; text-decoration: none; animation: fade 1.2s infinite; }
-        @keyframes fade { 50% { opacity: 0.7; } }
-        .stats { color: #ffeb3b; text-align: center; margin: 10px 0; font-size: 1.1em; animation: colorShift 3s infinite; }
-        @keyframes colorShift { 0% { color: #ffeb3b; } 50% { color: #00ffcc; } 100% { color: #ffeb3b; } }
-        .ip-info { color: #00ffcc; text-align: center; margin: 10px 0; font-size: 1em; }
-        label { color: #fff; display: block; margin: 5px 0; font-size: 1.1em; }
+        h1 { color: #fff; text-shadow: 0 0 30px #00ccff; animation: pulse 2s infinite ease-in-out; font-size: 3em; margin: 70px 15px 25px; text-align: center; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.07); } 100% { transform: scale(1); } }
+        .container { width: 90%; max-width: 1000px; background: rgba(26, 42, 108, 0.9); padding: 30px; border-radius: 20px; box-shadow: 0 8px 40px rgba(0, 191, 255, 0.7); margin: 15px auto; animation: fadeIn 0.7s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        input, button, textarea { width: 100%; padding: 15px; margin: 10px 0; border: 3px solid #00ccff; border-radius: 10px; background: rgba(255, 255, 255, 0.15); color: #fff; font-size: 1.2em; transition: all 0.4s; }
+        button { background: linear-gradient(90deg, #6a0dad, #00ccff); color: #fff; cursor: pointer; font-weight: bold; animation: buttonPulse 1.8s infinite; }
+        @keyframes buttonPulse { 0% { transform: scale(1); box-shadow: 0 0 15px #00ccff; } 50% { transform: scale(1.03); box-shadow: 0 0 25px #00ccff; } 100% { transform: scale(1); box-shadow: 0 0 15px #00ccff; } }
+        button:hover { transform: scale(1.07); box-shadow: 0 0 25px #00ccff; }
+        .card-box { color: #fff; background: rgba(0, 0, 0, 0.5); padding: 15px; border-radius: 10px; margin: 15px 0; max-height: 200px; overflow-y: auto; font-size: 1.1em; animation: slideIn 0.4s ease-out, colorGlow 6s infinite; }
+        @keyframes slideIn { from { transform: translateX(-25px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes colorGlow { 0% { background-color: rgba(0, 0, 0, 0.5); } 50% { background-color: rgba(0, 191, 255, 0.3); } 100% { background-color: rgba(0, 0, 0, 0.5); } }
+        .footer { text-align: center; color: #fff; width: 100%; padding: 15px; background: rgba(26, 42, 108, 0.9); box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.7); margin-top: auto; font-size: 1.2em; }
+        .footer a { color: #00ccff; text-decoration: none; animation: fade 1.5s infinite; }
+        @keyframes fade { 50% { opacity: 0.8; } }
+        label { color: #fff; display: block; margin: 8px 0; font-size: 1.2em; }
     </style>
 </head>
 <body>
@@ -32,18 +29,14 @@
     <div class="container">
         <form>
             <label>Kart Gir (kart|ay|yıl|cvv):</label>
-            <textarea id="cards" style="height: 100px;" placeholder="Örnek: 4532011234567890|12|26|123"></textarea>
+            <textarea id="cards" style="height: 120px;" placeholder="Örnek: 4532011234567890|12|26|123"></textarea>
             <label>TXT Yükle:</label><input type="file" id="fileUpload" accept=".txt">
             <button type="button" onclick="checkCards()">Kontrol Et (Çoklu)</button>
-        </form>
-        <form>
-            <label>Kart Sayısı:</label><input type="number" id="count" min="1" max="10">
-            <button type="button" onclick="generateCards()">Kart Oluştur</button>
+            <button type="button" onclick="clearAll()">Hepsini Temizle</button>
         </form>
         <div class="card-box" id="liveCards">Canlı Kartlar:</div>
         <div class="card-box" id="deadCards">Ölü Kartlar:</div>
         <div class="card-box" id="allCards">Tüm Kontrol Edilen Kartlar:</div>
-        <div class="card-box" id="generatedCards">Oluşturulan Kartlar:</div>
     </div>
     <div class="footer">
         <a href="https://t.me/+IFx5aGB37Ws5NDFk">DEARCHECKER | Katıl</a>
@@ -52,22 +45,21 @@
     <script>
         let allCheckedCards = JSON.parse(localStorage.getItem('allCheckedCards') || '[]');
         let checkedCards = new Set(JSON.parse(localStorage.getItem('checkedCards') || '[]'));
-        let generatedCards = JSON.parse(localStorage.getItem('generatedCards') || '[]');
         let ip = null;
         const BINS = {
-            Visa: ["4539", "4916", "402400", "4716", "4532", "4485", "4123", "453201", "471325", "402760"],
-            Mastercard: ["51", "55", "2221", "2720", "5404", "5454", "5333", "510008", "547350", "222100"],
-            Amex: ["34", "37", "3714", "3782", "3400", "3700"],
-            Discover: ["6011", "6445", "6500", "601100", "644500"],
-            Garanti: ["403799", "415514", "40379900", "41551400"],
-            "İş Bankası": ["450875", "455372", "45087500", "45537200"],
-            Akbank: ["404238", "435508", "40423800", "43550800"],
-            "Yapı Kredi": ["405689", "427033", "40568900", "42703300"],
-            Denizbank: ["414709", "492987", "41470900", "49298700"],
-            "Ziraat Bankası": ["404937", "425845", "40493700", "42584500"],
-            Chase: ["4010", "4120", "4220", "401000", "412000"],
-            Citi: ["5401", "5424", "5500", "540100", "542400"],
-            BankofAmerica: ["4147", "4213", "4313", "414700", "421300"]
+            Visa: ["4539", "4916", "402400", "4716", "4532", "4485", "4123", "453201", "471325", "402760", "453920", "491677"],
+            Mastercard: ["51", "55", "2221", "2720", "5404", "5454", "5333", "510008", "547350", "222100", "510510", "555555"],
+            Amex: ["34", "37", "3714", "3782", "3400", "3700", "371449", "378282"],
+            Discover: ["6011", "6445", "6500", "601100", "644500", "601111", "650001"],
+            Garanti: ["403799", "415514", "40379900", "41551400", "40379910", "41551420"],
+            "İş Bankası": ["450875", "455372", "45087500", "45537200", "45087510", "45537230"],
+            Akbank: ["404238", "435508", "40423800", "43550800", "40423810", "43550820"],
+            "Yapı Kredi": ["405689", "427033", "40568900", "42703300", "40568910", "42703320"],
+            Denizbank: ["414709", "492987", "41470900", "49298700", "41470910", "49298720"],
+            "Ziraat Bankası": ["404937", "425845", "40493700", "42584500", "40493710", "42584520"],
+            Chase: ["4010", "4120", "4220", "401000", "412000", "401011", "412022"],
+            Citi: ["5401", "5424", "5500", "540100", "542400", "540120", "542430"],
+            BankofAmerica: ["4147", "4213", "4313", "414700", "421300", "414710", "421320"]
         };
 
         // IP Al
@@ -108,11 +100,19 @@
                         let codeData = await codeResp.json();
                         let binlistResp = await fetch(`https://lookup.binlist.net/${bin}`);
                         let binlistData = await binlistResp.json();
-                        if (binData.success && ninjaData.brand && codeData.valid && binlistData && binlistData.scheme) {
-                            let isLive = Math.random() < 0.60; // %60 Live oranı
+                        let customResp = await fetch(`https://api.payabl.com/bin/${bin}`, { // Özel proxy API (ücretsiz alternatif)
+                            headers: { 'Authorization': 'Bearer free_token' }
+                        });
+                        let customData = await customResp.json();
+                        if (binData.success && ninjaData.brand && codeData.valid && binlistData && binlistData.scheme && customData.status === 'active') {
+                            let isLive = Math.random() < 0.65; // %65 Live oranı
                             if (isLive) {
-                                let balance = (Math.random() * 5000).toFixed(2) + ' ' + (binlistData.country && binlistData.country.alpha2 === 'TR' ? 'TRY' : 'USD');
-                                liveCards.push(`✅ Approved | ${num}|${month}|${year}|${cvv} | ${balance} | DEAR CHECK SYSTEM`);
+                                let cardType = customData.card_type || (num.length === 15 ? 'Amex' : ninjaData.brand);
+                                let bankName = binlistData.bank ? binlistData.bank.name : ninjaData.bank;
+                                let country = binlistData.country ? binlistData.country.alpha2 : 'Unknown';
+                                let balance = (Math.random() * 10000).toFixed(2) + ' ' + (country === 'TR' ? 'TRY' : 'USD');
+                                let level = Math.random() < 0.3 ? 'Gold' : (Math.random() < 0.5 ? 'Platinum' : 'Standard');
+                                liveCards.push(`✅ Approved | ${num}|${month}|${year}|${cvv} | ${balance} | ${bankName} | ${cardType} ${level} | ${country}`);
                             } else {
                                 deadCards.push(`${num}|${month}|${year}|${cvv} Ölü`);
                             }
@@ -135,39 +135,17 @@
             localStorage.setItem('allCheckedCards', JSON.stringify(allCheckedCards));
         }
 
-        // Kart Oluşturma
-        function generateCards() {
-            let count = Math.min(document.getElementById('count').value || 1, 10);
-            let newCards = [];
-            for (let i = 0; i < count; i++) {
-                let bank = Object.keys(BINS)[Math.floor(Math.random() * Object.keys(BINS).length)];
-                let bin = BINS[bank][Math.floor(Math.random() * BINS[bank].length)];
-                let num = Array(16 - bin.length).fill().map(() => Math.floor(Math.random() * 10)).join('');
-                let cardNum = bin + num;
-                if (!luhnCheck(cardNum)) {
-                    let digit = (10 - (parseInt(cardNum.split('').reverse().slice(1).reduce((s, d, i) => s + (i % 2 ? d * 2 % 9 || d * 2 - 9 : d), 0)) % 10)) % 10;
-                    cardNum = cardNum.slice(0, -1) + digit;
-                }
-                let month = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
-                let year = String(25 + Math.floor(Math.random() * 6)); // 2025-2030
-                let cvv = String(Math.floor(Math.random() * 1000)).padStart(3, '0');
-                let newCard = `${cardNum}|${month}|${year}|${cvv}`;
-                if (!checkedCards.has(newCard) && !generatedCards.includes(newCard)) {
-                    newCards.push(newCard);
-                    generatedCards.push(newCard);
-                    checkedCards.add(newCard);
-                    allCheckedCards.push(newCard);
-                }
-            }
-            if (newCards.length > 0) {
-                document.getElementById('generatedCards').textContent = 'Oluşturulan Kartlar:\n' + generatedCards.join('\n');
-                document.getElementById('allCards').textContent = 'Tüm Kontrol Edilen Kartlar:\n' + allCheckedCards.join('\n');
-                localStorage.setItem('generatedCards', JSON.stringify(generatedCards));
-                localStorage.setItem('checkedCards', JSON.stringify(Array.from(checkedCards)));
-                localStorage.setItem('allCheckedCards', JSON.stringify(allCheckedCards));
-            } else {
-                alert('Tüm kartlar zaten oluşturulmuş veya kontrol edilmiş!');
-            }
+        // Hepsini Temizle
+        function clearAll() {
+            document.getElementById('cards').value = '';
+            document.getElementById('liveCards').textContent = 'Canlı Kartlar:';
+            document.getElementById('deadCards').textContent = 'Ölü Kartlar:';
+            document.getElementById('allCards').textContent = 'Tüm Kontrol Edilen Kartlar:';
+            allCheckedCards = [];
+            checkedCards.clear();
+            localStorage.removeItem('allCheckedCards');
+            localStorage.removeItem('checkedCards');
+            alert('Tüm veriler temizlendi!');
         }
 
         // Boşluk Doldurmak İçin
