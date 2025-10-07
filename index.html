@@ -7,17 +7,17 @@
     <style>
         body { margin: 0; font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #1a2a6c, #2e4a9e); animation: bgGlow 12s infinite linear; min-height: 100vh; display: flex; flex-direction: column; }
         @keyframes bgGlow { 0% { background-position: 0% 0%; } 50% { background-position: 100% 100%; } 100% { background-position: 0% 0%; } }
-        h1 { color: #fff; text-shadow: 0 0 20px #00e1ff; animation: pulse 1.5s infinite; font-size: 2.8em; margin: 15px; }
+        h1 { color: #fff; text-shadow: 0 0 20px #00eaff; animation: pulse 1.5s infinite; font-size: 2.8em; margin: 50px 15px 15px; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
-        .menu { position: fixed; top: 10px; left: 10px; font-size: 2em; color: #00e1ff; cursor: pointer; z-index: 10; }
+        .menu { position: fixed; top: 10px; left: 10px; font-size: 2em; color: #00eaff; cursor: pointer; z-index: 10; }
         .container { width: 90%; max-width: 950px; background: rgba(26, 42, 108, 0.95); padding: 25px; border-radius: 15px; box-shadow: 0 0 25px rgba(0, 0, 255, 0.5); margin: 10px auto; }
-        input, button, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #00e1ff; border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: #fff; font-size: 1.1em; transition: all 0.3s; }
-        button { background: linear-gradient(90deg, #00e1ff, #2e4a9e); color: #fff; cursor: pointer; font-weight: bold; }
-        button:hover { transform: scale(1.05); box-shadow: 0 0 15px #00e1ff; }
+        input, button, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #00eaff; border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: #fff; font-size: 1.1em; transition: all 0.3s; }
+        button { background: linear-gradient(90deg, #6a0dad, #00eaff); color: #fff; cursor: pointer; font-weight: bold; }
+        button:hover { transform: scale(1.05); box-shadow: 0 0 15px #00eaff; }
         .hidden { display: none; }
         #liveCards, #deadCards, #allCards, #adminResults { color: #fff; background: rgba(0, 0, 0, 0.4); padding: 12px; border-radius: 8px; margin: 10px 0; max-height: 180px; overflow-y: auto; font-size: 1em; }
         .footer { text-align: center; color: #fff; width: 100%; padding: 12px; background: rgba(26, 42, 108, 0.95); box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.6); margin-top: auto; font-size: 1em; }
-        .footer a { color: #00e1ff; text-decoration: none; animation: fade 1.2s infinite; }
+        .footer a { color: #00eaff; text-decoration: none; animation: fade 1.2s infinite; }
         @keyframes fade { 50% { opacity: 0.7; } }
         .stats { color: #ffeb3b; text-align: center; margin: 10px 0; font-size: 1.1em; }
         .ip-info { color: #00ffcc; text-align: center; margin: 10px 0; font-size: 1em; }
@@ -34,7 +34,7 @@
             <label>Doğrulama Kodu:</label><input type="text" id="loginCode" required>
             <button type="button" onclick="login()">Giriş Yap</button>
         </form>
-        <button type="button" onclick="showRegister()" style="background: #2e4a9e;">Kayıt Ol</button>
+        <button type="button" onclick="showRegister()" style="background: #6a0dad;">Kayıt Ol</button>
     </div>
     <div class="container hidden" id="register">
         <form id="registerForm">
@@ -112,7 +112,7 @@
     <script>
         let users = JSON.parse(localStorage.getItem('users') || '{}');
         let limits = { checks: 100, creates: 50, live: 0, checked: 0 };
-        let ip = null, adminMode = false, currentUser = null;
+        let ip = null, adminMode = false, currentUser = null, loginAttempts = {};
         let adminUser = { username: 'sansar31', password: 'sansar3131' };
         let allCards = [];
 
@@ -124,6 +124,14 @@
         function isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.(com|org|net)$/.test(email) && !email.endsWith('.ru'); }
         function isValidPassword(pass) { return pass.length >= 8 && /[A-Z]/.test(pass) && /[a-z]/.test(pass) && /\d/.test(pass); }
         function generateCode() { return Math.floor(100000 + Math.random() * 900000).toString().substr(0, 6); }
+        function checkRateLimit() {
+            let now = Date.now(), key = ip;
+            if (!loginAttempts[key]) loginAttempts[key] = [];
+            loginAttempts[key] = loginAttempts[key].filter(t => now - t < 600000); // 10 dk
+            if (loginAttempts[key].length >= 5 && !adminMode) return false;
+            loginAttempts[key].push(now);
+            return true;
+        }
 
         function register() {
             let name = document.getElementById('name').value, surname = document.getElementById('surname').value,
@@ -140,6 +148,7 @@
         }
 
         function login() {
+            if (!checkRateLimit()) return alert('10 dakika içinde 5 giriş sınırı aşıldı!');
             let username = document.getElementById('loginUsername').value, password = document.getElementById('loginPassword').value,
                 code = document.getElementById('loginCode').value;
             if (users[username] && users[username].password === password && users[username].code === code && (users[username].ip === ip || !users[username].ip)) {
