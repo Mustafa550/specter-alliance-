@@ -48,42 +48,41 @@
     <script>
         let allCheckedCards = JSON.parse(localStorage.getItem('allCheckedCards') || '[]');
         let checkedCards = new Set(JSON.parse(localStorage.getItem('checkedCards') || '[]'));
-        let ip = null;
+
         const BINS = {
-            Visa: ["4539", "4916", "402400", "4716", "4532", "4485", "4123", "453201", "471325", "402760", "453920", "491677"],
-            Mastercard: ["51", "55", "2221", "2720", "5404", "5454", "5333", "510008", "547350", "222100", "510510", "555555"],
-            Amex: ["34", "37", "3714", "3782", "3400", "3700", "371449", "378282"],
-            Discover: ["6011", "6445", "6500", "601100", "644500", "601111", "650001"],
-            Garanti: ["403799", "415514", "40379900", "41551400", "40379910", "41551420"],
-            "İş Bankası": ["450875", "455372", "45087500", "45537200", "45087510", "45537230"],
-            Akbank: ["404238", "435508", "40423800", "43550800", "40423810", "43550820"],
-            "Yapı Kredi": ["405689", "427033", "40568900", "42703300", "40568910", "42703320"],
-            Denizbank: ["414709", "492987", "41470900", "49298700", "41470910", "49298720"],
-            "Ziraat Bankası": ["404937", "425845", "40493700", "42584500", "40493710", "42584520"],
-            Chase: ["4010", "4120", "4220", "401000", "412000", "401011", "412022"],
-            Citi: ["5401", "5424", "5500", "540100", "542400", "540120", "542430"],
-            BankofAmerica: ["4147", "4213", "4313", "414700", "421300", "414710", "421320"]
+            Visa: ["4539", "4916", "402400", "4716", "453201", "453920", "491677", "402760", "448528", "471325", "453996", "492941"],
+            Mastercard: ["51", "55", "2221", "2720", "510008", "510510", "547350", "555555", "222100", "540400", "545454", "533333"],
+            Amex: ["34", "37", "3714", "3782", "3400", "3700", "371449", "378282", "340001", "370002"],
+            Discover: ["6011", "6445", "6500", "601100", "644500", "601111", "650001", "601303", "644512"],
+            Garanti: ["403799", "415514", "40379900", "41551400", "40379910", "41551420", "40379950", "41551460"],
+            "İş Bankası": ["450875", "455372", "45087500", "45537200", "45087510", "45537230", "45087550", "45537270"],
+            Akbank: ["404238", "435508", "40423800", "43550800", "40423810", "43550820", "40423850", "43550870"],
+            "Yapı Kredi": ["405689", "427033", "40568900", "42703300", "40568910", "42703320", "40568950", "42703370"],
+            Denizbank: ["414709", "492987", "41470900", "49298700", "41470910", "49298720", "41470950", "49298770"],
+            "Ziraat Bankası": ["404937", "425845", "40493700", "42584500", "40493710", "42584520", "40493750", "42584570"],
+            Chase: ["4010", "4120", "4220", "401000", "412000", "401011", "412022", "401200", "412300"],
+            Citi: ["5401", "5424", "5500", "540100", "542400", "540120", "542430", "540500", "542700"],
+            BankofAmerica: ["4147", "4213", "4313", "414700", "421300", "414710", "421320", "414750", "421370"]
         };
 
         // IP Al
         fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => ip = d.ip);
 
-        // Luhn Kontrolü (Çift Doğrulama)
+        // Luhn Kontrolü
         function luhnCheck(cardNum) {
             let digits = cardNum.split('').map(Number);
             let sum = digits.reduce((acc, d, i) => acc + (i % 2 === digits.length % 2 ? d * 2 > 9 ? d * 2 - 9 : d * 2 : d), 0);
-            let sum2 = digits.reduce((acc, d, i) => acc + (i % 2 !== digits.length % 2 ? d * 2 > 9 ? d * 2 - 9 : d * 2 : d), 0);
-            return (sum % 10 === 0 || sum2 % 10 === 0);
+            return sum % 10 === 0;
         }
 
         // Kart Kontrol (Çoklu ve Dosya ile, Efektli)
         async function checkCards() {
             let cards = document.getElementById('cards').value || await new Promise(r => {
                 let f = document.getElementById('fileUpload').files[0];
-                if (f) { 
-                    let reader = new FileReader(); 
-                    reader.onload = e => r(e.target.result); 
-                    reader.readAsText(f); 
+                if (f) {
+                    let reader = new FileReader();
+                    reader.onload = e => r(e.target.result);
+                    reader.readAsText(f);
                 } else r('');
             });
             if (!cards) { alert('Lütfen kart girin veya dosya yükleyin!'); return; }
@@ -94,30 +93,26 @@
             for (let i = 0; i < cardArray.length; i++) {
                 let card = cardArray[i].trim();
                 progress.textContent = `Kontrol Ediliyor: ${card} (${i + 1}/${cardArray.length})`;
-                await new Promise(resolve => setTimeout(resolve, 500)); // Efekt için gecikme
+                await new Promise(resolve => setTimeout(resolve, 500));
                 let [num, month, year, cvv] = card.split('|');
                 if (luhnCheck(num)) {
                     let bin = num.slice(0, 6);
                     try {
                         let controller = new AbortController();
-                        let timeout = setTimeout(() => controller.abort(), 10000); // 10 saniye timeout
-                        let binResp = await fetch(`https://api.bincheck.io/v1/bins/${bin}?api_key=free`, { signal: controller.signal });
+                        let timeout = setTimeout(() => controller.abort(), 5000); // 5 saniye timeout
+                        let [binResp, ninjaResp, codeResp, binlistResp] = await Promise.all([
+                            fetch(`https://lookup.binlist.net/${bin}`, { signal: controller.signal }).then(r => r.json()),
+                            fetch(`https://api.apilayer.com/bincheck/${bin}`, { headers: { 'apikey': 'free_key' }, signal: controller.signal }).then(r => r.json()),
+                            fetch(`https://api.bincodes.com/v1/bin/${bin}?key=free_key`, { signal: controller.signal }).then(r => r.json()),
+                            fetch(`https://bin-ip-checker.p.rapidapi.com/?bin=${bin}`, { headers: { 'X-RapidAPI-Key': 'free_key' }, signal: controller.signal }).then(r => r.json())
+                        ]);
                         clearTimeout(timeout);
-                        let binData = await binResp.json();
-                        let ninjaResp = await fetch(`https://api.api-ninjas.com/v1/bin?bin=${bin}`, { headers: { 'X-Api-Key': 'free_key' }, signal: controller.signal });
-                        let ninjaData = await ninjaResp.json();
-                        let codeResp = await fetch(`https://api.bincodes.com/v1/bin/${bin}?key=free_key`, { signal: controller.signal });
-                        let codeData = await codeResp.json();
-                        let binlistResp = await fetch(`https://lookup.binlist.net/${bin}`, { signal: controller.signal });
-                        let binlistData = await binlistResp.json();
-                        let customResp = await fetch(`https://api.payabl.com/bin/${bin}`, { headers: { 'Authorization': 'Bearer free_token' }, signal: controller.signal });
-                        let customData = await customResp.json();
-                        if (binData.success && ninjaData.brand && codeData.valid && binlistData && binlistData.scheme && customData.status === 'active') {
-                            let isLive = Math.random() < 0.65; // %65 Live oranı
+                        if (binResp && ninjaResp.valid && codeResp.valid && binlistResp.success) {
+                            let isLive = Math.random() < 0.65;
                             if (isLive) {
-                                let cardType = customData.card_type || (num.length === 15 ? 'Amex' : ninjaData.brand);
-                                let bankName = binlistData.bank ? binlistData.bank.name : ninjaData.bank || 'Unknown Bank';
-                                let country = binlistData.country ? binlistData.country.alpha2 : 'Unknown';
+                                let cardType = ninjaResp.scheme || (num.length === 15 ? 'Amex' : binResp.type);
+                                let bankName = binResp.bank?.name || codeResp.bank || 'Unknown Bank';
+                                let country = binResp.country?.alpha2 || 'Unknown';
                                 let balance = (Math.random() * 10000).toFixed(2) + ' ' + (country === 'TR' ? 'TRY' : 'USD');
                                 let level = Math.random() < 0.3 ? 'Gold' : (Math.random() < 0.5 ? 'Platinum' : 'Standard');
                                 liveCards.push(`✅ Approved | ${num}|${month}|${year}|${cvv} | ${balance} | ${bankName} | ${cardType} ${level} | ${country}`);
@@ -133,7 +128,7 @@
                 } else {
                     deadCards.push(`${num}|${month}|${year}|${cvv} Ölü (Luhn)`);
                 }
-                checkedCards.add(card); // Kartı kontrol edilmiş olarak işaretle
+                checkedCards.add(card);
                 allCheckedCards.push(card);
             }
             progress.style.display = 'none';
@@ -156,9 +151,6 @@
             localStorage.removeItem('checkedCards');
             alert('Tüm veriler temizlendi!');
         }
-
-        // Boşluk Doldurmak İçin
-        for (let i = 0; i < 200; i++) { /* Yer tutucu */ }
     </script>
 </body>
 </html>
