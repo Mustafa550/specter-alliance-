@@ -1,0 +1,29 @@
+{
+    "name": "dearchecker-pro-tr",
+    "version": "1.0.0",
+    "description": "Profesyonel kart kontrol platformu",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Sansar31",
+    "license": "MIT",
+    "dependencies": {
+        "express": "^4.17.1",
+        "body-parser": "^1.19.0"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.7"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/kullaniciadın/dearchecker-pro-tr.git"
+    },
+    "keywords": ["card", "checker", "security"],
+    "bugs": {
+        "url": "https://github.com/kullaniciadın/dearchecker-pro-tr/issues"
+    },
+    "homepage": "https://kullaniciadın.github.io/dearchecker-pro-tr/"
+    // Boşluk doldurmak için
+}
