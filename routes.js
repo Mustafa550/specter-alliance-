@@ -1,20 +1,23 @@
+let limits = { checks: 100, creates: 50, live: 0, checked: 0 };
+let ip = null, adminMode = false, currentUser = null;
+
 function setupRoutes() {
     window.login = function() {
         if (!checkRateLimit(ip)) return alert('10 dakika içinde 5 giriş sınırı aşıldı!');
-        let username = document.getElementById('loginUsername').value, password = document.getElementById('loginPassword').value,
-            code = document.getElementById('loginCode').value;
+        let username = document.getElementById('loginUsername').value, password = document.getElementById('loginPassword').value;
         if (username === 'Sansar31' && password === 'sansar3131') {
-            adminMode = true; document.getElementById('login').classList.add('hidden');
+            adminMode = true; limits = { checks: Infinity, creates: Infinity, live: 0, checked: 0 };
+            document.getElementById('login').classList.add('hidden');
             document.getElementById('adminPanel').classList.remove('hidden');
             document.getElementById('adminResults').textContent = 'Tüm Kontrol Edilen Kartlar:\n' + getAllCards().join('\n');
             return;
         }
-        if (users[username] && users[username].password === password && users[username].code === code && users[username].ip === ip) {
+        if (users[username] && users[username].password === password && checkIPLimit(ip, username)) {
             updateUser(username, { ip });
             document.getElementById('login').classList.add('hidden');
             document.getElementById('dashboard').classList.remove('hidden');
-            currentUser = username; updateStats(username);
-        } else alert('Hatalı bilgi!');
+            currentUser = username; updateStats(currentUser);
+        } else alert('Hatalı kullanıcı adı veya şifre, veya IP zaten bağlı!');
     };
 
     window.register = function() {
@@ -22,11 +25,10 @@ function setupRoutes() {
             city = document.getElementById('city').value, username = document.getElementById('username').value,
             email = document.getElementById('email').value, password = document.getElementById('password').value;
         if (isValidEmail(email) && isValidPassword(password) && !users[username] && checkIPLimit(ip, username)) {
-            let code = generateCode();
-            users[username] = createUser({ name, surname, city, email, password, ip, registered: Date.now(), code });
-            document.getElementById('displayCode').textContent = code;
+            users[username] = createUser({ name, surname, city, email, password, ip, registered: Date.now() });
             document.getElementById('register').classList.add('hidden');
-            document.getElementById('codeDisplay').classList.remove('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            currentUser = username; updateStats(currentUser);
             saveData();
         } else alert('Geçersiz bilgi veya IP zaten bağlı!');
     };
@@ -92,7 +94,12 @@ function setupRoutes() {
     window.updateStats = function(user) {
         document.getElementById('userInfo').textContent = `Hoş Geldiniz, ${user}! Kontroller: ${limits.checks} | Oluşturmalar: ${limits.creates} | Canlı: ${limits.live} | Kontrol Edilen: ${limits.checked}`;
     };
+
+    fetch('https://api.ipify.org?format=json')
+        .then(r => r.json())
+        .then(d => { ip = d.ip; document.getElementById('ipInfo').textContent = `IP: ${ip}`; });
 }
 
 // Boşluk doldurmak için
 for (let i = 0; i < 100; i++) { /* Yer tutucu */ }
+setupRoutes();
