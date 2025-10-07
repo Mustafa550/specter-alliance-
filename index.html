@@ -7,6 +7,7 @@
     <script src="DB.js" defer></script>
     <script src="models.js" defer></script>
     <script src="routes.js" defer></script>
+    <script src="server.js" defer></script>
     <style>
         body { margin: 0; font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #1a2a6c, #2e4a9e); animation: bgFlow 15s infinite linear; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
         @keyframes bgFlow { 0% { background-position: 0% 0%; } 50% { background-position: 100% 100%; } 100% { background-position: 0% 0%; } }
@@ -40,7 +41,6 @@
         <form id="loginForm">
             <label>Kullanıcı Adı:</label><input type="text" id="loginUsername" required>
             <label>Şifre:</label><input type="password" id="loginPassword" required>
-            <label>Doğrulama Kodu:</label><input type="text" id="loginCode" required>
             <button type="button" onclick="login()">Giriş Yap</button>
         </form>
         <button type="button" onclick="showRegister()" style="background: #6a0dad;">Kayıt Ol</button>
@@ -55,11 +55,6 @@
             <label>Şifre:</label><input type="password" id="password" placeholder="8+ chars, A/a, 0-9" required>
             <button type="button" onclick="register()">Kayıt Ol</button>
         </form>
-    </div>
-    <div class="container hidden" id="codeDisplay">
-        <p>Doğrulama Kodunuz: <strong id="displayCode"></strong></p>
-        <p><strong>Bu kodu kaybetmeyin, kaybederseniz hesap erişiminizi kaybedersiniz!</strong></p>
-        <button type="button" onclick="showLogin()">Giriş Ekranına Dön</button>
     </div>
     <div class="container hidden" id="dashboard">
         <div class="ip-info" id="ipInfo">IP: Yükleniyor...</div>
@@ -88,6 +83,23 @@
         <p><button onclick="adminLoginFromSettings()">Admin Paneli Giriş</button></p>
         <p><button onclick="logout()">Çıkış Yap</button></p>
     </div>
+    <div class="container hidden" id="adminPanel">
+        <div class="stats" id="adminInfo">Admin Paneli | Kontroller: Sonsuz | Oluşturmalar: Sonsuz</div>
+        <div id="adminResults">Tüm Kontrol Edilen Kartlar:</div>
+        <form>
+            <label>Kart Gir (kart|ay|yıl|cvv):</label>
+            <textarea id="adminCards" style="height: 100px;"></textarea>
+            <label>TXT Yükle:</label><input type="file" id="adminFile" accept=".txt">
+            <button type="button" onclick="adminCheckCards()">Kontrol Et</button>
+        </form>
+        <form>
+            <label>Kart Sayısı:</label><input type="number" id="adminCount" min="1">
+            <button type="button" onclick="adminGenerateCards()">Kart Oluştur</button>
+        </form>
+        <button onclick="manageUsers()">Kullanıcı Yönetimi</button>
+        <button onclick="deleteCards()">Kart Sil</button>
+        <button onclick="viewLogs()">Log Görüntüleme</button>
+    </div>
     <div class="container hidden" id="about">
         <h3>Hakkımızda</h3>
         <p>DEARCHECKER: Güvenli ve profesyonel kart kontrol platformu.</p>
@@ -98,8 +110,8 @@
 
     <script>
         function showRegister() { document.getElementById('login').classList.add('hidden'); document.getElementById('register').classList.remove('hidden'); }
-        function showLogin() { document.getElementById('codeDisplay').classList.add('hidden'); document.getElementById('login').classList.remove('hidden'); }
-        function adminLoginFromSettings() { document.getElementById('settings').classList.add('hidden'); document.getElementById('adminLogin').classList.remove('hidden'); }
+        function showLogin() { document.getElementById('login').classList.remove('hidden'); document.getElementById('register').classList.add('hidden'); }
+        function adminLoginFromSettings() { document.getElementById('settings').classList.add('hidden'); document.getElementById('adminPanel').classList.remove('hidden'); }
         function toggleSidebar() { document.getElementById('settings').classList.toggle('open'); }
         function logout() { currentUser = null; location.reload(); }
     </script>
