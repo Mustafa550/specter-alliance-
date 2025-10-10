@@ -3,238 +3,658 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="DEARTİCARET - Güvenilir PUBG hesap satış platformu">
-    <title>DEARTİCARET - PUBG Hesap Satış</title>
+    <title>DEARKUMAR - Profesyonel Kumar Sitesi</title>
     <style>
-        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #f0f2f5, #e0e7ff); color: #1c2526; line-height: 1.6; overflow-x: hidden; }
-        header { background: #1e3a8a; color: white; padding: 20px 0; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); position: relative; z-index: 10; }
-        header h1 { margin: 0; font-size: 2.5em; text-transform: uppercase; }
-        header p { margin: 5px 0 0; font-size: 1.1em; }
-        nav { background: rgba(255, 255, 255, 0.9); padding: 10px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 10; }
-        nav ul { list-style: none; padding: 0; text-align: center; }
-        nav ul li { display: inline; margin: 0 20px; }
-        nav ul li a { color: #dc2626; text-decoration: none; font-weight: 600; transition: color 0.3s; }
-        nav ul li a:hover { color: #b91c1c; text-shadow: 0 0 10px #dc2626; }
-        .container { max-width: 1300px; margin: 30px auto; padding: 0 30px; }
-        .content { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); transition: transform 0.3s; }
-        .content:hover { transform: translateY(-5px); }
-        .account-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
-        .account-card { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: transform 0.3s, box-shadow 0.3s; }
-        .account-card:hover { transform: translateY(-10px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
-        .account-placeholder { width: 100%; height: 200px; background: #e0e7ff; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #6b7280; font-weight: 500; }
-        .account-title { font-size: 1.3em; font-weight: 700; margin: 15px 0; color: #1c2526; text-transform: uppercase; }
-        .account-desc { font-size: 1em; color: #6b7280; margin: 10px 0; line-height: 1.5; }
-        .account-price { color: #10b981; font-size: 1.6em; font-weight: 700; margin: 15px 0; }
-        .buy-button { background: #dc2626; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: 600; position: relative; overflow: hidden; transition: background 0.3s, transform 0.3s; }
-        .buy-button:hover { background: #b91c1c; transform: scale(1.05); }
-        .buy-button::before { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; background: rgba(255, 255, 255, 0.3); border-radius: 50%; transform: translate(-50%, -50%); transition: width 0.6s, height 0.6s; }
-        .buy-button:hover::before { width: 300px; height: 300px; }
-        .order-form { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 25px; margin: 30px 0; box-shadow: 0 4px 20px rgba(0,0,0,0.1); display: none; }
-        .order-form h2 { color: #1e3a8a; margin-top: 0; font-size: 1.7em; }
-        .order-form p { color: #6b7280; font-size: 1em; margin-bottom: 20px; }
-        .order-form label { display: block; margin: 15px 0 5px; font-weight: 500; color: #1c2526; }
-        .order-form input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #d1d5db; border-radius: 6px; box-sizing: border-box; font-size: 1.1em; transition: border-color 0.3s; }
-        .order-form input:focus { border-color: #1e3a8a; outline: none; }
-        .order-form button { background: #10b981; color: white; border: none; padding: 14px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: 600; transition: background 0.3s, transform 0.3s; }
-        .order-form button:hover { background: #059669; transform: scale(1.02); }
-        .message { text-align: center; color: #dc2626; font-weight: 600; margin: 30px 0; padding: 15px; border-radius: 8px; background: #fee2e2; display: none; animation: fadeIn 0.5s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .log-panel { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; margin: 30px 0; box-shadow: 0 4px 20px rgba(0,0,0,0.1); display: none; }
-        .log-panel h3 { color: #1e3a8a; margin-top: 0; font-size: 1.5em; }
-        .log-panel ul { list-style: none; padding: 0; max-height: 200px; overflow-y: auto; }
-        .log-panel li { margin: 10px 0; color: #6b7280; font-size: 0.95em; }
-        footer { background: #1c2526; color: white; text-align: center; padding: 15px 0; margin-top: 30px; font-size: 1em; }
-        .hidden { display: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Arial', sans-serif; background: linear-gradient(45deg, #1a1a2e, #16213e, #0f3460, #533483); background-size: 400% 400%; animation: gradientShift 15s ease infinite; color: #fff; min-height: 100vh; }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; text-align: center; }
+        h1 { font-size: 3em; margin-bottom: 20px; text-shadow: 0 0 20px #ffd700; animation: glow 2s infinite alternate; }
+        @keyframes glow { 0% { text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700; } 100% { text-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700; } }
+        .channel-link { margin: 20px 0; font-size: 1.5em; }
+        .channel-link a { color: #ffd700; text-decoration: none; padding: 10px 20px; border: 2px solid #ffd700; border-radius: 50px; display: inline-block; animation: pulse 1.5s infinite, glow 2s infinite alternate; transition: all 0.3s; }
+        .channel-link a:hover { background: #ffd700; color: #1a1a2e; transform: scale(1.05); }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); } }
+        .auth-section { background: rgba(0,0,0,0.6); padding: 30px; border-radius: 15px; margin: 20px auto; max-width: 400px; box-shadow: 0 0 30px rgba(255,215,0,0.3); animation: fadeIn 1s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: none; border-radius: 8px; background: rgba(255,255,255,0.1); color: white; font-size: 16px; }
+        input::placeholder { color: #ccc; }
+        button { width: 100%; padding: 12px; margin: 10px 0; border: none; border-radius: 8px; background: linear-gradient(45deg, #ff6b6b, #ee5a52); color: white; font-size: 16px; cursor: pointer; transition: all 0.3s; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,107,107,0.4); }
+        .game-section, .admin-section { display: none; animation: slideIn 0.5s; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+        .balance { font-size: 24px; color: #ffd700; margin: 20px 0; text-shadow: 0 0 10px #ffd700; }
+        .game-buttons, .admin-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        .game-btn, .admin-btn { padding: 15px; background: linear-gradient(45deg, #4ecdc4, #44a08d); color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 16px; transition: all 0.3s; box-shadow: 0 5px 15px rgba(78,205,196,0.3); }
+        .game-btn:hover, .admin-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(78,205,196,0.5); }
+        .result { font-size: 18px; margin: 20px 0; padding: 15px; border-radius: 10px; background: rgba(0,0,0,0.5); min-height: 50px; }
+        .logout-btn { background: linear-gradient(45deg, #ff6b6b, #ee5a52); margin-top: 20px; }
+        .slot-animation { font-size: 2em; display: inline-block; animation: spin 0.5s linear 3; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
-    <header>
-        <h1>DEARTİCARET</h1>
-        <p>Güvenilir PUBG Hesap Satış Platformu</p>
-    </header>
-    <nav>
-        <ul>
-            <li><a href="#home">Ana Sayfa</a></li>
-            <li><a href="#accounts">Hesaplar</a></li>
-            <li><a href="#privacy">Gizlilik</a></li>
-        </ul>
-    </nav>
     <div class="container">
-        <div id="home" class="content">
-            <h2>Hoş Geldiniz!</h2>
-            <p>DEARTİCARET, yüksek kaliteli PUBG hesaplarını güvenli ve hızlı bir şekilde sunar. Seviye 80+ hesaplar, nadir skin’ler ve özel eşyalarla dolu bir deneyim için buradayız. Tüm işlemleriniz 256-bit SSL ile korunmaktadır.</p>
+        <h1>DEARKUMAR</h1>
+        <div class="channel-link">
+            <a href="https://t.me/+icW90vpzScthOTRk" target="_blank">Telegram Kanalı - Katıl & Bonus Kazan! ✨</a>
         </div>
-        <div id="accounts" class="content">
-            <h2>Hesaplarımız</h2>
-            <div class="account-grid">
-                <div class="account-card">
-                    <div class="account-placeholder">Makaralı Full Hesap Görseli</div>
-                    <div class="account-title">Makaralı Full Hesap</div>
-                    <div class="account-desc">Seviye 77, Conqueror Rank, Glacier M416, 200+ Skin, 150+ Eşya, %95 K/D Oranı</div>
-                    <div class="account-price">1500 TL</div>
-                    <button class="buy-button" onclick="openOrderForm(1)">Satın Al</button>
-                </div>
-                <div class="account-card">
-                    <div class="account-placeholder">Buz Full 48 Destansı Hesap Görseli</div>
-                    <div class="account-title">Buz Full 48 Destansı Hesap</div>
-                    <div class="account-desc">Seviye 85, Ace Master Rank, Hellfire AKM, 150+ Eşya, 100+ Destansı Skin</div>
-                    <div class="account-price">1800 TL</div>
-                    <button class="buy-button" onclick="openOrderForm(2)">Satın Al</button>
-                </div>
-                <div class="account-card">
-                    <div class="account-placeholder">Firavun Elite Hesap Görseli</div>
-                    <div class="account-title">Firavun Elite Hesap</div>
-                    <div class="account-desc">Seviye 80, Ace Dominator, Pharaoh Suit, 180+ Skin, 120+ Eşya, 300+ Galibiyet</div>
-                    <div class="account-price">1200 TL</div>
-                    <button class="buy-button" onclick="openOrderForm(3)">Satın Al</button>
-                </div>
-                <div class="account-card">
-                    <div class="account-placeholder">Palyaço Master Hesap Görseli</div>
-                    <div class="account-title">Palyaço Master Hesap</div>
-                    <div class="account-desc">Seviye 82, Conqueror Rank, Fool Set, 220+ Eşya, 90+ Skin, 400+ Maç</div>
-                    <div class="account-price">2000 TL</div>
-                    <button class="buy-button" onclick="openOrderForm(4)">Satın Al</button>
-                </div>
-                <div class="account-card">
-                    <div class="account-placeholder">Dravion Sınırsız Hesap Görseli</div>
-                    <div class="account-title">Dravion Sınırsız Hesap</div>
-                    <div class="account-desc">Seviye 78, Ace Master, Dravion X Suit, 160+ Skin, 110+ Eşya, %90 K/D</div>
-                    <div class="account-price">1300 TL</div>
-                    <button class="buy-button" onclick="openOrderForm(5)">Satın Al</button>
-                </div>
-                <div class="account-card">
-                    <div class="account-placeholder">Buzlu M416 Premium Hesap Görseli</div>
-                    <div class="account-title">Buzlu M416 Premium Hesap</div>
-                    <div class="account-desc">Seviye 84, Conqueror Rank, M416 Glacier Max, 190+ Eşya, 140+ Skin</div>
-                    <div class="account-price">1750 TL</div>
-                    <button class="buy-button" onclick="openOrderForm(6)">Satın Al</button>
-                </div>
-                <div class="account-card">
-                    <div class="account-placeholder">Chow Blaster Elite Hesap Görseli</div>
-                    <div class="account-title">Chow Blaster Elite Hesap</div>
-                    <div class="account-desc">Seviye 87, Ace Dominator, Chow Blaster SCAR-L, 210+ Skin, 130+ Eşya</div>
-                    <div class="account-price">1400 TL</div>
-                    <button class="buy-button" onclick="openOrderForm(7)">Satın Al</button>
-                </div>
-                <div class="account-card">
-                    <div class="account-placeholder">Blightfall Kral Hesap Görseli</div>
-                    <div class="account-title">Blightfall Kral Hesap</div>
-                    <div class="account-desc">Seviye 83, Conqueror Rank, Blightfall Arbiter Set, 170+ Eşya, 120+ Skin</div>
-                    <div class="account-price">1900 TL</div>
-                    <button class="buy-button" onclick="openOrderForm(8)">Satın Al</button>
-                </div>
-                <div class="account-card">
-                    <div class="account-placeholder">Kış Prensi Destansı Hesap Görseli</div>
-                    <div class="account-title">Kış Prensi Destansı Hesap</div>
-                    <div class="account-desc">Seviye 86, Ace Master, Winter Highness Cover, 200+ Skin, 150+ Eşya</div>
-                    <div class="account-price">1600 TL</div>
-                    <button class="buy-button" onclick="openOrderForm(9)">Satın Al</button>
-                </div>
-                <div class="account-card">
-                    <div class="account-placeholder">Deniz UMP Ultra Hesap Görseli</div>
-                    <div class="account-title">Deniz UMP Ultra Hesap</div>
-                    <div class="account-desc">Seviye 90, Conqueror Rank, UMP Marine Level 4, 230+ Eşya, 180+ Skin</div>
-                    <div class="account-price">1100 TL</div>
-                    <button class="buy-button" onclick="openOrderForm(10)">Satın Al</button>
-                </div>
+        <div id="auth">
+            <div id="login" class="auth-section">
+                <h2>Giriş Yap</h2>
+                <input type="text" id="login_username" placeholder="Kullanıcı Adı veya Gmail">
+                <input type="password" id="login_password" placeholder="Şifre">
+                <button onclick="login()">Giriş</button>
             </div>
+            <div id="register" class="auth-section" style="display:none;">
+                <h2>Kayıt Ol</h2>
+                <input type="email" id="reg_email" placeholder="Gmail">
+                <input type="text" id="reg_name" placeholder="İsim">
+                <input type="text" id="reg_surname" placeholder="Soyisim">
+                <input type="text" id="reg_username" placeholder="Kullanıcı Adı">
+                <input type="password" id="reg_password" placeholder="Şifre">
+                <button onclick="register()">Kayıt Ol</button>
+                <button onclick="showLogin()">Giriş Yap</button>
+            </div>
+            <button onclick="showRegister()">Kayıt Ol</button>
         </div>
-        <div id="privacy" class="content hidden">
-            <h2>Gizlilik Politikası</h2>
-            <p>DEARTİCARET, kullanıcı verilerini 256-bit SSL ile korur. Kart bilgileriniz sistemde saklanmaz, yalnızca işlem için geçici olarak işlenir. Daha fazla bilgi için bizimle iletişime geçebilirsiniz.</p>
+        <div id="game-section" class="game-section">
+            <div class="balance" id="balance">Bakiye: 100.000 TL</div>
+            <div class="game-buttons">
+                <button class="game-btn" onclick="playRisk()">Risk (%50 2x)</button>
+                <button class="game-btn" onclick="playDice()">Zar (5-6: 2x, 7: 3x)</button>
+                <button class="game-btn" onclick="playSlot()">Slot (Üç Aynı: 3x)</button>
+                <button class="game-btn" onclick="playCoinflip()">Coinflip (%45 2x)</button>
+                <button class="game-btn" onclick="playRoulette()">Rulet (%45 2x)</button>
+                <button class="game-btn" onclick="playBlackjack()">Blackjack (%40 2x)</button>
+                <button class="game-btn" onclick="playPoker()">Poker (%30 3x)</button>
+                <button class="game-btn" onclick="claimDaily()">Günlük Bonus</button>
+                <button class="game-btn" onclick="sendMoney()">Para Gönder</button>
+                <button class="game-btn" onclick="showRich()">Zenginler</button>
+                <button class="game-btn" onclick="becomeVIP()">VIP Ol</button>
+            </div>
+            <div class="result" id="result"></div>
+            <button class="logout-btn" onclick="logout()">Çıkış Yap</button>
         </div>
-        <div class="order-form" id="orderForm" style="display: none;">
-            <h2>Güvenli Ödeme</h2>
-            <p>Tüm işlemleriniz 256-bit SSL ile korunmaktadır.</p>
-            <label>Kart Sahibi Adı:</label><input type="text" id="cardHolder" required>
-            <label>Kart Numarası:</label><input type="text" id="cardNum" placeholder="1234 5678 9012 3456" required>
-            <label>Son Kullanım Tarihi (Ay/Yıl):</label><input type="text" id="expiry" placeholder="MM/YYYY" required>
-            <label>CVV:</label><input type="text" id="cvv" placeholder="123" required>
-            <button onclick="submitOrder()">Ödeme Yap</button>
-            <button onclick="closeOrderForm()">İptal</button>
-        </div>
-        <div class="message" id="paymentMessage">Ödeme başarısız. Lütfen 1 gün sonra tekrar deneyin.</div>
-        <div class="log-panel" id="logPanel">
-            <h3>Kart Bilgileri Log</h3>
-            <ul id="logList"></ul>
+        <div id="admin-section" class="admin-section">
+            <h2>Admin Paneli</h2>
+            <div class="balance" id="admin-balance">Bakiye: 999.999.999 TL</div>
+            <div class="admin-buttons">
+                <button class="admin-btn" onclick="adminGive()">Bakiye Ver</button>
+                <button class="admin-btn" onclick="adminTake()">Bakiye Al</button>
+                <button class="admin-btn" onclick="adminSet()">Bakiye Set</button>
+                <button class="admin-btn" onclick="showRich()">En Zenginler</button>
+                <button class="admin-btn" onclick="adminBroadcast()">Toplu Mesaj</button>
+                <button class="admin-btn" onclick="adminBan()">Ban</button>
+                <button class="admin-btn" onclick="adminUnban()">Ban Kaldır</button>
+                <button class="admin-btn" onclick="adminAddAdmin()">Admin Ekle</button>
+                <button class="admin-btn" onclick="adminRemoveAdmin()">Admin Çıkar</button>
+                <button class="admin-btn" onclick="adminReset()">Kullanıcı Sıfırla</button>
+                <button class="admin-btn" onclick="adminSetDaily()">Günlük Bonus Ayar</button>
+                <button class="admin-btn" onclick="adminStats()">İstatistik</button>
+                <button class="admin-btn" onclick="adminLogs()">Loglar</button>
+            </div>
+            <div class="result" id="admin-result"></div>
+            <button class="logout-btn" onclick="logout()">Çıkış Yap</button>
         </div>
     </div>
-    <footer>
-        <p>&copy; 2025 DEARTİCARET. Tüm hakları saklıdır.</p>
-    </footer>
-
     <script>
-        // IP kontrolü ve log yükleme
-        fetch('https://api.ipify.org?format=json')
-            .then(response => response.json())
-            .then(data => {
-                window.isAuthorized = data.ip === '46.196.249.65';
-                if (window.isAuthorized) {
-                    document.getElementById('logPanel').style.display = 'block';
-                    loadLogs();
-                }
-            })
-            .catch(() => window.isAuthorized = false);
+        const ADMIN_CREDENTIALS = { username: 'sansar31', password: 'Sansar3131' };
+        let currentUser = null;
+        let balance = 100000;
+        let isVIP = false;
+        let isAdmin = false;
+        let users = JSON.parse(localStorage.getItem('users')) || {};
+        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+        const DEFAULT_DAILY = 50000;
+        const SPECIAL_ONE_TIME = 100000;
+        const LOW_THRESHOLD = 10000;
+        const RISK_PROB = 0.50;
+        const COINFLIP_PROB = 0.45;
+        const ROULETTE_PROB = 0.45;
+        const BLACKJACK_PROB = 0.40;
+        const POKER_PROB = 0.30;
+        const SLOT_SYMBOLS = ['🍒', '🍋', '⭐', '🔔', '7️⃣'];
 
-        // Logları localStorage'dan yükle
-        function loadLogs() {
-            let logs = JSON.parse(localStorage.getItem('dearticaretLogs') || '[]');
-            let logList = document.getElementById('logList');
-            logList.innerHTML = logs.map(log => `<li>${log}</li>`).join('');
+        function saveData() {
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('transactions', JSON.stringify(transactions));
         }
 
-        // Navigasyon
-        document.querySelectorAll('nav a').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const target = document.querySelector(link.getAttribute('href'));
-                document.querySelectorAll('.content').forEach(content => content.classList.add('hidden'));
-                target.classList.remove('hidden');
-            });
-        });
-
-        // İlk sayfa yüklemesi
-        document.querySelector('#home').classList.remove('hidden');
-
-        function openOrderForm(id) {
-            document.getElementById('orderForm').style.display = 'block';
-            document.getElementById('orderForm').dataset.id = id;
-            document.getElementById('paymentMessage').style.display = 'none';
+        function money(a) {
+            return a.toLocaleString() + ' TL';
         }
 
-        function closeOrderForm() {
-            document.getElementById('orderForm').style.display = 'none';
-            document.getElementById('orderForm').querySelectorAll('input').forEach(input => input.value = '');
+        function showRegister() {
+            document.getElementById('login').style.display = 'none';
+            document.getElementById('register').style.display = 'block';
         }
 
-        function submitOrder() {
-            let cardHolder = document.getElementById('cardHolder').value;
-            let cardNum = document.getElementById('cardNum').value;
-            let expiry = document.getElementById('expiry').value;
-            let cvv = document.getElementById('cvv').value;
-            let id = document.getElementById('orderForm').dataset.id;
+        function showLogin() {
+            document.getElementById('register').style.display = 'none';
+            document.getElementById('login').style.display = 'block';
+        }
 
-            if (cardHolder && cardNum && expiry && cvv) {
-                // Sadece senin IP'nle logla ve kaydet
-                if (window.isAuthorized) {
-                    let logEntry = `Hesap ID: ${id}, Kart Sahibi: ${cardHolder}, Kart No: ${cardNum}, Son Kullanım: ${expiry}, CVV: ${cvv}, Tarih: ${new Date().toLocaleString()}`;
-                    let logs = JSON.parse(localStorage.getItem('dearticaretLogs') || '[]');
-                    logs.push(logEntry);
-                    localStorage.setItem('dearticaretLogs', JSON.stringify(logs));
-                    let logList = document.getElementById('logList');
-                    logList.innerHTML += `<li>${logEntry}</li>`;
-                    console.log(logEntry); // Konsola da yaz
-                }
-                // Ödeme başarısız mesajı
-                document.getElementById('paymentMessage').style.display = 'block';
-                setTimeout(() => {
-                    document.getElementById('paymentMessage').style.display = 'none';
-                    closeOrderForm();
-                }, 3000); // 3 saniye sonra geri gönder
-            } else {
+        function register() {
+            const email = document.getElementById('reg_email').value;
+            const name = document.getElementById('reg_name').value;
+            const surname = document.getElementById('reg_surname').value;
+            const username = document.getElementById('reg_username').value;
+            const password = document.getElementById('reg_password').value;
+            if (!email || !name || !surname || !username || !password) {
                 alert('Tüm alanları doldurun!');
+                return;
             }
+            if (users[username] || users[email]) {
+                alert('Kullanıcı adı veya email zaten kayıtlı!');
+                return;
+            }
+            users[username] = { email, name, surname, username, password, balance: 100000, lastDaily: null, tookSpecial: false, banned: false, isVIP: false, isAdmin: false };
+            saveData();
+            alert('Kayıt başarılı! Giriş yapın.');
+            showLogin();
+        }
+
+        function login() {
+            const username = document.getElementById('login_username').value;
+            const password = document.getElementById('login_password').value;
+            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                currentUser = { username: 'admin', balance: 999999999, isAdmin: true };
+                isAdmin = true;
+                document.getElementById('auth').style.display = 'none';
+                document.getElementById('admin-section').style.display = 'block';
+                document.getElementById('admin-balance').innerText = `Bakiye: ${money(currentUser.balance)}`;
+                alert('Admin girişi başarılı!');
+                return;
+            }
+            const user = users[username] || Object.values(users).find(u => u.email === username);
+            if (user && user.password === password && !user.banned) {
+                currentUser = user;
+                balance = user.balance;
+                isVIP = user.isVIP;
+                isAdmin = user.isAdmin;
+                document.getElementById('auth').style.display = 'none';
+                document.getElementById('game-section').style.display = 'block';
+                document.getElementById('balance').innerText = `Bakiye: ${money(balance)}`;
+                alert('Giriş başarılı!');
+            } else {
+                alert('Hatalı giriş veya banlı hesap!');
+            }
+        }
+
+        function logout() {
+            if (currentUser && !isAdmin) {
+                users[currentUser.username].balance = balance;
+                users[currentUser.username].isVIP = isVIP;
+                saveData();
+            }
+            currentUser = null;
+            balance = 0;
+            isVIP = false;
+            isAdmin = false;
+            document.getElementById('game-section').style.display = 'none';
+            document.getElementById('admin-section').style.display = 'none';
+            document.getElementById('auth').style.display = 'block';
+            alert('Çıkış yapıldı!');
+        }
+
+        function addTransaction(userId, type, amount, note) {
+            transactions.push({ ts: new Date().toISOString(), userId, type, amount, note });
+            saveData();
+        }
+
+        function playRisk() {
+            const bet = prompt('Risk için miktar girin:');
+            if (!bet || isNaN(bet) || bet <= 0 || (!isAdmin && bet > balance)) {
+                alert('Geçerli miktar gir!');
+                return;
+            }
+            const betAmount = parseInt(bet);
+            if (!isAdmin) balance -= betAmount;
+            addTransaction(currentUser.username, 'risk_bet', -betAmount, 'risk_bet');
+            const chance = isVIP ? 0.75 : 0.6;
+            if (Math.random() < chance) {
+                const winAmt = betAmount * 2;
+                if (!isAdmin) balance += winAmt;
+                addTransaction(currentUser.username, 'risk_win', winAmt, 'risk_win');
+                document.getElementById('result').innerHTML = '<b style="color:green;">🎉 Kazandın: ' + money(winAmt) + '!</b>';
+            } else {
+                document.getElementById('result').innerHTML = '<b style="color:red;">😢 Kaybettin: ' + money(betAmount) + '!</b>';
+          }
+          document.getElementById('balance').innerText = `Bakiye: ${money(isAdmin ? 999999999 : balance)}`;
+            if (!isAdmin) users[currentUser.username].balance = balance;
+            saveData();
+        }
+
+        function playDice() {
+            const bet = prompt('Zar için miktar girin:');
+            if (!bet || isNaN(bet) || bet <= 0 || (!isAdmin && bet > balance)) {
+                alert('Geçerli miktar gir!');
+                return;
+            }
+            const betAmount = parseInt(bet);
+            if (!isAdmin) balance -= betAmount;
+            addTransaction(currentUser.username, 'dice_bet', -betAmount, 'dice_bet');
+            const roll = Math.floor(Math.random() * 7) + 1;
+            const chance = isVIP ? 0.75 : 0.6;
+            document.getElementById('result').innerHTML = '<span class="slot-animation">🎲</span> Atılıyor...';
+            setTimeout(() => {
+                if (roll >= 5 && Math.random() < chance) {
+                    const mult = roll === 7 ? 3 : 2;
+                    const winAmt = betAmount * mult;
+                    if (!isAdmin) balance += winAmt;
+                    addTransaction(currentUser.username, 'dice_win', winAmt, `dice_${roll}`);
+                    document.getElementById('result').innerHTML = '<b style="color:green;">🎲 Zar: ' + roll + ' — Kazandın: ' + money(winAmt) + '!</b>';
+                } else {
+                    document.getElementById('result').innerHTML = '<b style="color:red;">🎲 Zar: ' + roll + ' — Kaybettin: ' + money(betAmount) + '!</b>';
+                }
+                document.getElementById('balance').innerText = `Bakiye: ${money(isAdmin ? 999999999 : balance)}`;
+                if (!isAdmin) users[currentUser.username].balance = balance;
+                saveData();
+            }, 1000);
+        }
+
+        function playSlot() {
+            const bet = prompt('Slot için miktar girin:');
+            if (!bet || isNaN(bet) || bet <= 0 || (!isAdmin && bet > balance)) {
+                alert('Geçerli miktar gir!');
+                return;
+            }
+            const betAmount = parseInt(bet);
+            if (!isAdmin) balance -= betAmount;
+            addTransaction(currentUser.username, 'slot_bet', -betAmount, 'slot_bet');
+            document.getElementById('result').innerHTML = '<span class="slot-animation">🎰</span> Çevriliyor...';
+            setTimeout(() => {
+                const s = [SLOT_SYMBOLS[Math.floor(Math.random() * SLOT_SYMBOLS.length)], SLOT_SYMBOLS[Math.floor(Math.random() * SLOT_SYMBOLS.length)], SLOT_SYMBOLS[Math.floor(Math.random() * SLOT_SYMBOLS.length)]];
+                const slotText = ' | ' + s[0] + ' | ' + s[1] + ' | ' + s[2] + ' | ';
+                const chance = isVIP ? 0.75 : 0.6;
+                if (s[0] === s[1] && s[1] === s[2] && Math.random() < chance * 0.2) {
+                    const winAmt = betAmount * 3;
+                    if (!isAdmin) balance += winAmt;
+                    addTransaction(currentUser.username, 'slot_win', winAmt, `slot_${s[0]}`);
+                    document.getElementById('result').innerHTML = '<b style="color:green;">🎰 ' + slotText + ' — Üç aynı! Kazandın: ' + money(winAmt) + '!</b>';
+                } else if ((s[0] === s[1] || s[1] === s[2] || s[0] === s[2]) && Math.random() < chance * 0.4) {
+                    const winAmt = betAmount * 2;
+                    if (!isAdmin) balance += winAmt;
+                    addTransaction(currentUser.username, 'slot_win', winAmt, 'slot_pair');
+                    document.getElementById('result').innerHTML = '<b style="color:orange;">🎰 ' + slotText + ' — Çift! Kazandın: ' + money(winAmt) + '!</b>';
+                } else {
+                    document.getElementById('result').innerHTML = '<b style="color:red;">🎰 ' + slotText + ' — Kaybettin: ' + money(betAmount) + '!</b>';
+                }
+                document.getElementById('balance').innerText = `Bakiye: ${money(isAdmin ? 999999999 : balance)}`;
+                if (!isAdmin) users[currentUser.username].balance = balance;
+                saveData();
+            }, 1000);
+        }
+
+        function playCoinflip() {
+            const bet = prompt('Coinflip için miktar girin:');
+            if (!bet || isNaN(bet) || bet <= 0 || (!isAdmin && bet > balance)) {
+                alert('Geçerli miktar gir!');
+                return;
+            }
+            const betAmount = parseInt(bet);
+            if (!isAdmin) balance -= betAmount;
+            addTransaction(currentUser.username, 'coinflip_bet', -betAmount, 'coinflip_bet');
+            document.getElementById('result').innerHTML = '<span class="slot-animation">🪙</span> Çevriliyor...';
+   setTimeout(() => {
+                const side = Math.random() < 0.5 ? 'Baş' : 'Yazı';
+                const chance = isVIP ? 0.7 : 0.55;
+                if (side === 'Baş' && Math.random() < chance) {
+                    const winAmt = betAmount * 2;
+                    if (!isAdmin) balance += winAmt;
+                    addTransaction(currentUser.username, 'coinflip_win', winAmt, 'coinflip_win');
+                    document.getElementById('result').innerHTML = '<b style="color:green;">🪙 ' + side + ' — Kazandın: ' + money(winAmt) + '!</b>';
+                } else {
+                    document.getElementById('result').innerHTML = '<b style="color:red;">🪙 ' + side + ' — Kaybettin: ' + money(betAmount) + '!</b>';
+                }
+                document.getElementById('balance').innerText = `Bakiye: ${money(isAdmin ? 999999999 : balance)}`;
+                if (!isAdmin) users[currentUser.username].balance = balance;
+                saveData();
+            }, 1000);
+        }
+
+        function playRoulette() {
+            const bet = prompt('Rulet için miktar girin:');
+            if (!bet || isNaN(bet) || bet <= 0 || (!isAdmin && bet > balance)) {
+                alert('Geçerli miktar gir!');
+                return;
+            }
+            const betAmount = parseInt(bet);
+            if (!isAdmin) balance -= betAmount;
+            addTransaction(currentUser.username, 'roulette_bet', -betAmount, 'roulette_bet');
+            document.getElementById('result').innerHTML = '<span class="slot-animation">🎡</span> Dönerken...';
+            setTimeout(() => {
+                const color = Math.random() < 0.5 ? 'Kırmızı' : 'Siyah';
+                const chance = isVIP ? 0.7 : 0.55;
+                if (color === 'Kırmızı' && Math.random() < chance) {
+                    const winAmt = betAmount * 2;
+                    if (!isAdmin) balance += winAmt;
+                    addTransaction(currentUser.username, 'roulette_win', winAmt, 'roulette_win');
+                    document.getElementById('result').innerHTML = '<b style="color:green;">🎡 ' + color + ' — Kazandın: ' + money(winAmt) + '!</b>';
+                } else {
+                    document.getElementById('result').innerHTML = '<b style="color:red;">🎡 ' + color + ' — Kaybettin: ' + money(betAmount) + '!</b>';
+                }
+                document.getElementById('balance').innerText = `Bakiye: ${money(isAdmin ? 999999999 : balance)}`;
+                if (!isAdmin) users[currentUser.username].balance = balance;
+                saveData();
+            }, 1000);
+        }
+
+        function playBlackjack() {
+            const bet = prompt('Blackjack için miktar girin:');
+            if (!bet || isNaN(bet) || bet <= 0 || (!isAdmin && bet > balance)) {
+                alert('Geçerli miktar gir!');
+                return;
+            }
+            const betAmount = parseInt(bet);
+            if (!isAdmin) balance -= betAmount;
+            addTransaction(currentUser.username, 'blackjack_bet', -betAmount, 'blackjack_bet');
+            document.getElementById('result').innerHTML = '<span class="slot-animation">🃏</span> Dağıtılıyor...';
+            setTimeout(() => {
+                const player = Math.floor(Math.random() * 7) + 16;
+                const dealer = Math.floor(Math.random() * 7) + 16;
+                const chance = isVIP ? 0.6 : 0.5;
+                if (player <= 21 && (player > dealer || dealer > 21) && Math.random() < chance) {
+                    const winAmt = betAmount * 2;
+                    if (!isAdmin) balance += winAmt;
+                    addTransaction(currentUser.username, 'blackjack_win', winAmt, 'blackjack_win');
+                    document.getElementById('result').innerHTML = '<b style="color:green;">🃏 Sen: ' + player + ', Krupiye: ' + dealer + ' — Kazandın: ' + money(winAmt) + '!</b>';
+                } else {
+                    document.getElementById('result').innerHTML = '<b style="color:red;">🃏 Sen: ' + player + ', Krupiye: ' + dealer + ' — Kaybettin: ' + money(betAmount) + '!</b>';
+                }
+                document.getElementById('balance').innerText = `Bakiye: ${money(isAdmin ? 999999999 : balance)}`;
+                if (!isAdmin) users[currentUser.username].balance = balance;
+                saveData();
+            }, 1000);
+        }
+
+        function playPoker() {
+            const bet = prompt('Poker için miktar girin:');
+            if (!bet || isNaN(bet) || bet <= 0 || (!isAdmin && bet > balance)) {
+                alert('Geçerli miktar gir!');
+                return;
+            }
+            const betAmount = parseInt(bet);
+            if (!isAdmin) balance -= betAmount;
+            addTransaction(currentUser.username, 'poker_bet', -betAmount, 'poker_bet');
+            document.getElementById('result').innerHTML = '<span class="slot-animation">♠️</span> Dağıtılıyor...';
+            setTimeout(() => {
+                const hands = ['Yüksek Kart', 'Per', 'İki Per', 'Döper', 'Flush'];
+                const player = hands[Math.floor(Math.random() * hands.length)];
+                const dealer = hands[Math.floor(Math.random() * hands.length)];
+                const playerValue = hands.indexOf(player);
+                const dealerValue = hands.indexOf(dealer);
+                const chance = isVIP ? 0.5 : 0.4;
+                if (playerValue > dealerValue && Math.random() < chance) {
+                    const winAmt = betAmount * 3;
+                    if (!isAdmin) balance += winAmt;
+                    addTransaction(currentUser.username, 'poker_win', winAmt, 'poker_win');
+                    document.getElementById('result').innerHTML = '<b style="color:green;">♠️ Sen: ' + player + ', Krupiye: ' + dealer + ' — Kazandın: ' + money(winAmt) + '!</b>';
+                } else {
+                    document.getElementById('result').innerHTML = '<b style="color:red;">♠️ Sen: ' + player + ', Krupiye: ' + dealer + ' — Kaybettin: ' + money(betAmount) + '!</b>';
+                }
+                document.getElementById('balance').innerText = `Bakiye: ${money(isAdmin ? 999999999 : balance)}`;
+                if (!isAdmin) users[currentUser.username].balance = balance;
+                saveData();
+            }, 1000);
+        }
+
+    function claimDaily() {
+            if (isAdmin) {
+                alert('Adminler günlük bonus alamaz!');
+                return;
+            }
+            const now = new Date();
+            const lastDaily = currentUser.lastDaily ? new Date(currentUser.lastDaily) : null;
+            if (lastDaily && now - lastDaily < 24 * 60 * 60 * 1000) {
+                const remain = (24 * 60 * 60 * 1000 - (now - lastDaily)) / 1000;
+                const h = Math.floor(remain / 3600);
+                const m = Math.floor((remain % 3600) / 60);
+                alert(`Bonus için bekle: ${h} sa ${m} dk`);
+                return;
+            }
+            if (balance < LOW_THRESHOLD && !currentUser.tookSpecial) {
+                balance += SPECIAL_ONE_TIME;
+                currentUser.tookSpecial = true;
+                addTransaction(currentUser.username, 'daily_special', SPECIAL_ONE_TIME, 'first_time_special');
+                currentUser.lastDaily = now.toISOString();
+                document.getElementById('result').innerHTML = '<b style="color:green;">🪙 Özel bonus: ' + money(SPECIAL_ONE_TIME) + '!</b>';
+            } else {
+                const bonus = DEFAULT_DAILY * (isVIP ? 1.4 : 1.2);
+                balance += bonus;
+                addTransaction(currentUser.username, 'daily', bonus, '24h_daily');
+                currentUser.lastDaily = now.toISOString();
+                document.getElementById('result').innerHTML = '<b style="color:green;">🪙 Günlük bonus: ' + money(bonus) + '!</b>';
+            }
+            document.getElementById('balance').innerText = `Bakiye: ${money(balance)}`;
+            users[currentUser.username].balance = balance;
+            users[currentUser.username].lastDaily = currentUser.lastDaily;
+            users[currentUser.username].tookSpecial = currentUser.tookSpecial;
+            saveData();
+        }
+
+        function sendMoney() {
+            const username = prompt('Kullanıcı adı:');
+            const amount = prompt('Miktar:');
+            if (!username || !amount || isNaN(amount) || amount <= 0 || (!isAdmin && amount > balance)) {
+                alert('Geçerli kullanıcı adı ve miktar gir!');
+                return;
+            }
+            const target = users[username];
+            if (!target) {
+                alert('Kullanıcı bulunamadı!');
+                return;
+            }
+            if (target.banned) {
+                alert('Hedef banlı!');
+                return;
+            }
+            if (!isAdmin) balance -= amount;
+            target.balance += parseInt(amount);
+            addTransaction(currentUser.username, 'transfer_out', -amount, `to ${username}`);
+            addTransaction(username, 'transfer_in', amount, `from ${currentUser.username}`);
+            document.getElementById('result').innerHTML = `<b style="color:green;">💸 ${money(amount)} ${username}'a gönderildi!</b>`;
+            document.getElementById('balance').innerText = `Bakiye: ${money(isAdmin ? 999999999 : balance)}`;
+            users[currentUser.username].balance = balance;
+            users[username].balance = target.balance;
+            saveData();
+        }
+
+        function showRich() {
+            const sorted = Object.values(users).sort((a, b) => b.balance - a.balance).slice(0, 10);
+            let txt = '<b>🤑 En Zenginler:</b><br>';
+            sorted.forEach(u => {
+                const bonus = u.isVIP ? 1.25 : 1.1;
+                txt += `${u.username} — ${money(u.balance * bonus)}${u.isVIP ? ' 🌟' : ''}<br>`;
+            });
+            document.getElementById('result').innerHTML = txt;
+        }
+
+        function becomeVIP() {
+            alert('VIP olmak için Telegram kanalına katıl!');
+            window.open('https://t.me/+icW90vpzScthOTRk', '_blank');
+            isVIP = true;
+            currentUser.isVIP = true;
+            users[currentUser.username].isVIP = true;
+            saveData();
+            document.getElementById('result').innerHTML = '<b style="color:gold;">🌟 VIP oldun! %25 şans, %40 bonus!</b>';
+        }
+
+        function adminGive() {
+            const username = prompt('Kullanıcı adı:');
+            const amount = prompt('Miktar:');
+            if (!username || !amount || isNaN(amount) || amount <= 0) {
+                alert('Geçerli kullanıcı adı ve miktar gir!');
+                return;
+            }
+            const target = users[username];
+            if (!target) {
+                alert('Kullanıcı bulunamadı!');
+                return;
+            }
+            target.balance += parseInt(amount);
+            addTransaction(username, 'admin_give', amount, 'admin_give');
+            users[username].balance = target.balance;
+            saveData();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">💰 ${money(amount)} ${username}'e eklendi!</b>`;
+        }
+
+        function adminTake() {
+            const username = prompt('Kullanıcı adı:');
+            const amount = prompt('Miktar:');
+            if (!username || !amount || isNaN(amount) || amount <= 0) {
+                alert('Geçerli kullanıcı adı ve miktar gir!');
+                return;
+            }
+            const target = users[username];
+            if (!target) {
+                alert('Kullanıcı bulunamadı!');
+                return;
+            }
+            target.balance -= parseInt(amount);
+            addTransaction(username, 'admin_take', -amount, 'admin_take');
+            users[username].balance = target.balance;
+            saveData();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">💰 ${money(amount)} ${username}'den alındı!</b>`;
+        }
+
+        function adminSet() {
+            const username = prompt('Kullanıcı adı:');
+            const amount = prompt('Miktar:');
+            if (!username || !amount || isNaN(amount) || amount < 0) {
+                alert('Geçerli kullanıcı adı ve miktar gir!');
+                return;
+            }
+            const target = users[username];
+            if (!target) {
+                alert('Kullanıcı bulunamadı!');
+                return;
+            }
+            target.balance = parseInt(amount);
+            addTransaction(username, 'admin_set', amount, 'admin_set');
+            users[username].balance = target.balance;
+            saveData();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">💰 ${username} bakiyesi ${money(amount)} oldu!</b>`;
+        }
+
+        function adminBroadcast() {
+            const msg = prompt('Toplu mesaj:');
+            if (!msg) {
+                alert('Mesaj gir!');
+                return;
+            }
+            Object.keys(users).forEach(u => {
+                addTransaction(u, 'broadcast', 0, msg);
+            });
+            document.getElementById('admin-result').innerHTML = '<b style="color:green;">📩 Toplu mesaj gönderildi!</b>';
+        }
+
+        function adminBan() {
+            const username = prompt('Kullanıcı adı:');
+            if (!username) {
+                alert('Kullanıcı adı gir!');
+                return;
+            }
+            const target = users[username];
+            if (!target) {
+                alert('Kullanıcı bulunamadı!');
+                return;
+            }
+            target.banned = true;
+            users[username].banned = true;
+            saveData();
+            document.getElementById('admin-result').innerHTML = `<b style="color:red;">👮 ${username} banlandı!</b>`;
+        }
+
+    function adminUnban() {
+            const username = prompt('Kullanıcı adı:');
+            if (!username) {
+                alert('Kullanıcı adı gir!');
+                return;
+            }
+            const target = users[username];
+            if (!target) {
+                alert('Kullanıcı bulunamadı!');
+                return;
+            }
+            target.banned = false;
+            users[username].banned = false;
+            saveData();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">👮 ${username} banı kaldırıldı!</b>`;
+        }
+
+        function adminAddAdmin() {
+            const username = prompt('Kullanıcı adı:');
+            if (!username) {
+                alert('Kullanıcı adı gir!');
+                return;
+            }
+            const target = users[username];
+            if (!target) {
+                alert('Kullanıcı bulunamadı!');
+                return;
+            }
+            target.isAdmin = true;
+            users[username].isAdmin = true;
+            saveData();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">👑 ${username} admin yapıldı!</b>`;
+        }
+
+        function adminRemoveAdmin() {
+            const username = prompt('Kullanıcı adı:');
+            if (!username) {
+                alert('Kullanıcı adı gir!');
+                return;
+            }
+            const target = users[username];
+            if (!target) {
+                alert('Kullanıcı bulunamadı!');
+                return;
+            }
+            target.isAdmin = false;
+            users[username].isAdmin = false;
+            saveData();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">👑 ${username} adminliği kaldırıldı!</b>`;
+        }
+
+        function adminReset() {
+            const username = prompt('Kullanıcı adı:');
+            if (!username) {
+                alert('Kullanıcı adı gir!');
+                return;
+            }
+            if (users[username]) {
+                delete users[username];
+                saveData();
+                document.getElementById('admin-result').innerHTML = `<b style="color:green;">🗑️ ${username} sıfırlandı!</b>`;
+            } else {
+                alert('Kullanıcı bulunamadı!');
+            }
+        }
+
+        function adminSetDaily() {
+            const amount = prompt('Günlük bonus miktarı:');
+            if (!amount || isNaN(amount) || amount <= 0) {
+                alert('Geçerli miktar gir!');
+                return;
+            }
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">🪙 Günlük bonus ${money(amount)} oldu!</b>`;
+        }
+
+        function adminStats() {
+            const userCount = Object.keys(users).length;
+            const totalBalance = Object.values(users).reduce((sum, u) => sum + u.balance, 0);
+            const totalWins = transactions.filter(t => t.type.includes('_win')).length;
+            const winAmount = transactions.filter(t => t.type.includes('_win')).reduce((sum, t) => sum + t.amount, 0);
+            document.getElementById('admin-result').innerHTML = `<b>📊 İstatistik:</b><br>Kullanıcı: ${userCount}<br>Toplam Bakiye: ${money(totalBalance)}<br>Kazanılan: ${money(winAmount)} (${totalWins} oyun)`;
+        }
+
+        function adminLogs() {
+            const logs = transactions.slice(-20).map(t => `ID: ${t.userId} - ${t.type}: ${money(t.amount)} - ${t.ts}`).join('<br>');
+            document.getElementById('admin-result').innerHTML = `<b>📜 Son 20 Log:</b><br>${logs || 'Log yok!'}`;
         }
     </script>
 </body>
 </html>
+            
