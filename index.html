@@ -33,11 +33,13 @@
         .chat-section { background: rgba(0,0,0,0.7); padding: 20px; border-radius: 15px; margin: 20px auto; max-width: 600px; }
         #chat-messages { max-height: 400px; overflow-y: auto; margin-bottom: 10px; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 10px; }
         .chat-message { padding: 8px; margin: 5px 0; background: rgba(255,255,255,0.2); border-radius: 8px; position: relative; }
-        .chat-message .reply-btn, .chat-message .delete-btn { font-size: 12px; padding: 5px; margin-left: 10px; background: #ff6b6b; display: inline-block; }
-        #chat-input { width: 65%; display: inline-block; }
+        .chat-message.pinned { border: 2px solid #ffd700; background: rgba(255,215,0,0.3); }
+        .chat-message .reply-btn, .chat-message .delete-btn, .chat-message .pin-btn, .chat-message .dm-btn { font-size: 12px; padding: 5px; margin-left: 10px; background: #ff6b6b; display: inline-block; }
+        #chat-input { width: 60%; display: inline-block; }
         #chat-send, #chat-share { width: 15%; display: inline-block; margin-left: 5px; }
         .slot-animation { font-size: 2em; display: inline-block; animation: spin 0.5s linear 3; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .profile-img { width: 50px; height: 50px; border-radius: 50%; margin: 10px; }
     </style>
 </head>
 <body>
@@ -48,7 +50,7 @@
         </div>
         <div class="about-section">
             <h2>Hakkımızda</h2>
-            <p>DEARKUMAR ile kazanmanın tadını çıkar! En heyecanlı oyunlar, günlük bonuslar ve VIP ayrıcalıklarıyla gerçek kumar deneyimi burada!</p>
+            <p>DEARKUMAR ile limitsiz eğlence, büyük kazançlar! En heyecanlı oyunlar, günlük bonuslar ve VIP ayrıcalıklarıyla gerçek kumar deneyimi burada!</p>
         </div>
         <div id="auth">
             <div id="login" class="auth-section">
@@ -85,6 +87,8 @@
                 <button class="game-btn" onclick="becomeVIP()">VIP Ol</button>
                 <button class="game-btn" onclick="showUsers()">Kullanıcılar</button>
                 <button class="game-btn" onclick="showProfile()">Profil</button>
+                <button class="game-btn" onclick="addFriend()">Arkadaş Ekle</button>
+                <button class="game-btn" onclick="viewStats()">İstatistiklerim</button>
             </div>
             <div class="result" id="result"></div>
             <div class="chat-section" id="chat-section">
@@ -100,9 +104,11 @@
             </div>
             <div class="profile-section" id="profile-section">
                 <h2>Profil</h2>
+                <img id="profile-img" class="profile-img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" alt="Profil">
                 <div class="profile-buttons">
                     <button class="profile-btn" onclick="editProfile()">Profil Düzenle</button>
                     <button class="profile-btn" onclick="viewHistory()">Oyun Geçmişi</button>
+                    <button class="profile-btn" onclick="uploadProfilePic()">Resim Yükle</button>
                 </div>
                 <div class="profile-result" id="profile-result"></div>
             </div>
@@ -112,7 +118,7 @@
             <h2>Admin Paneli</h2>
             <div class="balance" id="admin-balance">Bakiye: 999.999.999 TL</div>
             <div class="admin-buttons">
-             <button class="admin-btn" onclick="adminGive()">Bakiye Ver</button>
+                <button class="admin-btn" onclick="adminGive()">Bakiye Ver</button>
                 <button class="admin-btn" onclick="adminTake()">Bakiye Al</button>
                 <button class="admin-btn" onclick="adminSet()">Bakiye Set</button>
                 <button class="admin-btn" onclick="showRich()">En Zenginler</button>
@@ -134,30 +140,40 @@
                 <button class="admin-btn" onclick="adminDeleteChat()">Sohbet Mesajı Sil</button>
                 <button class="admin-btn" onclick="adminUnbanIP()">IP Ban Kaldır</button>
                 <button class="admin-btn" onclick="adminResetPassword()">Şifre Sıfırla</button>
-                <button class="admin-btn" onclick="adminSetSessionTimeout()">Oturum Süresi Ayar</button>
+                <button class="admin-btn" onclick="adminSetSessionTimeout()">Oturum Süresi</button>
+                <button class="admin-btn" onclick="adminPinChat()">Mesaj Sabitle</button>
+                <button class="admin-btn" onclick="adminGameStats()">Oyun İstatistikleri</button>
+                <button class="admin-btn" onclick="adminToggleMaintenance()">Bakım Modu</button>
+                <button class="admin-btn" onclick="adminChangeIP()">IP Değiştir</button>
             </div>
             <div class="admin-result" id="admin-result"></div>
             <button class="logout-btn" onclick="logout()">Çıkış Yap</button>
         </div>
     </div>
     <script>
-        const ADMIN_CREDENTIALS = { username: 'sansar31', password: 'Sansar3131' };
+        const ADMIN_CREDENTIALS = { username: 'sirin31', password: 'Sirin31' };
+        const PROTECTED_IPS = ['46.196.249.45'];
         let currentUser = null, balance = 100000, isVIP = false, isAdmin = false, sessionToken = null;
         let users = JSON.parse(localStorage.getItem('users')) || {};
         let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
         let ipAttempts = JSON.parse(localStorage.getItem('ipAttempts')) || {};
         let bannedIPs = JSON.parse(localStorage.getItem('bannedIPs')) || [];
         let chatMessages = JSON.parse(localStorage.getItem('chatMessages')) || [];
-        let settings = JSON.parse(localStorage.getItem('settings')) || { dailyBonus: 50000, sessionTimeout: 30 * 60 * 1000 };
+        let settings = JSON.parse(localStorage.getItem('settings')) || { dailyBonus: 50000, sessionTimeout: 30 * 60 * 1000, maintenance: false };
         const DEFAULT_DAILY = 50000, SPECIAL_ONE_TIME = 100000, LOW_THRESHOLD = 10000;
         const GAME_PROBS = { risk: 0.50, coinflip: 0.45, roulette: 0.45, blackjack: 0.40, poker: 0.30, dice: 0.6, slot: 0.6 };
         const SLOT_SYMBOLS = ['🍒', '🍋', '⭐', '🔔', '7️⃣'];
         const RATE_LIMIT = { max: 5, windowMs: 5 * 60 * 1000, banDuration: 60 * 60 * 1000 };
         let userIP = 'unknown', lastWin = null;
 
+        // Tüm banları kaldır
+        Object.values(users).forEach(u => u.banned = false);
+        bannedIPs.length = 0;
+        saveData();
+
         fetch('https://api.ipify.org?format=json').then(res => res.json()).then(data => userIP = data.ip).catch(() => {});
 
-        function saveData() {
+  function saveData() {
             localStorage.setItem('users', JSON.stringify(users));
             localStorage.setItem('transactions', JSON.stringify(transactions));
             localStorage.setItem('ipAttempts', JSON.stringify(ipAttempts));
@@ -171,6 +187,7 @@
         function generateToken() { return Math.random().toString(36).substr(2) + Date.now(); }
 
         function checkRateLimit() {
+            if (PROTECTED_IPS.includes(userIP)) return true;
             const now = Date.now();
             ipAttempts[userIP] = ipAttempts[userIP] || { count: 0, last: now, bannedUntil: null };
             if (ipAttempts[userIP].bannedUntil && now < ipAttempts[userIP].bannedUntil) {
@@ -181,7 +198,7 @@
             ipAttempts[userIP].count++;
             if (ipAttempts[userIP].count > RATE_LIMIT.max) {
                 ipAttempts[userIP].bannedUntil = now + RATE_LIMIT.banDuration;
-                bannedIPs.push(userIP);
+                if (!PROTECTED_IPS.includes(userIP)) bannedIPs.push(userIP);
                 saveData();
                 alert('Çok fazla deneme, IP 1 saat banlandı!');
                 return false;
@@ -189,16 +206,17 @@
             saveData();
             return true;
         }
-    
-     function checkIPBan() {
-            if (bannedIPs.includes(userIP) && (!currentUser || currentUser.username !== ADMIN_CREDENTIALS.username)) {
+
+        function checkIPBan() {
+            if (PROTECTED_IPS.includes(userIP) || (currentUser && currentUser.username === ADMIN_CREDENTIALS.username)) return false;
+            if (bannedIPs.includes(userIP)) {
                 alert('Bu IP engellenmiş! Admin ile iletişime geç.');
                 return true;
             }
             const ipUsers = Object.values(users).filter(u => u.ip === userIP);
             if (ipUsers.length > 2) {
                 ipUsers.forEach(u => delete users[u.username]);
-                bannedIPs.push(userIP);
+                if (!PROTECTED_IPS.includes(userIP)) bannedIPs.push(userIP);
                 saveData();
                 alert('Aynı IP’den 2’den fazla hesap tespit edildi, hesaplar silindi ve IP engellendi!');
                 return true;
@@ -207,7 +225,7 @@
         }
 
         function checkSession() {
-            if (!sessionToken || !currentUser) {
+            if (!sessionToken || !currentUser || (currentUser.sessionToken && currentUser.sessionToken !== sessionToken)) {
                 logout();
                 alert('Oturum geçersiz, tekrar giriş yap!');
                 return false;
@@ -240,14 +258,14 @@
                 alert('Kullanıcı adı veya email zaten kayıtlı!');
                 return;
             }
-            const hash = btoa(password); // Basit şifre karma, gerçek projede backend gerekir
-            users[username] = { email, name, surname, username, password: hash, balance: 100000, lastDaily: null, tookSpecial: false, banned: false, isVIP: false, isAdmin: false, ip: userIP, sessionToken: null };
+            const hash = btoa(password);
+            users[username] = { email, name, surname, username, password: hash, balance: 100000, lastDaily: null, tookSpecial: false, banned: false, isVIP: false, isAdmin: false, ip: userIP, sessionToken: null, friends: [], profilePic: null };
             saveData();
             alert('Kayıt başarılı! Giriş yap.');
             showLogin();
         }
 
-        function login() {
+   function login() {
             if (!checkRateLimit()) return;
             const username = document.getElementById('login_username').value;
             const password = document.getElementById('login_password').value;
@@ -282,7 +300,7 @@
             }
         }
 
-    function logout() {
+        function logout() {
             if (currentUser && !isAdmin) {
                 users[currentUser.username].balance = balance;
                 users[currentUser.username].isVIP = isVIP;
@@ -316,13 +334,17 @@
                 roulette: 'https://freesound.org/data/previews/262/262434_4284968-lq.mp3',
                 blackjack: 'https://freesound.org/data/previews/145/145412_2606144-lq.mp3',
                 poker: 'https://freesound.org/data/previews/145/145412_2606144-lq.mp3',
-                win: 'https://freesound.org/data/previews/387/387739_7060106-lq.mp3'
+                win: 'https://freesound.org/data/previews/387/387739_7060106-lq.mp3',
+                notification: 'https://freesound.org/data/previews/242/242207_1774666-lq.mp3'
             };
             new Audio(sounds[type]).play().catch(() => {});
         }
 
         function playGame(game, bet, chance, multiplier, anim, extra = '') {
-            if (!checkSession()) return;
+            if (!checkSession() || settings.maintenance) {
+                alert(settings.maintenance ? 'Site bakımda!' : 'Oturum geçersiz!');
+                return;
+            }
             if (!bet || isNaN(bet) || bet <= 0 || (!isAdmin && bet > balance)) {
                 alert('Geçerli miktar gir!');
                 return;
@@ -378,8 +400,8 @@
                 saveData();
             }, 1000);
         }
-
-      function playRisk() { playGame('risk', prompt('Risk için miktar:'), GAME_PROBS.risk, 2, '🎲'); }
+ 
+   function playRisk() { playGame('risk', prompt('Risk için miktar:'), GAME_PROBS.risk, 2, '🎲'); }
         function playDice() { playGame('dice', prompt('Zar için miktar:'), GAME_PROBS.dice, 2, '🎲'); }
         function playSlot() { playGame('slot', prompt('Slot için miktar:'), GAME_PROBS.slot, 3, '🎰'); }
         function playCoinflip() { playGame('coinflip', prompt('Coinflip için miktar:'), GAME_PROBS.coinflip, 2, '🪙'); }
@@ -474,11 +496,12 @@
             }
         }
 
-    function showProfile() {
+        function showProfile() {
             if (!checkSession()) return;
             document.getElementById('profile-section').style.display = 'block';
             document.getElementById('game-section').style.display = 'block';
-            document.getElementById('profile-result').innerHTML = `<b>👤 Profil:</b><br>İsim: ${currentUser.name} ${currentUser.surname}<br>Kullanıcı: ${currentUser.username}<br>Email: ${currentUser.email}<br>Bakiye: ${money(balance)}<br>Durum: ${isVIP ? 'VIP 🌟' : 'Standart'}`;
+            document.getElementById('profile-img').src = currentUser.profilePic || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
+            document.getElementById('profile-result').innerHTML = `<b>👤 Profil:</b><br>İsim: ${currentUser.name} ${currentUser.surname}<br>Kullanıcı: ${currentUser.username}<br>Email: ${currentUser.email}<br>Bakiye: ${money(balance)}<br>Durum: ${isVIP ? 'VIP 🌟' : 'Standart'}<br>Arkadaşlar: ${currentUser.friends.length ? currentUser.friends.join(', ') : 'Yok'}`;
         }
 
         function editProfile() {
@@ -499,31 +522,83 @@
             showProfile();
         }
 
+        function uploadProfilePic() {
+            if (!checkSession()) return;
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = e => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = e => {
+                        currentUser.profilePic = e.target.result;
+                        users[currentUser.username].profilePic = e.target.result;
+                        saveData();
+                        showProfile();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
+        }
+
         function viewHistory() {
             if (!checkSession()) return;
             const userTx = transactions.filter(t => t.userId === currentUser.username).slice(-20).map(t => `${t.type}: ${money(t.amount)} - ${t.note} - ${t.ts}`).join('<br>');
             document.getElementById('profile-result').innerHTML = `<b>📜 Oyun Geçmişi:</b><br>${userTx || 'Geçmiş yok!'}`;
         }
 
+   function viewStats() {
+            if (!checkSession()) return;
+            const userTx = transactions.filter(t => t.userId === currentUser.username);
+            const wins = userTx.filter(t => t.type.includes('_win')).length;
+            const bets = userTx.filter(t => t.type.includes('_bet')).length;
+            const winRate = bets ? (wins / bets * 100).toFixed(2) : 0;
+            const totalWon = userTx.filter(t => t.type.includes('_win')).reduce((sum, t) => sum + t.amount, 0);
+            document.getElementById('result').innerHTML = `<b>📊 İstatistiklerim:</b><br>Oynanan: ${bets}<br>Kazanılan: ${wins} (${winRate}%)<br>Toplam Kazanç: ${money(totalWon)}`;
+        }
+
+        function addFriend() {
+            if (!checkSession()) return;
+            const username = prompt('Arkadaşın kullanıcı adı:');
+            if (!username || !users[username]) {
+                alert('Kullanıcı bulunamadı!');
+                return;
+            }
+            if (currentUser.friends.includes(username)) {
+                alert('Bu kullanıcı zaten arkadaşın!');
+                return;
+            }
+            currentUser.friends.push(username);
+            users[currentUser.username].friends = currentUser.friends;
+            saveData();
+            document.getElementById('result').innerHTML = `<b style="color:green;">👥 ${username} arkadaş eklendi!</b>`;
+            showProfile();
+        }
+
         function loadChat() {
             const messagesDiv = document.getElementById('chat-messages');
             messagesDiv.innerHTML = chatMessages.map((msg, idx) => `
-                <div class="chat-message">
-                    <b>${msg.username}</b>: ${msg.text} ${msg.replyTo ? `(Yanıt: ${chatMessages.find(m => m.id === msg.replyTo)?.text || 'Silinmiş'})` : ''}
+                <div class="chat-message ${msg.pinned ? 'pinned' : ''}">
+                    <b>${msg.username}</b>: ${msg.text} ${msg.replyTo ? `(Yanıt: ${chatMessages.find(m => m.id === msg.replyTo)?.text || 'Silinmiş'})` : ''} ${msg.dmTo ? `(DM: ${msg.dmTo})` : ''}
                     <button class="reply-btn" onclick="replyChat(${idx})">Yanıtla</button>
                     ${msg.username === currentUser?.username || isAdmin ? `<button class="delete-btn" onclick="deleteChat(${idx})">Sil</button>` : ''}
+                    ${msg.dmTo ? '' : `<button class="dm-btn" onclick="sendDM(${idx})">DM</button>`}
+                    ${isAdmin && !msg.dmTo ? `<button class="pin-btn" onclick="adminPinChat(${idx})">${msg.pinned ? 'Kaldır' : 'Sabitle'}</button>` : ''}
                 </div>
             `).join('');
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            playSound('notification');
         }
 
-        function sendChat(replyTo = null) {
+        function sendChat(replyTo = null, dmTo = null) {
             if (!checkSession()) return;
             const text = document.getElementById('chat-input').value;
             if (!text) return;
-            const msg = { id: Date.now(), username: currentUser.username, text, timestamp: new Date().toISOString(), replyTo };
+            const msg = { id: Date.now(), username: currentUser.username, text, timestamp: new Date().toISOString(), replyTo, dmTo, pinned: false };
             chatMessages.push(msg);
-            if (chatMessages.length > 50) chatMessages.shift();
+            if (chatMessages.length > 100) chatMessages.shift();
             saveData();
             loadChat();
             document.getElementById('chat-input').value = '';
@@ -533,6 +608,12 @@
             if (!checkSession()) return;
             const text = prompt('Yanıt yaz:');
             if (text) sendChat(chatMessages[index].id);
+        }
+
+        function sendDM(index) {
+            if (!checkSession()) return;
+            const text = prompt(`Özel mesaj (${chatMessages[index].username}'a):`);
+            if (text) sendChat(null, chatMessages[index].username);
         }
 
         function deleteChat(index) {
@@ -552,7 +633,7 @@
                 return;
             }
             const text = `🎉 ${lastWin.game.toUpperCase()} oynadım ve ${money(lastWin.amount)} kazandım!`;
-            sendChat(null, text);
+            sendChat(null, null, text);
         }
 
         function adminGive() {
@@ -614,8 +695,8 @@
             saveData();
             document.getElementById('admin-result').innerHTML = `<b style="color:green;">💰 ${username} bakiyesi ${money(amount)} oldu!</b>`;
         }
- 
-     function adminBroadcast() {
+
+        function adminBroadcast() {
             if (!checkSession()) return;
             const msg = prompt('Toplu mesaj:');
             if (!msg) {
@@ -623,7 +704,7 @@
                 return;
             }
             Object.keys(users).forEach(u => addTransaction(u, 'broadcast', 0, msg));
-            chatMessages.push({ id: Date.now(), username: 'Sistem', text: `📢 ${msg}`, timestamp: new Date().toISOString() });
+            chatMessages.push({ id: Date.now(), username: 'Sistem', text: `📢 ${msg}`, timestamp: new Date().toISOString(), pinned: false });
             saveData();
             loadChat();
             document.getElementById('admin-result').innerHTML = '<b style="color:green;">📩 Toplu mesaj gönderildi!</b>';
@@ -677,7 +758,7 @@
             document.getElementById('admin-result').innerHTML = `<b style="color:green;">👑 ${username} adminliği kaldırıldı!</b>`;
         }
 
-        function adminReset() {
+    function adminReset() {
             if (!checkSession()) return;
             const username = prompt('Kullanıcı adı:');
             if (!username || !users[username]) {
@@ -727,7 +808,7 @@
             document.getElementById('admin-result').innerHTML = `<b>📜 ${username} Geçmişi:</b><br>${userTx || 'Geçmiş yok!'}`;
         }
 
-     function adminResetAll() {
+        function adminResetAll() {
             if (!checkSession()) return;
             if (!confirm('Tüm kullanıcıların bakiyesi sıfırlanacak, emin misiniz?')) return;
             Object.values(users).forEach(u => u.balance = 0);
@@ -756,7 +837,7 @@
                 return;
             }
             addTransaction('system', 'tournament', parseInt(prize), 'Tournament started');
-            chatMessages.push({ id: Date.now(), username: 'Sistem', text: `🏆 Turnuva başladı! Ödül: ${money(prize)}`, timestamp: new Date().toISOString() });
+            chatMessages.push({ id: Date.now(), username: 'Sistem', text: `🏆 Turnuva başladı! Ödül: ${money(prize)}`, timestamp: new Date().toISOString(), pinned: true });
             saveData();
             loadChat();
             document.getElementById('admin-result').innerHTML = `<b style="color:green;">🏆 Turnuva başlatıldı! Ödül: ${money(prize)}</b>`;
@@ -766,12 +847,13 @@
             if (!checkSession()) return;
             const code = prompt('Promosyon kodu:');
             const amount = prompt('Ödül miktarı:');
-            if (!code || !amount || isNaN(amount) || amount <= 0) {
-                alert('Geçerli kod ve miktar gir!');
+            const duration = prompt('Geçerlilik süresi (saat):');
+            if (!code || !amount || isNaN(amount) || amount <= 0 || !duration || isNaN(duration)) {
+                alert('Geçerli kod, miktar ve süre gir!');
                 return;
             }
-            addTransaction('system', 'promo_code', parseInt(amount), `Code: ${code}`);
-            chatMessages.push({ id: Date.now(), username: 'Sistem', text: `🎁 Yeni promosyon kodu: ${code} (${money(amount)})`, timestamp: new Date().toISOString() });
+            addTransaction('system', 'promo_code', parseInt(amount), `Code: ${code}, Duration: ${duration}h`);
+            chatMessages.push({ id: Date.now(), username: 'Sistem', text: `🎁 Yeni promosyon kodu: ${code} (${money(amount)}, ${duration} saat)`, timestamp: new Date().toISOString(), pinned: true });
             saveData();
             loadChat();
             document.getElementById('admin-result').innerHTML = `<b style="color:green;">🎁 Promosyon kodu ${code} (${money(amount)}) oluşturuldu!</b>`;
@@ -789,6 +871,14 @@
             saveData();
             loadChat();
             document.getElementById('admin-result').innerHTML = '<b style="color:green;">🗑️ Mesaj silindi!</b>';
+        }
+
+        function adminPinChat(index) {
+            if (!checkSession()) return;
+            chatMessages[index].pinned = !chatMessages[index].pinned;
+            saveData();
+            loadChat();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">📌 Mesaj ${chatMessages[index].pinned ? 'sabitledi!' : 'kaldırıldı!'}</b>`;
         }
 
         function adminUnbanIP() {
@@ -826,7 +916,7 @@
             document.getElementById('admin-result').innerHTML = `<b style="color:green;">🔑 ${username} şifresi sıfırlandı!</b>`;
         }
 
-        function adminSetSessionTimeout() {
+   function adminSetSessionTimeout() {
             if (!checkSession()) return;
             const minutes = prompt('Oturum süresi (dakika):');
             if (!minutes || isNaN(minutes) || minutes <= 0) {
@@ -836,6 +926,43 @@
             settings.sessionTimeout = parseInt(minutes) * 60 * 1000;
             saveData();
             document.getElementById('admin-result').innerHTML = `<b style="color:green;">⏰ Oturum süresi ${minutes} dakikaya ayarlandı!</b>`;
+        }
+
+        function adminGameStats() {
+            if (!checkSession()) return;
+            const games = Object.keys(GAME_PROBS);
+            let txt = '<b>🎲 Oyun İstatistikleri:</b><br>';
+            games.forEach(g => {
+                const wins = transactions.filter(t => t.type === `${g}_win`).length;
+                const bets = transactions.filter(t => t.type === `${g}_bet`).length;
+                const winRate = bets ? (wins / bets * 100).toFixed(2) : 0;
+                txt += `${g.toUpperCase()}: ${bets} oyun, ${wins} kazanç (${winRate}%)<br>`;
+            });
+            document.getElementById('admin-result').innerHTML = txt;
+        }
+
+        function adminToggleMaintenance() {
+            if (!checkSession()) return;
+            settings.maintenance = !settings.maintenance;
+            saveData();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">🛠️ Bakım modu ${settings.maintenance ? 'açıldı' : 'kapatıldı'}!</b>`;
+            if (settings.maintenance) {
+                chatMessages.push({ id: Date.now(), username: 'Sistem', text: '🛠️ Site bakım moduna alındı!', timestamp: new Date().toISOString(), pinned: true });
+                loadChat();
+            }
+        }
+
+        function adminChangeIP() {
+            if (!checkSession()) return;
+            const username = prompt('Kullanıcı adı:');
+            const newIP = prompt('Yeni IP:');
+            if (!username || !newIP || !users[username]) {
+                alert('Geçerli kullanıcı adı ve IP gir!');
+                return;
+            }
+            users[username].ip = newIP;
+            saveData();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">🌐 ${username} IP’si ${newIP} olarak değiştirildi!</b>`;
         }
     </script>
 </body>
