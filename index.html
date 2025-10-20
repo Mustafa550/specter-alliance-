@@ -5,79 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yapay Zeka ChatBot</title>
     <style>
-        /* Genel Ayarlar */
         body {
             font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff6ec7, #ff7b9c);
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #f09, #4b6cb7);
-            color: #fff;
+            color: white;
         }
 
-        /* Header */
         header {
-            background: #6f42c1;
+            background-color: #4b6cb7;
             padding: 20px;
             color: white;
             text-align: center;
-            font-size: 3em;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Navigation Bar */
-        nav {
-            display: flex;
-            justify-content: center;
-            background-color: #2f3e5e;
-            padding: 12px 0;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        nav a {
-            margin: 0 25px;
-            color: white;
-            font-size: 1.4em;
-            text-decoration: none;
-            font-weight: bold;
-            transition: transform 0.3s, color 0.3s;
-        }
-
-        nav a:hover {
-            color: #ffeb3b;
-            transform: scale(1.2);
+            font-size: 2.5em;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         .container {
             width: 80%;
-            margin: 30px auto;
+            margin: 2rem auto;
             padding: 20px;
             background-color: #fff;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
 
         .chatbox {
-            background-color: #e8eaf6;
+            background-color: #f5f7fb;
             border-radius: 15px;
             padding: 20px;
             height: 400px;
             overflow-y: auto;
             display: flex;
             flex-direction: column-reverse;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .chatbox:hover {
-            background-color: #c5cae9;
         }
 
         .message {
-            padding: 15px;
+            padding: 12px;
             margin: 10px;
-            border-radius: 15px;
+            border-radius: 10px;
             background-color: #9fa8da;
             max-width: 70%;
-            animation: fadeIn 0.6s ease-in-out;
+            animation: fadeIn 0.6s ease-out;
         }
 
         .message.user {
@@ -104,7 +74,7 @@
 
         .input-area input {
             width: 85%;
-            padding: 15px;
+            padding: 12px;
             border-radius: 10px;
             border: 2px solid #ccc;
             font-size: 1em;
@@ -118,7 +88,7 @@
             width: 12%;
             background-color: #4b6cb7;
             color: white;
-            padding: 15px;
+            padding: 12px;
             border: none;
             border-radius: 10px;
             cursor: pointer;
@@ -127,64 +97,8 @@
         }
 
         .input-area button:hover {
-            background-color: #1a2536;
-        }
-
-        .form-group input {
-            padding: 15px;
-            width: 100%;
-            margin: 10px 0;
-            border-radius: 10px;
-            border: 2px solid #ccc;
-        }
-
-        .form-group button {
-            width: 100%;
-            padding: 15px;
             background-color: #ffeb3b;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1.2em;
         }
-
-        /* Admin Panel */
-        .admin-panel {
-            background-color: #f3e5f5;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .admin-panel input {
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-            border: 2px solid #ccc;
-        }
-
-        .admin-panel button {
-            padding: 15px;
-            background-color: #4b6cb7;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-
-        .admin-panel button:hover {
-            background-color: #1a2536;
-        }
-
-        /* Responsive Design */
-        @media screen and (max-width: 768px) {
-            .container {
-                width: 90%;
-            }
-        }
-
     </style>
 </head>
 <body>
@@ -193,60 +107,14 @@
     <h1>Yapay Zeka ChatBot</h1>
 </header>
 
-<nav>
-    <a href="javascript:void(0);" onclick="showHome()">Anasayfa</a>
-    <a href="javascript:void(0);" onclick="showChat()">ChatBot</a>
-    <a href="javascript:void(0);" onclick="showLogin()">Giriş Yap</a>
-    <a href="javascript:void(0);" onclick="showRegister()">Kayıt Ol</a>
-    <a href="javascript:void(0);" onclick="showAdminPanel()">Admin Paneli</a>
-</nav>
-
 <div class="container">
-    <!-- Home Section -->
-    <div id="home-section">
-        <h2>Hoşgeldiniz!</h2>
-        <p>Yapay Zeka ChatBot ile her türlü soruya anında yanıt alabilirsiniz.</p>
-    </div>
-
     <!-- ChatBot Section -->
-    <div id="chat-section" style="display:none;">
+    <div id="chat-section">
         <h2>ChatBot</h2>
         <div class="chatbox" id="chatbox"></div>
         <div class="input-area">
             <input type="text" id="user-input" placeholder="Bir şeyler yazın..." />
             <button onclick="sendMessage()">Gönder</button>
-        </div>
-    </div>
-
-    <!-- Admin Panel Section -->
-    <div id="admin-panel-section" style="display:none;" class="admin-panel">
-        <h2>Admin Paneli</h2>
-        <input type="text" id="admin-username" placeholder="Admin Kullanıcı Adı" />
-        <input type="password" id="admin-password" placeholder="Admin Şifresi" />
-        <button onclick="loginAdmin()">Admin Girişi Yap</button>
-        <div id="admin-error" style="color: red; display: none;">Yanlış admin bilgileri!</div>
-    </div>
-
-    <!-- Login Section -->
-    <div id="login-section" style="display:none;">
-        <h2>Giriş Yap</h2>
-        <div class="form-group">
-            <input type="text" id="login-username" placeholder="Kullanıcı Adı" />
-            <input type="password" id="login-password" placeholder="Şifre" />
-            <button onclick="login()">Giriş Yap</button>
-        </div>
-    </div>
-
-    <!-- Register Section -->
-    <div id="register-section" style="display:none;">
-        <h2>Kayıt Ol</h2>
-        <div class="form-group">
-            <input type="text" id="register-name" placeholder="Ad" />
-            <input type="text" id="register-surname" placeholder="Soyad" />
-            <input type="text" id="register-username" placeholder="Kullanıcı Adı" />
-            <input type="email" id="register-email" placeholder="E-posta" />
-            <input type="password" id="register-password" placeholder="Şifre" />
-            <button onclick="register()">Kayıt Ol</button>
         </div>
     </div>
 </div>
@@ -265,102 +133,19 @@
         document.getElementById('user-input').value = '';
     }
 
-    // ChatBot Cevapları
+    // ChatBot Cevapları (Basit Simülasyon)
     function generateBotResponse(userMessage) {
+        // Gerçek yapay zeka yerine basit bir simülasyon yapılıyor.
         if (userMessage.toLowerCase().includes("merhaba")) {
             return "Merhaba! Size nasıl yardımcı olabilirim?";
-        } else if (userMessage.toLowerCase().includes("kod yaz")) {
-            return "Hangi programlama diliyle yardımcı olabilirim?";
+        } else if (userMessage.toLowerCase().includes("nasılsın")) {
+            return "İyiyim, teşekkür ederim! Siz nasılsınız?";
+        } else if (userMessage.toLowerCase().includes("yardım")) {
+            return "Size nasıl yardımcı olabilirim? Sormak istediğiniz bir şey var mı?";
         } else {
-            return "Bunu anlamadım, tekrar sorar mısınız?";
+            return "Üzgünüm, bunu anlayamadım. Yardımcı olmamı ister misiniz?";
         }
     }
-
-    // Admin Girişi
-    function loginAdmin() {
-        const adminUsername = document.getElementById('admin-username').value;
-        const adminPassword = document.getElementById('admin-password').value;
-
-        if (adminUsername === 'admin' && adminPassword === 'admin123') {
-            document.getElementById('admin-panel-section').innerHTML = `
-                <h2>Admin Paneli</h2>
-                <p>Başarıyla giriş yaptınız!</p>
-                <button onclick="logoutAdmin()">Çıkış Yap</button>
-            `;
-        } else {
-            document.getElementById('admin-error').style.display = 'block';
-        }
-    }
-
-    function logoutAdmin() {
-        document.getElementById('admin-panel-section').style.display = 'none';
-        showHome();
-    }
-
-    // Kullanıcı Girişi
-    function login() {
-        const username = document.getElementById('login-username').value;
-        const password = document.getElementById('login-password').value;
-        // Simüle edilmiş giriş
-        if (username === "user" && password === "password123") {
-            alert("Başarıyla giriş yaptınız!");
-            showHome();
-        } else {
-            alert("Hatalı kullanıcı adı veya şifre!");
-        }
-    }
-
-    // Kullanıcı Kaydı
-    function register() {
-        const name = document.getElementById('register-name').value;
-        const surname = document.getElementById('register-surname').value;
-        const username = document.getElementById('register-username').value;
-        const email = document.getElementById('register-email').value;
-        const password = document.getElementById('register-password').value;
-
-        // Simüle edilmiş kayıt
-        alert("Kayıt başarılı!");
-        showLogin();
-    }
-
-    // Sayfa Gösterme Fonksiyonları
-    function showHome() {
-        document.getElementById('home-section').style.display = 'block';
-        document.getElementById('chat-section').style.display = 'none';
-        document.getElementById('admin-panel-section').style.display = 'none';
-        document.getElementById('login-section').style.display = 'none';
-        document.getElementById('register-section').style.display = 'none';
-    }
-
-    function showChat() {
-        document.getElementById('home-section').style.display = 'none';
-        document.getElementById('chat-section').style.display = 'block';
-        document.getElementById('admin-panel-section').style.display = 'none';
-        document.getElementById('login-section').style.display = 'none';
-        document.getElementById('register-section').style.display = 'none';
-    }
-
-    function showLogin() {
-        document.getElementById('home-section').style.display = 'none';
-        document.getElementById('chat-section').style.display = 'none';
-        document.getElementById('admin-panel-section').style.display = 'none';
-        document.getElementById('login-section').style.display = 'block';
-        document.getElementById('register-section').style.display = 'none';
-    }
-
-    function showRegister() {
-        document.getElementById('home-section').style.display = 'none';
-        document.getElementById('chat-section').style.display = 'none';
-        document.getElementById('admin-panel-section').style.display = 'none';
-        document.getElementById('login-section').style.display = 'none';
-        document.getElementById('register-section').style.display = 'block';
-    }
-
-    // Sayfa Yüklendiğinde
-    window.onload = function() {
-        fetchWeatherData();
-        fetchNewsData();
-    };
 </script>
 
 </body>
