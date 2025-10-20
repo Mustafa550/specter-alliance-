@@ -8,11 +8,10 @@
         /* Genel Ayarlar */
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f0f4f8;
+            background-color: #f5f7fb;
             margin: 0;
             padding: 0;
             color: #333;
-            transition: background-color 0.3s ease;
         }
 
         header {
@@ -22,12 +21,7 @@
             text-align: center;
             font-size: 2.5em;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            border-bottom: 3px solid #1a2b3c;
             transition: background-color 0.3s ease;
-        }
-
-        header:hover {
-            background-color: #2f3e5e;
         }
 
         nav {
@@ -35,16 +29,15 @@
             justify-content: center;
             background-color: #2f3e5e;
             padding: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         nav a {
-            margin: 0 20px;
+            margin: 0 15px;
             color: white;
             text-decoration: none;
             font-weight: bold;
             font-size: 1.2em;
-            transition: transform 0.3s, text-decoration 0.3s;
+            transition: transform 0.3s;
         }
 
         nav a:hover {
@@ -54,19 +47,13 @@
 
         .container {
             width: 80%;
-            margin: 3rem auto;
+            margin: 2rem auto;
             padding: 2rem;
             background-color: white;
             border-radius: 12px;
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
 
-        .container:hover {
-            transform: translateY(-10px);
-        }
-
-        /* Chatbot */
         .chatbox {
             background-color: #eef1f9;
             border-radius: 12px;
@@ -75,11 +62,6 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column-reverse;
-            transition: background-color 0.3s ease;
-        }
-
-        .chatbox:hover {
-            background-color: #e1e7f0;
         }
 
         .message {
@@ -107,7 +89,6 @@
             to { opacity: 1; }
         }
 
-        /* Bot animasyonu */
         .input-area {
             display: flex;
             justify-content: space-between;
@@ -119,11 +100,6 @@
             padding: 12px;
             border-radius: 5px;
             border: 1px solid #ccc;
-            transition: border-color 0.3s ease;
-        }
-
-        .input-area input:focus {
-            border-color: #4b6cb7;
         }
 
         .input-area button {
@@ -134,14 +110,8 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s;
         }
 
-        .input-area button:hover {
-            background-color: #2f3e5e;
-        }
-
-        /* Form Styling */
         .form-group input {
             padding: 12px;
             width: 100%;
@@ -186,17 +156,12 @@
             cursor: pointer;
         }
 
-        .admin-panel button:hover {
-            background-color: #2f3e5e;
-        }
-
         /* Responsive Design */
         @media screen and (max-width: 768px) {
             .container {
                 width: 90%;
             }
         }
-
     </style>
 </head>
 <body>
@@ -218,18 +183,6 @@
     <div id="home-section">
         <h2>Hoşgeldiniz!</h2>
         <p>Yapay Zeka ChatBot ile her türlü soruya anında yanıt alabilirsiniz.</p>
-        <div class="api-section">
-            <!-- Hava Durumu -->
-            <div class="api-card" id="weather-card">
-                <h3>Hava Durumu</h3>
-                <p id="weather-info">Hava durumu verisi burada görünecek.</p>
-            </div>
-            <!-- Haberler -->
-            <div class="api-card" id="news-card">
-                <h3>Güncel Haberler</h3>
-                <p id="news-info">Haberler burada listelenecek.</p>
-            </div>
-        </div>
     </div>
 
     <!-- ChatBot Section -->
@@ -410,101 +363,11 @@
         document.getElementById('register-section').style.display = 'block';
     }
 
-    // Sayfa Yüklendiğinde API Verilerini Çekme
+    // Sayfa Yüklendiğinde
     window.onload = function() {
         fetchWeatherData();
         fetchNewsData();
     };
-
-    // Kullanıcı Girişi Kontrolü
-    function checkUserLoggedIn() {
-        const isLoggedIn = localStorage.getItem('isLoggedIn');
-        if (!isLoggedIn) {
-            alert("Önce giriş yapmalısınız!");
-            showLogin();
-        }
-    }
-
-    // Login işlemi sonrası yerel depolama (localStorage) ile giriş durumu kaydedilmesi
-    function login() {
-        const username = document.getElementById('login-username').value;
-        const password = document.getElementById('login-password').value;
-
-        // Basit simüle edilmiş giriş kontrolü
-        if (username === "user" && password === "password123") {
-            localStorage.setItem('isLoggedIn', 'true');
-            alert("Başarıyla giriş yaptınız!");
-            showHome();
-        } else {
-            alert("Hatalı kullanıcı adı veya şifre!");
-        }
-    }
-
-    // Kullanıcı Kaydı
-    function register() {
-        const name = document.getElementById('register-name').value;
-        const surname = document.getElementById('register-surname').value;
-        const username = document.getElementById('register-username').value;
-        const email = document.getElementById('register-email').value;
-        const password = document.getElementById('register-password').value;
-
-        // Basit simüle edilmiş kayıt işlemi
-        if (name && surname && username && email && password) {
-            alert("Kayıt başarılı! Giriş yapabilirsiniz.");
-            showLogin();
-        } else {
-            alert("Lütfen tüm alanları doldurduğunuzdan emin olun.");
-        }
-    }
-
-    // Admin Girişi Kontrolü
-    function loginAdmin() {
-        const adminUsername = document.getElementById('admin-username').value;
-        const adminPassword = document.getElementById('admin-password').value;
-
-        // Admin girişi kontrolü
-        if (adminUsername === 'sirin31' && adminPassword === 'Sirin31') {
-            document.getElementById('admin-panel-section').innerHTML = `
-                <h2>Admin Paneli</h2>
-                <p>Başarıyla giriş yaptınız!</p>
-                <button onclick="logoutAdmin()">Çıkış Yap</button>
-            `;
-        } else {
-            document.getElementById('admin-error').style.display = 'block';
-        }
-    }
-
-    // Admin Çıkışı
-    function logoutAdmin() {
-        document.getElementById('admin-panel-section').style.display = 'none';
-        showHome();
-    }
-
-    // Hava Durumu
-    function fetchWeatherData() {
-        fetch(`https://api.openweathermap.org/data/2.5/weather?q=Istanbul&appid=045332f83503c48d98e495a5a99f4b5d&units=metric`)
-            .then(response => response.json())
-            .then(data => {
-                const weatherInfo = `Sıcaklık: ${data.main.temp}°C, ${data.weather[0].description}`;
-                document.getElementById('weather-info').textContent = weatherInfo;
-            })
-            .catch(err => console.error('Hava durumu verisi alınamadı:', err));
-    }
-
-    // Güncel Haberler
-    function fetchNewsData() {
-        fetch(`https://newsapi.org/v2/top-headlines?country=tr&apiKey=67ba06cffc48449893b3081a29c1f818`)
-            .then(response => response.json())
-            .then(data => {
-                let newsHtml = "<ul>";
-                data.articles.forEach(article => {
-                    newsHtml += `<li><a href="${article.url}" target="_blank">${article.title}</a></li>`;
-                });
-                newsHtml += "</ul>";
-                document.getElementById('news-info').innerHTML = newsHtml;
-            })
-            .catch(err => console.error('Haber verisi alınamadı:', err));
-    }
 </script>
 
 </body>
