@@ -5,70 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yapay Zeka ChatBot</title>
     <style>
+        /* Genel Ayarlar */
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f0f4f8;
             margin: 0;
             padding: 0;
-            color: #333;
+            background: linear-gradient(135deg, #f09, #4b6cb7);
+            color: #fff;
         }
 
+        /* Header */
         header {
-            background-color: #4b6cb7;
+            background: #6f42c1;
             padding: 20px;
             color: white;
             text-align: center;
-            font-size: 2.5em;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            font-size: 3em;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
+        /* Navigation Bar */
         nav {
             display: flex;
             justify-content: center;
             background-color: #2f3e5e;
-            padding: 15px;
+            padding: 12px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         nav a {
-            margin: 0 20px;
+            margin: 0 25px;
             color: white;
+            font-size: 1.4em;
             text-decoration: none;
             font-weight: bold;
-            font-size: 1.2em;
-            transition: transform 0.3s, text-decoration 0.3s;
+            transition: transform 0.3s, color 0.3s;
         }
 
         nav a:hover {
-            transform: scale(1.1);
-            text-decoration: underline;
+            color: #ffeb3b;
+            transform: scale(1.2);
         }
 
         .container {
             width: 80%;
-            margin: 3rem auto;
-            padding: 2rem;
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         .chatbox {
-            background-color: #eef1f9;
-            border-radius: 12px;
+            background-color: #e8eaf6;
+            border-radius: 15px;
             padding: 20px;
             height: 400px;
             overflow-y: auto;
             display: flex;
             flex-direction: column-reverse;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .chatbox:hover {
+            background-color: #c5cae9;
         }
 
         .message {
-            padding: 12px;
+            padding: 15px;
             margin: 10px;
-            border-radius: 10px;
-            background-color: #dfe3ea;
+            border-radius: 15px;
+            background-color: #9fa8da;
             max-width: 70%;
-            animation: fadeIn 0.5s ease-out;
+            animation: fadeIn 0.6s ease-in-out;
         }
 
         .message.user {
@@ -78,8 +87,8 @@
         }
 
         .message.bot {
-            background-color: #dfe3ea;
-            color: #333;
+            background-color: #9fa8da;
+            color: black;
         }
 
         @keyframes fadeIn {
@@ -95,63 +104,78 @@
 
         .input-area input {
             width: 85%;
-            padding: 12px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #ccc;
+            font-size: 1em;
+        }
+
+        .input-area input:focus {
+            border-color: #ffeb3b;
         }
 
         .input-area button {
             width: 12%;
             background-color: #4b6cb7;
             color: white;
-            padding: 12px;
+            padding: 15px;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+
+        .input-area button:hover {
+            background-color: #1a2536;
         }
 
         .form-group input {
-            padding: 12px;
+            padding: 15px;
             width: 100%;
-            margin: 8px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 2px solid #ccc;
         }
 
         .form-group button {
             width: 100%;
-            padding: 12px;
-            background-color: #4b6cb7;
+            padding: 15px;
+            background-color: #ffeb3b;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 1.2em;
         }
 
         /* Admin Panel */
         .admin-panel {
-            background-color: #fafbfc;
+            background-color: #f3e5f5;
             padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         .admin-panel input {
             width: 100%;
-            padding: 12px;
+            padding: 15px;
             margin-bottom: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
+            border-radius: 10px;
+            border: 2px solid #ccc;
         }
 
         .admin-panel button {
-            padding: 12px;
+            padding: 15px;
             background-color: #4b6cb7;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
+        }
+
+        .admin-panel button:hover {
+            background-color: #1a2536;
         }
 
         /* Responsive Design */
@@ -228,37 +252,7 @@
 </div>
 
 <script>
-    // API Anahtarları
-    const weatherAPIKey = "045332f83503c48d98e495a5a99f4b5d";
-    const newsAPIKey = "67ba06cffc48449893b3081a29c1f818";
-
-    // Hava Durumu
-    function fetchWeatherData() {
-        fetch(`https://api.openweathermap.org/data/2.5/weather?q=Istanbul&appid=${weatherAPIKey}&units=metric`)
-            .then(response => response.json())
-            .then(data => {
-                const weatherInfo = `Sıcaklık: ${data.main.temp}°C, ${data.weather[0].description}`;
-                document.getElementById('weather-info').textContent = weatherInfo;
-            })
-            .catch(err => console.error('Hava durumu verisi alınamadı:', err));
-    }
-
-    // Haberler
-    function fetchNewsData() {
-        fetch(`https://newsapi.org/v2/top-headlines?country=tr&apiKey=${newsAPIKey}`)
-            .then(response => response.json())
-            .then(data => {
-                let newsHtml = "<ul>";
-                data.articles.forEach(article => {
-                    newsHtml += `<li><a href="${article.url}" target="_blank">${article.title}</a></li>`;
-                });
-                newsHtml += "</ul>";
-                document.getElementById('news-info').innerHTML = newsHtml;
-            })
-            .catch(err => console.error('Haber verisi alınamadı:', err));
-    }
-
-    // ChatBot
+    // ChatBot Mesaj Gönderme
     function sendMessage() {
         let userMessage = document.getElementById('user-input').value;
         if (!userMessage) return;
@@ -271,7 +265,7 @@
         document.getElementById('user-input').value = '';
     }
 
-    // Bot'un Cevapları
+    // ChatBot Cevapları
     function generateBotResponse(userMessage) {
         if (userMessage.toLowerCase().includes("merhaba")) {
             return "Merhaba! Size nasıl yardımcı olabilirim?";
