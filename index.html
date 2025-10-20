@@ -57,8 +57,8 @@
                 <div class="chat-message ai">Merhaba! Ben DearSiber AI, profesyonel sohbet için buradayım. Sorularınızı bekliyorum!</div>
             </div>
             <div class="input-area">
-                <input type="text" id="chat-input" placeholder="Sor, kanka! 😄" onkeypress="if(event.key === 'Enter') sendMessage()">
-                <button onclick="sendMessage()">Gönder</button>
+                <input type="text" id="chat-input" placeholder="Sor, kanka! 😄" onkeypress="if(event.key === 'Enter') sendMessage(event)">
+                <button onclick="sendMessage(event)">Gönder</button>
             </div>
         </div>
     </div>
@@ -167,19 +167,20 @@
                 saveCachedResponse(cacheKey, reply);
                 return reply.trim();
             } catch (error) {
-                console.error('Hata:', error); // Hata ayıklaması
+                console.error('Hata:', error);
                 const chat = document.getElementById('chat-window');
                 chat.innerHTML = chat.innerHTML.replace('<div class="chat-message loading">Düşünüyorum...</div>', '');
                 return 'Hata: ' + (cachedResponses[cacheKey] || 'İnternet yok.');
             }
         }
 
-        function sendMessage() {
+        function sendMessage(event) {
+            event.preventDefault(); // Form submit önleme
             const input = document.getElementById('chat-input');
             const message = input.value.trim();
             if (message) {
                 addMessage('user', message);
-                input.value = ''; // Input'u temizle
+                input.value = '';
                 getGeminiResponse(message).then(reply => {
                     addMessage('ai', reply);
                     if ('Notification' in window && Notification.permission === 'granted') {
@@ -237,7 +238,7 @@
             // Gelişmiş PWA Servis Worker (Tek Dosyada)
             if ('serviceWorker' in navigator) {
                 const sw = `
-                    const CACHE_NAME = 'dearsiber-v6';
+                    const CACHE_NAME = 'dearsiber-v7';
                     const urlsToCache = [
                         './index.html',
                         './manifest.json',
