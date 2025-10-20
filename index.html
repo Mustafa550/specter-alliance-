@@ -64,11 +64,11 @@
     </div>
 
     <script>
-        // API Key'ler (GitHub Secrets ile çekilecek, şimdilik placeholder)
-        const OPENAI_API_KEY = 'YOUR_OPENAI_KEY'; // GitHub Secrets: OPENAI_API_KEY
-        const OPENWEATHER_API = 'YOUR_OPENWEATHER_KEY'; // GitHub Secrets: OPENWEATHER_API
-        const NEWSAPI_KEY = 'YOUR_NEWSAPI_KEY'; // GitHub Secrets: NEWSAPI_KEY
-        const IMGBB_API_KEY = 'YOUR_IMGBB_KEY'; // GitHub Secrets: IMGBB_API_KEY
+        // API Key'ler (GitHub Secrets ile çekilecek, şimdilik dummy)
+        const OPENAI_API_KEY = 'sk-dummy-key'; // Test için dummy, Secrets: OPENAI_API_KEY
+        const OPENWEATHER_API = 'dummy-weather-key'; // Test için dummy, Secrets: OPENWEATHER_API
+        const NEWSAPI_KEY = 'dummy-news-key'; // Test için dummy, Secrets: NEWSAPI_KEY
+        const IMGBB_API_KEY = 'dummy-imgbb-key'; // Test için dummy, Secrets: IMGBB_API_KEY
 
         let memory = JSON.parse(localStorage.getItem('memory')) || {};
         let currentSession = [];
@@ -166,10 +166,10 @@
                         messages: [{ role: 'user', content: message + (currentSession.length ? ' ' + currentSession.join(' ') : '') }],
                         temperature: 0.7,
                         max_tokens: 150
-                    })
+                    }),
+                    mode: 'cors' // 2025 CORS düzeltmesi
                 });
                 if (!response.ok) {
-                    console.error('API yanıtı:', await response.text());
                     throw new Error('API hatası: ' + response.status);
                 }
                 const data = await response.json();
@@ -205,26 +205,24 @@
                 saveCachedResponse(cacheKey, reply);
                 addMessage('ai', reply);
             } catch (error) {
-                console.error('Hata detay:', error);
+                console.error('Hata:', error);
                 removeLoading();
-                addMessage('ai', 'Hata: ' + (error.message.includes('İnternet') ? 'İnternet yok' : 'Sunucu hatası, tekrar deneyin.'));
+                addMessage('ai', 'Hata: ' + (error.message.includes('İnternet') ? 'İnternet yok' : 'API hatası, tekrar deneyin.'));
             }
         }
 
         function sendMessage(event) {
-            event.preventDefault();
+            event.preventDefault(); // Form submit'i engelle
             const input = document.getElementById('chat-input');
             let message = input.value.trim();
             if (message) {
                 addMessage('user', message);
                 input.value = '';
                 input.focus();
-                getChatGPTResponse(message).then(() => {
-                    if ('Notification' in window && Notification.permission === 'granted') {
-                        const reply = document.querySelector('.chat-message.ai:last-child')?.textContent || 'Yeni mesaj!';
-                        new Notification('DearSiber AI', { body: 'Yeni: ' + reply.slice(0, 50) + '...' });
-                    }
-                }).catch(err => console.error('Gönderim hatası:', err));
+                getChatGPTResponse(message).catch(err => {
+                    console.error('Gönderim hatası:', err);
+                    addMessage('ai', 'Hata: Mesaj gönderilemedi, interneti kontrol et.');
+                });
             } else {
                 alert('Mesaj gir, kanka!');
             }
@@ -297,15 +295,6 @@
                 navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(err => console.log('SW hata:', err));
                 if ('Notification' in window && Notification.permission !== 'granted') Notification.requestPermission();
             }
-
-            function sendPushNotification() {
-                if ('serviceWorker' in navigator && 'PushManager' in window) {
-                    navigator.serviceWorker.ready.then(registration => {
-                        registration.pushManager.subscribe({ userVisibleOnly: true }).catch(err => console.log('Push hata:', err));
-                    });
-                }
-            }
-            sendPushNotification();
         };
     </script>
 </body>
