@@ -41,7 +41,7 @@
             height: 400px;
             overflow-y: auto;
             display: flex;
-            flex-direction: column;
+            flex-direction: column-reverse;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             font-size: 0.9em;
             margin-bottom: 20px;
@@ -167,8 +167,13 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@google/genai"></script>
+
 <script>
-    const geminiAPIKey = 'AIzaSyDi4S8ob89l1f40F7qBbySOMpwmOIel9I4'; // Gemini API anahtarınız
+    const ai = new GoogleGenAI({
+        apiKey: 'AIzaSyDi4S8ob89l1f40F7qBbySOMpwmOIel9I4' // Buraya verdiğiniz API anahtarını yerleştirin
+    });
+
     let chatHistory = []; // Sohbet geçmişini kaydetmek için
 
     // ChatBot Mesaj Gönderme
@@ -205,21 +210,13 @@
 
     // Gemini API'den yanıt alma
     async function getGeminiResponse(userMessage) {
-        const apiUrl = 'https://api.openai.com/v1/completions'; // API URL'si
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${geminiAPIKey}`
-            },
-            body: JSON.stringify({
-                model: 'gemini-2.5-flash',
-                prompt: userMessage,
-                max_tokens: 150
-            })
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: userMessage
         });
-        const data = await response.json();
-        return data.choices[0].message.content;
+        console.log(response.text);  // Yanıtı kontrol etmek için
+
+        return response.text;
     }
 
     // Sohbet Geçmişini Güncelle
@@ -233,17 +230,6 @@
             chatbox.appendChild(messageElement);
         });
         chatbox.scrollTop = chatbox.scrollHeight; // En son mesaja kaydır
-    }
-
-    // Sayfa Gösterme Fonksiyonları
-    function showHome() {
-        document.getElementById('home-section').style.display = 'block';
-        document.getElementById('chat-section').style.display = 'none';
-    }
-
-    function showChat() {
-        document.getElementById('home-section').style.display = 'none';
-        document.getElementById('chat-section').style.display = 'block';
     }
 
     // Sayfa yüklenirken sohbet geçmişini yükle
