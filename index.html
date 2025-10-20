@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yapay Zeka ChatBot</title>
+    <title>Yapay Zeka ChatBot ve Fotoğraf Yükleme</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -133,7 +133,6 @@
             width: 50%;
         }
 
-        /* Form Styling */
         .form-group input {
             padding: 15px;
             width: 100%;
@@ -157,7 +156,7 @@
 <body>
 
 <header>
-    <h1>Yapay Zeka ChatBot</h1>
+    <h1>Yapay Zeka ChatBot ve Fotoğraf Yükleme</h1>
 </header>
 
 <nav>
@@ -188,25 +187,19 @@
 </div>
 
 <script>
-    const apiKey = 'AIzaSyDi4S8ob89l1f40F7qBbySOMpwmOIel9I4'; // API anahtarınız
-    const openAIKey = 'YOUR_OPENAI_API_KEY'; // OpenAI API anahtarı (eğer kullanmak isterseniz)
+    const geminiAPIKey = 'AIzaSyDi4S8ob89l1f40F7qBbySOMpwmOIel9I4'; // Gemini API anahtarınız
 
     // ChatBot Mesaj Gönderme
     async function sendMessage() {
         const userMessage = document.getElementById('user-input').value;
         if (!userMessage) return;
 
-        // Kullanıcı mesajını chatbox'a ekle
         const chatbox = document.getElementById('chatbox');
         chatbox.innerHTML += `<div class="message user">${userMessage}</div>`;
-
-        // Kullanıcı mesajını temizle
         document.getElementById('user-input').value = '';
 
-        // API'den cevap al
-        const response = await getGrokResponse(userMessage);
-
-        // API cevabını chatbox'a ekle
+        // Gemini API'den cevap al
+        const response = await getGeminiResponse(userMessage);
         chatbox.innerHTML += `<div class="message bot">${response}</div>`;
     }
 
@@ -215,29 +208,25 @@
         const imageFile = document.getElementById('user-image').files[0];
         if (!imageFile) return;
 
-        // Fotoğrafı chatbox'a ekle
         const chatbox = document.getElementById('chatbox');
         chatbox.innerHTML += `<div class="message user"><img src="${URL.createObjectURL(imageFile)}" style="max-width: 100%; border-radius: 10px;" /></div>`;
 
-        // Fotoğrafı API'ye gönder (Grok ya da başka bir API ile)
-        // Bu kısmı fotoğraf işleme API'sine göre düzenleyebilirsiniz.
+        // Fotoğrafı işleme API'ye gönderilebilir. Şu anda sadece gösteriliyor.
     }
 
-    // Grok API'den yanıt alma (ChatGPT veya benzeri API kullanılabilir)
-    async function getGrokResponse(userMessage) {
-        const apiUrl = 'https://api.openai.com/v1/completions';
+    // Gemini API'den yanıt alma
+    async function getGeminiResponse(userMessage) {
+        const apiUrl = 'https://api.openai.com/v1/completions'; // Gemini API URL'si yerine kullanacağınız API URL'sini ekleyin
         const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${openAIKey}`
+                'Authorization': `Bearer ${geminiAPIKey}`
             },
             body: JSON.stringify({
-                model: 'gpt-3.5-turbo',
-                messages: [
-                    { role: 'system', content: 'Sen bir yapay zeka asistanısın.' },
-                    { role: 'user', content: userMessage }
-                ]
+                model: 'gemini-2.5-flash',
+                prompt: userMessage,
+                max_tokens: 100
             })
         });
         const data = await response.json();
