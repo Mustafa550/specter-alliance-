@@ -10,58 +10,53 @@
     <title>DearSiber AI - Profesyonel Sohbet</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Arial', sans-serif; background: #000; color: #fff; min-height: 100vh; overflow: hidden; }
-        .container { width: 100%; height: 100vh; padding: 0; position: relative; }
-        .header { text-align: center; padding: 10px; background: #1a1a2e; border-bottom: 1px solid #00d4ff; animation: fadeIn 0.3s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .chat-toggle { position: fixed; top: 10px; left: 10px; background: #00d4ff; color: #000; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; transition: all 0.2s ease-out; z-index: 1000; }
-        .chat-toggle:hover { transform: scale(1.1); background: #00aaff; }
-        .chat-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #111; display: none; flex-direction: column; padding: 5px; z-index: 999; transition: all 0.3s ease-out; }
-        .chat-container.active { display: flex; animation: bounceIn 0.3s ease-out; }
-        @keyframes bounceIn { from { transform: scale(0); } 50% { transform: scale(1.1); } to { transform: scale(1); } }
-        .chat { flex: 1; overflow-y: auto; background: #222; border-radius: 5px; padding: 5px; font-size: 14px; }
-        .chat-message { margin: 5px 0; padding: 6px; border-radius: 3px; font-size: 14px; }
-        .chat-message.user { text-align: right; background: #00d4ff33; }
-        .chat-message.ai { text-align: left; background: #333; }
-        .input-area { display: flex; gap: 5px; margin-top: 5px; }
-        input { flex: 1; padding: 6px; border: none; border-radius: 3px; background: #333; color: #fff; font-size: 14px; }
-        input:focus { outline: none; box-shadow: 0 0 5px #00d4ff; }
-        button { padding: 6px 12px; background: #00d4ff; color: #000; border: none; border-radius: 3px; cursor: pointer; font-size: 14px; transition: all 0.2s ease-out; }
-        button:hover { transform: scale(1.1); background: #00aaff; }
+        body { font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #000, #1a0033); color: #ffd700; min-height: 100vh; overflow: hidden; }
+        .container { width: 100%; height: 100vh; padding: 20px; position: relative; display: flex; flex-direction: column; }
+        .header { text-align: center; padding: 20px; background: #1a0033; border-bottom: 3px solid #ffd700; font-size: 28px; font-weight: bold; }
+        .chat-container { flex: 1; background: rgba(26, 0, 51, 0.9); border: 2px solid #ffd700; border-radius: 15px; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; transition: all 0.3s ease-out; }
+        .chat { flex: 1; overflow-y: auto; }
+        .chat-message { margin: 15px 0; padding: 15px; border-radius: 10px; font-size: 20px; }
+        .chat-message.user { text-align: right; background: #ffd70033; }
+        .chat-message.ai { text-align: left; background: #333366; }
+        .input-area { display: flex; gap: 15px; margin-top: 20px; }
+        input { flex: 1; padding: 15px; border: none; border-radius: 10px; background: #333366; color: #ffd700; font-size: 20px; }
+        input:focus { outline: none; box-shadow: 0 0 10px #ffd700; }
+        button { padding: 15px 30px; background: #ffd700; color: #1a0033; border: none; border-radius: 10px; cursor: pointer; font-size: 20px; transition: all 0.2s ease-out; }
+        button:hover { transform: scale(1.1); background: #ffeb3b; }
         .hidden { display: none; }
-        .loading { text-align: center; color: #ff4444; animation: blink 0.5s infinite; font-size: 12px; }
+        .loading { text-align: center; color: #ff4444; animation: blink 0.5s infinite; font-size: 18px; }
         @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0.5; } }
-        .limit-info { text-align: center; color: #ff4444; margin: 5px 0; font-size: 12px; }
+        .resize-btn { position: absolute; top: 10px; right: 10px; padding: 10px 20px; font-size: 18px; }
         @media (max-width: 768px) {
-            .chat-toggle { top: 5px; left: 5px; padding: 8px 12px; font-size: 12px; }
-            .chat-container { padding: 3px; }
-            .chat { padding: 3px; }
-            .input-area { gap: 3px; }
-            input, button { padding: 4px; font-size: 12px; }
-            .chat-message { padding: 4px; font-size: 12px; }
+            .header { font-size: 22px; padding: 15px; }
+            .chat-container { padding: 15px; }
+            .chat-message { margin: 10px 0; padding: 10px; font-size: 16px; }
+            .input-area { gap: 10px; }
+            input, button { padding: 10px; font-size: 16px; }
+            .resize-btn { padding: 8px 15px; font-size: 14px; }
         }
         @media (max-width: 480px) {
-            .chat-toggle { top: 2px; left: 2px; padding: 6px 10px; }
-            .chat-container { padding: 2px; }
-            .chat { padding: 2px; }
-            .input-area { gap: 2px; }
-            input, button { padding: 3px; font-size: 10px; }
-            .chat-message { padding: 3px; font-size: 10px; }
+            .header { font-size: 18px; padding: 10px; }
+            .chat-container { padding: 10px; }
+            .chat-message { margin: 8px 0; padding: 8px; font-size: 14px; }
+            .input-area { gap: 8px; }
+            input, button { padding: 8px; font-size: 14px; }
+            .resize-btn { padding: 6px 12px; font-size: 12px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header"></div>
-        <button class="chat-toggle" id="chat-toggle" onclick="toggleChat()">Sohbeti Aç</button>
+        <div class="header">DearSiber AI</div>
         <div class="chat-container" id="chat-container">
-            <div class="chat" id="chat-window"></div>
+            <button class="resize-btn" onclick="resizeChat()">Büyüt/Küçült</button>
+            <div class="chat" id="chat-window">
+                <div class="chat-message ai">Merhaba! Ben DearSiber AI, profesyonel sohbet için buradayım. Sorularınızı bekliyorum!</div>
+            </div>
             <div class="input-area">
                 <input type="text" id="chat-input" placeholder="Sor, kanka! 😄" onkeypress="if(event.key === 'Enter') sendMessage()">
                 <button onclick="sendMessage()">Gönder</button>
-                <button onclick="closeChat()">Çık</button>
             </div>
-            <div class="limit-info" id="limit-info"></div>
         </div>
     </div>
 
@@ -75,6 +70,7 @@
         let memory = JSON.parse(localStorage.getItem('memory')) || {};
         let currentSession = [];
         let cachedResponses = JSON.parse(localStorage.getItem('cachedResponses')) || {};
+        let isEnlarged = false;
 
         function saveMemory() {
             localStorage.setItem('memory', JSON.stringify(memory));
@@ -85,22 +81,13 @@
             localStorage.setItem('cachedResponses', JSON.stringify(cachedResponses));
         }
 
-        function toggleChat() {
+        function resizeChat() {
             const chat = document.getElementById('chat-container');
-            chat.classList.toggle('active');
-            if (chat.classList.contains('active')) {
-                if (!document.getElementById('chat-window').innerHTML) {
-                    addMessage('ai', 'Merhaba! Ben DearSiber AI, buradayım. Sorularınızı bekliyorum!');
-                }
-            }
-        }
-
-        function closeChat() {
-            const chat = document.getElementById('chat-container');
-            chat.classList.remove('active');
-            currentSession = [];
-            document.getElementById('chat-window').innerHTML = '';
-            document.getElementById('limit-info').innerHTML = '';
+            isEnlarged = !isEnlarged;
+            chat.style.width = isEnlarged ? '90%' : '80%';
+            chat.style.height = isEnlarged ? '90%' : '70%';
+            chat.style.top = isEnlarged ? '5%' : '15%';
+            chat.style.left = isEnlarged ? '5%' : '10%';
         }
 
         function addMessage(sender, message) {
@@ -139,11 +126,11 @@
                 const chat = document.getElementById('chat-window');
                 chat.innerHTML = chat.innerHTML.replace('<div class="chat-message loading">Düşünüyorum...</div>', '');
                 let reply = data.candidates[0]?.content.parts[0]?.text || 'Cevap: ';
-                if (message.toLowerCase().includes('nasilsin')) reply += 'İyiyim, teşekkürler! Sen nasılsın?';
+                if (message.toLowerCase().includes('nasilsin')) reply += 'İyiyim, sen nasılsın?';
                 else if (message.toLowerCase().includes('hava')) {
                     const weather = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Istanbul&appid=${OPENWEATHER_API}&units=metric`);
                     const weatherData = await weather.json();
-                    reply += `${weatherData.main.temp}°C, ${weatherData.weather[0].description}. Başka yer?`;
+                    reply += `${weatherData.main.temp}°C, ${weatherData.weather[0].description}. Başka?`;
                 } else if (message.toLowerCase().includes('haber')) {
                     const news = await fetch(`https://newsapi.org/v2/top-headlines?country=tr&apiKey=${NEWSAPI_KEY}`);
                     const newsData = await news.json();
@@ -171,7 +158,7 @@
             } catch (error) {
                 const chat = document.getElementById('chat-window');
                 chat.innerHTML = chat.innerHTML.replace('<div class="chat-message loading">Düşünüyorum...</div>', '');
-                return 'İnternet yok, önbellek: ' + (cachedResponses[cacheKey] || 'Cevap yok.');
+                return 'İnternet yok: ' + (cachedResponses[cacheKey] || 'Cevap yok.');
             }
         }
 
@@ -192,7 +179,7 @@
             }
         }
 
-        // Draggable (Mobil Uyumlu)
+        // Draggable ve Büyütme (Mobil Uyumlu)
         window.onload = function() {
             const chat = document.getElementById('chat-container');
             let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -238,7 +225,7 @@
             // Gelişmiş PWA Servis Worker (Tek Dosyada)
             if ('serviceWorker' in navigator) {
                 const sw = `
-                    const CACHE_NAME = 'dearsiber-v3';
+                    const CACHE_NAME = 'dearsiber-v4';
                     const urlsToCache = [
                         './index.html',
                         './manifest.json',
@@ -275,7 +262,7 @@
                                             }
                                             return networkResponse;
                                         }).catch(() => {
-                                            return caches.match('./index.html') || new Response('Offline modda devam!', { status: 503 });
+                                            return caches.match('./index.html') || new Response('Offline modda!', { status: 503 });
                                         });
                                     });
                                 })
@@ -307,17 +294,15 @@
                     navigator.serviceWorker.ready.then(registration => {
                         registration.pushManager.subscribe({ userVisibleOnly: true })
                             .then(subscription => {
-                                // Simülasyon, gerçek push server gerekir (örneğin Firebase)
                                 const data = {
                                     title: 'DearSiber AI',
-                                    body: 'Test bildirim: Merhaba kanka!'
+                                    body: 'Test: Merhaba kanka!'
                                 };
                                 registration.showNotification(data.title, { body: data.body, icon: 'icon.png' });
-                            }).catch(err => console.log('Push abone hatası:', err));
+                            }).catch(err => console.log('Push hata:', err));
                     });
                 }
             }
-            // Testi tetikle
             sendPushNotification();
         };
     </script>
