@@ -57,14 +57,13 @@
                 <div class="chat-message ai">Merhaba! Ben DearSiber AI, profesyonel sohbet için buradayım. Sorularınızı bekliyorum!</div>
             </div>
             <div class="input-area">
-                <input type="text" id="chat-input" placeholder="Sor, kanka! 😄" onkeypress="if(event.key === 'Enter') sendMessage(event)">
+                <input type="text" id="chat-input" placeholder="Sor, kanka! 😄">
                 <button onclick="sendMessage(event)">Gönder</button>
             </div>
         </div>
     </div>
 
     <script>
-        // API Key'ler
         const GEMINI_API_KEY = 'AIzaSyDi4S8ob89l1f40F7qBbySOMpwmOIel9I4';
         const OPENWEATHER_API = '045332f83503c48d98e495a5a99f4b5d';
         const NEWSAPI_KEY = '67ba06cffc48449893b3081a29c1f818';
@@ -92,13 +91,6 @@
             chat.style.top = isEnlarged ? '2.5%' : '15%';
             chat.style.left = isEnlarged ? '2.5%' : '10%';
         }
-
-        window.onload = function() {
-            const chat = document.getElementById('chat-container');
-            chat.classList.add('active'); // Direkt aç
-            const input = document.getElementById('chat-input');
-            input.focus(); // Input'a odaklan
-        };
 
         function addMessage(sender, message) {
             const chat = document.getElementById('chat-window');
@@ -192,151 +184,12 @@
             }
         }
 
-        // Draggable ve Büyütme (Mobil Uyumlu)
         window.onload = function() {
             const chat = document.getElementById('chat-container');
-            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-            chat.onmousedown = dragMouseDown;
-            chat.ontouchstart = dragTouchStart;
-
-            function dragMouseDown(e) {
-                e.preventDefault();
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                document.onmouseup = closeDragElement;
-                document.onmousemove = elementDrag;
-            }
-
-            function dragTouchStart(e) {
-                e.preventDefault();
-                pos3 = e.touches[0].clientX;
-                pos4 = e.touches[0].clientY;
-                document.ontouchend = closeDragElement;
-                document.ontouchmove = elementDrag;
-            }
-
-            function elementDrag(e) {
-                e.preventDefault();
-                let clientX = e.clientX || e.touches[0].clientX;
-                let clientY = e.clientY || e.touches[0].clientY;
-                pos1 = pos3 - clientX;
-                pos2 = pos4 - clientY;
-                pos3 = clientX;
-                pos4 = clientY;
-                chat.style.top = (chat.offsetTop - pos2) + "px";
-                chat.style.left = (chat.offsetLeft - pos1) + "px";
-                chat.style.transition = 'all 0.3s ease-in-out';
-            }
-
-            function closeDragElement() {
-                document.onmouseup = null;
-                document.onmousemove = null;
-                document.ontouchend = null;
-                document.ontouchmove = null;
-            }
-
-            // Gelişmiş PWA Servis Worker (Tek Dosyada)
-            if ('serviceWorker' in navigator) {
-                const sw = `
-                    const CACHE_NAME = 'dearsiber-v7';
-                    const urlsToCache = [
-                        './index.html',
-                        './manifest.json',
-                        './icon.png'
-                    ];
-
-                    self.addEventListener('install', (event) => {
-                        event.waitUntil(
-                            caches.open(CACHE_NAME).then((cache) => {
-                                return cache.addAll(urlsToCache);
-                            })
-                        );
-                    });
-
-                    self.addEventListener('activate', (event) => {
-                        event.waitUntil(
-                            caches.keys().then((cacheNames) => {
-                                return Promise.all(
-                                    cacheNames.filter((name) => name !== CACHE_NAME).map((name) => caches.delete(name))
-                                );
-                            })
-                        );
-                    });
-
-                    self.addEventListener('fetch', (event) => {
-                        if (event.request.url.startsWith('https')) {
-                            event.respondWith(
-                                caches.open(CACHE_NAME).then((cache) => {
-                                    return cache.match(event.request).then((response) => {
-                                        return response || fetch(event.request).then((networkResponse) => {
-                                            if (networkResponse && networkResponse.status === 200 && event.request.method === 'GET') {
-                                                const responseToCache = networkResponse.clone();
-                                                cache.put(event.request, responseToCache);
-                                            }
-                                            return networkResponse;
-                                        }).catch(() => {
-                                            return caches.match('./index.html') || new Response('Offline modda!', { status: 503 });
-                                        });
-                                    });
-                                })
-                            );
-                        }
-                    });
-
-                    self.addEventListener('push', (event) => {
-                        const data = event.data.json();
-                        self.registration.showNotification(data.title, {
-                            body: data.body,
-                            icon: 'icon.png',
-                            vibrate: [200, 100, 200]
-                        });
-                    });
-                `;
-                const blob = new Blob([sw], { type: 'application/javascript' });
-                navigator.serviceWorker.register(URL.createObjectURL(blob))
-                    .then(() => {
-                        if ('Notification' in window && Notification.permission !== 'granted') {
-                            Notification.requestPermission();
-                        }
-                    }).catch(err => console.log('SW hata:', err));
-            }
-
-            // Push Bildirim Test
-            function sendPushNotification() {
-                if ('serviceWorker' in navigator && 'PushManager' in window) {
-                    navigator.serviceWorker.ready.then(registration => {
-                        registration.pushManager.subscribe({ userVisibleOnly: true })
-                            .then(subscription => {
-                                const data = {
-                                    title: 'DearSiber AI',
-                                    body: 'Test: Merhaba kanka!'
-                                };
-                                registration.showNotification(data.title, { body: data.body, icon: 'icon.png' });
-                            }).catch(err => console.log('Push hata:', err));
-                    });
-                }
-            }
-            sendPushNotification();
+            chat.classList.add('active'); // Direkt aç
+            const input = document.getElementById('chat-input');
+            input.focus(); // Input'a odaklan
         };
-    </script>
-    <!-- Manifest JSON (Inline) -->
-    <script type="application/manifest+json">
-        {
-            "name": "DearSiber AI",
-            "short_name": "DearSiber",
-            "description": "Profesyonel Sohbet Botu",
-            "start_url": "index.html",
-            "display": "standalone",
-            "background_color": "#1a0000",
-            "theme_color": "#1a0000",
-            "icons": [
-                {
-                    "src": "icon.png",
-                    "sizes": "192x192",
-                    "type": "image/png"
-                }
-            ]
-        }
     </script>
 </body>
 </html>
