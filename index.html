@@ -11,24 +11,48 @@
             margin: 0;
             padding: 0;
             color: white;
+            overflow-x: hidden;
         }
 
         header {
-            background-color: #4b6cb7;
+            background-color: #6f42c1;
             padding: 20px;
             color: white;
             text-align: center;
-            font-size: 2.5em;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            font-size: 3em;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #4b6cb7;
+            padding: 12px 0;
+        }
+
+        nav a {
+            margin: 0 20px;
+            color: white;
+            font-size: 1.4em;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s, color 0.3s;
+        }
+
+        nav a:hover {
+            transform: scale(1.2);
+            color: #ffeb3b;
         }
 
         .container {
             width: 80%;
-            margin: 2rem auto;
+            margin: 0 auto;
             padding: 20px;
             background-color: #fff;
-            border-radius: 12px;
+            border-radius: 15px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            color: black;
         }
 
         .chatbox {
@@ -39,10 +63,15 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column-reverse;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .chatbox:hover {
+            background-color: #dbe3f3;
         }
 
         .message {
-            padding: 12px;
+            padding: 15px;
             margin: 10px;
             border-radius: 10px;
             background-color: #9fa8da;
@@ -73,11 +102,11 @@
         }
 
         .input-area input {
-            width: 85%;
-            padding: 12px;
+            width: 70%;
+            padding: 15px;
             border-radius: 10px;
             border: 2px solid #ccc;
-            font-size: 1em;
+            font-size: 1.2em;
         }
 
         .input-area input:focus {
@@ -85,19 +114,43 @@
         }
 
         .input-area button {
-            width: 12%;
+            width: 20%;
             background-color: #4b6cb7;
             color: white;
-            padding: 12px;
+            padding: 15px;
             border: none;
             border-radius: 10px;
             cursor: pointer;
-            font-size: 1em;
+            font-size: 1.2em;
             transition: background-color 0.3s;
         }
 
         .input-area button:hover {
             background-color: #ffeb3b;
+        }
+
+        .input-area input[type="file"] {
+            width: 50%;
+        }
+
+        /* Form Styling */
+        .form-group input {
+            padding: 15px;
+            width: 100%;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 2px solid #ccc;
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 15px;
+            background-color: #ffeb3b;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.2em;
         }
     </style>
 </head>
@@ -107,44 +160,99 @@
     <h1>Yapay Zeka ChatBot</h1>
 </header>
 
+<nav>
+    <a href="javascript:void(0);" onclick="showHome()">Anasayfa</a>
+    <a href="javascript:void(0);" onclick="showChat()">ChatBot</a>
+</nav>
+
 <div class="container">
+    <!-- Home Section -->
+    <div id="home-section">
+        <h2>Hoşgeldiniz!</h2>
+        <p>Yapay Zeka ChatBot ile her türlü soruya anında yanıt alabilirsiniz.</p>
+    </div>
+
     <!-- ChatBot Section -->
-    <div id="chat-section">
+    <div id="chat-section" style="display:none;">
         <h2>ChatBot</h2>
         <div class="chatbox" id="chatbox"></div>
         <div class="input-area">
             <input type="text" id="user-input" placeholder="Bir şeyler yazın..." />
             <button onclick="sendMessage()">Gönder</button>
         </div>
+        <div class="input-area">
+            <input type="file" id="user-image" />
+            <button onclick="sendImage()">Fotoğraf Gönder</button>
+        </div>
     </div>
 </div>
 
 <script>
+    const apiKey = 'AIzaSyDi4S8ob89l1f40F7qBbySOMpwmOIel9I4'; // API anahtarınız
+    const openAIKey = 'YOUR_OPENAI_API_KEY'; // OpenAI API anahtarı (eğer kullanmak isterseniz)
+
     // ChatBot Mesaj Gönderme
-    function sendMessage() {
-        let userMessage = document.getElementById('user-input').value;
+    async function sendMessage() {
+        const userMessage = document.getElementById('user-input').value;
         if (!userMessage) return;
 
-        let chatbox = document.getElementById('chatbox');
-        chatbox.innerHTML = `
-            <div class="message user">${userMessage}</div>
-            <div class="message bot">${generateBotResponse(userMessage)}</div>
-        `;
+        // Kullanıcı mesajını chatbox'a ekle
+        const chatbox = document.getElementById('chatbox');
+        chatbox.innerHTML += `<div class="message user">${userMessage}</div>`;
+
+        // Kullanıcı mesajını temizle
         document.getElementById('user-input').value = '';
+
+        // API'den cevap al
+        const response = await getGrokResponse(userMessage);
+
+        // API cevabını chatbox'a ekle
+        chatbox.innerHTML += `<div class="message bot">${response}</div>`;
     }
 
-    // ChatBot Cevapları (Basit Simülasyon)
-    function generateBotResponse(userMessage) {
-        // Gerçek yapay zeka yerine basit bir simülasyon yapılıyor.
-        if (userMessage.toLowerCase().includes("merhaba")) {
-            return "Merhaba! Size nasıl yardımcı olabilirim?";
-        } else if (userMessage.toLowerCase().includes("nasılsın")) {
-            return "İyiyim, teşekkür ederim! Siz nasılsınız?";
-        } else if (userMessage.toLowerCase().includes("yardım")) {
-            return "Size nasıl yardımcı olabilirim? Sormak istediğiniz bir şey var mı?";
-        } else {
-            return "Üzgünüm, bunu anlayamadım. Yardımcı olmamı ister misiniz?";
-        }
+    // Fotoğraf Gönderme
+    async function sendImage() {
+        const imageFile = document.getElementById('user-image').files[0];
+        if (!imageFile) return;
+
+        // Fotoğrafı chatbox'a ekle
+        const chatbox = document.getElementById('chatbox');
+        chatbox.innerHTML += `<div class="message user"><img src="${URL.createObjectURL(imageFile)}" style="max-width: 100%; border-radius: 10px;" /></div>`;
+
+        // Fotoğrafı API'ye gönder (Grok ya da başka bir API ile)
+        // Bu kısmı fotoğraf işleme API'sine göre düzenleyebilirsiniz.
+    }
+
+    // Grok API'den yanıt alma (ChatGPT veya benzeri API kullanılabilir)
+    async function getGrokResponse(userMessage) {
+        const apiUrl = 'https://api.openai.com/v1/completions';
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${openAIKey}`
+            },
+            body: JSON.stringify({
+                model: 'gpt-3.5-turbo',
+                messages: [
+                    { role: 'system', content: 'Sen bir yapay zeka asistanısın.' },
+                    { role: 'user', content: userMessage }
+                ]
+            })
+        });
+        const data = await response.json();
+        return data.choices[0].message.content;
+    }
+
+    // Sayfa Gösterme Fonksiyonları
+    function showHome() {
+        document.getElementById('home-section').style.display = 'block';
+        document.getElementById('chat-section').style.display = 'none';
+    }
+
+    function showChat() {
+        document.getElementById('home-section').style.display = 'none';
+        document.getElementById('chat-section').style.display = 'block';
     }
 </script>
 
