@@ -64,6 +64,7 @@
     </div>
 
     <script>
+        // API Key'ler
         const GEMINI_API_KEY = 'AIzaSyDi4S8ob89l1f40F7qBbySOMpwmOIel9I4';
         const OPENWEATHER_API = '045332f83503c48d98e495a5a99f4b5d';
         const NEWSAPI_KEY = '67ba06cffc48449893b3081a29c1f818';
@@ -74,15 +75,18 @@
         let cachedResponses = JSON.parse(localStorage.getItem('cachedResponses')) || {};
         let isEnlarged = false;
 
+        // Save memory to localStorage
         function saveMemory() {
             localStorage.setItem('memory', JSON.stringify(memory));
         }
 
+        // Save cached responses to localStorage
         function saveCachedResponse(key, response) {
             cachedResponses[key] = response;
             localStorage.setItem('cachedResponses', JSON.stringify(cachedResponses));
         }
 
+        // Resize chat window
         function resizeChat() {
             const chat = document.getElementById('chat-container');
             isEnlarged = !isEnlarged;
@@ -92,6 +96,7 @@
             chat.style.left = isEnlarged ? '2.5%' : '10%';
         }
 
+        // Add message to the chat window
         function addMessage(sender, message) {
             const chat = document.getElementById('chat-window');
             const div = document.createElement('div');
@@ -104,6 +109,7 @@
             saveMemory();
         }
 
+        // Get response from Gemini API
         async function getGeminiResponse(message) {
             const cacheKey = message + currentSession.join(' ');
             if (cachedResponses[cacheKey] && !navigator.onLine) {
@@ -166,13 +172,14 @@
             }
         }
 
+        // Send message to the bot
         function sendMessage(event) {
-            event.preventDefault(); // Form submit önleme
+            event.preventDefault();
             const input = document.getElementById('chat-input');
             const message = input.value.trim();
             if (message) {
                 addMessage('user', message);
-                input.value = '';
+                input.value = ''; // Clear input field after sending message
                 getGeminiResponse(message).then(reply => {
                     addMessage('ai', reply);
                     if ('Notification' in window && Notification.permission === 'granted') {
@@ -184,11 +191,10 @@
             }
         }
 
+        // Focus on input when window is loaded
         window.onload = function() {
-            const chat = document.getElementById('chat-container');
-            chat.classList.add('active'); // Direkt aç
             const input = document.getElementById('chat-input');
-            input.focus(); // Input'a odaklan
+            input.focus(); // Focus the input field
         };
     </script>
 </body>
