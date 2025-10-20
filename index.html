@@ -96,6 +96,8 @@
         window.onload = function() {
             const chat = document.getElementById('chat-container');
             chat.classList.add('active'); // Direkt aç
+            const input = document.getElementById('chat-input');
+            input.focus(); // Input'a odaklan
         };
 
         function addMessage(sender, message) {
@@ -165,6 +167,7 @@
                 saveCachedResponse(cacheKey, reply);
                 return reply.trim();
             } catch (error) {
+                console.error('Hata:', error); // Hata ayıklaması
                 const chat = document.getElementById('chat-window');
                 chat.innerHTML = chat.innerHTML.replace('<div class="chat-message loading">Düşünüyorum...</div>', '');
                 return 'Hata: ' + (cachedResponses[cacheKey] || 'İnternet yok.');
@@ -176,13 +179,13 @@
             const message = input.value.trim();
             if (message) {
                 addMessage('user', message);
-                input.value = '';
+                input.value = ''; // Input'u temizle
                 getGeminiResponse(message).then(reply => {
                     addMessage('ai', reply);
                     if ('Notification' in window && Notification.permission === 'granted') {
                         new Notification('DearSiber AI', { body: 'Yeni: ' + reply.slice(0, 50) + '...' });
                     }
-                });
+                }).catch(err => console.error('Gönderim hatası:', err));
             } else {
                 alert('Mesaj gir, kanka!');
             }
@@ -234,7 +237,7 @@
             // Gelişmiş PWA Servis Worker (Tek Dosyada)
             if ('serviceWorker' in navigator) {
                 const sw = `
-                    const CACHE_NAME = 'dearsiber-v5';
+                    const CACHE_NAME = 'dearsiber-v6';
                     const urlsToCache = [
                         './index.html',
                         './manifest.json',
