@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -227,7 +228,6 @@
     <p>Gelişmiş hacker tarzı kullanıcı giriş ve kayıt sistemi. Güçlü şifreler ile güvenli giriş yapabilirsiniz.</p>
 </div>
 
-
 <!-- Kayıt Formu -->
 <div class="container" id="register-form">
     <h2>Kayıt Ol</h2>
@@ -244,7 +244,6 @@
     </div>
 </div>
 
-
 <!-- Giriş Formu -->
 <div class="container" id="login-form" style="display: none;">
     <h2>Giriş Yap</h2>
@@ -257,22 +256,6 @@
     <div class="toggle-form">
         <p>Hesabınız yok mu? <a href="javascript:void(0);" onclick="toggleForms()">Kayıt Ol</a></p>
     </div>
-</div>
-
-
-<!-- Chatbot -->
-<div class="container" id="chatbox-container" style="display:none;">
-    <h2>Chatbot</h2>
-    <div class="chatbox" id="chatbox"></div>
-    <input type="text" id="userMessage" class="input-field" placeholder="Mesajınızı yazın..." />
-    <button onclick="sendMessage()">Gönder</button>
-</div>
-
-<!-- Telegram Linkleri -->
-<div class="telegram-links">
-    <a href="https://t.me/+icW90vpzScthOTRk" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Tool</a>
-    <a href="https://t.me/+IFx5aGB37Ws5NDFk" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Checker</a>
-    <a href="https://t.me/+84tsaP2hMopiMTNk" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Sohbet</a>
 </div>
 
 <!-- Gece/Gündüz Modu Butonu -->
@@ -306,7 +289,12 @@
         }
     }
 
-  // Şifre güvenliğini kontrol etme
+   registerForm.style.display = "none";
+            loginForm.style.display = "block";
+        }
+    }
+ 
+        // Şifre güvenliğini kontrol etme
     function checkPasswordStrength(password) {
         const strengthText = document.getElementById("passwordStrength");
         let strength = "";
@@ -326,8 +314,7 @@
         return score;
     }
 
-
-        // Kayıt işlemi
+    // Kayıt işlemi
     document.getElementById("registerForm").addEventListener("submit", function(event) {
         event.preventDefault();
 
@@ -335,7 +322,7 @@
         var email = document.getElementById("registerEmail").value;
         var password = document.getElementById("registerPassword").value;
 
-           // Şifre güvenliğini kontrol et
+        // Şifre güvenliğini kontrol et
         const passwordStrength = checkPasswordStrength(password);
         if (passwordStrength < 3) {
             document.getElementById("registerError").textContent = "Şifreniz çok zayıf. Lütfen güçlü bir şifre kullanın.";
@@ -348,7 +335,7 @@
             return;
         }
 
-         // 6 haneli doğrulama kodu
+        // 6 haneli doğrulama kodu
         const verificationCode = Math.floor(100000 + Math.random() * 900000);  
         alert("Doğrulama kodunuz: " + verificationCode);
 
@@ -360,8 +347,7 @@
             return;
         }
 
-        
-          // Kayıt işlemi
+        // Kayıt işlemi
         localStorage.setItem(email, JSON.stringify({ name, password }));
         alert("Kayıt başarılı! Artık giriş yapabilirsiniz.");
         toggleForms();
@@ -384,8 +370,7 @@
                 document.getElementById("loginError").textContent = "Yanlış şifre! Lütfen tekrar deneyin.";
             }
         } else {
-            document.getElementById("loginError").textContent = "Bu e-posta ile kullanıcı bulunamadı.";
-        }
+            document.getElementById("loginError").textContent = "Bu e-posta ile kullanıcı bulunamadı."
 
     // Chatbot fonksiyonu
     function sendMessage() {
