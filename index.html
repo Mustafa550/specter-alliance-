@@ -227,6 +227,7 @@
     <p>Gelişmiş hacker tarzı kullanıcı giriş ve kayıt sistemi. Güçlü şifreler ile güvenli giriş yapabilirsiniz.</p>
 </div>
 
+
 <!-- Kayıt Formu -->
 <div class="container" id="register-form">
     <h2>Kayıt Ol</h2>
@@ -243,6 +244,7 @@
     </div>
 </div>
 
+
 <!-- Giriş Formu -->
 <div class="container" id="login-form" style="display: none;">
     <h2>Giriş Yap</h2>
@@ -256,6 +258,7 @@
         <p>Hesabınız yok mu? <a href="javascript:void(0);" onclick="toggleForms()">Kayıt Ol</a></p>
     </div>
 </div>
+
 
 <!-- Chatbot -->
 <div class="container" id="chatbox-container" style="display:none;">
@@ -303,7 +306,7 @@
         }
     }
 
-    // Şifre güvenliğini kontrol etme
+  // Şifre güvenliğini kontrol etme
     function checkPasswordStrength(password) {
         const strengthText = document.getElementById("passwordStrength");
         let strength = "";
@@ -323,7 +326,8 @@
         return score;
     }
 
-    // Kayıt işlemi
+
+        // Kayıt işlemi
     document.getElementById("registerForm").addEventListener("submit", function(event) {
         event.preventDefault();
 
@@ -331,7 +335,7 @@
         var email = document.getElementById("registerEmail").value;
         var password = document.getElementById("registerPassword").value;
 
-        // Şifre güvenliğini kontrol et
+           // Şifre güvenliğini kontrol et
         const passwordStrength = checkPasswordStrength(password);
         if (passwordStrength < 3) {
             document.getElementById("registerError").textContent = "Şifreniz çok zayıf. Lütfen güçlü bir şifre kullanın.";
@@ -339,16 +343,26 @@
         }
 
         // Eğer kullanıcı zaten kaydolmuşsa, tekrar kaydetmesin
-        if (localStorage.getItem("userEmail") === email) {
+        if (localStorage.getItem(email)) {
             document.getElementById("registerError").textContent = "Bu e-posta ile zaten kayıtlısınız!";
             return;
         }
 
-        // Kayıt işlemini tamamla
-        localStorage.setItem("userName", name);
-        localStorage.setItem("userEmail", email);
-        localStorage.setItem("userPassword", password);
+         // 6 haneli doğrulama kodu
+        const verificationCode = Math.floor(100000 + Math.random() * 900000);  
+        alert("Doğrulama kodunuz: " + verificationCode);
 
+        // Kullanıcıya doğrulama kodunu girmesini istemek
+        const enteredCode = prompt("Lütfen doğrulama kodunu girin:");
+
+        if (enteredCode != verificationCode) {
+            document.getElementById("registerError").textContent = "Geçersiz doğrulama kodu!";
+            return;
+        }
+
+        
+          // Kayıt işlemi
+        localStorage.setItem(email, JSON.stringify({ name, password }));
         alert("Kayıt başarılı! Artık giriş yapabilirsiniz.");
         toggleForms();
     });
@@ -360,14 +374,18 @@
         var email = document.getElementById("loginEmail").value;
         var password = document.getElementById("loginPassword").value;
 
-        if (email === localStorage.getItem("userEmail") && password === localStorage.getItem("userPassword")) {
-            alert("Giriş başarılı! Hoş geldiniz, " + localStorage.getItem("userName"));
-            document.getElementById("chatbox-container").style.display = "block";
-            document.getElementById("login-form").style.display = "none";
+        var storedUser = localStorage.getItem(email);
+
+        if (storedUser) {
+            var user = JSON.parse(storedUser);
+            if (user.password === password) {
+                alert("Giriş başarılı! Hoş geldiniz, " + user.name);
+            } else {
+                document.getElementById("loginError").textContent = "Yanlış şifre! Lütfen tekrar deneyin.";
+            }
         } else {
-            document.getElementById("loginError").textContent = "Geçersiz giriş!";
+            document.getElementById("loginError").textContent = "Bu e-posta ile kullanıcı bulunamadı.";
         }
-    });
 
     // Chatbot fonksiyonu
     function sendMessage() {
