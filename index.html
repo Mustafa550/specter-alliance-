@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -258,6 +257,13 @@
     </div>
 </div>
 
+<!-- Telegram Linkleri -->
+<div class="telegram-links">
+    <a href="https://t.me/+icW90vpzScthOTRk" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Tool</a>
+    <a href="https://t.me/+IFx5aGB37Ws5NDFk" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Checker</a>
+    <a href="https://t.me/+84tsaP2hMopiMTNk" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Sohbet</a>
+</div>
+
 <!-- Gece/Gündüz Modu Butonu -->
 <button id="themeToggle">Gece Modu</button>
 
@@ -289,12 +295,7 @@
         }
     }
 
-   registerForm.style.display = "none";
-            loginForm.style.display = "block";
-        }
-    }
- 
-        // Şifre güvenliğini kontrol etme
+    // Şifre güvenliğini kontrol etme
     function checkPasswordStrength(password) {
         const strengthText = document.getElementById("passwordStrength");
         let strength = "";
@@ -370,8 +371,9 @@
                 document.getElementById("loginError").textContent = "Yanlış şifre! Lütfen tekrar deneyin.";
             }
         } else {
-            document.getElementById("loginError").textContent = "Bu e-posta ile kullanıcı bulunamadı."
-
+            document.getElementById("loginError").textContent = "Bu e-posta ile kullanıcı bulunamadı.";
+        }
+ 
     // Chatbot fonksiyonu
     function sendMessage() {
         var message = document.getElementById("userMessage").value;
