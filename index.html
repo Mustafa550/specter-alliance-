@@ -305,16 +305,25 @@
             return;
         }
 
-        // Yeni sayfaya yönlendirme ve doğrulama kodu verme
+        // Doğrulama kodu
         const verificationCode = Math.floor(100000 + Math.random() * 900000);  // 6 haneli doğrulama kodu
-        alert("Doğrulama kodunuz: " + verificationCode);  // Burada siteye yönlendirme yapılacak
+        alert("Doğrulama kodunuz: " + verificationCode);  // Bu kodu kullanıcıya gösteriyoruz
 
-        // Kayıt işlemi tamamlandıktan sonra kullanıcıyı giriş sayfasına yönlendiriyoruz
+        // Kayıt işlemini tamamla
         localStorage.setItem("userName", name);
         localStorage.setItem("userEmail", email);
         localStorage.setItem("userPassword", password);
 
-        window.location.href = "verification.html?code=" + verificationCode;  // Kullanıcıyı doğrulama sayfasına yönlendiriyoruz
+        // Doğrulama kodunu almak için başka bir kutu açalım
+        const code = prompt("Doğrulama kodunu gir:");
+
+        // Kullanıcı doğru kodu girdiyse kayıt işlemi tamamlanacak
+        if (code == verificationCode) {
+            alert("Doğrulama başarılı! Kayıt tamamlandı.");
+            window.location.reload(); // Sayfayı yenileyerek işlemi bitiriyoruz
+        } else {
+            document.getElementById("registerError").textContent = "Geçersiz doğrulama kodu. Lütfen tekrar deneyin.";
+        }
     });
 
     // Giriş işlemi
@@ -335,3 +344,5 @@
 
 </body>
 </html>
+
+    
