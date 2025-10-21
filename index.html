@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gelişmiş Hacker Tarzı Giriş ve Kayıt Sistemi</title>
     <style>
+        /* Genel stil */
         body {
             font-family: 'Courier New', monospace;
             background-color: #121212;
@@ -17,6 +18,29 @@
             margin: 0;
             position: relative;
             transition: background-color 0.5s ease;
+        }
+
+        h1, h2, p {
+            margin: 10px 0;
+        }
+
+        /* Hakkımızda Kutusu */
+        .about-container {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 30px;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
+        }
+
+        .about-container h1 {
+            margin-bottom: 10px;
+        }
+
+        .about-container p {
+            font-size: 16px;
         }
 
         .container {
@@ -40,13 +64,6 @@
                 opacity: 1;
                 transform: translateY(0);
             }
-        }
-
-        h2 {
-            text-align: center;
-            font-size: 24px;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px #00ff00;
         }
 
         .input-field {
@@ -156,14 +173,52 @@
         body.day .telegram-links a {
             color: #000000;
         }
+
+        /* Hacker Arka Planı */
+        .background-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/asfalt.png') repeat;
+            pointer-events: none;
+            animation: moveBg 0.5s linear infinite;
+            opacity: 0.2;
+        }
+
+        @keyframes moveBg {
+            from { background-position: 0 0; }
+            to { background-position: 100px 100px; }
+        }
+
+        /* Gece/Gündüz Modu Butonu */
+        #themeToggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #00ff00;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        #themeToggle:hover {
+            background-color: #00b300;
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
 
 <!-- Hakkımızda Bölümü -->
-<div style="width: 100%; text-align: center; margin-bottom: 30px;">
+<div class="about-container">
     <h1>Hoş Geldiniz!</h1>
-    <p>Bu site, gelişmiş hacker tarzı bir kullanıcı giriş ve kayıt sistemine sahip. Güçlü şifreler ile güvenli bir giriş yapabilirsiniz.</p>
+    <p>Gelişmiş hacker tarzı kullanıcı giriş ve kayıt sistemi. Güçlü şifreler ile güvenli giriş yapabilirsiniz.</p>
 </div>
 
 <!-- Kayıt Formu -->
@@ -205,7 +260,7 @@
 </div>
 
 <!-- Gece/Gündüz Modu Butonu -->
-<button id="themeToggle" style="position: absolute; top: 20px; right: 20px;">Gece Modu</button>
+<button id="themeToggle">Gece Modu</button>
 
 <script>
     let isDarkMode = true;
