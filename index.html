@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gelişmiş Hacker Tarzı Giriş ve Kayıt Sistemi</title>
+    <title>DearSiber Giriş ve Kayıt Sistemi</title>
     <style>
-        /* Genel stil */
         body {
             font-family: 'Courier New', monospace;
             background-color: #121212;
@@ -183,7 +182,7 @@
             color: black;
             border: none;
             border-radius: 5px;
-            font-size: 5px;
+            font-size: 14px;
             cursor: pointer;
             transition: transform 0.3s ease-in-out;
         }
@@ -305,6 +304,12 @@
             return;
         }
 
+        // Eğer kullanıcı zaten kaydolmuşsa, tekrar kaydetmesin
+        if (localStorage.getItem("userEmail") === email) {
+            document.getElementById("registerError").textContent = "Bu e-posta ile zaten kayıtlısınız!";
+            return;
+        }
+
         // Doğrulama kodu
         const verificationCode = Math.floor(100000 + Math.random() * 900000);  // 6 haneli doğrulama kodu
         alert("Doğrulama kodunuz: " + verificationCode);  // Bu kodu kullanıcıya gösteriyoruz
@@ -314,13 +319,13 @@
         localStorage.setItem("userEmail", email);
         localStorage.setItem("userPassword", password);
 
-        // Doğrulama kodunu almak için başka bir kutu açalım
+        // Doğrulama kodunu almak için prompt açıyoruz
         const code = prompt("Doğrulama kodunu gir:");
 
-        // Kullanıcı doğru kodu girdiyse kayıt işlemi tamamlanacak
+        // Kod doğru girildiyse kayıt başarılı
         if (code == verificationCode) {
             alert("Doğrulama başarılı! Kayıt tamamlandı.");
-            window.location.reload(); // Sayfayı yenileyerek işlemi bitiriyoruz
+            window.location.reload();  // Sayfayı yenileyerek işlemi bitiriyoruz
         } else {
             document.getElementById("registerError").textContent = "Geçersiz doğrulama kodu. Lütfen tekrar deneyin.";
         }
@@ -344,5 +349,3 @@
 
 </body>
 </html>
-
-    
