@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gelişmiş Giriş ve Kayıt Sistemi</title>
+    <title>Gelişmiş Hacker Tarzı Giriş ve Kayıt Sistemi</title>
     <style>
         /* Genel stil */
         body {
@@ -46,6 +46,13 @@
             font-size: 24px;
             margin-bottom: 20px;
             text-shadow: 0 0 10px #00ff00;
+            animation: neonText 1.5s infinite alternate;
+        }
+
+        @keyframes neonText {
+            0% { text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00; }
+            50% { text-shadow: 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00; }
+            100% { text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00; }
         }
 
         .input-field {
@@ -58,6 +65,12 @@
             background-color: #111;
             color: #33ff33;
             box-shadow: 0 0 5px rgba(0, 255, 0, 0.8);
+            animation: pulse 1s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 10px rgba(0, 255, 0, 0.8); }
+            100% { box-shadow: 0 0 20px rgba(0, 255, 0, 1); }
         }
 
         button {
@@ -89,11 +102,6 @@
             animation: slideIn 0.5s ease-out;
         }
 
-        .verification-message {
-            color: #f39c12;
-            font-size: 14px;
-        }
-
         @keyframes slideIn {
             from {
                 opacity: 0;
@@ -105,44 +113,29 @@
             }
         }
 
-        .password-strength {
-            font-size: 12px;
-            color: #f39c12;
-            margin-top: 5px;
+        .telegram-links {
+            text-align: center;
+            margin-top: 20px;
         }
 
-        .password-suggestions {
-            font-size: 12px;
-            color: #f39c12;
-            margin-top: 10px;
+        .telegram-links a {
+            font-size: 16px;
+            color: #33ff33;
+            text-decoration: none;
+            margin: 5px;
+            display: inline-block;
+            transition: transform 0.3s ease-in-out;
         }
 
-        .password-hint {
-            color: #e74c3c;
-            font-size: 14px;
-        }
-
-        .valid {
-            color: green;
-        }
-
-        .invalid {
-            color: red;
-        }
-
-        .neon-text {
+        .telegram-links a:hover {
+            transform: scale(1.1);
             color: #00ff00;
-            text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 20px #00ff00;
-            animation: neon 1.5s infinite alternate;
         }
 
-        @keyframes neon {
-            from {
-                text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00;
-            }
-            to {
-                text-shadow: 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00;
-            }
+        .telegram-links img {
+            width: 25px;
+            height: 25px;
+            margin-right: 8px;
         }
 
         .background-lines {
@@ -168,15 +161,11 @@
 
 <!-- Kayıt Formu -->
 <div class="container" id="register-form">
-    <h2><span class="neon-text">Kayıt Ol</span></h2>
+    <h2>Giriş / Kayıt</h2>
     <form id="registerForm">
         <input type="text" id="registerName" class="input-field" placeholder="Adınız" required>
         <input type="email" id="registerEmail" class="input-field" placeholder="Email" required>
         <input type="password" id="registerPassword" class="input-field" placeholder="Şifre" required>
-        <div id="passwordStrength" class="password-strength"></div>
-        <div id="passwordSuggestions" class="password-suggestions">
-            <p>Şifre en az 8 karakter uzunluğunda olmalı, büyük harf, küçük harf, rakam ve özel karakter içermelidir.</p>
-        </div>
         <button type="submit">Kayıt Ol</button>
     </form>
     <div id="registerError" class="error-message"></div>
@@ -187,7 +176,7 @@
 
 <!-- Giriş Formu -->
 <div class="container" id="login-form" style="display: none;">
-    <h2><span class="neon-text">Giriş Yap</span></h2>
+    <h2>Giriş Yap</h2>
     <form id="loginForm">
         <input type="email" id="loginEmail" class="input-field" placeholder="Email" required>
         <input type="password" id="loginPassword" class="input-field" placeholder="Şifre" required>
@@ -199,113 +188,41 @@
     </div>
 </div>
 
-<!-- E-posta Doğrulama -->
-<div class="container" id="email-verification-form" style="display: none;">
-    <h2><span class="neon-text">E-posta Doğrulama</span></h2>
-    <form id="verificationForm">
-        <input type="email" id="userEmail" class="input-field" placeholder="E-posta adresiniz" required>
-        <button type="submit">Kod Gönder</button>
-    </form>
-    <div id="verificationError" class="error-message"></div>
-    <div id="verificationMessage" class="verification-message" style="display: none;">Kod e-postanıza gönderildi!</div>
-    <div id="enterCodeSection" style="display: none;">
-        <h3>Kodu Girin:</h3>
-        <input type="text" id="verificationCode" class="input-field" placeholder="Doğrulama Kodu" required>
-        <button onclick="verifyCode()">Doğrula</button>
-    </div>
+<!-- Telegram Linkleri -->
+<div class="telegram-links">
+    <a href="https://t.me/+icW90vpzScthOTRk" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Tool</a>
+    <a href="https://t.me/+IFx5aGB37Ws5NDFk" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Checker</a>
+    <a href="https://t.me/+84tsaP2hMopiMTNk" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Sohbet</a>
 </div>
 
-<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <script>
-    // EmailJS hizmetini başlatma
-    emailjs.init('YOUR_USER_ID');  // YOUR_USER_ID yerine kendi EmailJS kullanıcı ID'nizi yazın.
-
     // Formlar arasında geçiş yapma
     function toggleForms() {
         var registerForm = document.getElementById("register-form");
         var loginForm = document.getElementById("login-form");
-        var emailVerificationForm = document.getElementById("email-verification-form");
 
         if (registerForm.style.display === "none") {
             registerForm.style.display = "block";
             loginForm.style.display = "none";
-            emailVerificationForm.style.display = "none";
         } else {
             registerForm.style.display = "none";
             loginForm.style.display = "block";
-            emailVerificationForm.style.display = "none";
         }
     }
 
-    // Şifreyi SHA-256 ile hash'lemek için fonksiyon
-    async function hashPassword(password) {
-        const encoder = new TextEncoder();
-        const data = encoder.encode(password);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-        return Array.from(new Uint8Array(hashBuffer)).map(byte => byte.toString(16).padStart(2, '0')).join('');
-    }
-
-    // Şifre güç seviyesini kontrol etme
-    function checkPasswordStrength(password) {
-        const strengthText = document.getElementById("passwordStrength");
-        let strength = "";
-        let score = 0;
-
-        if (password.length >= 8) score++; // Uzunluk
-        if (/[A-Z]/.test(password)) score++; // Büyük harf
-        if (/[0-9]/.test(password)) score++; // Rakam
-        if (/[^A-Za-z0-9]/.test(password)) score++; // Özel karakter
-
-        if (score === 4) strength = "Çok güçlü";
-        else if (score === 3) strength = "Güçlü";
-        else if (score === 2) strength = "Ortalama";
-        else strength = "Zayıf";
-
-        strengthText.textContent = "Şifre gücü: " + strength;
-        return score;
-    }
-
-    // Kullanıcıyı kaydetme
-    function saveUserToStorage(user) {
-        usersDB.push(user);
-        console.log("Kullanıcı başarıyla kaydedildi.");
-    }
-
-    // Kullanıcıyı doğrulama
-    function validateUser(email, password) {
-        return usersDB.find(user => user.email === email && user.password === password);
-    }
-
-    // Email validasyonu
-    function validateEmail(email) {
-        const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-        return regex.test(email);
-    }
-
     // Kayıt işlemi
-    document.getElementById("registerForm").addEventListener("submit", async function(event) {
+    document.getElementById("registerForm").addEventListener("submit", function(event) {
         event.preventDefault();
 
         var name = document.getElementById("registerName").value;
         var email = document.getElementById("registerEmail").value;
         var password = document.getElementById("registerPassword").value;
 
-        // Email ve şifre validasyonu
-        if (!validateEmail(email)) {
-            document.getElementById("registerError").textContent = "Geçersiz email formatı!";
-            return;
-        }
-
-        const passwordStrength = checkPasswordStrength(password);
-        if (passwordStrength < 3) {
-            document.getElementById("registerError").textContent = "Şifreniz çok zayıf. Lütfen güçlü bir şifre kullanın.";
-            return;
-        }
-
-        var hashedPassword = await hashPassword(password);
-
         // Kullanıcıyı kaydet
-        saveUserToStorage({ name, email, password: hashedPassword });
+        localStorage.setItem("userName", name);
+        localStorage.setItem("userEmail", email);
+        localStorage.setItem("userPassword", password);
+
         alert("Kayıt başarılı! Artık giriş yapabilirsiniz.");
         toggleForms();
     });
@@ -317,57 +234,13 @@
         var email = document.getElementById("loginEmail").value;
         var password = document.getElementById("loginPassword").value;
 
-        hashPassword(password).then(function(hashedPassword) {
-            let user = validateUser(email, hashedPassword);
-
-            if (user) {
-                alert("Giriş başarılı! Hoş geldiniz, " + user.name);
-            } else {
-                document.getElementById("loginError").textContent = "Geçersiz giriş! Lütfen email ve şifrenizi kontrol edin.";
-            }
-        });
-    });
-
-    // E-posta doğrulama kodu gönderme
-    document.getElementById("verificationForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-
-        var email = document.getElementById("userEmail").value;
-
-        if (!validateEmail(email)) {
-            document.getElementById("verificationError").textContent = "Geçersiz e-posta adresi!";
-            return;
-        }
-
-        var verificationCode = Math.floor(100000 + Math.random() * 900000);  // 6 haneli rastgele kod
-
-        var templateParams = {
-            to_email: email,
-            verification_code: verificationCode
-        };
-
-        emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
-            .then(function(response) {
-                console.log('E-posta başarıyla gönderildi', response);
-                document.getElementById("verificationMessage").style.display = 'block';
-                document.getElementById("enterCodeSection").style.display = 'block';
-                localStorage.setItem("verificationCode", verificationCode);
-            }, function(error) {
-                document.getElementById("verificationError").textContent = "E-posta gönderilemedi. Lütfen tekrar deneyin.";
-            });
-    });
-
-    // Doğrulama kodunu kontrol etme
-    function verifyCode() {
-        var enteredCode = document.getElementById("verificationCode").value;
-        var savedCode = localStorage.getItem("verificationCode");
-
-        if (enteredCode == savedCode) {
-            alert("Kod doğrulandı! Giriş yapabilirsiniz.");
+        // Kullanıcı doğrulama
+        if (email === localStorage.getItem("userEmail") && password === localStorage.getItem("userPassword")) {
+            alert("Giriş başarılı! Hoş geldiniz, " + localStorage.getItem("userName"));
         } else {
-            alert("Geçersiz kod. Lütfen tekrar deneyin.");
+            document.getElementById("loginError").textContent = "Geçersiz giriş! Lütfen email ve şifrenizi kontrol edin.";
         }
-    }
+    });
 </script>
 
 </body>
