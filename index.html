@@ -24,25 +24,6 @@
             margin: 10px 0;
         }
 
-        /* Hakkımızda Kutusu */
-        .about-container {
-            width: 100%;
-            text-align: center;
-            margin-bottom: 30px;
-            background-color: rgba(0, 0, 0, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
-        }
-
-        .about-container h1 {
-            margin-bottom: 10px;
-        }
-
-        .about-container p {
-            font-size: 16px;
-        }
-
         .container {
             background-color: rgba(0, 0, 0, 0.8);
             padding: 30px;
@@ -229,7 +210,6 @@
         <input type="email" id="registerEmail" class="input-field" placeholder="Email" required>
         <input type="password" id="registerPassword" class="input-field" placeholder="Şifre" required>
         <div id="passwordStrength" class="password-strength"></div>
-        <input type="text" id="verificationCode" class="input-field" placeholder="Doğrulama Kodu" required>
         <button type="submit">Kayıt Ol</button>
     </form>
     <div id="registerError" class="error-message"></div>
@@ -310,15 +290,6 @@
         return score;
     }
 
-    // 6 haneli doğrulama kodu üretme
-    function generateVerificationCode() {
-        return Math.floor(100000 + Math.random() * 900000);  // 6 haneli doğrulama kodu
-    }
-
-    // Doğrulama kodunu kullanıcıya gönderme (console.log simülasyonu)
-    var verificationCode = generateVerificationCode();
-    console.log("Doğrulama Kodu:", verificationCode);  // Gerçek dünyada burayı e-posta ile gönderirsiniz.
-
     // Kayıt işlemi
     document.getElementById("registerForm").addEventListener("submit", function(event) {
         event.preventDefault();
@@ -326,7 +297,6 @@
         var name = document.getElementById("registerName").value;
         var email = document.getElementById("registerEmail").value;
         var password = document.getElementById("registerPassword").value;
-        var enteredCode = document.getElementById("verificationCode").value;
 
         // Şifre güvenliğini kontrol et
         const passwordStrength = checkPasswordStrength(password);
@@ -335,17 +305,16 @@
             return;
         }
 
-        if (enteredCode != verificationCode) {
-            document.getElementById("registerError").textContent = "Geçersiz doğrulama kodu.";
-            return;
-        }
+        // Yeni sayfaya yönlendirme ve doğrulama kodu verme
+        const verificationCode = Math.floor(100000 + Math.random() * 900000);  // 6 haneli doğrulama kodu
+        alert("Doğrulama kodunuz: " + verificationCode);  // Burada siteye yönlendirme yapılacak
 
+        // Kayıt işlemi tamamlandıktan sonra kullanıcıyı giriş sayfasına yönlendiriyoruz
         localStorage.setItem("userName", name);
         localStorage.setItem("userEmail", email);
         localStorage.setItem("userPassword", password);
 
-        alert("Kayıt başarılı! Artık giriş yapabilirsiniz.");
-        toggleForms();
+        window.location.href = "verification.html?code=" + verificationCode;  // Kullanıcıyı doğrulama sayfasına yönlendiriyoruz
     });
 
     // Giriş işlemi
