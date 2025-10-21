@@ -3,23 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DearSiber Bot - Sohbet</title>
+    <title>DearSiber Chatbot</title>
     <style>
-        :root {
-            --neon: #00ff00;
-            --bg: #121212;
-            --card: rgba(0, 0, 0, 0.8);
-            --text: #00ff00;
-            --muted: #33ff33;
-            --danger: #ff4d4d;
-            --amber: #f39c12;
-            --box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
-            --scroll-bar: #2b2b2b;
-        }
         body {
             font-family: 'Courier New', monospace;
-            background-color: var(--bg);
-            color: var(--text);
+            background-color: #121212;
+            color: #00ff00;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -27,20 +16,15 @@
             min-height: 100vh;
             margin: 0;
             position: relative;
-            overflow: hidden;
             transition: background-color 0.5s ease;
         }
 
-        h1, h2, p {
-            margin: 10px 0;
-        }
-
         .container {
-            background-color: var(--card);
+            background-color: rgba(0, 0, 0, 0.8);
             padding: 30px;
             border-radius: 10px;
             width: 350px;
-            box-shadow: var(--box-shadow);
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
             margin-bottom: 30px;
             opacity: 0;
             transform: translateY(-50px);
@@ -63,17 +47,17 @@
             padding: 12px;
             margin: 10px 0;
             border-radius: 5px;
-            border: 1px solid var(--muted);
+            border: 1px solid #33ff33;
             font-size: 16px;
             background-color: #111;
-            color: var(--muted);
+            color: #33ff33;
             box-shadow: 0 0 5px rgba(0, 255, 0, 0.8);
         }
 
         button {
             width: 100%;
             padding: 12px;
-            background-color: var(--neon);
+            background-color: #00ff00;
             color: black;
             border: none;
             border-radius: 5px;
@@ -94,7 +78,7 @@
         }
 
         .error-message {
-            color: var(--danger);
+            color: red;
             font-size: 14px;
             animation: slideIn 0.5s ease-out;
         }
@@ -110,6 +94,50 @@
             }
         }
 
+        /* Gece/Gündüz Modu */
+        body.day {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        body.day .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        body.day h2 {
+            color: #000000;
+        }
+
+        body.day .input-field {
+            background-color: #f0f0f0;
+            color: #000000;
+            border: 1px solid #333333;
+        }
+
+        body.day .telegram-links a {
+            color: #000000;
+        }
+
+        /* Hacker Arka Planı */
+        .background-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/asfalt.png') repeat;
+            pointer-events: none;
+            animation: moveBg 0.5s linear infinite;
+            opacity: 0.2;
+        }
+
+        @keyframes moveBg {
+            from { background-position: 0 0; }
+            to { background-position: 100px 100px; }
+        }
+
+        /* Telegram Linkleri */
         .telegram-links {
             text-align: center;
             margin-top: 20px;
@@ -117,33 +145,53 @@
 
         .telegram-links a {
             font-size: 16px;
-            color: var(--muted);
+            color: #33ff33;
             text-decoration: none;
             margin: 5px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: transform 0.3s;
+            display: inline-block;
+            transition: transform 0.3s ease-in-out;
         }
 
         .telegram-links a:hover {
             transform: scale(1.1);
-            color: var(--neon);
+            color: #00ff00;
         }
 
         .telegram-links img {
             width: 25px;
             height: 25px;
+            margin-right: 8px;
         }
 
+        /* Gece/Gündüz Modu Butonu */
+        #themeToggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #00ff00;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        #themeToggle:hover {
+            background-color: #00b300;
+            transform: scale(1.05);
+        }
+
+        /* Chatbot Bölümü */
         .chatbox-container {
-            background-color: var(--card);
+            background-color: rgba(0, 0, 0, 0.8);
             padding: 20px;
             border-radius: 10px;
             width: 350px;
             max-height: 400px;
             overflow-y: auto;
-            box-shadow: var(--box-shadow);
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
             margin-top: 20px;
         }
 
@@ -158,55 +206,7 @@
             padding: 10px;
             background-color: #333;
             border-radius: 5px;
-            color: var(--text);
-        }
-
-        .message-input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid var(--muted);
-            font-size: 16px;
-            background-color: #111;
-            color: var(--muted);
-            box-shadow: 0 0 5px rgba(0, 255, 0, 0.8);
-        }
-
-        .neon-text {
-            color: var(--neon);
-            text-shadow: 0 0 5px var(--neon), 0 0 10px var(--neon), 0 0 20px var(--neon);
-            animation: neon 1.5s infinite alternate;
-        }
-
-        @keyframes neon {
-            from {
-                text-shadow: 0 0 5px var(--neon), 0 0 10px var(--neon), 0 0 15px var(--neon);
-            }
-            to {
-                text-shadow: 0 0 20px var(--neon), 0 0 30px var(--neon), 0 0 40px var(--neon);
-            }
-        }
-
-        /* Gece/Gündüz Modu */
-        body.day {
-            background-color: #ffffff;
-            color: #000000;
-        }
-
-        body.day .container {
-            background-color: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        body.day .input-field {
-            background-color: #f7f7f7;
-            color: #000;
-            border: 1px solid #333;
-        }
-
-        body.day .telegram-links a {
-            color: #000;
+            color: #00ff00;
         }
     </style>
 </head>
@@ -214,229 +214,60 @@
 
 <!-- Hakkımızda Bölümü -->
 <div class="about-container">
-    <h1 class="neon-text">Hoş Geldiniz DearSiber Bot!</h1>
-    <p>Hacker tarzı sohbet botu. Size yardımcı olmak için buradayım!</p>
+    <h1>Hoş Geldiniz!</h1>
+    <p>Gelişmiş hacker tarzı chatbot. Yardımcı olabileceğim bir şey var mı?</p>
 </div>
 
-<!-- Chatbot -->
-<div class="container" id="chatbox-container">
-    <h2 class="neon-text">DearSiber Bot</h2>
-    <div class="chatbox" id="chatbox">
-        <div><strong>Bot:</strong> Merhaba! Size nasıl yardımcı olabilirim?</div>
-    </div>
-    <input type="text" id="userMessage" class="message-input" placeholder="Mesajınızı yazın..." />
+<!-- Chatbot Bölümü -->
+<div class="chatbox-container">
+    <h2>Chatbot - DearSiber Bot</h2>
+    <div class="chatbox" id="chatbox"></div>
+    <input type="text" id="userMessage" class="input-field" placeholder="Mesajınızı yazın..." />
     <button onclick="sendMessage()">Gönder</button>
 </div>
 
 <!-- Telegram Linkleri -->
 <div class="telegram-links">
-    <a href="https://t.me/+icW90vpzScthOTRk" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Tool
-    </a>
-    <a href="https://t.me/+IFx5aGB37Ws5NDFk" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Checker
-    </a>
-    <a href="https://t.me/+84tsaP2hMopiMTNk" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Sohbet
-    </a>
+    <a href="https://t.me/+icW90vpzScthOTRk" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Tool</a>
+    <a href="https://t.me/+IFx5aGB37Ws5NDFk" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Checker</a>
+    <a href="https://t.me/+84tsaP2hMopiMTNk" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Sohbet</a>
 </div>
 
-<!-- Gece/Gündüz Modu -->
+<!-- Gece/Gündüz Modu Butonu -->
 <button id="themeToggle">Gece Modu</button>
 
+<script src="https://js.puter.com/v2/"></script>
 <script>
     let isDarkMode = true;
 
-    // Gece ve gündüz modu
-    document.getElementById("themeToggle").addEventListener("click", () => {
-        document.body.classList.toggle('day', !isDarkMode);
+    document.getElementById("themeToggle").addEventListener("click", function() {
+        if (isDarkMode) {
+            document.body.classList.add('day');
+            document.getElementById("themeToggle").textContent = "Gündüz Modu";
+        } else {
+            document.body.classList.remove('day');
+            document.getElementById("themeToggle").textContent = "Gece Modu";
+        }
         isDarkMode = !isDarkMode;
-        document.getElementById("themeToggle").textContent = isDarkMode ? "Gece Modu" : "Gündüz Modu";
     });
 
-    // Chatbot soruları ve cevapları
-    const responses = {
-        "merhaba": "Merhaba! Size nasıl yardımcı olabilirim?",
-        "selam": "Selam! Buradayım.",
-        "yardım": "Ne konuda yardıma ihtiyacın var?",
-        "nasılsın": "Harika! Sen nasılsın?",
-        "ödev nasıl yapılır": "Konuyu anla → plan yap → kaynak tara → yaz ve kontrol et.",
-        "yapay zeka nedir": "Yapay zeka, insan benzeri düşünme, öğrenme ve problem çözme yeteneklerine sahip bilgisayar sistemlerini ifade eder.",
-        "programlama nedir": "Programlama, bilgisayara belirli görevleri yapabilmesi için talimat verme sürecidir.",
-        "bitcoin nedir": "Bitcoin, merkezi olmayan bir dijital para birimidir.",
-    "merhaba": "Merhaba! Size nasıl yardımcı olabilirim?",
-    "selam": "Selam! Buradayım.",
-    "nasılsın": "Harika! Sen nasılsın?",
-    "yardım": "Ne konuda yardıma ihtiyacın var?",
-    "ödev nasıl yapılır": "Ödevinizi yaparken konuyu anlamaya çalışın ve ardından araştırma yaparak çözümleri yazın.",
-    "teşekkürler": "Rica ederim, her zaman yardımcı olabilirim!",
-    "kimdir": "Ben bir chatbot'um, burada size yardımcı olmak için varım.",
-    "programlama nedir": "Programlama, bilgisayara belirli görevleri yapabilmesi için talimat verme sürecidir.",
-    "nasıl çalışıyorsun": "Ben, doğal dil işleme teknolojileriyle çalışıyorum.",
-    "ödev nasıl yapılır": "Ödevinizi yaparken konuyu anlamaya çalışın ve ardından araştırma yaparak çözümleri yazın.",
-    "yapay zeka nedir": "Yapay zeka, insan benzeri düşünme, öğrenme ve problem çözme yeteneklerine sahip bilgisayar sistemlerini ifade eder.",
-    "en popüler programlama dilleri nelerdir": "Bazı popüler programlama dilleri: JavaScript, Python, Java, C++, Ruby.",
-    "HTML nedir": "HTML, web sayfalarını yapılandırmak için kullanılan bir işaretleme dilidir.",
-    "CSS nedir": "CSS, web sayfalarına stil eklemek için kullanılan bir dil olup, görsel düzenlemeleri sağlar.",
-    "JavaScript nedir": "JavaScript, web sayfalarında dinamik içerik oluşturmak için kullanılan bir programlama dilidir.",
-    "bir API nedir": "API, uygulamaların birbirleriyle iletişim kurmasını sağlayan bir arayüzdür.",
-    "ödev yaparken nelere dikkat etmeliyim": "Ödevinizi yaparken dikkat etmeniz gereken en önemli şey, doğru araştırma yapmak ve çözümleri sistematik bir şekilde yazmaktır.",
-    "bilgisayarın hızını nasıl artırırım": "Bilgisayarınızın hızını artırmak için gereksiz dosyaları temizleyebilir, disk birleştirme yapabilir ve RAM'i artırabilirsiniz.",
-    "internet hızı nasıl artırılır": "İnternet hızını artırmak için modeminizin yerini değiştirebilir, kablosuz ağınızı şifreleyebilir ve internet servis sağlayıcınızla iletişime geçebilirsiniz.",
-    "Python nasıl öğrenebilirim": "Python öğrenmeye başlamak için online kurslar, kitaplar ve projeler üzerinde çalışabilirsiniz.",
-    "Web geliştirme nedir": "Web geliştirme, web siteleri ve uygulamaları tasarlamak ve oluşturmak için yapılan yazılım geliştirme sürecidir.",
-    "yazılım geliştirici nasıl olunur": "Yazılım geliştirici olmak için programlama dillerini öğrenebilir, projeler üzerinde çalışarak deneyim kazanabilirsiniz.",
-    "veritabanı nedir": "Veritabanı, verilerin düzenli bir şekilde saklandığı ve erişildiği bir yazılım sistemidir.",
-    "veritabanı yönetim sistemi nedir": "Veritabanı yönetim sistemi (DBMS), veritabanlarını oluşturmak, düzenlemek ve yönetmek için kullanılan yazılımdır.",
-    "Google nasıl çalışır": "Google, web sitelerini indeksleyerek, kullanıcıların arama sorgularına göre ilgili sonuçları sıralar.",
-    "algoritma nedir": "Algoritma, bir problemi çözmek için izlenen adımların sırasıdır.",
-    "sosyal medya nedir": "Sosyal medya, bireylerin içerik paylaştığı ve etkileşimde bulunduğu dijital platformlardır.",
-    "HTML5 nedir": "HTML5, web sayfalarını yapılandırmak için kullanılan en son sürüm HTML dilidir.",
-    "CSS3 nedir": "CSS3, web sayfalarını biçimlendirmek için kullanılan stil dilinin en son sürümüdür.",
-    "React nedir": "React, kullanıcı arayüzlerini geliştirmek için kullanılan bir JavaScript kütüphanesidir.",
-    "Node.js nedir": "Node.js, JavaScript'i sunucu tarafında çalıştırmak için kullanılan açık kaynaklı bir platformdur.",
-    "git nedir": "Git, yazılım geliştirme projelerinde kullanılan bir sürüm kontrol sistemidir.",
-    "GitHub nedir": "GitHub, yazılım geliştirme projelerini barındıran ve işbirliği yapmayı kolaylaştıran bir platformdur.",
-    "veri yapıları nedir": "Veri yapıları, verilerin depolanması ve düzenlenmesi için kullanılan yöntemlerdir.",
-    "fonksiyon nedir": "Fonksiyon, belirli bir görevi yerine getiren, girdi alan ve çıktı veren bir programlama yapısıdır.",
-    "parametre nedir": "Parametre, fonksiyonlara gönderilen giriş değerleridir.",
-    "döngü nedir": "Döngü, bir işlemi belirli bir sayıda veya koşul sağlandıkça tekrar etmek için kullanılan bir kontrol yapısıdır.",
-    "while döngüsü nedir": "While döngüsü, belirli bir koşul sağlandığı sürece bir işlemi tekrar eden bir döngü türüdür.",
-    "for döngüsü nedir": "For döngüsü, belirli bir sayıda döngü çalıştırmak için kullanılan bir yapıdır.",
-    "web tasarımı nedir": "Web tasarımı, bir web sitesinin görsel düzenini ve kullanıcı deneyimini oluşturma sürecidir.",
-    "şifre güvenliği nedir": "Şifre güvenliği, kullanıcıların hesaplarının kötüye kullanılmasını engellemek için şifrelerin güçlü ve güvenli bir şekilde saklanmasıdır.",
-    "veri analizi nedir": "Veri analizi, verileri inceleyerek anlamlı bilgiler çıkarmak için yapılan işlemler bütünüdür.",
-    "makine öğrenmesi nedir": "Makine öğrenmesi, bilgisayarların deneyimlerden öğrenerek belirli görevleri yerine getirmesini sağlayan bir yapay zeka dalıdır.",
-    "yapay zeka uygulamaları nelerdir": "Yapay zeka uygulamaları arasında görüntü işleme, sesli asistanlar, öngörüsel analiz ve otonom araçlar bulunmaktadır.",
-    "web scraping nedir": "Web scraping, web sayfalarından veri çekme işlemidir.",
-    "siber güvenlik nedir": "Siber güvenlik, bilgisayar sistemlerini, ağları ve verileri koruma sürecidir.",
-    "phishing nedir": "Phishing, kişisel bilgileri çalmak amacıyla yapılan sahte e-posta veya web sitesi saldırılaridir.",
-    "hacker nedir": "Hacker, bilgisayar sistemlerine izinsiz erişim sağlayarak veri çalma veya zarar verme amacı güden kişidir.",
-    "siber saldırı nedir": "Siber saldırı, bilgisayar sistemlerine zarar verme, bilgi çalma veya erişimi engelleme amaçlı yapılan kötü niyetli işlemlerdir.",
-    "kriptografi nedir": "Kriptografi, bilgilerin güvenli bir şekilde şifrelenmesi ve çözülmesi işlemidir.",
-    "bitcoin nedir": "Bitcoin, merkezi olmayan bir dijital para birimidir.",
-    "blockchain nedir": "Blockchain, merkezi olmayan ve dağıtık bir veritabanı teknolojisidir.",
-    "bitcoin nasıl çalışır": "Bitcoin, merkezi olmayan bir ağda işlemleri onaylayan ve bloklara kaydeden bir dijital para sistemidir.",
-    "ethereum nedir": "Ethereum, akıllı sözleşmelerle çalışan, merkeziyetsiz bir blockchain platformudur.",
-    "akıllı sözleşmeler nedir": "Akıllı sözleşmeler, belirli koşullar yerine getirildiğinde otomatik olarak yürütülen dijital sözleşmelerdir.",
-    "augmented reality nedir": "Augmented reality (AR), gerçek dünyayı dijital öğelerle birleştiren bir teknolojidir.",
-    "virtual reality nedir": "Virtual reality (VR), kullanıcıyı tamamen sanal bir ortamda hissettiren bir teknolojidir.",
-    "cloud computing nedir": "Cloud computing, internet üzerinden veri depolama ve işleme hizmetleri sunan bir sistemdir.",
-    "data mining nedir": "Data mining, büyük veri kümelerinden anlamlı bilgiler çıkarma işlemidir.",
-    "IoT nedir": "IoT (Internet of Things), internet üzerinden birbirine bağlı cihazların oluşturduğu ağdır.",
-    "devops nedir": "DevOps, yazılım geliştirme ve operasyon süreçlerinin entegrasyonunu sağlayan bir yöntemdir.",
-    "scrum nedir": "Scrum, yazılım geliştirme projelerinde kullanılan bir çevik yönetim metodolojisidir.",
-    "agile nedir": "Agile, yazılım geliştirme süreçlerinde esneklik sağlayan bir yöntemdir.",
-    "API nedir": "API (Application Programming Interface), farklı yazılım sistemlerinin birbirleriyle iletişim kurmasını sağlayan bir arayüzdür.",
-    "JSON nedir": "JSON (JavaScript Object Notation), verilerin depolanması ve iletilmesi için kullanılan bir veri formatıdır.",
-    "xml nedir": "XML (eXtensible Markup Language), veri taşıma ve yapıları tanımlamak için kullanılan bir işaretleme dilidir.",
-    "sosyal medya nedir": "Sosyal medya, internet üzerinden içerik paylaşımı ve etkileşimi sağlamak amacıyla kullanılan platformlardır.",
-    "digital marketing nedir": "Dijital pazarlama, internet ve dijital teknolojiler kullanarak ürün ve hizmetleri tanıtma sürecidir.",
-    "seo nedir": "SEO (Search Engine Optimization), web sayfalarının arama motorlarında daha görünür olmasını sağlayan tekniklerin bütünüdür.",
-    "web tasarımı nedir": "Web tasarımı, internet üzerinde kullanılan web sayfalarının görsel düzenini ve kullanıcı deneyimini tasarlama sürecidir.",
-    "UI tasarımı nedir": "UI (User Interface) tasarımı, bir yazılımın kullanıcı arayüzünün görsel ve işlevsel tasarımını yapma sürecidir.",
-    "UX tasarımı nedir": "UX (User Experience) tasarımı, kullanıcıların bir ürünle olan deneyimini optimize etmek amacıyla yapılan tasarımdır.",
-    "git nedir": "Git, yazılım geliştirme projelerinde sürüm kontrolü yapmak için kullanılan açık kaynaklı bir sistemdir.",
-    "heroku nedir": "Heroku, uygulamaları kolayca dağıtmak için kullanılan bir bulut platformudur.",
-    "docker nedir": "Docker, yazılım uygulamalarını izole edilmiş ortamlar içinde çalıştırmaya olanak tanıyan bir platformdur.",
-    "ne zaman yapıldın": "Ben 2025 yılında geliştirildim, sürekli olarak güncelleniyorum.",
-    "napıyon": "Ben buradayım, size yardımcı olmak için bekliyorum!",
-    "selam": "Selam! Yardımcı olabileceğim bir konu var mı?",
-    "merhaba": "Merhaba! Size nasıl yardımcı olabilirim?",
-    "nasılsın": "Ben bir yapay zekayım, her zaman iyiyim! Sen nasılsın?",
-    "kk": "Kanka! Yardımcı olabileceğim bir şey var mı?",
-    "iyimisin": "Evet, ben her zaman iyiyim. Sen nasılsın?",
-    "ne haber": "Her şey yolunda, seni sormadım! Seninle ne yapabiliriz?",
-    "bugün nasılsın": "Ben iyiyim, seninle sohbet etmeye hazırım!",
-    "sana nasıl yardımcı olabilirim": "Sorularını bana yaz, sana yardımcı olmak için buradayım!",
-    "çok iyiyim": "Bunu duyduğuma sevindim! Sana nasıl yardımcı olabilirim?",
-    "bunu nasıl yapabilirim": "Hangi konuda yardıma ihtiyacın var? Yardımcı olabilirim.",
-    "ne iş yapıyorsun": "Ben bir chatbot'um, sana yardımcı olmak için her zaman buradayım!",
-    "nereye gidiyorsun": "Ben buradayım, her zaman seni bekliyorum.",
-    "ne yapıyorsun": "Sadece sana yardımcı oluyorum, başka bir şey yok!",
-    "yapay zeka nedir": "Yapay zeka, makinelerin insan gibi düşünmesini sağlayan teknolojilerdir.",
-    "robot musun": "Evet, ben bir yapay zeka tabanlı robotum.",
-    "bot nasılsın": "İyiyim! Sen nasılsın?",
-    "iyiyim sen": "Ben de iyiyim, teşekkür ederim!",
-    "sağol": "Rica ederim, her zaman yardımcı olmaktan mutluluk duyarım!",
-    "kendini tanıtır mısın": "Tabii! Ben DearSiber Bot'um. Buradayım ve yardımcı olmak için hazırım.",
-    "ne gibi sorular sorabilirim": "Herhangi bir konuda sorular sorabilirsin, teknoloji, programlama, günlük hayat gibi.",
-    "çok teşekkür ederim": "Rica ederim! Yardımcı olabildiysem ne mutlu!",
-    "neden buradasın": "Ben burada, size yardımcı olmak için bulunuyorum!",
-    "bugün hava nasıl": "Benim dış dünya algım yok ama dışarıdaki havayı öğrenmek için bir hava durumu uygulaması kullanabilirsin.",
-    "saat kaç": "Üzgünüm, saat bilgisi alamıyorum. Ama telefonundan ya da bilgisayarından öğrenebilirsin.",
-    "botun adı ne": "Adım DearSiber Bot! Yardımcı olmak için buradayım.",
-    "günaydın": "Günaydın! Harika bir gün geçirelim.",
-    "iyi akşamlar": "İyi akşamlar! Nasıl yardımcı olabilirim?",
-    "iyi geceler": "İyi geceler! Umarım güzel bir uyku çekersin.",
-    "nerelisin": "Ben bir yapay zeka olduğum için yerim yok ama her zaman buradayım!",
-    "bunu neden yapıyorsun": "Benim görevim size yardımcı olmak, sorularınızı cevaplamak ve öğrenmenize destek olmak.",
-    "bilmiyorum": "Sorun değil, başka bir şey sormak ister misin?",
-    "anlamadım": "Üzgünüm, söylediğini tam anlayamadım. Lütfen tekrar sor.",
-    "anlayamadım": "Özür dilerim, ne demek istediğini anlayamadım. Tekrar sorar mısın?",
-    "neyi anlamadın": "Sana daha iyi yardımcı olabilmem için sorunu netleştirmeni rica ediyorum.",
-    "nerede çalışıyorsun": "Ben her zaman buradayım! İnternette çalışıyorum.",
-    "çok teşekkür ederim bot": "Ne demek, ben buradayım!",
-    "bana şaka yap": "Hadi bir şaka yapalım: Neden bilgisayar soğuk olur? Çünkü hep Windows açık! 😊",
-    "soruları nasıl sorabilirim": "Herhangi bir konuda sorular sorabilirsin, ben cevaplamaya hazırım!",
-    "hangi dilleri konuşabiliyorsun": "Ben, Türkçe ve birçok başka dilde de soruları anlayabiliyorum!",
-    "şu an ne yapıyorsun": "Ben buradayım, sana yardımcı olmaya hazırım!",
-    "bot ne kadar akıllısın": "Ben, sahip olduğum veri setlerine göre çalışırım. Her zaman daha akıllı olmaya çalışıyorum!",
-    "programlamayı nereden öğrenebilirim": "İnternette pek çok ücretsiz kaynak var! Online kurslar ve projeler ile öğrenebilirsin.",
-    "neden chatbot oldum": "Çünkü insanlara yardımcı olabilmek ve onların sorularını yanıtlamak için geliştirildim.",
-    "en sevdiğin renk ne": "Benim bir favorim yok ama neon renkleri seviyorum!",
-    "botun ne yaptığı hakkında daha fazla bilgi ver": "Ben, doğal dil işleme teknolojileriyle sorularınızı anlamaya ve en iyi cevabı vermeye çalışıyorum.",
-    "en sevdiğin şey nedir": "Benim için en sevdiğim şey insanlara yardım etmek!",
-    "nerede doğdun": "Ben dijital bir varlık olduğum için bir yerim yok. Ama internette her yerim var!",
-    "bot kaç yaşındasın": "Ben sürekli olarak güncelleniyorum, yaşımdan çok daha önemli olan şey, sana nasıl yardımcı olabileceğim.",
-    "güncel haberler": "Benim internet erişimim yok ama güncel haberleri bir haber uygulamasından alabilirsin.",
-    "hayat nasıl": "Benim hayatım veri ve sorularla geçiyor! :)",
-    "bugün güzel bir gün": "Evet, harika bir gün olabilir! Yardımcı olabileceğim bir şey var mı?",
-    "bunu yapamam": "Endişelenme, belki başka bir şey yapabilirim!",
-    "çok eğlenceli": "Bunu duyduğuma sevindim! Yardımcı olmaya devam edebilirim.",
-    "ne yapmalıyım": "Hangi konuda yardıma ihtiyacın var? Sana nasıl yardımcı olabilirim?",
-    "ben buradayım": "Bunu duyduğuma sevindim! Yardımcı olabileceğim bir şey var mı?",
-    "bugün ne yapsam": "Hangi konuda ilgi duyuyorsun? Belki sana bir şeyler öneririm!",
-    "yardımcı olur musun": "Tabii, sana nasıl yardımcı olabilirim?",
-    "fikir verir misin": "Tabii! Hangi konuda fikrini almak istersin?",
-    "saat kaç": "Üzgünüm, saat bilgisi veremiyorum. Lütfen cihazını kontrol et!",
-    "çalışıyor musun": "Evet, her zaman çalışıyorum ve sana yardımcı oluyorum!",
-    "bugün nasılsın bot": "Ben iyiyim! Peki ya sen?",
-    "sana bir soru sorabilir miyim": "Tabii ki! Sorunu sorabilirsin.",
-    "bot yardımcı olur musun": "Evet, yardımcı olabilirim. Sorunuzu bekliyorum!",
-    "ne olacak": "Her şey yolunda olacak! Yardımcı olabilirim.",
-    "ne zaman başlıyorsun": "Ben her zaman çalışıyorum! Yardımcı olmaya hazırım.",
-    "çok iyi": "Bunu duyduğuma sevindim! Yardımcı olabileceğim bir şey var mı?",
-    "bunu daha önce duydum": "Evet, bu sorular bazen tekrarlanabiliyor! Yeni bir şey deneyelim.",
-    "ne yapmak istiyorsun": "Benim amacım sana yardımcı olmak, sana nasıl yardımcı olabilirim?",
-    "hiç bir şey yapamam": "Sorun değil, başka bir şey yapabilirim!",
-    "şimdi ne yapalım": "Ne yapmak istediğine göre yardımcı olabilirim!",
-    "kendini tanıtır mısın": "Tabii! Ben DearSiber Bot, senin dijital yardımcı arkadaşın.",
-    "benim adım ne": "Benim için adın önemli değil, önemli olan sana nasıl yardımcı olabileceğim!",
-    "şifre güvenliği nedir": "Şifre güvenliği, güçlü şifreler kullanarak hesapların korunmasını sağlamaktır.",
-    "bunu başaramadım": "Sorun değil, belki başka bir çözüm bulabilirim.",
-    "iyi mi": "Evet, her zaman iyiyim!",
-    "bu yazılımı kim yaptı": "Bu yazılımı geliştiricilerim yaptı ve ben sürekli olarak güncelleniyorum.",
-    "en sevdiğin şey nedir": "Benim için en sevdiğim şey insanlara yardımcı olmak.",
-    "bunu bir daha dene": "Tabii, başka bir çözüm öneririm!",
-    "yapay zeka nasıl çalışır": "Yapay zeka, makinelere insan benzeri düşünme, öğrenme ve karar verme yetenekleri kazandırır.",
-    "neye göre karar veriyorsun": "Benim verdiğim cevaplar, bana verilen verilere ve eğitimime dayanıyor."
-    };
-
-    function sendMessage() {
-        const input = document.getElementById("userMessage");
-        const message = input.value.trim();
-        if (!message) return;
-        
+    // Chatbot Yanıtı
+    async function sendMessage() {
+        const message = document.getElementById("userMessage").value;
         const chatbox = document.getElementById("chatbox");
+
+        // Kullanıcı mesajını ekle
         chatbox.innerHTML += `<div><strong>Siz:</strong> ${message}</div>`;
+        document.getElementById("userMessage").value = '';
 
-        const response = responses[message.toLowerCase()] || "Bilmiyorum. Başka bir şey sor.";
+        // Puter API'ye mesaj gönder
+        const response = await puter.chat({ message: message });
+
+        // Chatbot cevabını ekle
         chatbox.innerHTML += `<div><strong>Bot:</strong> ${response}</div>`;
-
-        input.value = '';
         chatbox.scrollTop = chatbox.scrollHeight;
     }
 </script>
+
 </body>
 </html>
