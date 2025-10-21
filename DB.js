@@ -8,8 +8,8 @@
         /* Genel stil */
         body {
             font-family: 'Courier New', monospace;
-            background-color: black;
-            color: #33ff33;
+            background-color: #121212;
+            color: #00ff00;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -87,6 +87,11 @@
             color: red;
             font-size: 14px;
             animation: slideIn 0.5s ease-out;
+        }
+
+        .verification-message {
+            color: #f39c12;
+            font-size: 14px;
         }
 
         @keyframes slideIn {
@@ -194,21 +199,41 @@
     </div>
 </div>
 
+<!-- E-posta Doğrulama -->
+<div class="container" id="email-verification-form" style="display: none;">
+    <h2><span class="neon-text">E-posta Doğrulama</span></h2>
+    <form id="verificationForm">
+        <input type="email" id="userEmail" class="input-field" placeholder="E-posta adresiniz" required>
+        <button type="submit">Kod Gönder</button>
+    </form>
+    <div id="verificationError" class="error-message"></div>
+    <div id="verificationMessage" class="verification-message" style="display: none;">Kod e-postanıza gönderildi!</div>
+    <div id="enterCodeSection" style="display: none;">
+        <h3>Kodu Girin:</h3>
+        <input type="text" id="verificationCode" class="input-field" placeholder="Doğrulama Kodu" required>
+        <button onclick="verifyCode()">Doğrula</button>
+    </div>
+</div>
+
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <script>
-    // Veritabanı olarak kullanılan JSON (DB.js)
-    const usersDB = [];
+    // EmailJS hizmetini başlatma
+    emailjs.init('YOUR_USER_ID');  // YOUR_USER_ID yerine kendi EmailJS kullanıcı ID'nizi yazın.
 
     // Formlar arasında geçiş yapma
     function toggleForms() {
         var registerForm = document.getElementById("register-form");
         var loginForm = document.getElementById("login-form");
+        var emailVerificationForm = document.getElementById("email-verification-form");
         
         if (registerForm.style.display === "none") {
             registerForm.style.display = "block";
             loginForm.style.display = "none";
+            emailVerificationForm.style.display = "none";
         } else {
             registerForm.style.display = "none";
             loginForm.style.display = "block";
+            emailVerificationForm.style.display = "none";
         }
     }
 
@@ -249,6 +274,12 @@
     // Kullanıcıyı doğrulama
     function validateUser(email, password) {
         return usersDB.find(user => user.email === email && user.password === password);
+    }
+
+    // Email validasyonu
+    function validateEmail(email) {
+        const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        return regex.test(email);
     }
 
     // Kayıt işlemi
@@ -296,6 +327,47 @@
             }
         });
     });
+
+    // E-posta doğrulama kodu gönderme
+    document.getElementById("verificationForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        var email = document.getElementById("userEmail").value;
+
+        if (!validateEmail(email)) {
+            document.getElementById("verificationError").textContent = "Geçersiz e-posta adresi!";
+            return;
+        }
+
+        var verificationCode = Math.floor(100000 + Math.random() * 900000);  // 6 haneli rastgele kod
+
+        var templateParams = {
+            to_email: email,
+            verification_code: verificationCode
+        };
+
+        emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+            .then(function(response) {
+                console.log('E-posta başarıyla gönderildi', response);
+                document.getElementById("verificationMessage").style.display = 'block';
+                document.getElementById("enterCodeSection").style.display = 'block';
+                localStorage.setItem("verificationCode", verificationCode);
+            }, function(error) {
+                document.getElementById("verificationError").textContent = "E-posta gönderilemedi. Lütfen tekrar deneyin.";
+            });
+    });
+
+    // Doğrulama kodunu kontrol etme
+    function verifyCode() {
+        var enteredCode = document.getElementById("verificationCode").value;
+        var savedCode = localStorage.getItem("verificationCode");
+
+        if (enteredCode == savedCode) {
+            alert("Kod doğrulandı! Giriş yapabilirsiniz.");
+        } else {
+            alert("Geçersiz kod. Lütfen tekrar deneyin.");
+        }
+    }
 </script>
 
 </body>
