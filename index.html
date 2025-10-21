@@ -1,380 +1,285 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DearSiber Giriş ve Kayıt Sistemi</title>
-  <style>
-    :root{
-      --neon:#00ff00;
-      --bg:#121212;
-      --card:rgba(0,0,0,0.8);
-      --text:#00ff00;
-      --muted:#33ff33;
-      --danger:#ff4d4d;
-      --amber:#f39c12;
-    }
-    body{
-      font-family:'Courier New',monospace;
-      background-color:var(--bg);
-      color:var(--text);
-      display:flex;justify-content:center;align-items:center;flex-direction:column;
-      min-height:100vh;margin:0;position:relative;transition:background-color .4s ease,color .4s ease;
-    }
-    h1,h2,p{margin:10px 0}
-    .container{
-      background-color:var(--card);
-      padding:30px;border-radius:10px;width:350px;
-      box-shadow:0 5px 15px rgba(0,255,0,.3);
-      margin-bottom:30px;opacity:0;transform:translateY(-50px);animation:fadeIn 1s forwards;
-    }
-    @keyframes fadeIn{from{opacity:0;transform:translateY(-50px)}to{opacity:1;transform:translateY(0)}}
-    .input-field{
-      width:100%;padding:12px;margin:10px 0;border-radius:5px;border:1px solid var(--muted);
-      font-size:16px;background:#111;color:var(--muted);box-shadow:0 0 5px rgba(0,255,0,.8);
-    }
-    button{
-      width:100%;padding:12px;background:var(--neon);color:#000;border:none;border-radius:5px;
-      font-size:16px;cursor:pointer;transition:transform .25s ease-in-out,filter .25s ease-in-out;
-    }
-    button:hover{transform:scale(1.05);filter:brightness(.9)}
-    .toggle-form{text-align:center;margin-top:15px;font-size:14px}
-    .error-message{color:var(--danger);font-size:14px;animation:slideIn .5s ease-out}
-    @keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
-    .password-strength{font-size:12px;color:var(--amber);margin-top:5px;min-height:16px}
-    .telegram-links{text-align:center;margin-top:20px}
-    .telegram-links a{font-size:16px;color:var(--muted);text-decoration:none;margin:5px;display:inline-flex;align-items:center;gap:8px;transition:transform .25s}
-    .telegram-links a:hover{transform:scale(1.06);color:var(--neon)}
-    .telegram-links img{width:25px;height:25px}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DearSiber Bot - Sohbet</title>
+    <style>
+        :root {
+            --neon: #00ff00;
+            --bg: #121212;
+            --card: rgba(0, 0, 0, 0.8);
+            --text: #00ff00;
+            --muted: #33ff33;
+            --danger: #ff4d4d;
+            --amber: #f39c12;
+            --box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
+            --scroll-bar: #2b2b2b;
+        }
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+            transition: background-color 0.5s ease;
+        }
 
-    /* Day mode */
-    body.day{background:#ffffff;color:#000}
-    body.day .container{background:rgba(255,255,255,.9);box-shadow:0 5px 15px rgba(0,0,0,.25)}
-    body.day .input-field{background:#f7f7f7;color:#000;border:1px solid #333;box-shadow:none}
-    body.day .telegram-links a{color:#000}
+        h1, h2, p {
+            margin: 10px 0;
+        }
 
-    /* Background texture */
-    .background-lines{
-      position:absolute;inset:0;background:url('https://www.transparenttextures.com/patterns/asfalt.png') repeat;
-      pointer-events:none;animation:moveBg .7s linear infinite;opacity:.15;
-    }
-    @keyframes moveBg{from{background-position:0 0}to{background-position:100px 100px}}
+        .container {
+            background-color: var(--card);
+            padding: 30px;
+            border-radius: 10px;
+            width: 350px;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(-50px);
+            animation: fadeIn 1s forwards;
+        }
 
-    /* Theme toggle small */
-    #themeToggle{
-      position:fixed;bottom:16px;right:16px;padding:10px 14px;border-radius:10px;font-size:12px;width:auto;
-      box-shadow:0 0 10px rgba(0,255,0,.35);
-    }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    /* Fake redirect overlay + verify modal */
-    .overlay{
-      position:fixed;inset:0;background:rgba(0,0,0,.85);
-      display:none;align-items:center;justify-content:center;z-index:999;
-    }
-    .overlay.show{display:flex}
-    .spinner{
-      width:64px;height:64px;border:4px solid rgba(0,255,0,.25);border-top-color:var(--neon);border-radius:50%;
-      animation:spin 1s linear infinite;box-shadow:0 0 20px var(--neon);
-    }
-    @keyframes spin{to{transform:rotate(360deg)}}
-    .overlay-text{margin-top:16px;color:var(--muted);text-align:center;animation:blink 1s infinite}
-    @keyframes blink{50%{opacity:.45}}
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid var(--muted);
+            font-size: 16px;
+            background-color: #111;
+            color: var(--muted);
+            box-shadow: 0 0 5px rgba(0, 255, 0, 0.8);
+        }
 
-    .modal{
-      position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:1000;
-      background:rgba(0,0,0,.6);
-    }
-    .modal.show{display:flex}
-    .modal-card{
-      width:340px;background:var(--card);border:1px solid var(--muted);border-radius:12px;padding:20px;
-      box-shadow:0 10px 30px rgba(0,255,0,.25);animation:fadeIn .25s ease;
-    }
-    .code-input{letter-spacing:.35em;text-align:center;font-weight:bold}
-    .modal-actions{display:flex;gap:10px;margin-top:10px}
-    .muted{color:#9adf9a;font-size:12px}
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--neon);
+            color: black;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
 
-    /* Chatbox (aynı) */
-    .chatbox-container{background:var(--card);padding:20px;border-radius:10px;width:350px;max-height:400px;overflow-y:auto;box-shadow:0 5px 15px rgba(0,255,0,.3);margin-top:20px}
-    .chatbox{display:flex;flex-direction:column;margin-top:10px}
-    .chatbox div{margin-bottom:10px;padding:10px;background:#333;border-radius:5px;color:var(--text)}
-  </style>
+        button:hover {
+            background-color: #00b300;
+            transform: scale(1.05);
+        }
+
+        .toggle-form {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 14px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .telegram-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .telegram-links a {
+            font-size: 16px;
+            color: var(--muted);
+            text-decoration: none;
+            margin: 5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.3s;
+        }
+
+        .telegram-links a:hover {
+            transform: scale(1.1);
+            color: var(--neon);
+        }
+
+        .telegram-links img {
+            width: 25px;
+            height: 25px;
+        }
+
+        .chatbox-container {
+            background-color: var(--card);
+            padding: 20px;
+            border-radius: 10px;
+            width: 350px;
+            max-height: 400px;
+            overflow-y: auto;
+            box-shadow: var(--box-shadow);
+            margin-top: 20px;
+        }
+
+        .chatbox {
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+        }
+
+        .chatbox div {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #333;
+            border-radius: 5px;
+            color: var(--text);
+        }
+
+        .message-input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid var(--muted);
+            font-size: 16px;
+            background-color: #111;
+            color: var(--muted);
+            box-shadow: 0 0 5px rgba(0, 255, 0, 0.8);
+        }
+
+        .neon-text {
+            color: var(--neon);
+            text-shadow: 0 0 5px var(--neon), 0 0 10px var(--neon), 0 0 20px var(--neon);
+            animation: neon 1.5s infinite alternate;
+        }
+
+        @keyframes neon {
+            from {
+                text-shadow: 0 0 5px var(--neon), 0 0 10px var(--neon), 0 0 15px var(--neon);
+            }
+            to {
+                text-shadow: 0 0 20px var(--neon), 0 0 30px var(--neon), 0 0 40px var(--neon);
+            }
+        }
+
+        /* Gece/Gündüz Modu */
+        body.day {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        body.day .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        body.day .input-field {
+            background-color: #f7f7f7;
+            color: #000;
+            border: 1px solid #333;
+        }
+
+        body.day .telegram-links a {
+            color: #000;
+        }
+    </style>
 </head>
 <body>
-  <div class="background-lines"></div>
 
-  <!-- Hakkımızda -->
-  <div class="about-container">
-    <h1>Hoş Geldiniz!</h1>
-    <p>Gelişmiş hacker tarzı kullanıcı giriş ve kayıt sistemi. Güçlü şifreler ile güvenli giriş yapabilirsiniz.</p>
-  </div>
+<!-- Hakkımızda Bölümü -->
+<div class="about-container">
+    <h1 class="neon-text">Hoş Geldiniz DearSiber Bot!</h1>
+    <p>Hacker tarzı sohbet botu. Size yardımcı olmak için buradayım!</p>
+</div>
 
-  <!-- Kayıt Formu -->
-  <div class="container" id="register-form">
-    <h2>Kayıt Ol</h2>
-    <form id="registerForm">
-      <input type="text" id="registerName" class="input-field" placeholder="Adınız" required>
-      <input type="email" id="registerEmail" class="input-field" placeholder="Email" required>
-      <input type="password" id="registerPassword" class="input-field" placeholder="Şifre" required>
-      <div id="passwordStrength" class="password-strength"></div>
-      <button type="submit">Kayıt Ol</button>
-    </form>
-    <div id="registerError" class="error-message"></div>
-    <div class="toggle-form">
-      <p>Hesabınız var mı? <a href="javascript:void(0);" onclick="toggleForms()">Giriş Yap</a></p>
+<!-- Chatbot -->
+<div class="container" id="chatbox-container">
+    <h2 class="neon-text">DearSiber Bot</h2>
+    <div class="chatbox" id="chatbox">
+        <div><strong>Bot:</strong> Merhaba! Size nasıl yardımcı olabilirim?</div>
     </div>
-  </div>
+    <input type="text" id="userMessage" class="message-input" placeholder="Mesajınızı yazın..." />
+    <button onclick="sendMessage()">Gönder</button>
+</div>
 
-  <!-- Giriş Formu -->
-  <div class="container" id="login-form" style="display:none;">
-    <h2>Giriş Yap</h2>
-    <form id="loginForm">
-      <input type="email" id="loginEmail" class="input-field" placeholder="Email" required>
-      <input type="password" id="loginPassword" class="input-field" placeholder="Şifre" required>
-      <button type="submit">Giriş Yap</button>
-    </form>
-    <div id="loginError" class="error-message"></div>
-    <div class="toggle-form">
-      <p>Hesabınız yok mu? <a href="javascript:void(0);" onclick="toggleForms()">Kayıt Ol</a></p>
-    </div>
-  </div>
-
-  <!-- Chatbot -->
-  <div class="container" id="chatbox-container" style="display:none;">
-    <h2>Chatbot</h2>
-    <div class="chatbox" id="chatbox"></div>
-    <input type="text" id="userMessage" class="input-field" placeholder="Mesajınızı yazın..."/>
-    <button id="sendBtn">Gönder</button>
-  </div>
-
-  <!-- Telegram Linkleri (logolu) -->
-  <div class="telegram-links">
+<!-- Telegram Linkleri -->
+<div class="telegram-links">
     <a href="https://t.me/+icW90vpzScthOTRk" target="_blank">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Tool
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Tool
     </a>
     <a href="https://t.me/+IFx5aGB37Ws5NDFk" target="_blank">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Checker
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Checker
     </a>
     <a href="https://t.me/+84tsaP2hMopiMTNk" target="_blank">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Sohbet
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Sohbet
     </a>
-  </div>
+</div>
 
-  <!-- Gece/Gündüz Modu -->
-  <button id="themeToggle" aria-label="Tema Değiştir">Gece Modu</button>
+<!-- Gece/Gündüz Modu -->
+<button id="themeToggle">Gece Modu</button>
 
-  <!-- Fake redirect overlay -->
-  <div id="redirectOverlay" class="overlay" aria-hidden="true">
-    <div style="display:flex;flex-direction:column;align-items:center">
-      <div class="spinner"></div>
-      <div class="overlay-text">Yönlendiriliyor…</div>
-    </div>
-  </div>
-
-  <!-- Doğrulama Modalı -->
-  <div id="verifyModal" class="modal" aria-hidden="true">
-    <div class="modal-card">
-      <h3>Doğrulama</h3>
-      <p class="muted">6 haneli doğrulama kodunu girin.</p>
-      <input id="verifyCodeInput" class="input-field code-input" maxlength="6" placeholder="______" inputmode="numeric" />
-      <div id="verifyError" class="error-message" style="display:none;"></div>
-      <div class="modal-actions">
-        <button id="verifyBtn">Doğrula</button>
-        <button id="cancelVerifyBtn" type="button">İptal</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // ========== Tema ==========
+<script>
     let isDarkMode = true;
-    const themeBtn = document.getElementById('themeToggle');
-    themeBtn.addEventListener('click', () => {
-      isDarkMode = !isDarkMode;
-      document.body.classList.toggle('day', !isDarkMode);
-      themeBtn.textContent = isDarkMode ? 'Gece Modu' : 'Gündüz Modu';
+
+    // Gece ve gündüz modu
+    document.getElementById("themeToggle").addEventListener("click", () => {
+        document.body.classList.toggle('day', !isDarkMode);
+        isDarkMode = !isDarkMode;
+        document.getElementById("themeToggle").textContent = isDarkMode ? "Gece Modu" : "Gündüz Modu";
     });
 
-    // ========== Form Toggle ==========
-    function toggleForms(){
-      const reg = document.getElementById('register-form');
-      const log = document.getElementById('login-form');
-      if (reg.style.display === 'none'){
-        reg.style.display = 'block';
-        log.style.display = 'none';
-      } else {
-        reg.style.display = 'none';
-        log.style.display = 'block';
-      }
-      // hata mesajlarını temizle
-      document.getElementById('registerError').textContent = '';
-      document.getElementById('loginError').textContent = '';
+    // Chatbot soruları ve cevapları
+    const responses = {
+        "merhaba": "Merhaba! Size nasıl yardımcı olabilirim?",
+        "selam": "Selam! Buradayım.",
+        "yardım": "Ne konuda yardıma ihtiyacın var?",
+        "nasılsın": "Harika! Sen nasılsın?",
+        "ödev nasıl yapılır": "Konuyu anla → plan yap → kaynak tara → yaz ve kontrol et.",
+        "yapay zeka nedir": "Yapay zeka, insan benzeri düşünme, öğrenme ve problem çözme yeteneklerine sahip bilgisayar sistemlerini ifade eder.",
+        "programlama nedir": "Programlama, bilgisayara belirli görevleri yapabilmesi için talimat verme sürecidir.",
+        "bitcoin nedir": "Bitcoin, merkezi olmayan bir dijital para birimidir.",
+    };
+
+    function sendMessage() {
+        const input = document.getElementById("userMessage");
+        const message = input.value.trim();
+        if (!message) return;
+        
+        const chatbox = document.getElementById("chatbox");
+        chatbox.innerHTML += `<div><strong>Siz:</strong> ${message}</div>`;
+
+        const response = responses[message.toLowerCase()] || "Bilmiyorum. Başka bir şey sor.";
+        chatbox.innerHTML += `<div><strong>Bot:</strong> ${response}</div>`;
+
+        input.value = '';
+        chatbox.scrollTop = chatbox.scrollHeight;
     }
-
-    // ========== Şifre Gücü ==========
-    const registerPassword = document.getElementById('registerPassword');
-    const passwordStrengthEl = document.getElementById('passwordStrength');
-    registerPassword.addEventListener('input', () => showStrength(registerPassword.value));
-
-    function showStrength(pw){
-      const score = checkPasswordStrength(pw);
-      const map = {1:'Zayıf',2:'Ortalama',3:'Güçlü',4:'Çok güçlü'};
-      passwordStrengthEl.textContent = pw ? ('Şifre gücü: ' + map[score]) : '';
-    }
-
-    function checkPasswordStrength(password){
-      let score = 0;
-      if (password.length >= 8) score++;
-      if (/[A-Z]/.test(password)) score++;
-      if (/[0-9]/.test(password)) score++;
-      if (/[^A-Za-z0-9]/.test(password)) score++;
-      return Math.max(1, score); // en az "zayıf" göstersin
-    }
-
-    // ========== Basit “DB”: localStorage (email -> {name,password,verified}) ==========
-    function saveUser(email, data){ localStorage.setItem(email, JSON.stringify(data)); }
-    function getUser(email){ const j = localStorage.getItem(email); return j ? JSON.parse(j) : null; }
-
-    // ========== Kayıt Akışı (Fake redirect + modal code) ==========
-    let pendingUser = null;
-    let generatedCode = null;
-
-    const registerForm = document.getElementById('registerForm');
-    registerForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = document.getElementById('registerName').value.trim();
-      const email = document.getElementById('registerEmail').value.trim().toLowerCase();
-      const password = document.getElementById('registerPassword').value;
-
-      const regErr = document.getElementById('registerError');
-      regErr.textContent = '';
-
-      if (!name || !email || !password){ regErr.textContent = 'Tüm alanları doldurun.'; return; }
-
-      if (checkPasswordStrength(password) < 3){
-        regErr.textContent = 'Şifreniz zayıf. En az 8 karakter, büyük harf, rakam ve sembol önerilir.';
-        return;
-      }
-
-      if (getUser(email)){ regErr.textContent = 'Bu e-posta zaten kayıtlı.'; return; }
-
-      // “yeni sayfa” gibi hissettiren overlay
-      fakeRedirect(() => {
-        // doğrulama kodu üret ve modalı aç
-        generatedCode = ('' + Math.floor(100000 + Math.random()*900000));
-        pendingUser = { email, name, password, verified:false };
-        openVerifyModal();
-      });
-    });
-
-    // ========== Giriş ==========
-    const loginForm = document.getElementById('loginForm');
-    loginForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-      const password = document.getElementById('loginPassword').value;
-      const err = document.getElementById('loginError');
-      err.textContent = '';
-
-      const u = getUser(email);
-      if (!u){ err.textContent = 'Bu e-posta ile kullanıcı bulunamadı.'; return; }
-      if (u.password !== password){ err.textContent = 'Yanlış şifre!'; return; }
-      if (!u.verified){ err.textContent = 'Hesap doğrulanmamış. Lütfen kayıt akışını tamamlayın.'; return; }
-
-      alert('Giriş başarılı! Hoş geldiniz, ' + u.name);
-      // Chatbotu aç, login formunu sakla (yapıyı korunuyor)
-      document.getElementById('chatbox-container').style.display = 'block';
-      document.getElementById('login-form').style.display = 'none';
-    });
-
-    // ========== Overlay ==========
-    const overlay = document.getElementById('redirectOverlay');
-    function fakeRedirect(done){
-      overlay.classList.add('show');
-      setTimeout(() => {
-        overlay.classList.remove('show');
-        done && done();
-      }, 1000); // kısa animasyon
-    }
-
-    // ========== Doğrulama Modalı ==========
-    const verifyModal = document.getElementById('verifyModal');
-    const verifyCodeInput = document.getElementById('verifyCodeInput');
-    const verifyError = document.getElementById('verifyError');
-    const verifyBtn = document.getElementById('verifyBtn');
-    const cancelVerifyBtn = document.getElementById('cancelVerifyBtn');
-
-    function openVerifyModal(){
-      verifyError.style.display = 'none';
-      verifyError.textContent = '';
-      verifyCodeInput.value = '';
-      verifyModal.classList.add('show');
-      verifyModal.setAttribute('aria-hidden','false');
-      // kullanıcıya kodu bildirelim (sayfa içi alert — istek doğrultusunda “site versin”)
-      alert('Doğrulama kodunuz: ' + generatedCode);
-      setTimeout(() => verifyCodeInput.focus(), 50);
-    }
-    function closeVerifyModal(){
-      verifyModal.classList.remove('show');
-      verifyModal.setAttribute('aria-hidden','true');
-    }
-
-    verifyBtn.addEventListener('click', () => {
-      const entered = verifyCodeInput.value.trim();
-      if (entered.length !== 6){ showVerifyError('6 haneli kod girin.'); return; }
-      if (entered !== generatedCode){ showVerifyError('Kod hatalı.'); return; }
-      // kayıt tamamla
-      if (pendingUser){
-        pendingUser.verified = true;
-        saveUser(pendingUser.email, { name: pendingUser.name, password: pendingUser.password, verified:true });
-      }
-      pendingUser = null; generatedCode = null;
-      closeVerifyModal();
-      alert('Kayıt tamamlandı! Artık giriş yapabilirsiniz.');
-      // kayıt formundan giriş formuna geç
-      const reg = document.getElementById('register-form');
-      const log = document.getElementById('login-form');
-      reg.style.display = 'none';
-      log.style.display = 'block';
-    });
-
-    cancelVerifyBtn.addEventListener('click', () => {
-      pendingUser = null; generatedCode = null;
-      closeVerifyModal();
-    });
-
-    function showVerifyError(msg){
-      verifyError.textContent = msg;
-      verifyError.style.display = 'block';
-    }
-
-    // ========== Basit Chatbot (yapıyı koruyoruz) ==========
-    const chatboxEl = document.getElementById('chatbox');
-    document.getElementById('sendBtn').addEventListener('click', sendMessage);
-    document.getElementById('userMessage').addEventListener('keydown', (e)=>{ if(e.key==='Enter') sendMessage(); });
-
-    function sendMessage(){
-      const input = document.getElementById('userMessage');
-      const msg = input.value.trim();
-      if(!msg) return;
-      chatboxEl.innerHTML += `<div><strong>Siz:</strong> ${escapeHtml(msg)}</div>`;
-      const resp = getChatbotResponse(msg);
-      chatboxEl.innerHTML += `<div><strong>Bot:</strong> ${escapeHtml(resp)}</div>`;
-      input.value='';
-      chatboxEl.scrollTop = chatboxEl.scrollHeight;
-    }
-
-    function getChatbotResponse(message){
-      const responses = {
-        "merhaba":"Merhaba! Size nasıl yardımcı olabilirim?",
-        "selam":"Selam! Buradayım.",
-        "yardım":"Ne konuda yardıma ihtiyacın var?",
-        "nasılsın":"Harika! Sen nasılsın?",
-        "ödev nasıl yapılır":"Konuyu anla → plan yap → kaynak tara → yaz ve kontrol et."
-      };
-      return responses[message.toLowerCase()] || "Bilmiyorum. Başka bir şey sor.";
-    }
-
-    function escapeHtml(s){ return s.replace(/[&<>"']/g,m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":
 </script>
 </body>
 </html>
