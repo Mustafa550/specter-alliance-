@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DearSiber Giriş ve Kayıt Sistemi</title>
+    <title>Gelişmiş Hacker Tarzı Giriş ve Kayıt Sistemi</title>
     <style>
         /* Genel stil */
         body {
@@ -17,6 +17,7 @@
             margin: 0;
             overflow: hidden;
             position: relative;
+            transition: background-color 0.5s ease;
         }
 
         .container {
@@ -138,6 +139,7 @@
             margin-right: 8px;
         }
 
+        /* Hacker Arka Planı */
         .background-lines {
             position: absolute;
             top: 0;
@@ -146,12 +148,38 @@
             height: 100%;
             background: url('https://www.transparenttextures.com/patterns/asfalt.png') repeat;
             pointer-events: none;
-            animation: moveBg 1s linear infinite;
+            animation: moveBg 0.5s linear infinite;
+            opacity: 0.2;
         }
 
         @keyframes moveBg {
             from { background-position: 0 0; }
             to { background-position: 100px 100px; }
+        }
+
+        /* Gece/Gündüz Modu */
+        body.day {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        body.day .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        body.day h2 {
+            color: #000000;
+        }
+
+        body.day .input-field {
+            background-color: #f0f0f0;
+            color: #000000;
+            border: 1px solid #333333;
+        }
+
+        body.day .telegram-links a {
+            color: #000000;
         }
     </style>
 </head>
@@ -166,6 +194,7 @@
         <input type="text" id="registerName" class="input-field" placeholder="Adınız" required>
         <input type="email" id="registerEmail" class="input-field" placeholder="Email" required>
         <input type="password" id="registerPassword" class="input-field" placeholder="Şifre" required>
+        <div id="passwordStrength" class="password-strength"></div>
         <button type="submit">Kayıt Ol</button>
     </form>
     <div id="registerError" class="error-message"></div>
@@ -195,7 +224,23 @@
     <a href="https://t.me/+84tsaP2hMopiMTNk" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Sohbet</a>
 </div>
 
+<!-- Gece/Gündüz Modu Butonu -->
+<button id="themeToggle" style="position: absolute; top: 20px; right: 20px;">Gece Modu</button>
+
 <script>
+    let isDarkMode = true;
+
+    document.getElementById("themeToggle").addEventListener("click", function() {
+        if (isDarkMode) {
+            document.body.classList.add('day');
+            document.getElementById("themeToggle").textContent = "Gündüz Modu";
+        } else {
+            document.body.classList.remove('day');
+            document.getElementById("themeToggle").textContent = "Gece Modu";
+        }
+        isDarkMode = !isDarkMode;
+    });
+
     // Formlar arasında geçiş yapma
     function toggleForms() {
         var registerForm = document.getElementById("register-form");
@@ -218,6 +263,13 @@
         var email = document.getElementById("registerEmail").value;
         var password = document.getElementById("registerPassword").value;
 
+        // Şifre güvenliğini kontrol et
+        const passwordStrength = checkPasswordStrength(password);
+        if (passwordStrength < 3) {
+            document.getElementById("registerError").textContent = "Şifreniz çok zayıf. Lütfen güçlü bir şifre kullanın.";
+            return;
+        }
+
         // Kullanıcıyı kaydet
         localStorage.setItem("userName", name);
         localStorage.setItem("userEmail", email);
@@ -226,6 +278,26 @@
         alert("Kayıt başarılı! Artık giriş yapabilirsiniz.");
         toggleForms();
     });
+
+    // Şifre gücünü kontrol etme
+    function checkPasswordStrength(password) {
+        const strengthText = document.getElementById("passwordStrength");
+        let strength = "";
+        let score = 0;
+
+        if (password.length >= 8) score++; // Uzunluk
+        if (/[A-Z]/.test(password)) score++; // Büyük harf
+        if (/[0-9]/.test(password)) score++; // Rakam
+        if (/[^A-Za-z0-9]/.test(password)) score++; // Özel karakter
+
+        if (score === 4) strength = "Çok güçlü";
+        else if (score === 3) strength = "Güçlü";
+        else if (score === 2) strength = "Ortalama";
+        else strength = "Zayıf";
+
+        strengthText.textContent = "Şifre gücü: " + strength;
+        return score;
+    }
 
     // Giriş işlemi
     document.getElementById("loginForm").addEventListener("submit", function(event) {
@@ -241,6 +313,24 @@
             document.getElementById("loginError").textContent = "Geçersiz giriş! Lütfen email ve şifrenizi kontrol edin.";
         }
     });
+
+    // Rastgele doğrulama kodu üretme
+    function generateVerificationCode() {
+        return Math.floor(100000 + Math.random() * 900000);  // 6 haneli doğrulama kodu
+    }
+
+    // Doğrulama kodunu kullanıcıya gönderme
+    var verificationCode = generateVerificationCode();
+    console.log("Doğrulama Kodu:", verificationCode);  // Konsola yazdırma (gerçek dünyada burayı e-posta ile gönderirsiniz)
+
+    // Doğrulama kodu girildiğinde
+    function verifyCode(enteredCode) {
+        if (enteredCode == verificationCode) {
+            alert("Kod doğrulandı! Giriş yapabilirsiniz.");
+        } else {
+            alert("Geçersiz kod. Lütfen tekrar deneyin.");
+        }
+    }
 </script>
 
 </body>
