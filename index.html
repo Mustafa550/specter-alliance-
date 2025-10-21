@@ -19,27 +19,33 @@
             transition: background-color 0.5s ease;
         }
 
-        .container {
-            background-color: rgba(0, 0, 0, 0.8);
-            padding: 30px;
-            border-radius: 10px;
-            width: 350px;
-            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
-            margin-bottom: 30px;
-            opacity: 0;
-            transform: translateY(-50px);
-            animation: fadeIn 1s forwards;
+        h1, h2, p {
+            margin: 10px 0;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .chatbox-container {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            width: 350px;
+            max-height: 400px;
+            overflow-y: auto;
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
+            margin-top: 20px;
+        }
+
+        .chatbox {
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+        }
+
+        .chatbox div {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #333;
+            border-radius: 5px;
+            color: #00ff00;
         }
 
         .input-field {
@@ -71,73 +77,25 @@
             transform: scale(1.05);
         }
 
-        .toggle-form {
-            text-align: center;
-            margin-top: 15px;
+        #themeToggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #00ff00;
+            color: black;
+            border: none;
+            border-radius: 5px;
             font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
         }
 
-        .error-message {
-            color: red;
-            font-size: 14px;
-            animation: slideIn 0.5s ease-out;
+        #themeToggle:hover {
+            background-color: #00b300;
+            transform: scale(1.05);
         }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        /* Gece/Gündüz Modu */
-        body.day {
-            background-color: #ffffff;
-            color: #000000;
-        }
-
-        body.day .container {
-            background-color: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        body.day h2 {
-            color: #000000;
-        }
-
-        body.day .input-field {
-            background-color: #f0f0f0;
-            color: #000000;
-            border: 1px solid #333333;
-        }
-
-        body.day .telegram-links a {
-            color: #000000;
-        }
-
-        /* Hacker Arka Planı */
-        .background-lines {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/asfalt.png') repeat;
-            pointer-events: none;
-            animation: moveBg 0.5s linear infinite;
-            opacity: 0.2;
-        }
-
-        @keyframes moveBg {
-            from { background-position: 0 0; }
-            to { background-position: 100px 100px; }
-        }
-
-        /* Telegram Linkleri */
         .telegram-links {
             text-align: center;
             margin-top: 20px;
@@ -161,52 +119,6 @@
             width: 25px;
             height: 25px;
             margin-right: 8px;
-        }
-
-        /* Gece/Gündüz Modu Butonu */
-        #themeToggle {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 10px 20px;
-            background-color: #00ff00;
-            color: black;
-            border: none;
-            border-radius: 5px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: transform 0.3s ease-in-out;
-        }
-
-        #themeToggle:hover {
-            background-color: #00b300;
-            transform: scale(1.05);
-        }
-
-        /* Chatbot Bölümü */
-        .chatbox-container {
-            background-color: rgba(0, 0, 0, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            width: 350px;
-            max-height: 400px;
-            overflow-y: auto;
-            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
-            margin-top: 20px;
-        }
-
-        .chatbox {
-            display: flex;
-            flex-direction: column;
-            margin-top: 10px;
-        }
-
-        .chatbox div {
-            margin-bottom: 10px;
-            padding: 10px;
-            background-color: #333;
-            border-radius: 5px;
-            color: #00ff00;
         }
     </style>
 </head>
