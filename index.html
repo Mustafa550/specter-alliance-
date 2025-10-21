@@ -1,664 +1,380 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DearSiber Giriş ve Kayıt Sistemi</title>
-    <style>
-        body {
-            font-family: 'Courier New', monospace;
-            background-color: #121212;
-            color: #00ff00;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            min-height: 100vh;
-            margin: 0;
-            position: relative;
-            transition: background-color 0.5s ease;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DearSiber Giriş ve Kayıt Sistemi</title>
+  <style>
+    :root{
+      --neon:#00ff00;
+      --bg:#121212;
+      --card:rgba(0,0,0,0.8);
+      --text:#00ff00;
+      --muted:#33ff33;
+      --danger:#ff4d4d;
+      --amber:#f39c12;
+    }
+    body{
+      font-family:'Courier New',monospace;
+      background-color:var(--bg);
+      color:var(--text);
+      display:flex;justify-content:center;align-items:center;flex-direction:column;
+      min-height:100vh;margin:0;position:relative;transition:background-color .4s ease,color .4s ease;
+    }
+    h1,h2,p{margin:10px 0}
+    .container{
+      background-color:var(--card);
+      padding:30px;border-radius:10px;width:350px;
+      box-shadow:0 5px 15px rgba(0,255,0,.3);
+      margin-bottom:30px;opacity:0;transform:translateY(-50px);animation:fadeIn 1s forwards;
+    }
+    @keyframes fadeIn{from{opacity:0;transform:translateY(-50px)}to{opacity:1;transform:translateY(0)}}
+    .input-field{
+      width:100%;padding:12px;margin:10px 0;border-radius:5px;border:1px solid var(--muted);
+      font-size:16px;background:#111;color:var(--muted);box-shadow:0 0 5px rgba(0,255,0,.8);
+    }
+    button{
+      width:100%;padding:12px;background:var(--neon);color:#000;border:none;border-radius:5px;
+      font-size:16px;cursor:pointer;transition:transform .25s ease-in-out,filter .25s ease-in-out;
+    }
+    button:hover{transform:scale(1.05);filter:brightness(.9)}
+    .toggle-form{text-align:center;margin-top:15px;font-size:14px}
+    .error-message{color:var(--danger);font-size:14px;animation:slideIn .5s ease-out}
+    @keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+    .password-strength{font-size:12px;color:var(--amber);margin-top:5px;min-height:16px}
+    .telegram-links{text-align:center;margin-top:20px}
+    .telegram-links a{font-size:16px;color:var(--muted);text-decoration:none;margin:5px;display:inline-flex;align-items:center;gap:8px;transition:transform .25s}
+    .telegram-links a:hover{transform:scale(1.06);color:var(--neon)}
+    .telegram-links img{width:25px;height:25px}
 
-        h1, h2, p {
-            margin: 10px 0;
-        }
+    /* Day mode */
+    body.day{background:#ffffff;color:#000}
+    body.day .container{background:rgba(255,255,255,.9);box-shadow:0 5px 15px rgba(0,0,0,.25)}
+    body.day .input-field{background:#f7f7f7;color:#000;border:1px solid #333;box-shadow:none}
+    body.day .telegram-links a{color:#000}
 
-        .container {
-            background-color: rgba(0, 0, 0, 0.8);
-            padding: 30px;
-            border-radius: 10px;
-            width: 350px;
-            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
-            margin-bottom: 30px;
-            opacity: 0;
-            transform: translateY(-50px);
-            animation: fadeIn 1s forwards;
-        }
+    /* Background texture */
+    .background-lines{
+      position:absolute;inset:0;background:url('https://www.transparenttextures.com/patterns/asfalt.png') repeat;
+      pointer-events:none;animation:moveBg .7s linear infinite;opacity:.15;
+    }
+    @keyframes moveBg{from{background-position:0 0}to{background-position:100px 100px}}
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    /* Theme toggle small */
+    #themeToggle{
+      position:fixed;bottom:16px;right:16px;padding:10px 14px;border-radius:10px;font-size:12px;width:auto;
+      box-shadow:0 0 10px rgba(0,255,0,.35);
+    }
 
-        .input-field {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #33ff33;
-            font-size: 16px;
-            background-color: #111;
-            color: #33ff33;
-            box-shadow: 0 0 5px rgba(0, 255, 0, 0.8);
-        }
+    /* Fake redirect overlay + verify modal */
+    .overlay{
+      position:fixed;inset:0;background:rgba(0,0,0,.85);
+      display:none;align-items:center;justify-content:center;z-index:999;
+    }
+    .overlay.show{display:flex}
+    .spinner{
+      width:64px;height:64px;border:4px solid rgba(0,255,0,.25);border-top-color:var(--neon);border-radius:50%;
+      animation:spin 1s linear infinite;box-shadow:0 0 20px var(--neon);
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .overlay-text{margin-top:16px;color:var(--muted);text-align:center;animation:blink 1s infinite}
+    @keyframes blink{50%{opacity:.45}}
 
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #00ff00;
-            color: black;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: transform 0.3s ease-in-out;
-        }
+    .modal{
+      position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:1000;
+      background:rgba(0,0,0,.6);
+    }
+    .modal.show{display:flex}
+    .modal-card{
+      width:340px;background:var(--card);border:1px solid var(--muted);border-radius:12px;padding:20px;
+      box-shadow:0 10px 30px rgba(0,255,0,.25);animation:fadeIn .25s ease;
+    }
+    .code-input{letter-spacing:.35em;text-align:center;font-weight:bold}
+    .modal-actions{display:flex;gap:10px;margin-top:10px}
+    .muted{color:#9adf9a;font-size:12px}
 
-        button:hover {
-            background-color: #00b300;
-            transform: scale(1.05);
-        }
-
-        .toggle-form {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 14px;
-        }
-
-        .error-message {
-            color: red;
-            font-size: 14px;
-            animation: slideIn 0.5s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .password-strength {
-            font-size: 12px;
-            color: #f39c12;
-            margin-top: 5px;
-        }
-
-        .telegram-links {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .telegram-links a {
-            font-size: 16px;
-            color: #33ff33;
-            text-decoration: none;
-            margin: 5px;
-            display: inline-block;
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .telegram-links a:hover {
-            transform: scale(1.1);
-            color: #00ff00;
-        }
-
-        .telegram-links img {
-            width: 25px;
-            height: 25px;
-            margin-right: 8px;
-        }
-
-        /* Gece/Gündüz Modu */
-        body.day {
-            background-color: #ffffff;
-            color: #000000;
-        }
-
-        body.day .container {
-            background-color: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        body.day h2 {
-            color: #000000;
-        }
-
-        body.day .input-field {
-            background-color: #f0f0f0;
-            color: #000000;
-            border: 1px solid #333333;
-        }
-
-        body.day .telegram-links a {
-            color: #000000;
-        }
-
-        /* Hacker Arka Planı */
-        .background-lines {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/asfalt.png') repeat;
-            pointer-events: none;
-            animation: moveBg 0.5s linear infinite;
-            opacity: 0.2;
-        }
-
-        @keyframes moveBg {
-            from { background-position: 0 0; }
-            to { background-position: 100px 100px; }
-        }
-
-        /* Gece/Gündüz Modu Butonu */
-        #themeToggle {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 10px 20px;
-            background-color: #00ff00;
-            color: black;
-            border: none;
-            border-radius: 5px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: transform 0.3s ease-in-out;
-        }
-
-        #themeToggle:hover {
-            background-color: #00b300;
-            transform: scale(1.05);
-        }
-
-        /* Chatbot Bölümü */
-        .chatbox-container {
-            background-color: rgba(0, 0, 0, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            width: 350px;
-            max-height: 400px;
-            overflow-y: auto;
-            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
-            margin-top: 20px;
-        }
-
-        .chatbox {
-            display: flex;
-            flex-direction: column;
-            margin-top: 10px;
-        }
-
-        .chatbox div {
-            margin-bottom: 10px;
-            padding: 10px;
-            background-color: #333;
-            border-radius: 5px;
-            color: #00ff00;
-        }
-    </style>
+    /* Chatbox (aynı) */
+    .chatbox-container{background:var(--card);padding:20px;border-radius:10px;width:350px;max-height:400px;overflow-y:auto;box-shadow:0 5px 15px rgba(0,255,0,.3);margin-top:20px}
+    .chatbox{display:flex;flex-direction:column;margin-top:10px}
+    .chatbox div{margin-bottom:10px;padding:10px;background:#333;border-radius:5px;color:var(--text)}
+  </style>
 </head>
 <body>
+  <div class="background-lines"></div>
 
-<!-- Hakkımızda Bölümü -->
-<div class="about-container">
+  <!-- Hakkımızda -->
+  <div class="about-container">
     <h1>Hoş Geldiniz!</h1>
     <p>Gelişmiş hacker tarzı kullanıcı giriş ve kayıt sistemi. Güçlü şifreler ile güvenli giriş yapabilirsiniz.</p>
-</div>
+  </div>
 
-<!-- Kayıt Formu -->
-<div class="container" id="register-form">
+  <!-- Kayıt Formu -->
+  <div class="container" id="register-form">
     <h2>Kayıt Ol</h2>
     <form id="registerForm">
-        <input type="text" id="registerName" class="input-field" placeholder="Adınız" required>
-        <input type="email" id="registerEmail" class="input-field" placeholder="Email" required>
-        <input type="password" id="registerPassword" class="input-field" placeholder="Şifre" required>
-        <div id="passwordStrength" class="password-strength"></div>
-        <button type="submit">Kayıt Ol</button>
+      <input type="text" id="registerName" class="input-field" placeholder="Adınız" required>
+      <input type="email" id="registerEmail" class="input-field" placeholder="Email" required>
+      <input type="password" id="registerPassword" class="input-field" placeholder="Şifre" required>
+      <div id="passwordStrength" class="password-strength"></div>
+      <button type="submit">Kayıt Ol</button>
     </form>
     <div id="registerError" class="error-message"></div>
     <div class="toggle-form">
-        <p>Hesabınız var mı? <a href="javascript:void(0);" onclick="toggleForms()">Giriş Yap</a></p>
+      <p>Hesabınız var mı? <a href="javascript:void(0);" onclick="toggleForms()">Giriş Yap</a></p>
     </div>
-</div>
+  </div>
 
-<!-- Giriş Formu -->
-<div class="container" id="login-form" style="display: none;">
+  <!-- Giriş Formu -->
+  <div class="container" id="login-form" style="display:none;">
     <h2>Giriş Yap</h2>
     <form id="loginForm">
-        <input type="email" id="loginEmail" class="input-field" placeholder="Email" required>
-        <input type="password" id="loginPassword" class="input-field" placeholder="Şifre" required>
-        <button type="submit">Giriş Yap</button>
+      <input type="email" id="loginEmail" class="input-field" placeholder="Email" required>
+      <input type="password" id="loginPassword" class="input-field" placeholder="Şifre" required>
+      <button type="submit">Giriş Yap</button>
     </form>
     <div id="loginError" class="error-message"></div>
     <div class="toggle-form">
-        <p>Hesabınız yok mu? <a href="javascript:void(0);" onclick="toggleForms()">Kayıt Ol</a></p>
+      <p>Hesabınız yok mu? <a href="javascript:void(0);" onclick="toggleForms()">Kayıt Ol</a></p>
     </div>
-</div>
+  </div>
 
-<!-- Telegram Linkleri -->
-<div class="telegram-links">
-    <a href="https://t.me/+icW90vpzScthOTRk" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Tool</a>
-    <a href="https://t.me/+IFx5aGB37Ws5NDFk" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Checker</a>
-    <a href="https://t.me/+84tsaP2hMopiMTNk" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Sohbet</a>
-</div>
+  <!-- Chatbot -->
+  <div class="container" id="chatbox-container" style="display:none;">
+    <h2>Chatbot</h2>
+    <div class="chatbox" id="chatbox"></div>
+    <input type="text" id="userMessage" class="input-field" placeholder="Mesajınızı yazın..."/>
+    <button id="sendBtn">Gönder</button>
+  </div>
 
-<!-- Gece/Gündüz Modu Butonu -->
-<button id="themeToggle">Gece Modu</button>
+  <!-- Telegram Linkleri (logolu) -->
+  <div class="telegram-links">
+    <a href="https://t.me/+icW90vpzScthOTRk" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Tool
+    </a>
+    <a href="https://t.me/+IFx5aGB37Ws5NDFk" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Checker
+    </a>
+    <a href="https://t.me/+84tsaP2hMopiMTNk" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Sohbet
+    </a>
+  </div>
 
-<script>
+  <!-- Gece/Gündüz Modu -->
+  <button id="themeToggle" aria-label="Tema Değiştir">Gece Modu</button>
+
+  <!-- Fake redirect overlay -->
+  <div id="redirectOverlay" class="overlay" aria-hidden="true">
+    <div style="display:flex;flex-direction:column;align-items:center">
+      <div class="spinner"></div>
+      <div class="overlay-text">Yönlendiriliyor…</div>
+    </div>
+  </div>
+
+  <!-- Doğrulama Modalı -->
+  <div id="verifyModal" class="modal" aria-hidden="true">
+    <div class="modal-card">
+      <h3>Doğrulama</h3>
+      <p class="muted">6 haneli doğrulama kodunu girin.</p>
+      <input id="verifyCodeInput" class="input-field code-input" maxlength="6" placeholder="______" inputmode="numeric" />
+      <div id="verifyError" class="error-message" style="display:none;"></div>
+      <div class="modal-actions">
+        <button id="verifyBtn">Doğrula</button>
+        <button id="cancelVerifyBtn" type="button">İptal</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ========== Tema ==========
     let isDarkMode = true;
-
-    document.getElementById("themeToggle").addEventListener("click", function() {
-        if (isDarkMode) {
-            document.body.classList.add('day');
-            document.getElementById("themeToggle").textContent = "Gündüz Modu";
-        } else {
-            document.body.classList.remove('day');
-            document.getElementById("themeToggle").textContent = "Gece Modu";
-        }
-        isDarkMode = !isDarkMode;
+    const themeBtn = document.getElementById('themeToggle');
+    themeBtn.addEventListener('click', () => {
+      isDarkMode = !isDarkMode;
+      document.body.classList.toggle('day', !isDarkMode);
+      themeBtn.textContent = isDarkMode ? 'Gece Modu' : 'Gündüz Modu';
     });
 
-    // Formlar arasında geçiş yapma
-    function toggleForms() {
-        var registerForm = document.getElementById("register-form");
-        var loginForm = document.getElementById("login-form");
-
-        if (registerForm.style.display === "none") {
-            registerForm.style.display = "block";
-            loginForm.style.display = "none";
-        } else {
-            registerForm.style.display = "none";
-            loginForm.style.display = "block";
-        }
+    // ========== Form Toggle ==========
+    function toggleForms(){
+      const reg = document.getElementById('register-form');
+      const log = document.getElementById('login-form');
+      if (reg.style.display === 'none'){
+        reg.style.display = 'block';
+        log.style.display = 'none';
+      } else {
+        reg.style.display = 'none';
+        log.style.display = 'block';
+      }
+      // hata mesajlarını temizle
+      document.getElementById('registerError').textContent = '';
+      document.getElementById('loginError').textContent = '';
     }
 
-    // Şifre güvenliğini kontrol etme
-    function checkPasswordStrength(password) {
-        const strengthText = document.getElementById("passwordStrength");
-        let strength = "";
-        let score = 0;
+    // ========== Şifre Gücü ==========
+    const registerPassword = document.getElementById('registerPassword');
+    const passwordStrengthEl = document.getElementById('passwordStrength');
+    registerPassword.addEventListener('input', () => showStrength(registerPassword.value));
 
-        if (password.length >= 8) score++; // Uzunluk
-        if (/[A-Z]/.test(password)) score++; // Büyük harf
-        if (/[0-9]/.test(password)) score++; // Rakam
-        if (/[^A-Za-z0-9]/.test(password)) score++; // Özel karakter
-
-        if (score === 4) strength = "Çok güçlü";
-        else if (score === 3) strength = "Güçlü";
-        else if (score === 2) strength = "Ortalama";
-        else strength = "Zayıf";
-
-        strengthText.textContent = "Şifre gücü: " + strength;
-        return score;
+    function showStrength(pw){
+      const score = checkPasswordStrength(pw);
+      const map = {1:'Zayıf',2:'Ortalama',3:'Güçlü',4:'Çok güçlü'};
+      passwordStrengthEl.textContent = pw ? ('Şifre gücü: ' + map[score]) : '';
     }
 
-    // Kayıt işlemi
-    document.getElementById("registerForm").addEventListener("submit", function(event) {
-        event.preventDefault();
+    function checkPasswordStrength(password){
+      let score = 0;
+      if (password.length >= 8) score++;
+      if (/[A-Z]/.test(password)) score++;
+      if (/[0-9]/.test(password)) score++;
+      if (/[^A-Za-z0-9]/.test(password)) score++;
+      return Math.max(1, score); // en az "zayıf" göstersin
+    }
 
-        var name = document.getElementById("registerName").value;
-        var email = document.getElementById("registerEmail").value;
-        var password = document.getElementById("registerPassword").value;
+    // ========== Basit “DB”: localStorage (email -> {name,password,verified}) ==========
+    function saveUser(email, data){ localStorage.setItem(email, JSON.stringify(data)); }
+    function getUser(email){ const j = localStorage.getItem(email); return j ? JSON.parse(j) : null; }
 
-        // Şifre güvenliğini kontrol et
-        const passwordStrength = checkPasswordStrength(password);
-        if (passwordStrength < 3) {
-            document.getElementById("registerError").textContent = "Şifreniz çok zayıf. Lütfen güçlü bir şifre kullanın.";
-            return;
-        }
+    // ========== Kayıt Akışı (Fake redirect + modal code) ==========
+    let pendingUser = null;
+    let generatedCode = null;
 
-        // Eğer kullanıcı zaten kaydolmuşsa, tekrar kaydetmesin
-        if (localStorage.getItem(email)) {
-            document.getElementById("registerError").textContent = "Bu e-posta ile zaten kayıtlısınız!";
-            return;
-        }
+    const registerForm = document.getElementById('registerForm');
+    registerForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('registerName').value.trim();
+      const email = document.getElementById('registerEmail').value.trim().toLowerCase();
+      const password = document.getElementById('registerPassword').value;
 
-        // 6 haneli doğrulama kodu
-        const verificationCode = Math.floor(100000 + Math.random() * 900000);  
-        alert("Doğrulama kodunuz: " + verificationCode);
+      const regErr = document.getElementById('registerError');
+      regErr.textContent = '';
 
-        // Kullanıcıya doğrulama kodunu girmesini istemek
-        const enteredCode = prompt("Lütfen doğrulama kodunu girin:");
+      if (!name || !email || !password){ regErr.textContent = 'Tüm alanları doldurun.'; return; }
 
-        if (enteredCode != verificationCode) {
-            document.getElementById("registerError").textContent = "Geçersiz doğrulama kodu!";
-            return;
-        }
+      if (checkPasswordStrength(password) < 3){
+        regErr.textContent = 'Şifreniz zayıf. En az 8 karakter, büyük harf, rakam ve sembol önerilir.';
+        return;
+      }
 
-        // Kayıt işlemi
-        localStorage.setItem(email, JSON.stringify({ name, password }));
-        alert("Kayıt başarılı! Artık giriş yapabilirsiniz.");
-        toggleForms();
+      if (getUser(email)){ regErr.textContent = 'Bu e-posta zaten kayıtlı.'; return; }
+
+      // “yeni sayfa” gibi hissettiren overlay
+      fakeRedirect(() => {
+        // doğrulama kodu üret ve modalı aç
+        generatedCode = ('' + Math.floor(100000 + Math.random()*900000));
+        pendingUser = { email, name, password, verified:false };
+        openVerifyModal();
+      });
     });
 
-    // Giriş işlemi
-    document.getElementById("loginForm").addEventListener("submit", function(event) {
-        event.preventDefault();
+    // ========== Giriş ==========
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+      const password = document.getElementById('loginPassword').value;
+      const err = document.getElementById('loginError');
+      err.textContent = '';
 
-        var email = document.getElementById("loginEmail").value;
-        var password = document.getElementById("loginPassword").value;
+      const u = getUser(email);
+      if (!u){ err.textContent = 'Bu e-posta ile kullanıcı bulunamadı.'; return; }
+      if (u.password !== password){ err.textContent = 'Yanlış şifre!'; return; }
+      if (!u.verified){ err.textContent = 'Hesap doğrulanmamış. Lütfen kayıt akışını tamamlayın.'; return; }
 
-        var storedUser = localStorage.getItem(email);
+      alert('Giriş başarılı! Hoş geldiniz, ' + u.name);
+      // Chatbotu aç, login formunu sakla (yapıyı korunuyor)
+      document.getElementById('chatbox-container').style.display = 'block';
+      document.getElementById('login-form').style.display = 'none';
+    });
 
-        if (storedUser) {
-            var user = JSON.parse(storedUser);
-            if (user.password === password) {
-                alert("Giriş başarılı! Hoş geldiniz, " + user.name);
-            } else {
-                document.getElementById("loginError").textContent = "Yanlış şifre! Lütfen tekrar deneyin.";
-            }
-        } else {
-            document.getElementById("loginError").textContent = "Bu e-posta ile kullanıcı bulunamadı.";
-        }
- 
-    // Chatbot fonksiyonu
-    function sendMessage() {
-        var message = document.getElementById("userMessage").value;
-        var chatbox = document.getElementById("chatbox");
-
-        // Kullanıcı mesajını göster
-        chatbox.innerHTML += `<div><strong>Siz:</strong> ${message}</div>`;
-
-        // Chatbot yanıtını almak için API'den cevap alalım
-        var response = getChatbotResponse(message);
-
-        // Chatbot cevabını göster
-        chatbox.innerHTML += `<div><strong>Bot:</strong> ${response}</div>`;
-
-        // Mesaj kutusunu temizle
-        document.getElementById("userMessage").value = '';
+    // ========== Overlay ==========
+    const overlay = document.getElementById('redirectOverlay');
+    function fakeRedirect(done){
+      overlay.classList.add('show');
+      setTimeout(() => {
+        overlay.classList.remove('show');
+        done && done();
+      }, 1000); // kısa animasyon
     }
 
-    // Chatbot yanıtları
-    function getChatbotResponse(message) {
-        const responses = {
-    "merhaba": "Merhaba! Size nasıl yardımcı olabilirim?",
-    "selam": "selam kanka(:",
-    "nasılsın": "Ben bir yapay zeka olduğum için iyiyim! :)",
-    "nasilsin": "iyiyim kanka saol düşündüğün için. ",
-    "yardım": "Tabii! Ne konuda yardıma ihtiyacınız var?",
-    "teşekkürler": "Rica ederim, her zaman yardımcı olabilirim!",
-    "kimdir": "Ben bir chatbot'um, burada size yardımcı olmak için varım.",
-    "programlama nedir": "Programlama, bilgisayara belirli görevleri yapabilmesi için talimat verme sürecidir.",
-    "nasıl çalışıyorsun": "Ben, doğal dil işleme teknolojileriyle çalışıyorum.",
-    "ödev nasıl yapılır": "Ödevinizi yaparken konuyu anlamaya çalışın ve ardından araştırma yaparak çözümleri yazın.",
-    "yapay zeka nedir": "Yapay zeka, insan benzeri düşünme, öğrenme ve problem çözme yeteneklerine sahip bilgisayar sistemlerini ifade eder.",
-    "en popüler programlama dilleri nelerdir": "Bazı popüler programlama dilleri: JavaScript, Python, Java, C++, Ruby.",
-    "HTML nedir": "HTML, web sayfalarını yapılandırmak için kullanılan bir işaretleme dilidir.",
-    "CSS nedir": "CSS, web sayfalarına stil eklemek için kullanılan bir dil olup, görsel düzenlemeleri sağlar.",
-    "JavaScript nedir": "JavaScript, web sayfalarında dinamik içerik oluşturmak için kullanılan bir programlama dilidir.",
-    "bir API nedir": "API, uygulamaların birbirleriyle iletişim kurmasını sağlayan bir arayüzdür.",
-    "ödev yaparken nelere dikkat etmeliyim": "Ödevinizi yaparken dikkat etmeniz gereken en önemli şey, doğru araştırma yapmak ve çözümleri sistematik bir şekilde yazmaktır.",
-    "bilgisayarın hızını nasıl artırırım": "Bilgisayarınızın hızını artırmak için gereksiz dosyaları temizleyebilir, disk birleştirme yapabilir ve RAM'i artırabilirsiniz.",
-    "internet hızı nasıl artırılır": "İnternet hızını artırmak için modeminizin yerini değiştirebilir, kablosuz ağınızı şifreleyebilir ve internet servis sağlayıcınızla iletişime geçebilirsiniz.",
-    "Python nasıl öğrenebilirim": "Python öğrenmeye başlamak için online kurslar, kitaplar ve projeler üzerinde çalışabilirsiniz.",
-    "Web geliştirme nedir": "Web geliştirme, web siteleri ve uygulamaları tasarlamak ve oluşturmak için yapılan yazılım geliştirme sürecidir.",
-    "yazılım geliştirici nasıl olunur": "Yazılım geliştirici olmak için programlama dillerini öğrenebilir, projeler üzerinde çalışarak deneyim kazanabilirsiniz.",
-    "veritabanı nedir": "Veritabanı, verilerin düzenli bir şekilde saklandığı ve erişildiği bir yazılım sistemidir.",
-    "veritabanı yönetim sistemi nedir": "Veritabanı yönetim sistemi (DBMS), veritabanlarını oluşturmak, düzenlemek ve yönetmek için kullanılan yazılımdır.",
-    "Google nasıl çalışır": "Google, web sitelerini indeksleyerek, kullanıcıların arama sorgularına göre ilgili sonuçları sıralar.",
-    "algoritma nedir": "Algoritma, bir problemi çözmek için izlenen adımların sırasıdır.",
-    "sosyal medya nedir": "Sosyal medya, bireylerin içerik paylaştığı ve etkileşimde bulunduğu dijital platformlardır.",
-    "HTML5 nedir": "HTML5, web sayfalarını yapılandırmak için kullanılan en son sürüm HTML dilidir.",
-    "CSS3 nedir": "CSS3, web sayfalarını biçimlendirmek için kullanılan stil dilinin en son sürümüdür.",
-    "React nedir": "React, kullanıcı arayüzlerini geliştirmek için kullanılan bir JavaScript kütüphanesidir.",
-    "Node.js nedir": "Node.js, JavaScript'i sunucu tarafında çalıştırmak için kullanılan açık kaynaklı bir platformdur.",
-    "git nedir": "Git, yazılım geliştirme projelerinde kullanılan bir sürüm kontrol sistemidir.",
-    "GitHub nedir": "GitHub, yazılım geliştirme projelerini barındıran ve işbirliği yapmayı kolaylaştıran bir platformdur.",
-    "veri yapıları nedir": "Veri yapıları, verilerin depolanması ve düzenlenmesi için kullanılan yöntemlerdir.",
-    "fonksiyon nedir": "Fonksiyon, belirli bir görevi yerine getiren, girdi alan ve çıktı veren bir programlama yapısıdır.",
-    "parametre nedir": "Parametre, fonksiyonlara gönderilen giriş değerleridir.",
-    "döngü nedir": "Döngü, bir işlemi belirli bir sayıda veya koşul sağlandıkça tekrar etmek için kullanılan bir kontrol yapısıdır.",
-    "while döngüsü nedir": "While döngüsü, belirli bir koşul sağlandığı sürece bir işlemi tekrar eden bir döngü türüdür.",
-    "for döngüsü nedir": "For döngüsü, belirli bir sayıda döngü çalıştırmak için kullanılan bir yapıdır.",
-    "web tasarımı nedir": "Web tasarımı, bir web sitesinin görsel düzenini ve kullanıcı deneyimini oluşturma sürecidir.",
-    "şifre güvenliği nedir": "Şifre güvenliği, kullanıcıların hesaplarının kötüye kullanılmasını engellemek için şifrelerin güçlü ve güvenli bir şekilde saklanmasıdır.",
-    "veri analizi nedir": "Veri analizi, verileri inceleyerek anlamlı bilgiler çıkarmak için yapılan işlemler bütünüdür.",
-    "makine öğrenmesi nedir": "Makine öğrenmesi, bilgisayarların deneyimlerden öğrenerek belirli görevleri yerine getirmesini sağlayan bir yapay zeka dalıdır.",
-    "yapay zeka uygulamaları nelerdir": "Yapay zeka uygulamaları arasında görüntü işleme, sesli asistanlar, öngörüsel analiz ve otonom araçlar bulunmaktadır.",
-    "web scraping nedir": "Web scraping, web sayfalarından veri çekme işlemidir.",
-    "siber güvenlik nedir": "Siber güvenlik, bilgisayar sistemlerini, ağları ve verileri koruma sürecidir.",
-    "phishing nedir": "Phishing, kişisel bilgileri çalmak amacıyla yapılan sahte e-posta veya web sitesi saldırılaridir.",
-    "hacker nedir": "Hacker, bilgisayar sistemlerine izinsiz erişim sağlayarak veri çalma veya zarar verme amacı güden kişidir.",
-    "siber saldırı nedir": "Siber saldırı, bilgisayar sistemlerine zarar verme, bilgi çalma veya erişimi engelleme amaçlı yapılan kötü niyetli işlemlerdir.",
-    "kriptografi nedir": "Kriptografi, bilgilerin güvenli bir şekilde şifrelenmesi ve çözülmesi işlemidir.",
-    "bitcoin nedir": "Bitcoin, merkezi olmayan bir dijital para birimidir.",
-    "blockchain nedir": "Blockchain, merkezi olmayan ve dağıtık bir veritabanı teknolojisidir.",
-    "bitcoin nasıl çalışır": "Bitcoin, merkezi olmayan bir ağda işlemleri onaylayan ve bloklara kaydeden bir dijital para sistemidir.",
-    "ethereum nedir": "Ethereum, akıllı sözleşmelerle çalışan, merkeziyetsiz bir blockchain platformudur.",
-    "akıllı sözleşmeler nedir": "Akıllı sözleşmeler, belirli koşullar yerine getirildiğinde otomatik olarak yürütülen dijital sözleşmelerdir.",
-    "augmented reality nedir": "Augmented reality (AR), gerçek dünyayı dijital öğelerle birleştiren bir teknolojidir.",
-    "virtual reality nedir": "Virtual reality (VR), kullanıcıyı tamamen sanal bir ortamda hissettiren bir teknolojidir.",
-    "cloud computing nedir": "Cloud computing, internet üzerinden veri depolama ve işleme hizmetleri sunan bir sistemdir.",
-    "data mining nedir": "Data mining, büyük veri kümelerinden anlamlı bilgiler çıkarma işlemidir.",
-    "IoT nedir": "IoT (Internet of Things), internet üzerinden birbirine bağlı cihazların oluşturduğu ağdır.",
-    "devops nedir": "DevOps, yazılım geliştirme ve operasyon süreçlerinin entegrasyonunu sağlayan bir yöntemdir.",
-    "scrum nedir": "Scrum, yazılım geliştirme projelerinde kullanılan bir çevik yönetim metodolojisidir.",
-    "agile nedir": "Agile, yazılım geliştirme süreçlerinde esneklik sağlayan bir yöntemdir.",
-    "API nedir": "API (Application Programming Interface), farklı yazılım sistemlerinin birbirleriyle iletişim kurmasını sağlayan bir arayüzdür.",
-    "JSON nedir": "JSON (JavaScript Object Notation), verilerin depolanması ve iletilmesi için kullanılan bir veri formatıdır.",
-    "XML nedir": "XML (eXtensible Markup Language), veri yapılarını tanımlamak için kullanılan bir işaretleme dilidir.",
-    "MVC nedir": "MVC (Model-View-Controller), yazılım geliştirme sürecinde kullanılan bir yazılım tasarım desenidir.",
-    "SQL nedir": "SQL (Structured Query Language), ilişkisel veritabanlarıyla etkileşim kurmak için kullanılan bir sorgu dilidir.",
-    "NoSQL nedir": "NoSQL, yapılandırılmamış veya yarı yapılandırılmış verileri depolamak için kullanılan bir veritabanı türüdür.",
-    "MongoDB nedir": "MongoDB, NoSQL veritabanı sistemlerinden biridir ve belge tabanlı bir veritabanıdır.",
-    "MySQL nedir": "MySQL, en yaygın kullanılan ilişkisel veritabanı yönetim sistemlerinden biridir.",
-    "PostgreSQL nedir": "PostgreSQL, açık kaynaklı ilişkisel veritabanı yönetim sistemidir.",
-    "SQLite nedir": "SQLite, dosya tabanlı, hafif bir ilişkisel veritabanı yönetim sistemidir.",
-    "Firebase nedir": "Firebase, Google tarafından sağlanan bir mobil ve web uygulama geliştirme platformudur.",
-    "Docker nedir": "Docker, uygulamaları kapsayıcılar içinde çalıştıran bir platformdur.",
-    "Kubernetes nedir": "Kubernetes, konteyner yönetimi ve orkestrasyonu için açık kaynaklı bir platformdur.",
-    "CI/CD nedir": "CI/CD, yazılım geliştirme sürecinde sürekli entegrasyon ve sürekli dağıtım için kullanılan bir yöntemdir.",
-    "Heroku nedir": "Heroku, bulut tabanlı bir platform-as-a-service (PaaS) sunucusudur.",
-    "AWS nedir": "AWS (Amazon Web Services), Amazon'un bulut bilişim platformudur.",
-    "Azure nedir": "Azure, Microsoft'un bulut bilişim platformudur.",
-    "Google Cloud nedir": "Google Cloud, Google'ın bulut bilişim platformudur.",
-    "Git nedir": "Git, yazılım projelerinde kullanılan bir sürüm kontrol sistemidir.",
-    "GitHub nedir": "GitHub, Git tabanlı projeleri barındıran ve işbirliği yapmayı kolaylaştıran bir platformdur.",
-    "Bitbucket nedir": "Bitbucket, Git ve Mercurial tabanlı sürüm kontrolü sağlayan bir platformdur.",
-    "Jenkins nedir": "Jenkins, yazılım geliştirme süreçlerini otomatikleştirmeye yardımcı olan açık kaynaklı bir araçtır.",
-    "Travis CI nedir": "Travis CI, yazılım geliştirme süreçlerini otomatikleştirerek sürekli entegrasyonu sağlayan bir araçtır.",
-    "Selenium nedir": "Selenium, web uygulamalarını otomatikleştirmek için kullanılan bir test aracıdır.",
-    "JUnit nedir": "JUnit, Java tabanlı bir birim test framework'üdür.",
-    "Mockito nedir": "Mockito, Java'da birim testleri için kullanılan bir çerçevedir.",
-    "Appium nedir": "Appium, mobil uygulamalar için açık kaynaklı bir test otomasyon platformudur.",
-    "Cucumber nedir": "Cucumber, davranış odaklı geliştirme (BDD) için kullanılan bir test aracıdır.",
-    "TestNG nedir": "TestNG, Java uygulamalarında testleri düzenlemek ve çalıştırmak için kullanılan bir çerçevedir.",
-    "Jira nedir": "Jira, yazılım geliştirme ve proje yönetimi için kullanılan bir yazılımdır.",
-    "Trello nedir": "Trello, proje yönetimi ve işbirliği için kullanılan bir uygulamadır."
-            "programlama nedir": "Programlama, bilgisayara belirli görevleri yapabilmesi için talimat verme sürecidir.",
-            "nasıl çalışıyorsun": "Ben, doğal dil işleme teknolojileriyle çalışıyorum.",
-            "ödev nasıl yapılır": "Ödevinizi yaparken konuyu anlamaya çalışın ve ardından araştırma yaparak çözümleri yazın.",
-    "nasılsın": "Ben bir yapay zeka olduğum için iyiyim! :)",
-    "nasilsin": "Ben bir yapay zeka olduğum için iyiyim! :)",
-    "napıyon": "Hiçbir şey, burada size yardımcı olmaya çalışıyorum!",
-    "ne yapıyorsun": "Şu anda seninle konuşuyorum ve yardımcı olmaya çalışıyorum.",
-    "iyi misin": "Evet, ben her zaman iyiyim! :)",
-    "iyi değilsin": "Ben bir yapay zeka olduğum için duygularım yok ama yine de yardımcı olmak için buradayım.",
-    "yapay zeka nasıl çalışır": "Yapay zeka, makinelerin insanlar gibi düşünmesini sağlamak için verilerle çalışır ve bu verileri öğrenir.",
-    "yapay zekayı nasıl geliştiririm": "Yapay zeka geliştirmek için makine öğrenmesi ve derin öğrenme gibi teknikleri öğrenmelisin.",
-    "yapay zekaya nasıl başlayabilirim": "Yapay zekaya başlamak için Python ve matematiksel temeller üzerinde çalışarak başlayabilirsin.",
-    "programlama nedir": "Programlama, bilgisayara belirli görevleri yerine getirmesi için yazılım talimatları vermek sürecidir.",
-    "coding nedir": "Coding, bir bilgisayarın yapmasını istediğiniz şeyleri belirlemek için yazılım dilinde kod yazmaktır.",
-    "code yazmak nedir": "Kod yazmak, bir yazılımın çalışması için gerekli talimatları yazma işlemidir.",
-    "HTML nedir": "HTML, web sayfalarını yapılandırmak için kullanılan işaretleme dilidir.",
-    "CSS nedir": "CSS, HTML öğelerinin stilini belirlemek için kullanılan bir stil dilidir.",
-    "JavaScript nedir": "JavaScript, web sayfalarında dinamik içerik oluşturmak için kullanılan bir programlama dilidir.",
-    "PHP nedir": "PHP, sunucu tarafı programlama için kullanılan, web sayfalarında dinamik içerik oluşturabilen bir dilidir.",
-    "sosyal medya nedir": "Sosyal medya, insanların internet üzerinden içerik paylaşabileceği ve etkileşimde bulunabileceği platformlardır.",
-    "twitter nedir": "Twitter, kısa mesajlar ve güncellemelerle iletişim kurmanıza olanak tanıyan bir sosyal medya platformudur.",
-    "facebook nedir": "Facebook, arkadaşlarınızla ve diğer insanlarla etkileşimde bulunabileceğiniz bir sosyal medya platformudur.",
-    "Instagram nedir": "Instagram, fotoğraf ve video paylaşımına dayalı bir sosyal medya platformudur.",
-    "sosyal medya hesapları nedir": "Sosyal medya hesapları, kişilerin sosyal medya platformlarında oluşturduğu profillerdir.",
-    "dijital pazarlama nedir": "Dijital pazarlama, dijital kanallar aracılığıyla ürün ve hizmetlerin tanıtımını yapmaktır.",
-    "seo nedir": "SEO, web sitelerinin arama motorlarında daha görünür olmasını sağlamak için yapılan optimizasyon işlemleridir.",
-    "google nedir": "Google, internet üzerinde bilgi aramak için kullanılan en büyük arama motorudur.",
-    "veri nedir": "Veri, bir konu hakkında bilgi içeren ham bilgilerdir.",
-    "big data nedir": "Big Data, çok büyük ve karmaşık veri kümelerini tanımlar, genellikle geleneksel veri işleme araçlarıyla işlenemez.",
-    "analitik nedir": "Analitik, verileri inceleme, çözümleme ve anlamlı bilgiler çıkarma sürecidir.",
-    "makine öğrenmesi nedir": "Makine öğrenmesi, verilerden öğrenen ve zamanla gelişen bir yapay zeka dalıdır.",
-    "yapay zeka öğrenmesi nedir": "Yapay zeka öğrenmesi, makinelerin verilerden öğrenip kendi başlarına kararlar almasıdır.",
-    "deep learning nedir": "Deep learning, yapay zeka alanında, daha derin ağ yapıları kullanarak verilerden öğrenme işlemidir.",
-    "veri bilimi nedir": "Veri bilimi, büyük veri setlerinden anlamlı bilgiler çıkararak çözüm üretme sürecidir.",
-    "veritabanı nedir": "Veritabanı, verilerin düzenli bir şekilde depolandığı bir yapıdır.",
-    "sql nedir": "SQL, veritabanlarıyla etkileşim kurmak için kullanılan bir sorgu dilidir.",
-    "NoSQL nedir": "NoSQL, ilişkisel olmayan veri depolama sistemlerine verilen isimdir.",
-    "MongoDB nedir": "MongoDB, NoSQL tabanlı bir veritabanı yönetim sistemidir.",
-    "PostgreSQL nedir": "PostgreSQL, açık kaynaklı bir ilişkisel veritabanı yönetim sistemidir.",
-    "MySQL nedir": "MySQL, açık kaynaklı, ilişkisel bir veritabanı yönetim sistemidir.",
-    "SQLite nedir": "SQLite, hafif ve taşınabilir bir veritabanı yönetim sistemidir.",
-    "Docker nedir": "Docker, uygulamaları kapsayıcılar içerisinde çalıştırmak için kullanılan bir platformdur.",
-    "Kubernetes nedir": "Kubernetes, konteyner yönetim ve orkestrasyon platformudur.",
-    "cloud computing nedir": "Cloud computing, internet üzerinden verileri depolamak ve işlemek için kullanılan bir teknolojidir.",
-    "AWS nedir": "AWS, Amazon'un bulut bilişim platformudur.",
-    "Google Cloud nedir": "Google Cloud, Google'ın sunduğu bulut tabanlı hizmetlerin topluluğudur.",
-    "Microsoft Azure nedir": "Microsoft Azure, Microsoft'un sunduğu bulut platformudur.",
-    "veri analizi nedir": "Veri analizi, verileri inceleyip anlamlı sonuçlar elde etme sürecidir.",
-    "veri madenciliği nedir": "Veri madenciliği, büyük veri kümelerinden anlamlı bilgiler çıkarma işlemidir.",
-    "AI nedir": "AI (Artificial Intelligence), makinelerin insan benzeri düşünme yeteneği kazandığı bir yapay zeka dalıdır.",
-    "teknoloji nedir": "Teknoloji, insan hayatını kolaylaştırmak amacıyla bilimsel bilgilerin pratikte uygulanmasıdır.",
-    "internet nedir": "İnternet, dünya çapında bağlı olan bilgisayar ağlarının toplamıdır.",
-    "program nasıl yapılır": "Bir program, bir problemi çözmek için yazılım diliyle kod yazılarak yapılır.",
-    "kod yazmak nasıl yapılır": "Kod yazmak, bir programlama dilinde bilgisayarın anlayacağı talimatları yazma işlemidir.",
-    "yazılım nedir": "Yazılım, bilgisayarları yönlendirmek için kullanılan programlar ve veri yapılarıdır.",
-    "geliştirme nedir": "Geliştirme, bir yazılımın veya sistemin iyileştirilmesi ve geliştirilmesi sürecidir.",
-    "frontend nedir": "Frontend, bir web sayfasının kullanıcıya görünen kısmıdır ve HTML, CSS, JavaScript gibi teknolojilerle yapılır.",
-    "backend nedir": "Backend, web sayfasının arka tarafını ve veritabanı işlemlerini yöneten teknolojilerdir.",
-    "fullstack nedir": "Fullstack, hem frontend hem de backend geliştirmeyi kapsayan bir yazılım geliştirme alanıdır.",
-    "programlama dilleri nedir": "Programlama dilleri, bilgisayarları kontrol etmek için kullanılan dildir. Örneğin, Python, Java, JavaScript.",
-    "HTML5 nedir": "HTML5, web sayfalarını oluşturmak için kullanılan HTML'nin en yeni sürümüdür.",
-    "CSS3 nedir": "CSS3, web sayfalarının görsel stilini tanımlamak için kullanılan CSS'in en yeni sürümüdür.",
-    "JavaScript nedir": "JavaScript, web sayfalarında etkileşimli özellikler eklemek için kullanılan bir programlama dilidir.",
-    "web tasarımı nedir": "Web tasarımı, web sitelerinin görsel düzenini ve kullanıcı deneyimini oluşturma sürecidir.",
-    "ux tasarımı nedir": "UX tasarımı, kullanıcı deneyimi tasarımını ifade eder ve bir ürünle etkileşimi optimize etmeyi hedefler.",
-    "ui tasarımı nedir": "UI tasarımı, kullanıcı arayüzü tasarımını ifade eder ve bir uygulamanın görsel öğelerini kapsar.",
-    "programcı kimdir": "Programcı, yazılım geliştiren ve program yazan kişidir.",
-    "yazılımcı nedir": "Yazılımcı, bilgisayar yazılımlarını geliştiren kişidir.",
-    "siber güvenlik nedir": "Siber güvenlik, bilgisayar sistemlerinin ve ağlarının korunmasını amaçlayan bir alandır.",
-    "saldırı nedir": "Saldırı, bir bilgisayar sistemine veya ağına izinsiz giriş yapmaya yönelik kötü niyetli bir eylemdir.",
-    "hacker nedir": "Hacker, bilgisayar sistemlerine izinsiz erişim sağlama amacı güden kişidir.",
-    "phishing nedir": "Phishing, kişisel bilgileri çalmak amacıyla yapılan sahte e-posta veya web sitesi saldırı türüdür.",
-    "kriptografi nedir": "Kriptografi, bilgilerin güvenli bir şekilde şifrelenmesi ve çözülmesi işlemidir.",
-    "blockchain nedir": "Blockchain, merkezi olmayan ve dağıtık bir veritabanı teknolojisidir.",
-    "bitcoin nedir": "Bitcoin, merkezi olmayan bir dijital para birimidir.",
-    "ethereum nedir": "Ethereum, akıllı sözleşmeleri destekleyen açık kaynaklı bir blockchain platformudur.",
-    "mining nedir": "Mining, Bitcoin ve diğer dijital paraların üretilmesi için yapılan işlem sürecidir.",
-    "cryptocurrency nedir": "Cryptocurrency, dijital veya sanal paraların güvenliğini sağlamak için şifreleme kullanan bir para birimidir.",
-    "google nedir": "Google, internet üzerinde bilgi aramak için kullanılan en büyük arama motorudur.",
-    "youtube nedir": "YouTube, kullanıcıların video yükleyip paylaşabildiği bir platformdur.",
-    "twitter nedir": "Twitter, kısa mesajlarla içerik paylaşılabilen bir sosyal medya platformudur.",
-    "instagram nedir": "Instagram, fotoğraf ve video paylaşımı yapılan sosyal medya platformudur.",
-    "facebook nedir": "Facebook, arkadaşlarla bağlantı kurmayı amaçlayan bir sosyal medya platformudur.",
-    "reddit nedir": "Reddit, kullanıcıların içerik paylaştığı ve diğer kullanıcıların değerlendirdiği bir sosyal medya platformudur.",
-    "twitch nedir": "Twitch, özellikle oyun yayınları yapan bir video akış platformudur.",
-    "github nedir": "GitHub, yazılım projelerinin depolanıp paylaşılmasını sağlayan bir platformdur.",
- "gaziantep dili nasıl": "Gaziantep'te konuşurken 'Nasılsın?' demek yerine 'Nasılsın be kardeşim?' gibi bir hitap kullanabilirsiniz.",
-    "gaziantepçe nasılsın": "Gaziantep'te 'Nasılsın?' yerine 'Nasılsın be kardeşim?' diye de sorulabilir.",
-    "adıyamanlı nasıl konuşur": "Adıyaman'da bazen 'Nasılsınız?' yerine 'Nasılsın hacı?' denir.",
-    "adıyaman aksanı nedir": "Adıyaman'da insanlar bazen 'Hacı' yerine 'Asıl' kelimesini de kullanır, farklı bir aksanı vardır.",
-    "diyarbakırca nasılsın": "Diyarbakır'da insanlar, genellikle 'Nasılsın?' yerine 'Nasılsın canım?' derler.",
-    "diyarbakır aksanı nedir": "Diyarbakır aksanında bazı kelimeler daha vurgu yapılarak söylenir, örneğin 'Beni dinle' yerine 'Beni dinleyin' diye söylenebilir.",
-    "adana şehrine özgü dil": "Adana'da insanlar genellikle 'Nasılsın' yerine 'Nasılsın beğenmedim?' derler.",
-    "adana aksanı ile nasıl konuşulur": "Adana aksanında, kelimeler biraz daha kısa ve hızlı söylenir, mesela 'ne yapıyorsun?' yerine 'ne yapıyorsun ki?' denir.",
-    "kayseri dili": "Kayseri şehrinde insanlar sıklıkla 'Benden sana ne?' gibi deyimleri kullanırlar.",
-    "kayseri aksanı nedir": "Kayseri aksanı daha sert ve hızlı konuşmalarla bilinir. Mesela 'gel' yerine 'gell' denir.",
-    "python kodunun açıklamasını yap": "Python, yazılım geliştirmek için kullanılan popüler bir programlama dilidir. Kolay okunabilir yapısı ve geniş kütüphane desteği ile bilinir.",
-    "python kodu anlat": "Python, özellikle web geliştirme, veri analizi ve yapay zeka gibi alanlarda yaygın olarak kullanılan bir dildir. Basit sözdizimi, yeni başlayanlar için uygun bir dil olmasını sağlar.",
-    "python dilini açıkla": "Python, açık kaynaklı, yüksek seviyeli ve nesne yönelimli bir programlama dilidir. Hem profesyoneller hem de amatörler tarafından yaygın olarak kullanılır.",
-    "python nedir anlat": "Python, genel amaçlı bir programlama dilidir. Web geliştirme, veri analizi, yapay zeka gibi birçok farklı alanda kullanılır.",
-    "python nasıl çalışır": "Python, bir betik dilidir. Yani, yazdığınız kodu çalıştırmak için bir derleyiciye ihtiyaç duymaz, direkt olarak yorumlanarak çalıştırılır.",
-    "PHP nasıl çalışır": "PHP, web geliştirme için kullanılan bir sunucu tarafı programlama dilidir. Dinamik web sayfaları oluşturmak için yaygın olarak kullanılır.",
-    "html nedir açıklama yap": "HTML, web sayfalarının yapısını belirlemek için kullanılan bir işaretleme dilidir. HTML ile sayfa başlıkları, paragraflar ve bağlantılar oluşturulabilir.",
-    "css ne işe yarar": "CSS, web sayfalarına stil ve biçim eklemek için kullanılan bir dil olup, sayfa düzenini ve görünümünü belirler.",
-    "javascript nedir kısa açıklama": "JavaScript, web sayfalarını dinamik ve etkileşimli hale getiren bir programlama dilidir.",
-    "jquery nedir": "jQuery, JavaScript ile yazılmış, HTML ve CSS üzerinde işlemleri kolaylaştıran bir kütüphanedir.",
-    "angular nedir": "Angular, web uygulamaları geliştirmek için kullanılan bir JavaScript framework'üdür.",
-    "react nedir": "React, kullanıcı arayüzlerini geliştirmek için kullanılan açık kaynaklı bir JavaScript kütüphanesidir.",
-    "Node.js nedir": "Node.js, JavaScript kodunu sunucu tarafında çalıştırabilen bir platformdur.",
-    "vue.js nedir": "Vue.js, ön yüz geliştirme için kullanılan bir JavaScript framework'üdür.",
-    "veritabanı nedir": "Veritabanı, verilerin düzenli bir şekilde saklandığı, erişildiği ve işlendiği dijital bir yapıdır.",
-    "mysql nedir": "MySQL, açık kaynaklı, ilişkisel bir veritabanı yönetim sistemidir.",
-    "mongodb nedir": "MongoDB, NoSQL bir veritabanı olup, verileri JSON formatında depolar.",
-    "sql nasıl kullanılır": "SQL, ilişkisel veritabanlarında veri sorgulamak, güncellemek, eklemek ve silmek için kullanılan bir dilidir.",
-    "mongodb nasıl kullanılır": "MongoDB, NoSQL veritabanlarında verileri belge formatında saklar ve sorgular için JSON benzeri bir dil kullanır.",
-    "veri analizi nasıl yapılır": "Veri analizi, verileri toplamak, düzenlemek ve anlamlı bilgilere dönüştürmek için kullanılan bir süreçtir.",
-    "veri bilimi nedir": "Veri bilimi, verileri analiz ederek işletmelerin daha bilinçli kararlar almasını sağlamak için kullanılan bir alandır.",
-    "machine learning nedir": "Makine öğrenmesi, verilerden öğrenerek model oluşturmayı ve yeni verilere dayanarak tahminler yapmayı sağlayan bir alandır.",
-    "deep learning nedir": "Derin öğrenme, büyük veri ve güçlü hesaplama kaynakları ile gelişmiş yapay zeka modelleri geliştirmeye yönelik bir tekniktir.",
-    "python neden kullanılır": "Python, basit sözdizimi ve güçlü kütüphaneleri ile veri analizi, yapay zeka, web geliştirme gibi pek çok alanda yaygın olarak kullanılır.",
-    "python nasıl öğrenilir": "Python öğrenmek için online kaynaklar, kitaplar ve örnek projeler üzerinde çalışarak deneyim kazanabilirsiniz.",
-    "yazılım geliştirme nedir": "Yazılım geliştirme, bir bilgisayar programı veya uygulaması oluşturma sürecidir.",
-    "web geliştirme nedir": "Web geliştirme, internet üzerinde çalışan web siteleri ve uygulamalarının tasarım ve programlamasını kapsayan bir süreçtir.",
-    "html5 nedir": "HTML5, web sayfalarının yapısını tanımlamak için kullanılan en yeni HTML sürümüdür.",
-    "css3 nedir": "CSS3, web sayfalarının stilini belirlemek için kullanılan CSS'in en yeni sürümüdür.",
-    "front end nedir": "Front end, bir web uygulamasının kullanıcı ile etkileşimde bulunduğu kısmıdır ve HTML, CSS, JavaScript kullanılarak yapılır.",
-    "back end nedir": "Back end, web uygulamalarının arka planda çalışan ve verileri işleyen kısmıdır.",
-    "full stack nedir": "Full stack, hem front end hem de back end geliştirmeyi kapsayan bir yazılım geliştirme alanıdır.",
-    "git nedir": "Git, yazılım geliştirme projelerindeki değişiklikleri izleyen ve yöneten bir sürüm kontrol sistemidir.",
-    "github nedir": "GitHub, yazılım projelerinin sürüm kontrolünü sağlamak ve projeler üzerinde işbirliği yapmak için kullanılan bir platformdur.",
-    "bitbucket nedir": "Bitbucket, Git ve Mercurial sürüm kontrol sistemlerini destekleyen bir platformdur.",
-    "docker nedir": "Docker, uygulamaları kapsayıcılar içinde çalıştırmak için kullanılan bir platformdur.",
-    "kubernetes nedir": "Kubernetes, konteyner yönetimi ve orkestrasyonu için kullanılan açık kaynaklı bir platformdur.",
-    "heroku nedir": "Heroku, bulut tabanlı bir platform-as-a-service (PaaS) sunucusudur.",
-    "AWS nedir": "AWS (Amazon Web Services), Amazon'un bulut tabanlı bilişim hizmetleridir.",
-    "azure nedir": "Azure, Microsoft'un bulut bilişim platformudur.",
-    "google cloud nedir": "Google Cloud, Google'ın sunduğu bulut tabanlı bilişim hizmetleridir.",
-    "firebase nedir": "Firebase, Google tarafından sağlanan bir mobil ve web uygulama geliştirme platformudur.",
-    "siber güvenlik nedir": "Siber güvenlik, bilgisayar sistemlerini, ağları ve verileri koruma sürecidir.",
-    "phishing nedir": "Phishing, kullanıcıların kişisel bilgilerini çalmak amacıyla sahte e-posta veya web sitesi saldırılarıdır.",
-    "hacker nedir": "Hacker, bilgisayar sistemlerine izinsiz giriş yaparak veri çalma veya zarar verme amacı güden kişidir.",
-    "cyber attack nedir": "Cyber attack, bilgisayar sistemlerine yönelik yapılan kötü niyetli saldırılardır.",
-    "blockchain nedir": "Blockchain, verilerin güvenli bir şekilde kaydedildiği, değiştirilemez bir dijital defterdir.",
-    "bitcoin nedir": "Bitcoin, merkezi olmayan bir dijital para birimidir ve blockchain teknolojisi ile çalışır.",
-    "ethereum nedir": "Ethereum, akıllı sözleşmeleri destekleyen açık kaynaklı bir blockchain platformudur.",
-    "NFT nedir": "NFT, benzersiz dijital varlıkların satılmasına ve alım satımına imkan veren bir blockchain tabanlı sistemdir.",
-    "cryptocurrency nedir": "Cryptocurrency, dijital veya sanal paraların güvenliğini sağlamak için kriptografi kullanan bir para birimidir.",
-    "internet nedir": "İnternet, dünya çapında bilgisayarların birbirine bağlı olduğu büyük bir ağdır.",
-    "programlama dili nedir": "Programlama dili, bilgisayara belirli görevleri yapması için verilen talimatları yazmaya yarayan bir dil sistemidir.",
-    "sql nedir": "SQL, ilişkisel veritabanlarıyla etkileşimde bulunmak için kullanılan bir dil sistemidir.",
-    "json nedir": "JSON (JavaScript Object Notation), verilerin yapılandırılmış bir şekilde saklanması ve iletilmesi için kullanılan bir formatıdır.",
-    "xml nedir": "XML (eXtensible Markup Language), veri taşıma ve yapıları tanımlamak için kullanılan bir işaretleme dilidir.",
-    "sosyal medya nedir": "Sosyal medya, internet üzerinden içerik paylaşımı ve etkileşimi sağlamak amacıyla kullanılan platformlardır.",
-    "digital marketing nedir": "Dijital pazarlama, internet ve dijital teknolojiler kullanarak ürün ve hizmetleri tanıtma sürecidir.",
-    "seo nedir": "SEO (Search Engine Optimization), web sayfalarının arama motorlarında daha görünür olmasını sağlayan tekniklerin bütünüdür.",
-    "web tasarımı nedir": "Web tasarımı, internet üzerinde kullanılan web sayfalarının görsel düzenini ve kullanıcı deneyimini tasarlama sürecidir.",
-    "UI tasarımı nedir": "UI (User Interface) tasarımı, bir yazılımın kullanıcı arayüzünün görsel ve işlevsel tasarımını yapma sürecidir.",
-    "UX tasarımı nedir": "UX (User Experience) tasarımı, kullanıcıların bir ürünle olan deneyimini optimize etmek amacıyla yapılan tasarımdır.",
-    "git nedir": "Git, yazılım geliştirme projelerinde sürüm kontrolü yapmak için kullanılan açık kaynaklı bir sistemdir.",
-    "heroku nedir": "Heroku, uygulamaları kolayca dağıtmak için kullanılan bir bulut platformudur.",
-    "docker nedir": "Docker, yazılım uygulamalarını izole edilmiş ortamlar içinde çalıştırmaya olanak tanıyan bir platformdur."
+    // ========== Doğrulama Modalı ==========
+    const verifyModal = document.getElementById('verifyModal');
+    const verifyCodeInput = document.getElementById('verifyCodeInput');
+    const verifyError = document.getElementById('verifyError');
+    const verifyBtn = document.getElementById('verifyBtn');
+    const cancelVerifyBtn = document.getElementById('cancelVerifyBtn');
 
-           // 600+ soruyu buraya ekleyin...
-        };
-
-        // Kullanıcının mesajı ile eşleşen cevap
-        const response = responses[message.toLowerCase()];
-        return response || "Bilmiyorum. Lütfen başka bir şey sorun!";
+    function openVerifyModal(){
+      verifyError.style.display = 'none';
+      verifyError.textContent = '';
+      verifyCodeInput.value = '';
+      verifyModal.classList.add('show');
+      verifyModal.setAttribute('aria-hidden','false');
+      // kullanıcıya kodu bildirelim (sayfa içi alert — istek doğrultusunda “site versin”)
+      alert('Doğrulama kodunuz: ' + generatedCode);
+      setTimeout(() => verifyCodeInput.focus(), 50);
     }
+    function closeVerifyModal(){
+      verifyModal.classList.remove('show');
+      verifyModal.setAttribute('aria-hidden','true');
+    }
+
+    verifyBtn.addEventListener('click', () => {
+      const entered = verifyCodeInput.value.trim();
+      if (entered.length !== 6){ showVerifyError('6 haneli kod girin.'); return; }
+      if (entered !== generatedCode){ showVerifyError('Kod hatalı.'); return; }
+      // kayıt tamamla
+      if (pendingUser){
+        pendingUser.verified = true;
+        saveUser(pendingUser.email, { name: pendingUser.name, password: pendingUser.password, verified:true });
+      }
+      pendingUser = null; generatedCode = null;
+      closeVerifyModal();
+      alert('Kayıt tamamlandı! Artık giriş yapabilirsiniz.');
+      // kayıt formundan giriş formuna geç
+      const reg = document.getElementById('register-form');
+      const log = document.getElementById('login-form');
+      reg.style.display = 'none';
+      log.style.display = 'block';
+    });
+
+    cancelVerifyBtn.addEventListener('click', () => {
+      pendingUser = null; generatedCode = null;
+      closeVerifyModal();
+    });
+
+    function showVerifyError(msg){
+      verifyError.textContent = msg;
+      verifyError.style.display = 'block';
+    }
+
+    // ========== Basit Chatbot (yapıyı koruyoruz) ==========
+    const chatboxEl = document.getElementById('chatbox');
+    document.getElementById('sendBtn').addEventListener('click', sendMessage);
+    document.getElementById('userMessage').addEventListener('keydown', (e)=>{ if(e.key==='Enter') sendMessage(); });
+
+    function sendMessage(){
+      const input = document.getElementById('userMessage');
+      const msg = input.value.trim();
+      if(!msg) return;
+      chatboxEl.innerHTML += `<div><strong>Siz:</strong> ${escapeHtml(msg)}</div>`;
+      const resp = getChatbotResponse(msg);
+      chatboxEl.innerHTML += `<div><strong>Bot:</strong> ${escapeHtml(resp)}</div>`;
+      input.value='';
+      chatboxEl.scrollTop = chatboxEl.scrollHeight;
+    }
+
+    function getChatbotResponse(message){
+      const responses = {
+        "merhaba":"Merhaba! Size nasıl yardımcı olabilirim?",
+        "selam":"Selam! Buradayım.",
+        "yardım":"Ne konuda yardıma ihtiyacın var?",
+        "nasılsın":"Harika! Sen nasılsın?",
+        "ödev nasıl yapılır":"Konuyu anla → plan yap → kaynak tara → yaz ve kontrol et."
+      };
+      return responses[message.toLowerCase()] || "Bilmiyorum. Başka bir şey sor.";
+    }
+
+    function escapeHtml(s){ return s.replace(/[&<>"']/g,m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":
 </script>
-
 </body>
 </html>
