@@ -191,6 +191,32 @@
             background-color: #00b300;
             transform: scale(1.05);
         }
+
+        /* Chatbot Bölümü */
+        .chatbox-container {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            width: 350px;
+            max-height: 400px;
+            overflow-y: auto;
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
+            margin-top: 20px;
+        }
+
+        .chatbox {
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+        }
+
+        .chatbox div {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #333;
+            border-radius: 5px;
+            color: #00ff00;
+        }
     </style>
 </head>
 <body>
@@ -229,6 +255,14 @@
     <div class="toggle-form">
         <p>Hesabınız yok mu? <a href="javascript:void(0);" onclick="toggleForms()">Kayıt Ol</a></p>
     </div>
+</div>
+
+<!-- Chatbot -->
+<div class="container" id="chatbox-container" style="display:none;">
+    <h2>Chatbot</h2>
+    <div class="chatbox" id="chatbox"></div>
+    <input type="text" id="userMessage" class="input-field" placeholder="Mesajınızı yazın..." />
+    <button onclick="sendMessage()">Gönder</button>
 </div>
 
 <!-- Telegram Linkleri -->
@@ -310,25 +344,13 @@
             return;
         }
 
-        // Doğrulama kodu
-        const verificationCode = Math.floor(100000 + Math.random() * 900000);  // 6 haneli doğrulama kodu
-        alert("Doğrulama kodunuz: " + verificationCode);  // Bu kodu kullanıcıya gösteriyoruz
-
         // Kayıt işlemini tamamla
         localStorage.setItem("userName", name);
         localStorage.setItem("userEmail", email);
         localStorage.setItem("userPassword", password);
 
-        // Doğrulama kodunu almak için prompt açıyoruz
-        const code = prompt("Doğrulama kodunu gir:");
-
-        // Kod doğru girildiyse kayıt başarılı
-        if (code == verificationCode) {
-            alert("Doğrulama başarılı! Kayıt tamamlandı.");
-            window.location.reload();  // Sayfayı yenileyerek işlemi bitiriyoruz
-        } else {
-            document.getElementById("registerError").textContent = "Geçersiz doğrulama kodu. Lütfen tekrar deneyin.";
-        }
+        alert("Kayıt başarılı! Artık giriş yapabilirsiniz.");
+        toggleForms();
     });
 
     // Giriş işlemi
@@ -338,13 +360,51 @@
         var email = document.getElementById("loginEmail").value;
         var password = document.getElementById("loginPassword").value;
 
-        // Kullanıcı doğrulama
         if (email === localStorage.getItem("userEmail") && password === localStorage.getItem("userPassword")) {
             alert("Giriş başarılı! Hoş geldiniz, " + localStorage.getItem("userName"));
+            document.getElementById("chatbox-container").style.display = "block";
+            document.getElementById("login-form").style.display = "none";
         } else {
-            document.getElementById("loginError").textContent = "Geçersiz giriş! Lütfen email ve şifrenizi kontrol edin.";
+            document.getElementById("loginError").textContent = "Geçersiz giriş!";
         }
     });
+
+    // Chatbot fonksiyonu
+    function sendMessage() {
+        var message = document.getElementById("userMessage").value;
+        var chatbox = document.getElementById("chatbox");
+
+        // Kullanıcı mesajını göster
+        chatbox.innerHTML += `<div><strong>Siz:</strong> ${message}</div>`;
+
+        // Chatbot yanıtını almak için API'den cevap alalım
+        var response = getChatbotResponse(message);
+
+        // Chatbot cevabını göster
+        chatbox.innerHTML += `<div><strong>Bot:</strong> ${response}</div>`;
+
+        // Mesaj kutusunu temizle
+        document.getElementById("userMessage").value = '';
+    }
+
+    // Chatbot yanıtları
+    function getChatbotResponse(message) {
+        const responses = {
+            "merhaba": "Merhaba! Size nasıl yardımcı olabilirim?",
+            "nasılsın": "Ben bir yapay zeka olduğum için iyiyim! :)",
+            "yardım": "Tabii! Ne konuda yardıma ihtiyacınız var?",
+            "teşekkürler": "Rica ederim, her zaman yardımcı olabilirim!",
+            "kimdir": "Ben bir chatbot'um, burada size yardımcı olmak için varım.",
+            "programlama nedir": "Programlama, bilgisayara belirli görevleri yapabilmesi için talimat verme sürecidir.",
+            "nasıl çalışıyorsun": "Ben, doğal dil işleme teknolojileriyle çalışıyorum.",
+            "ödev nasıl yapılır": "Ödevinizi yaparken konuyu anlamaya çalışın ve ardından araştırma yaparak çözümleri yazın.",
+            // 600+ soruyu buraya ekleyin...
+        };
+
+        // Kullanıcının mesajı ile eşleşen cevap
+        const response = responses[message.toLowerCase()];
+        return response || "Bilmiyorum. Lütfen başka bir şey sorun!";
+    }
 </script>
 
 </body>
