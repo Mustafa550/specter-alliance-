@@ -3,182 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DearSiber Chatbot</title>
+    <title>Reha Gündüz Aksoy Anadolu Lisesi</title>
     <style>
         body {
-            font-family: 'Courier New', monospace;
-            background-color: #121212;
-            color: #00ff00;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: white;
+            color: black;
             margin: 0;
-            position: relative;
-            transition: background-color 0.5s ease;
+            padding: 0;
         }
-
-        h1, h2, p {
-            margin: 10px 0;
-        }
-
-        .chatbox-container {
-            background-color: rgba(0, 0, 0, 0.8);
+        header {
+            text-align: center;
+            background-color: black;
+            color: white;
             padding: 20px;
-            border-radius: 10px;
-            width: 350px;
-            max-height: 400px;
-            overflow-y: auto;
-            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
+        }
+        header img {
+            width: 150px;
+        }
+        .container {
+            padding: 20px;
+        }
+        .links {
+            display: flex;
+            justify-content: space-around;
             margin-top: 20px;
         }
-
-        .chatbox {
-            display: flex;
-            flex-direction: column;
-            margin-top: 10px;
-        }
-
-        .chatbox div {
-            margin-bottom: 10px;
-            padding: 10px;
-            background-color: #333;
-            border-radius: 5px;
-            color: #00ff00;
-        }
-
-        .input-field {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #33ff33;
-            font-size: 16px;
-            background-color: #111;
-            color: #33ff33;
-            box-shadow: 0 0 5px rgba(0, 255, 0, 0.8);
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #00ff00;
+        .links a {
+            text-decoration: none;
+            font-size: 18px;
             color: black;
-            border: none;
+            padding: 10px;
             border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: transform 0.3s ease-in-out;
+            background-color: #f1f1f1;
+            transition: background-color 0.3s;
         }
-
-        button:hover {
-            background-color: #00b300;
-            transform: scale(1.05);
+        .links a:hover {
+            background-color: #ddd;
         }
-
-        #themeToggle {
+        .chatbot {
             position: fixed;
             bottom: 20px;
-            right: 20px;
-            padding: 10px 20px;
-            background-color: #00ff00;
-            color: black;
-            border: none;
-            border-radius: 5px;
-            font-size: 14px;
+            left: 20px;
+            background-color: black;
+            color: white;
+            padding: 15px;
+            border-radius: 50%;
             cursor: pointer;
-            transition: transform 0.3s ease-in-out;
         }
-
-        #themeToggle:hover {
-            background-color: #00b300;
-            transform: scale(1.05);
+        .chatbot-popup {
+            position: fixed;
+            bottom: 80px;
+            left: 20px;
+            width: 300px;
+            height: 400px;
+            background-color: white;
+            border: 2px solid black;
+            padding: 10px;
+            display: none;
+            overflow-y: scroll;
         }
-
-        .telegram-links {
+        .chatbot-popup input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .chatbot-popup .messages {
+            height: 300px;
+            overflow-y: scroll;
+            margin-bottom: 10px;
+        }
+        .chatbot-popup .messages p {
+            margin: 5px 0;
+        }
+        .user-name {
             text-align: center;
-            margin-top: 20px;
+            margin-bottom: 20px;
         }
-
-        .telegram-links a {
+        .user-name input {
+            padding: 10px;
             font-size: 16px;
-            color: #33ff33;
-            text-decoration: none;
-            margin: 5px;
-            display: inline-block;
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .telegram-links a:hover {
-            transform: scale(1.1);
-            color: #00ff00;
-        }
-
-        .telegram-links img {
-            width: 25px;
-            height: 25px;
-            margin-right: 8px;
         }
     </style>
 </head>
 <body>
 
-<!-- Hakkımızda Bölümü -->
-<div class="about-container">
-    <h1>Hoş Geldiniz!</h1>
-    <p>Gelişmiş hacker tarzı chatbot. Yardımcı olabileceğim bir şey var mı?</p>
+<header>
+    <!-- Okul Logosu Eklendi -->
+    <img src="IMG_20251022_201923.jpg" alt="Okul Logosu">
+    <h1>Reha Gündüz Aksoy Anadolu Lisesi</h1>
+    <p>Geleceğin Yazılımcıları Burada Yetişiyor!</p>
+</header>
+
+<div class="container">
+    <!-- Linkler Bölümü -->
+    <div class="links">
+        <a href="https://www.instagram.com/rehagunduzaksoyanadolu" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/1024px-Instagram_icon.png" alt="Instagram" width="30"> Instagram
+        </a>
+        <a href="https://www.google.com/maps?q=F%C4%B1st%C4%B1kl%C4%B1k+Anadolu+Lisesi,+Beylerbeyi,+27580+Şehitkamil%2FGaziantep" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Google_Maps_icon.svg/1200px-Google_Maps_icon.svg.png" alt="Konum" width="30"> Okul Konumu
+        </a>
+    </div>
+
+    <!-- Sohbet Başlatma Bölümü -->
+    <div class="user-name">
+        <input type="text" id="user-name" placeholder="Adınızı girin..." />
+        <button onclick="startChat()">Sohbete Başla</button>
+    </div>
+
+    <!-- Chatbot -->
+    <div class="chatbot" onclick="toggleChatbot()">💬</div>
+
+    <div class="chatbot-popup" id="chatbot-popup">
+        <div class="messages" id="chatbot-messages"></div>
+        <input type="text" id="chatbot-input" placeholder="Sorunuzu buraya yazın..." />
+    </div>
 </div>
 
-<!-- Chatbot Bölümü -->
-<div class="chatbox-container">
-    <h2>Chatbot - DearSiber Bot</h2>
-    <div class="chatbox" id="chatbox"></div>
-    <input type="text" id="userMessage" class="input-field" placeholder="Mesajınızı yazın..." />
-    <button onclick="sendMessage()">Gönder</button>
-</div>
-
-<!-- Telegram Linkleri -->
-<div class="telegram-links">
-    <a href="https://t.me/+icW90vpzScthOTRk" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Tool</a>
-    <a href="https://t.me/+IFx5aGB37Ws5NDFk" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Checker</a>
-    <a href="https://t.me/+84tsaP2hMopiMTNk" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Sohbet</a>
-</div>
-
-<!-- Gece/Gündüz Modu Butonu -->
-<button id="themeToggle">Gece Modu</button>
-
-<script src="https://js.puter.com/v2/"></script>
 <script>
-    let isDarkMode = true;
-
-    document.getElementById("themeToggle").addEventListener("click", function() {
-        if (isDarkMode) {
-            document.body.classList.add('day');
-            document.getElementById("themeToggle").textContent = "Gündüz Modu";
+    // Sohbeti başlatan fonksiyon
+    function startChat() {
+        const name = document.getElementById("user-name").value.trim();
+        if (name) {
+            localStorage.setItem("userName", name); // Kullanıcı ismini kaydet
+            document.querySelector(".user-name").style.display = "none"; // İsim giriş kısmını gizle
+            toggleChatbot(); // Sohbeti başlat
         } else {
-            document.body.classList.remove('day');
-            document.getElementById("themeToggle").textContent = "Gece Modu";
+            alert("Lütfen bir isim girin.");
         }
-        isDarkMode = !isDarkMode;
+    }
+
+    function toggleChatbot() {
+        var popup = document.getElementById('chatbot-popup');
+        popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+    }
+
+    const responses = {
+        "Okul hakkında bilgi istiyorum": "Reha Gündüz Aksoy Anadolu Lisesi, Gaziantep'te yer alıyor ve yenilikçi eğitim anlayışıyla tanınmaktadır.",
+        "Okulun amacı nedir": "Amacımız, öğrencilere en iyi eğitim ve yazılım becerileri kazandırmaktır.",
+        "Ne tür etkinlikler yapıyorsunuz": "Okulumuzda yazılım, teknoloji ve bilim etkinlikleri düzenlenmektedir.",
+        "Okulun başarıları nelerdir": "Okulumuz, birçok yazılım yarışmasında ödüller kazanmış ve öğrencilerini başarılı bir şekilde mezun etmiştir.",
+        "Öğrenciler ne tür projeler yapabilir": "Öğrencilerimiz, yazılım, robotik ve teknoloji projeleri üzerinde çalışabilirler.",
+        "Okulun öğretmenleri hakkında bilgi ver": "Öğretmenlerimiz, deneyimli ve alanlarında uzman kişilerden oluşmaktadır.",
+        "Okulda sosyal kulüpler var mı": "Evet, birçok sosyal kulüp bulunmaktadır, bunlar arasında yazılım kulübü en popüler olanlardan biridir.",
+        "Sınavlar nasıl oluyor": "Sınavlar, öğrencilerin bilgi seviyelerini ölçmek için düzenli aralıklarla yapılmaktadır.",
+        "Okulun yemekleri nasıl": "Okulumuzda sağlıklı ve dengeli öğünler sunulmaktadır.",
+        "Okulun sosyal medya hesapları var mı": "Evet, Instagram üzerinden okulumuzun güncel aktivitelerini takip edebilirsiniz!"
+    };
+
+    // Sohbet mesajlarını ekleyip yanıt ver
+    document.getElementById('chatbot-input').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            var userInput = event.target.value.trim();
+            if (userInput) {
+                var messagesDiv = document.getElementById('chatbot-messages');
+                var userName = localStorage.getItem("userName"); // Kullanıcı adını al
+                messagesDiv.innerHTML += `<p><b>${userName}:</b> ${userInput}</p>`;
+                if (responses[userInput]) {
+                    messagesDiv.innerHTML += `<p><b>Bot:</b> ${responses[userInput]}</p>`;
+                } else {
+                    messagesDiv.innerHTML += `<p><b>Bot:</b> Üzgünüm, bunu anlayamadım. Lütfen başka bir soru sorun.</p>`;
+                }
+                event.target.value = '';
+                messagesDiv.scrollTop = messagesDiv.scrollHeight; // En son mesaja scroll yap
+                saveChat(messagesDiv.innerHTML); // Sohbeti kaydet
+            }
+        }
     });
 
-    // Chatbot Yanıtı
-    async function sendMessage() {
-        const message = document.getElementById("userMessage").value;
-        const chatbox = document.getElementById("chatbox");
-
-        // Kullanıcı mesajını ekle
-        chatbox.innerHTML += `<div><strong>Siz:</strong> ${message}</div>`;
-        document.getElementById("userMessage").value = '';
-
-        // Puter API'ye mesaj gönder
-        const response = await puter.chat({ message: message });
-
-        // Chatbot cevabını ekle
-        chatbox.innerHTML += `<div><strong>Bot:</strong> ${response}</div>`;
-        chatbox.scrollTop = chatbox.scrollHeight;
+    // Sohbeti yerel depolamaya kaydet
+    function saveChat(chatContent) {
+        localStorage.setItem("chatHistory", chatContent);
     }
+
+    // Sayfa yenilendiğinde sohbet geçmişini geri yükle
+    window.onload = function() {
+        var savedChat = localStorage.getItem("chatHistory");
+        if (savedChat) {
+            document.getElementById('chatbot-messages').innerHTML = savedChat;
+        }
+    };
 </script>
 
 </body>
