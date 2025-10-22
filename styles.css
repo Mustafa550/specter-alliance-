@@ -1,0 +1,173 @@
+/* Global Stiller */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f7f7;
+    color: #333;
+}
+
+/* Header */
+header {
+    background-color: #222;
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
+}
+header img {
+    width: 150px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    transition: transform 0.5s ease;
+}
+header h1 {
+    font-size: 2.8rem;
+    margin-top: 10px;
+}
+
+/* Navigation */
+nav {
+    background-color: #444;
+    color: white;
+    text-align: center;
+    padding: 15px;
+}
+nav a {
+    text-decoration: none;
+    color: white;
+    margin: 0 20px;
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+nav a:hover {
+    background-color: #ff6347;
+}
+
+/* Hero Bölümü */
+.hero {
+    background-image: url('https://example.com/school-image.jpg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 80px 20px;
+    text-align: center;
+}
+
+/* Kutucuklu Bölüm (About, Etkinlikler vb.) */
+.section-box {
+    background-color: white;
+    padding: 40px 20px;
+    margin: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+.section-box h3 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+.section-box p {
+    font-size: 1.2rem;
+    color: #555;
+}
+
+/* Etkinlikler */
+.event-item {
+    background-color: #f1f1f1;
+    padding: 20px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.event-item h4 {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+/* Galeri */
+.gallery-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.gallery-container img {
+    width: 32%;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+.gallery-container img:hover {
+    transform: scale(1.05);
+}
+
+/* Sohbet */
+.chatbot {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #333;
+    color: white;
+    font-size: 2rem;
+    padding: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+.chatbot:hover {
+    background-color: #ff6347;
+    transform: scale(1.1);
+}
+
+/* Chatbot Popup */
+.chat-popup {
+    position: fixed;
+    bottom: 100px;
+    right: 30px;
+    width: 350px;
+    height: 400px;
+    background-color: white;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    display: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    overflow-y: auto;
+    animation: slideUp 0.5s ease;
+}
+.chat-popup input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 2px solid #ddd;
+}
+
+/* Footer */
+footer {
+    background-color: #222;
+    color: white;
+    text-align: center;
+    padding: 30px 0;
+    font-size: 1rem;
+}
+
+/* Animasyon */
+@keyframes slideUp {
+    0% { transform: translateY(100%); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsive Tasarım */
+@media screen and (max-width: 768px) {
+    .section-box, .gallery-container, .event-item {
+        width: 100%;
+    }
+    .hero h2 {
+        font-size: 2.5rem;
+    }
+}
