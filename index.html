@@ -5,121 +5,220 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reha Gündüz Aksoy Anadolu Lisesi</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: white;
-            color: black;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
         header {
-            text-align: center;
-            background-color: black;
+            background-color: #222;
             color: white;
-            padding: 20px;
+            text-align: center;
+            padding: 60px 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        header:hover {
+            background-color: #333;
+        }
+        header h1 {
+            font-size: 2.8rem;
+            animation: slideIn 1s ease-in-out;
         }
         header img {
-            width: 150px;
+            width: 180px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            animation: zoomIn 1s ease-in-out;
         }
-        .container {
-            padding: 20px;
+        @keyframes slideIn {
+            0% { transform: translateY(-50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes zoomIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
         .links {
             display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
+            justify-content: center;
+            margin-top: 30px;
         }
         .links a {
+            padding: 12px 25px;
             text-decoration: none;
+            background-color: #e0e0e0;
+            margin: 10px;
+            border-radius: 30px;
             font-size: 18px;
-            color: black;
-            padding: 10px;
-            border-radius: 5px;
-            background-color: #f1f1f1;
-            transition: background-color 0.3s;
+            color: #333;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
         }
         .links a:hover {
-            background-color: #ddd;
+            background-color: #333;
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
         }
+
+        .about-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 40px 20px;
+            justify-items: center;
+            margin: 40px 0;
+        }
+        .about-box {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+        .about-box img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .about-box h3 {
+            font-size: 1.8rem;
+            margin-top: 15px;
+        }
+        .about-box p {
+            font-size: 1rem;
+            color: #555;
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+        .about-box:hover {
+            transform: translateY(-10px);
+        }
+
+        /* Duyuru Bölümü */
+        .duyuru {
+            background-color: #ffcc00;
+            color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease-out;
+        }
+        .duyuru h3 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        .duyuru p {
+            font-size: 1.2rem;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Chatbot */
         .chatbot {
             position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background-color: black;
+            bottom: 30px;
+            right: 30px;
+            background-color: #333;
             color: white;
-            padding: 15px;
+            font-size: 24px;
+            padding: 20px;
             border-radius: 50%;
             cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        .chatbot:hover {
+            background-color: #ff6347;
+            transform: scale(1.1);
         }
         .chatbot-popup {
             position: fixed;
-            bottom: 80px;
-            left: 20px;
-            width: 300px;
+            bottom: 100px;
+            right: 30px;
+            width: 350px;
             height: 400px;
             background-color: white;
-            border: 2px solid black;
-            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
             display: none;
-            overflow-y: scroll;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.5s ease;
+            overflow-y: auto;
         }
         .chatbot-popup input {
             width: 100%;
             padding: 10px;
+            border-radius: 5px;
+            border: 2px solid #ddd;
             margin-bottom: 10px;
         }
-        .chatbot-popup .messages {
-            height: 300px;
+        .messages {
+            height: 250px;
             overflow-y: scroll;
             margin-bottom: 10px;
         }
-        .chatbot-popup .messages p {
+        .messages p {
             margin: 5px 0;
         }
-        .user-name {
-            text-align: center;
-            margin-bottom: 20px;
+        .messages .user-message {
+            color: #333;
         }
-        .user-name input {
-            padding: 10px;
-            font-size: 16px;
+        .messages .bot-message {
+            color: #ff6347;
         }
-        .section {
-            margin: 20px 0;
+        @keyframes slideUp {
+            0% { transform: translateY(100%); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
         }
-        .duyuru {
-            background-color: #f9f9f9;
-            padding: 10px;
-            border-radius: 5px;
-        }
-        .about-section {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-        }
-        .about-section div {
-            width: 48%;
-            margin-bottom: 20px;
-        }
-        .about-section img {
-            width: 100%;
-            border-radius: 10px;
-        }
-        .about-section h3 {
-            text-align: center;
+
+        /* Mobil uyumluluk */
+        @media screen and (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            .about-section {
+                grid-template-columns: 1fr;
+            }
+            .links a {
+                padding: 10px 20px;
+            }
+            .chatbot {
+                bottom: 20px;
+                right: 20px;
+                font-size: 20px;
+            }
         }
     </style>
 </head>
 <body>
 
 <header>
-    <!-- Okul Logosu Kaldırıldı -->
+    <img src="https://your-image-link.com/logo.jpg" alt="Okul Logosu">
     <h1>Reha Gündüz Aksoy Anadolu Lisesi</h1>
     <p>Geleceğin Yazılımcıları Burada Yetişiyor!</p>
 </header>
 
 <div class="container">
-    <!-- Linkler Bölümü -->
+    <!-- Linkler -->
     <div class="links">
         <a href="https://www.instagram.com/rehagunduzaksoyanadolu" target="_blank">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/1024px-Instagram_icon.png" alt="Instagram" width="30"> Instagram
@@ -129,45 +228,28 @@
         </a>
     </div>
 
-    <!-- Hakkımızda Bölümü -->
-    <div class="section">
-        <h2>Hakkımızda</h2>
-        <div class="about-section">
-            <div>
-                <h3>Okulumuz</h3>
-                <p>Reha Gündüz Aksoy Anadolu Lisesi, Gaziantep'te yer alan ve eğitimde teknolojiye odaklanmış bir okul olarak öğrencilerine yazılım, teknoloji ve bilim alanlarında kapsamlı bir eğitim sunmaktadır.</p>
-            </div>
-            <div>
-                <h3>Öğretmenlerimiz</h3>
-                <p>Öğretmenlerimiz, alanlarında uzmanlaşmış ve öğrencilerinin gelişimine odaklanmış profesyonel kadrosuyla okulumuza katkı sağlamaktadır.</p>
-            </div>
+    <!-- Hakkımızda ve Fotoğraflar -->
+    <div class="about-section">
+        <div class="about-box">
+            <img src="https://your-image-link.com/okul.jpg" alt="Okul Fotoğrafı">
+            <h3>Okulumuz</h3>
+            <p>Reha Gündüz Aksoy Anadolu Lisesi, Gaziantep'te yer alıyor ve teknoloji odaklı eğitim anlayışıyla öğrencilere bilim ve yazılım alanında geniş bir perspektif sunuyor.</p>
         </div>
-        <div class="about-section">
-            <div>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/1/1c/Atat%C3%BCrk_Resmi.jpg" alt="Atatürk">
-            </div>
-            <div>
-                <img src="https://example.com/okul_fotografi.jpg" alt="Okul Fotoğrafı">
-            </div>
+        <div class="about-box">
+            <img src="https://your-image-link.com/ogretmen.jpg" alt="Öğretmen Fotoğrafı">
+            <h3>Öğretmenlerimiz</h3>
+            <p>Okulumuzun öğretmenleri, deneyimli ve alanında uzman kişilerden oluşan güçlü bir kadroya sahiptir.</p>
         </div>
     </div>
 
-    <!-- Duyurular Bölümü -->
-    <div class="section duyuru">
-        <h3>Duyurular</h3>
-        <p>Yeni eğitim yılı başladı! Tüm öğrencilerimize başarılar dileriz.</p>
-        <p>Okulumuz, teknoloji kulübü yeni projelere başlıyor! Katılım için başvurular açıldı.</p>
+    <!-- Duyurular -->
+    <div class="duyuru">
+        <h3>Duyuru</h3>
+        <p>Yeni eğitim yılı başladı! Öğrencilerimizin başarılarla dolu bir yıl geçirmelerini temenni ederiz.</p>
     </div>
 
-    <!-- Sohbet Başlatma Bölümü -->
-    <div class="user-name">
-        <input type="text" id="user-name" placeholder="Adınızı girin..." />
-        <button onclick="startChat()">Sohbete Başla</button>
-    </div>
-
-    <!-- Chatbot -->
+    <!-- Sohbet -->
     <div class="chatbot" onclick="toggleChatbot()">💬</div>
-
     <div class="chatbot-popup" id="chatbot-popup">
         <div class="messages" id="chatbot-messages"></div>
         <input type="text" id="chatbot-input" placeholder="Sorunuzu buraya yazın..." />
@@ -175,68 +257,39 @@
 </div>
 
 <script>
-    // Sohbeti başlatan fonksiyon
-    function startChat() {
-        const name = document.getElementById("user-name").value.trim();
-        if (name) {
-            localStorage.setItem("userName", name); // Kullanıcı ismini kaydet
-            document.querySelector(".user-name").style.display = "none"; // İsim giriş kısmını gizle
-            toggleChatbot(); // Sohbeti başlat
-        } else {
-            alert("Lütfen bir isim girin.");
-        }
-    }
-
     function toggleChatbot() {
         var popup = document.getElementById('chatbot-popup');
         popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
     }
 
     const responses = {
-        "Okul hakkında bilgi istiyorum": "Reha Gündüz Aksoy Anadolu Lisesi, Gaziantep'te yer alıyor ve yenilikçi eğitim anlayışıyla tanınmaktadır.",
-        "Okulun amacı nedir": "Amacımız, öğrencilere en iyi eğitim ve yazılım becerileri kazandırmaktır.",
+        "Okul hakkında bilgi istiyorum": "Reha Gündüz Aksoy Anadolu Lisesi, Gaziantep'te yer alıyor ve eğitimde teknolojiye odaklanmış bir okul olarak tanınmaktadır.",
+        "Okulun amacı nedir": "Amacımız, öğrencilere yazılım ve teknoloji becerileri kazandırmaktır.",
         "Ne tür etkinlikler yapıyorsunuz": "Okulumuzda yazılım, teknoloji ve bilim etkinlikleri düzenlenmektedir.",
-        "Okulun başarıları nelerdir": "Okulumuz, birçok yazılım yarışmasında ödüller kazanmış ve öğrencilerini başarılı bir şekilde mezun etmiştir.",
-        "Öğrenciler ne tür projeler yapabilir": "Öğrencilerimiz, yazılım, robotik ve teknoloji projeleri üzerinde çalışabilirler.",
+        "Okulun başarıları nelerdir": "Okulumuz, yazılım yarışmalarında ödüller kazanmış ve öğrencilerini başarılı bir şekilde mezun etmiştir.",
         "Okulun öğretmenleri hakkında bilgi ver": "Öğretmenlerimiz, deneyimli ve alanlarında uzman kişilerden oluşmaktadır.",
-        "Okulda sosyal kulüpler var mı": "Evet, birçok sosyal kulüp bulunmaktadır, bunlar arasında yazılım kulübü en popüler olanlardan biridir.",
-        "Sınavlar nasıl oluyor": "Sınavlar, öğrencilerin bilgi seviyelerini ölçmek için düzenli aralıklarla yapılmaktadır.",
+        "Okulda sosyal kulüpler var mı": "Evet, sosyal kulüplerimiz arasında yazılım kulübü en popüler olanlardan biridir.",
         "Okulun yemekleri nasıl": "Okulumuzda sağlıklı ve dengeli öğünler sunulmaktadır.",
-        "Okulun sosyal medya hesapları var mı": "Evet, Instagram üzerinden okulumuzun güncel aktivitelerini takip edebilirsiniz!"
+        "Okulun sosyal medya hesapları var mı": "Evet, Instagram üzerinden güncel aktivitelerimizi takip edebilirsiniz!"
     };
 
-    // Sohbet mesajlarını ekleyip yanıt ver
     document.getElementById('chatbot-input').addEventListener('keypress', function(event) {
         if (event.key === 'Enter') {
             var userInput = event.target.value.trim();
             if (userInput) {
                 var messagesDiv = document.getElementById('chatbot-messages');
-                var userName = localStorage.getItem("userName"); // Kullanıcı adını al
-                messagesDiv.innerHTML += `<p><b>${userName}:</b> ${userInput}</p>`;
+                var userName = "Kullanıcı";
+                messagesDiv.innerHTML += `<p class="user-message"><b>${userName}:</b> ${userInput}</p>`;
                 if (responses[userInput]) {
-                    messagesDiv.innerHTML += `<p><b>Bot:</b> ${responses[userInput]}</p>`;
+                    messagesDiv.innerHTML += `<p class="bot-message"><b>Bot:</b> ${responses[userInput]}</p>`;
                 } else {
-                    messagesDiv.innerHTML += `<p><b>Bot:</b> Üzgünüm, bunu anlayamadım. Lütfen başka bir soru sorun.</p>`;
+                    messagesDiv.innerHTML += `<p class="bot-message"><b>Bot:</b> Üzgünüm, bunu anlayamadım. Lütfen başka bir soru sorun.</p>`;
                 }
                 event.target.value = '';
-                messagesDiv.scrollTop = messagesDiv.scrollHeight; // En son mesaja scroll yap
-                saveChat(messagesDiv.innerHTML); // Sohbeti kaydet
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
             }
         }
     });
-
-    // Sohbeti yerel depolamaya kaydet
-    function saveChat(chatContent) {
-        localStorage.setItem("chatHistory", chatContent);
-    }
-
-    // Sayfa yenilendiğinde sohbet geçmişini geri yükle
-    window.onload = function() {
-        var savedChat = localStorage.getItem("chatHistory");
-        if (savedChat) {
-            document.getElementById('chatbot-messages').innerHTML = savedChat;
-        }
-    };
 </script>
 
 </body>
