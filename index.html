@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Reha Gündüz Aksoy Anadolu Lisesi resmi web sitesi.">
-    <meta name="keywords" content="Reha Gündüz Aksoy, Anadolu Lisesi, Gaziantep, Eğitim, Yazılım">
+    <meta name="description" content="Reha Gündüz Aksoy Anadolu Lisesi, Gaziantep'te yer alan, teknoloji ve yazılım odaklı eğitim veren okulumuzun resmi web sitesi.">
+    <meta name="keywords" content="Reha Gündüz Aksoy, Anadolu Lisesi, Gaziantep, Eğitim, Yazılım, Teknoloji, Okul, Öğrenciler">
     <meta name="author" content="Reha Gündüz Aksoy Anadolu Lisesi">
     <title>Reha Gündüz Aksoy Anadolu Lisesi</title>
     <style>
@@ -18,31 +18,29 @@
             font-family: 'Arial', sans-serif;
             background-color: #f7f7f7;
             color: #333;
-        }
-        h1, h2, h3 {
-            font-weight: bold;
+            line-height: 1.6;
         }
 
-        /* Header Styling */
+        /* Header Bölümü */
         header {
-            background-color: #333;
+            background-color: #222;
             color: white;
             text-align: center;
-            padding: 40px 20px;
-            position: relative;
+            padding: 60px 20px;
         }
         header img {
-            width: 160px;
+            width: 150px;
             border-radius: 50%;
             margin-bottom: 20px;
             transition: transform 0.5s ease;
         }
         header h1 {
-            font-size: 3rem;
+            font-size: 2.8rem;
             margin-top: 10px;
         }
         header p {
             font-size: 1.2rem;
+            margin-top: 10px;
         }
         header:hover img {
             transform: scale(1.1);
@@ -52,14 +50,14 @@
         nav {
             background-color: #444;
             color: white;
-            padding: 15px;
             text-align: center;
+            padding: 15px;
         }
         nav a {
             text-decoration: none;
             color: white;
             margin: 0 20px;
-            padding: 10px;
+            padding: 10px 20px;
             font-size: 1.1rem;
             border-radius: 5px;
             transition: background-color 0.3s ease;
@@ -68,13 +66,13 @@
             background-color: #ff6347;
         }
 
-        /* Hero Section */
+        /* Hero Bölümü */
         .hero {
-            background-image: url('https://example.com/school-background.jpg');
+            background-image: url('https://example.com/school-image.jpg');
             background-size: cover;
             background-position: center;
             color: white;
-            padding: 100px 20px;
+            padding: 80px 20px;
             text-align: center;
         }
         .hero h2 {
@@ -85,72 +83,69 @@
             margin-top: 10px;
         }
 
-        /* Content Section */
-        .content {
-            display: flex;
-            justify-content: space-around;
-            padding: 40px;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .content div {
+        /* Hakkımızda Bölümü */
+        .about {
+            padding: 40px 20px;
+            text-align: center;
             background-color: white;
-            width: 30%;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-        .content div:hover {
-            transform: translateY(-10px);
-        }
-        .content img {
-            width: 100%;
+            margin: 20px 0;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
         }
-        .content h2 {
-            font-size: 1.8rem;
-            margin-top: 15px;
+        .about h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
         }
-        .content p {
-            font-size: 1rem;
-            margin-top: 10px;
+        .about p {
+            font-size: 1.2rem;
             color: #555;
         }
 
-        /* Gallery Section */
+        /* Duyuru ve Etkinlik Bölümü */
+        .events {
+            padding: 40px 20px;
+            text-align: center;
+            background-color: white;
+            margin: 20px 0;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .events h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .event-item {
+            background-color: #f1f1f1;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .event-item h4 {
+            font-size: 1.5rem;
+            color: #333;
+        }
+        .event-item p {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        /* Fotoğraf Galerisi */
         .gallery {
             display: flex;
             justify-content: space-between;
-            padding: 40px;
             gap: 20px;
+            padding: 40px 20px;
             flex-wrap: wrap;
         }
         .gallery img {
             width: 30%;
             border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
         }
         .gallery img:hover {
-            transform: scale(1.1);
-        }
-
-        /* Announcement Section */
-        .announcement {
-            background-color: #ffcc00;
-            padding: 30px;
-            margin: 20px 0;
-            border-radius: 10px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        .announcement h3 {
-            font-size: 2rem;
-        }
-        .announcement p {
-            font-size: 1.2rem;
-            color: #333;
+            transform: scale(1.05);
         }
 
         /* Chatbot */
@@ -208,7 +203,6 @@
             color: #ff6347;
         }
 
-        /* Animations */
         @keyframes slideUp {
             0% { transform: translateY(100%); opacity: 0; }
             100% { transform: translateY(0); opacity: 1; }
@@ -216,15 +210,15 @@
 
         /* Footer */
         footer {
-            background-color: #333;
+            background-color: #222;
             color: white;
             text-align: center;
-            padding: 30px;
+            padding: 30px 0;
             font-size: 1rem;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
+        /* Responsive */
+        @media screen and (max-width: 768px) {
             .content div, .gallery img {
                 width: 100%;
             }
@@ -243,7 +237,7 @@
 <body>
 
 <header>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/T%C3%BCrkiye_B%C3%BCy%C3%BCk_Mill%C3%AE_E%C4%9Fitim_Bakanl%C4%B1%C4%9F%C4%B1_logo.svg/1200px-T%C3%BCrkiye_B%C3%BCy%C3%BCk_Mill%C3%AE_E%C4%9Fitim_Bakanl%C4%B1%C4%9F%C4%B1_logo.svg.png" alt="Milli Eğitim Bakanlığı Logosunu">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/T%C3%BCrkiye_B%C3%BCy%C3%BCk_Mill%C3%AE_E%C4%9Fitim_Bakanl%C4%B1%C4%9F%C4%B1_logo.svg" alt="Milli Eğitim Bakanlığı">
     <h1>Reha Gündüz Aksoy Anadolu Lisesi</h1>
     <p>Geleceğin Yazılımcıları Burada Yetişiyor!</p>
     <div id="clock"></div>
@@ -258,17 +252,23 @@
 
 <div class="hero">
     <h2>Okulumuz Hakkında</h2>
-    <p>Reha Gündüz Aksoy Anadolu Lisesi, Gaziantep'te yer alıyor ve eğitimde teknolojiye odaklanmış bir okul olarak tanınmaktadır. Öğrencilerimize yazılım, robotik ve dijital medya gibi modern alanlarda eğitim vermektedir.</p>
+    <p>Reha Gündüz Aksoy Anadolu Lisesi, Gaziantep'te yer alıyor ve teknoloji odaklı eğitim anlayışıyla öğrencilere bilim ve yazılım alanında geniş bir perspektif sunuyor.</p>
 </div>
 
-<div class="content">
-    <div id="about">
-        <h2>Okulumuz</h2>
-        <p>Reha Gündüz Aksoy Anadolu Lisesi, Gaziantep'te bulunan, güçlü bir eğitim altyapısına sahip bir okuldur. Teknoloji ve bilim alanında öğrencilerimize çeşitli fırsatlar sunmaktadır.</p>
+<div class="about" id="about">
+    <h3>Okulumuz Hakkında</h3>
+    <p>Reha Gündüz Aksoy Anadolu Lisesi, Gaziantep'te bulunan, güçlü bir eğitim altyapısına sahip bir okuldur. Teknoloji ve bilim alanında öğrencilerimize çeşitli fırsatlar sunmaktadır.</p>
+</div>
+
+<div class="events" id="services">
+    <h3>Etkinlikler</h3>
+    <div class="event-item">
+        <h4>Yazılım Atölyesi</h4>
+        <p>Okulumuzda yazılım geliştirme becerilerini artırmaya yönelik haftalık atölyeler düzenlenmektedir. Öğrencilerimiz burada projeler geliştirir ve yazılım becerilerini geliştirir.</p>
     </div>
-    <div id="services">
-        <h2>Hizmetlerimiz</h2>
-        <p>Okulumuzda yazılım geliştirme, robotik, yapay zeka ve dijital medya gibi alanlarda eğitimler düzenlenmektedir. Her yıl düzenlediğimiz etkinliklerle öğrencilerimizi teknolojiyle buluşturuyoruz.</p>
+    <div class="event-item">
+        <h4>Bilim Fuarı</h4>
+        <p>Her yıl düzenlediğimiz bilim fuarında öğrencilerimizin projeleri sergilenir ve çeşitli ödüller kazanılır. Bu etkinlik, öğrencilere bilimsel düşünme becerisi kazandırmaktadır.</p>
     </div>
 </div>
 
@@ -276,11 +276,6 @@
     <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Photo_Gallery.jpg" alt="Okul Etkinliği">
     <img src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Technology.jpg" alt="Teknoloji Etkinliği">
     <img src="https://upload.wikimedia.org/wikipedia/commons/7/70/Student_Project.jpg" alt="Öğrenci Projesi">
-</div>
-
-<div class="announcement">
-    <h3>Duyuru</h3>
-    <p>Yeni eğitim yılı başladı! Öğrencilerimize başarılar diliyoruz. Yazılım kulübü için başvurular açıldı, başvurularınızı bekliyoruz!</p>
 </div>
 
 <div class="chatbot" onclick="toggleChatbot()">💬</div>
@@ -300,7 +295,7 @@
         const hours = now.getHours().toString().padStart(2, '0');
         const minutes = now.getMinutes().toString().padStart(2, '0');
         const seconds = now.getSeconds().toString().padStart(2, '0');
-        document.getElementById('clock').innerHTML = `Türkiye Saati: ${hours}:${minutes}:${seconds}`;
+        document.getElementById('clock').textContent = `Türkiye Saati: ${hours}:${minutes}:${seconds}`;
     }
     setInterval(updateClock, 1000);
 
