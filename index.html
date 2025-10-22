@@ -11,36 +11,33 @@
             box-sizing: border-box;
         }
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             background-color: #f4f4f4;
             color: #333;
             line-height: 1.6;
-            padding: 0;
             margin: 0;
-            overflow-x: hidden;
+            padding: 0;
         }
 
+        /* Header */
         header {
             background-color: #222;
             color: white;
             text-align: center;
-            padding: 60px 20px;
+            padding: 80px 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             position: relative;
             transition: all 0.3s ease;
         }
-        header:hover {
-            background-color: #333;
-        }
-        header h1 {
-            font-size: 2.8rem;
-            animation: slideIn 1s ease-in-out;
-        }
         header img {
-            width: 180px;
+            width: 150px;
             border-radius: 50%;
             margin-bottom: 20px;
             animation: zoomIn 1s ease-in-out;
+        }
+        header h1 {
+            font-size: 2.5rem;
+            animation: slideIn 1s ease-in-out;
         }
         @keyframes slideIn {
             0% { transform: translateY(-50px); opacity: 0; }
@@ -50,10 +47,21 @@
             0% { transform: scale(0); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
+
+        /* Time display */
+        .time-display {
+            text-align: center;
+            font-size: 2rem;
+            margin-top: 20px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        /* Links */
         .links {
             display: flex;
             justify-content: center;
-            margin-top: 30px;
+            margin-top: 20px;
         }
         .links a {
             padding: 12px 25px;
@@ -73,6 +81,7 @@
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
         }
 
+        /* Hakkımızda */
         .about-section {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -117,7 +126,7 @@
             border-radius: 10px;
             margin: 20px 0;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            animation: fadeIn 1s ease-out;
+            animation: fadeIn 2s ease-out;
         }
         .duyuru h3 {
             font-size: 2rem;
@@ -129,6 +138,34 @@
         @keyframes fadeIn {
             0% { opacity: 0; }
             100% { opacity: 1; }
+        }
+
+        /* Etkinlikler Bölümü */
+        .events-section {
+            display: flex;
+            justify-content: space-around;
+            padding: 40px 20px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .event-box {
+            background-color: white;
+            width: 45%;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .event-box:hover {
+            transform: translateY(-10px);
+        }
+        .event-box h4 {
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+        }
+        .event-box p {
+            color: #555;
+            line-height: 1.6;
         }
 
         /* Chatbot */
@@ -212,31 +249,28 @@
 <body>
 
 <header>
-    <img src="https://your-image-link.com/logo.jpg" alt="Okul Logosu">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/T%C3%BCrkiye_B%C3%BCy%C3%BCk_Mill%C3%AE_E%C4%9Fitim_Bakanl%C4%B1%C4%9F%C4%B1_logo.svg/1200px-T%C3%BCrkiye_B%C3%BCy%C3%BCk_Mill%C3%AE_E%C4%9Fitim_Bakanl%C4%B1%C4%9F%C4%B1_logo.svg.png" alt="Milli Eğitim Bakanlığı Logosunu">
     <h1>Reha Gündüz Aksoy Anadolu Lisesi</h1>
     <p>Geleceğin Yazılımcıları Burada Yetişiyor!</p>
+    <div class="time-display" id="clock"></div>
 </header>
 
 <div class="container">
     <!-- Linkler -->
     <div class="links">
-        <a href="https://www.instagram.com/rehagunduzaksoyanadolu" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/1024px-Instagram_icon.png" alt="Instagram" width="30"> Instagram
-        </a>
-        <a href="https://www.google.com/maps?q=F%C4%B1st%C4%B1kl%C4%B1k+Anadolu+Lisesi,+Beylerbeyi,+27580+Şehitkamil%2FGaziantep" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Google_Maps_Icon.svg/1200px-Google_Maps_Icon.svg.png" alt="Konum" width="30"> Okul Konumu
-        </a>
+        <a href="https://www.instagram.com/rehagunduzaksoyanadolu" target="_blank">Instagram</a>
+        <a href="https://www.google.com/maps?q=F%C4%B1st%C4%B1kl%C4%B1k+Anadolu+Lisesi,+Beylerbeyi,+27580+Şehitkamil%2FGaziantep" target="_blank">Okul Konumu</a>
     </div>
 
-    <!-- Hakkımızda ve Fotoğraflar -->
+    <!-- Hakkımızda Bölümü -->
     <div class="about-section">
         <div class="about-box">
-            <img src="https://your-image-link.com/okul.jpg" alt="Okul Fotoğrafı">
+            <img src="https://example.com/school.jpg" alt="Okul Fotoğrafı">
             <h3>Okulumuz</h3>
             <p>Reha Gündüz Aksoy Anadolu Lisesi, Gaziantep'te yer alıyor ve teknoloji odaklı eğitim anlayışıyla öğrencilere bilim ve yazılım alanında geniş bir perspektif sunuyor.</p>
         </div>
         <div class="about-box">
-            <img src="https://your-image-link.com/ogretmen.jpg" alt="Öğretmen Fotoğrafı">
+            <img src="https://example.com/teachers.jpg" alt="Öğretmen Fotoğrafı">
             <h3>Öğretmenlerimiz</h3>
             <p>Okulumuzun öğretmenleri, deneyimli ve alanında uzman kişilerden oluşan güçlü bir kadroya sahiptir.</p>
         </div>
@@ -248,6 +282,18 @@
         <p>Yeni eğitim yılı başladı! Öğrencilerimizin başarılarla dolu bir yıl geçirmelerini temenni ederiz.</p>
     </div>
 
+    <!-- Etkinlikler -->
+    <div class="events-section">
+        <div class="event-box">
+            <h4>Yazılım Atölyesi</h4>
+            <p>Okulumuzda yazılım geliştirme becerilerini artırmaya yönelik haftalık atölyeler düzenlenmektedir.</p>
+        </div>
+        <div class="event-box">
+            <h4>Bilim Fuarı</h4>
+            <p>Her yıl düzenlediğimiz bilim fuarında öğrencilerimizin projeleri sergilenir ve çeşitli ödüller kazanılır.</p>
+        </div>
+    </div>
+
     <!-- Sohbet -->
     <div class="chatbot" onclick="toggleChatbot()">💬</div>
     <div class="chatbot-popup" id="chatbot-popup">
@@ -257,8 +303,19 @@
 </div>
 
 <script>
+    // Saat göstergesi
+    function updateClock() {
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
+        document.getElementById('clock').innerHTML = `Türkiye Saati: ${hours}:${minutes}:${seconds}`;
+    }
+    setInterval(updateClock, 1000);
+    
+    // Sohbet fonksiyonu
     function toggleChatbot() {
-        var popup = document.getElementById('chatbot-popup');
+        const popup = document.getElementById('chatbot-popup');
         popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
     }
 
