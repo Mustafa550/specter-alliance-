@@ -1,4 +1,4 @@
-// Saat Gösterimi (Türkiye Saati)
+// Saat Gösterimi
 function updateClock() {
     const now = new Date();
     const hours = now.getHours().toString().padStart(2, '0');
@@ -10,10 +10,10 @@ setInterval(updateClock, 1000);
 
 // Sohbet Botu: Mesajlara anlamlı cevaplar
 const responses = {
-    "Okul hakkında bilgi istiyorum": "Reha Gündüz Aksoy Anadolu Lisesi, Gaziantep'te yer alıyor ve eğitimde teknolojiye odaklanmış bir okul olarak tanınmaktadır.",
-    "Okulun amacı nedir": "Amacımız, öğrencilere yazılım ve teknoloji becerileri kazandırmaktır.",
-    "Ne tür etkinlikler yapıyorsunuz": "Okulumuzda yazılım, teknoloji ve bilim etkinlikleri düzenlenmektedir.",
-    "Okulun başarıları nelerdir": "Okulumuz, yazılım yarışmalarında ödüller kazanmış ve öğrencilerini başarılı bir şekilde mezun etmiştir.",
+    "Okul hakkında bilgi istiyorum": "Reha Gündüz Aksoy Anadolu Lisesi, Gaziantep’te yer alan, disiplinli bir okuldur. Öğrencilerimize başarılı bir eğitim sunmayı hedefliyoruz.",
+    "Okulun amacı nedir": "Amacımız, öğrencilerimize en iyi eğitim imkanlarını sunarak onları geleceğe hazırlamaktır.",
+    "Ne tür etkinlikler yapıyorsunuz": "Okulumuzda yazılım, bilim, kültür ve spor etkinlikleri düzenlenmektedir.",
+    "Okulun başarıları nelerdir": "Okulumuz, akademik başarılar, bilimsel projeler ve çeşitli etkinliklerde ödüller kazanmıştır.",
     "Merhaba": "Merhaba! Size nasıl yardımcı olabilirim?",
     "Nasılsın?": "Ben bir botum, ama teşekkür ederim! Siz nasılsınız?"
 };
@@ -70,7 +70,7 @@ navLinks.forEach(link => {
 function customResponses(userInput) {
     userInput = userInput.toLowerCase();
     if (userInput.includes("okul") || userInput.includes("eğitim")) {
-        return "Okulumuzda teknoloji, yazılım ve robotik alanında eğitim veriyoruz!";
+        return "Okulumuzda genel eğitim verilmektedir. Akademik başarı kadar kişisel gelişim de bizim için önemlidir!";
     }
     if (userInput.includes("yardım")) {
         return "Size nasıl yardımcı olabilirim? Yazılım, etkinlikler hakkında bilgi verebilirim!";
