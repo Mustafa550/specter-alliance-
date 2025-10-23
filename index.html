@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacker Kart Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            color: #0f0;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+            padding: 20px;
+            border: 2px solid #0f0;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.6);
+        }
+
+        h1 {
+            font-size: 50px;
+            text-transform: uppercase;
+            animation: glow 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 10px #0f0, 0 0 20px #0f0, 0 0 30px #0f0, 0 0 40px #0f0;
+            }
+            100% {
+                text-shadow: 0 0 20px #0f0, 0 0 30px #0f0, 0 0 40px #0f0, 0 0 50px #0f0;
+            }
+        }
+
+        .card-inputs {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            justify-items: center;
+        }
+
+        input {
+            padding: 12px;
+            font-size: 20px;
+            background: #222;
+            border: 2px solid #0f0;
+            color: #0f0;
+            width: 250px;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 15px 30px;
+            background-color: #333;
+            border: 2px solid #0f0;
+            color: #0f0;
+            cursor: pointer;
+            font-size: 20px;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #0f0;
+            color: #000;
+        }
+
+        .card-output {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .success {
+            color: green;
+        }
+
+        .multiple-check {
+            margin-top: 20px;
+        }
+
+        .input-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .input-box input {
+            width: 400px;
+            margin-bottom: 10px;
+        }
+
+        .input-box button {
+            width: 200px;
+        }
+
+        .dynamic-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/stripes.png');
+            background-size: cover;
+            z-index: -1;
+            animation: bgAnimation 20s linear infinite;
+        }
+
+        @keyframes bgAnimation {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(100%, 100%);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="dynamic-bg"></div>
+
+<div class="container">
+    <h1>Hacker Kart Generator</h1>
+
+    <div class="card-inputs">
+        <div class="input-box">
+            <input type="text" id="cardNumber1" placeholder="Kart Numarası 1 (16 Haneli)">
+        </div>
+        <div class="input-box">
+            <input type="text" id="cardNumber2" placeholder="Kart Numarası 2 (16 Haneli)">
+        </div>
+        <div class="input-box">
+            <input type="text" id="cardNumber3" placeholder="Kart Numarası 3 (16 Haneli)">
+        </div>
+    </div>
+
+    <button onclick="validateCards()">Kartları Doğrula</button>
+
+    <div id="output" class="card-output"></div>
+</div>
+
+<script>
+    function luhnCheck(cardNumber) {
+        let sum = 0;
+        let shouldDouble = false;
+        for (let i = cardNumber.length - 1; i >= 0; i--) {
+            let digit = parseInt(cardNumber.charAt(i));
+            if (shouldDouble) {
+                if ((digit *= 2) > 9) digit -= 9;
+            }
+            sum += digit;
+            shouldDouble = !shouldDouble;
+        }
+        return (sum % 10 === 0);
+    }
+
+    function generateCardDetails(cardNumber) {
+        const formattedCard = `${cardNumber.slice(0, 4)}-${cardNumber.slice(4, 8)}-${cardNumber.slice(8, 12)}-${cardNumber.slice(12)}`;
+        const expirationDate = `${Math.floor(Math.random() * 12) + 1}/${Math.floor(Math.random() * (2030 - 2023) + 2023)}`;
+        const cvv = Math.floor(Math.random() * 900) + 100;
+        return `
+            <p><strong>Formatlı Kart Numarası:</strong> ${formattedCard}</p>
+            <p><strong>Son Kullanma Tarihi:</strong> ${expirationDate}</p>
+            <p><strong>CVV:</strong> ${cvv}</p>
+        `;
+    }
+
+    function validateCards() {
+        const cardNumbers = [
+            document.getElementById('cardNumber1').value.replace(/\D/g, ''),
+            document.getElementById('cardNumber2').value.replace(/\D/g, ''),
+            document.getElementById('cardNumber3').value.replace(/\D/g, '')
+        ];
+
+        let output = '';
+        let validCards = 0;
+
+        cardNumbers.forEach((cardNumber, index) => {
+            if (cardNumber.length === 16 && luhnCheck(cardNumber)) {
+                output += `<p class="success">Kart ${index + 1} Geçerli!</p>`;
+                output += generateCardDetails(cardNumber);
+                validCards++;
+            } else {
+                output += `<p class="error">Kart ${index + 1} Geçersiz!</p>`;
+            }
+        });
+
+        if (validCards === 0) {
+            output += '<p class="error">Hiçbir Kart Geçerli Değil!</p>';
+        }
+
+        document.getElementById('output').innerHTML = output;
+    }
+</script>
+
+</body>
+</html>
