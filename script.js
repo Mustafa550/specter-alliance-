@@ -15,7 +15,15 @@ const responses = {
     "Ne tür etkinlikler yapıyorsunuz": "Okulumuzda yazılım, bilim, kültür ve spor etkinlikleri düzenlenmektedir.",
     "Okulun başarıları nelerdir": "Okulumuz, akademik başarılar, bilimsel projeler ve çeşitli etkinliklerde ödüller kazanmıştır.",
     "Merhaba": "Merhaba! Size nasıl yardımcı olabilirim?",
-    "Nasılsın?": "Ben bir botum, ama teşekkür ederim! Siz nasılsınız?"
+    "Nasılsın?": "Ben bir botum, ama teşekkür ederim! Siz nasılsınız?",
+"Nasılsın": "Ben bir botum, ama teşekkür ederim! Siz nasılsınız?",
+"Nasilsin": "Ben bir botum, ama teşekkür ederim! Siz nasılsınız?",
+"Napiyon": "Ben bir botum, ama teşekkür ederim! Siz nasılsınız?",
+"Napiyon la": "Ben bir botum, ama teşekkür ederim! Siz nasılsınız?",
+"okul hakkinda bilgi ver": "okulumuz disiplinli bir okuldur ogrencilerimizi en iyi ogretmenlerimizle egiterek onlari gelecege hazirlamaktir.",
+"selam": "selam kk nasilsin",
+"iyiyim sen": "Ben bir botum, ama teşekkür ederim! allaha şükür iyiyiz ya napalim",
+"sa": "as gardasim"
 };
 
 // Sohbet Botu Yanıtları
