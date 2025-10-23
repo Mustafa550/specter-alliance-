@@ -1,4 +1,4 @@
-/* Global Stiller */
+/* Global Ayarlar */
 * {
     margin: 0;
     padding: 0;
@@ -6,105 +6,158 @@
 }
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f7f7f7;
-    color: #333;
+    background-color: #2a2a2a;
+    color: #fff;
+    line-height: 1.6;
+    font-size: 16px;
+    overflow-x: hidden;
 }
 
 /* Header */
 header {
-    background-color: #222;
-    color: white;
+    background: linear-gradient(45deg, #ff6a00, #ff5722);
     text-align: center;
-    padding: 60px 20px;
-}
-header img {
-    width: 150px;
-    border-radius: 50%;
-    margin-bottom: 20px;
-    transition: transform 0.5s ease;
+    padding: 100px 20px;
+    position: relative;
+    animation: fadeIn 2s ease-in-out;
 }
 header h1 {
-    font-size: 2.8rem;
-    margin-top: 10px;
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    animation: textGlow 1.5s infinite alternate;
+}
+header p {
+    font-size: 1.5rem;
+    animation: fadeInText 2s ease-in-out;
 }
 
-/* Navigation */
+/* Animasyonlar */
+@keyframes textGlow {
+    0% {
+        text-shadow: 0 0 10px #ff5722, 0 0 20px #ff5722, 0 0 30px #ff5722;
+    }
+    100% {
+        text-shadow: 0 0 20px #ff5722, 0 0 30px #ff5722, 0 0 40px #ff5722;
+    }
+}
+
+@keyframes fadeInText {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* Menü */
 nav {
-    background-color: #444;
-    color: white;
-    text-align: center;
-    padding: 15px;
+    display: flex;
+    justify-content: center;
+    background-color: #333;
+    padding: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
 }
 nav a {
     text-decoration: none;
     color: white;
-    margin: 0 20px;
-    padding: 12px 25px;
-    font-size: 1.1rem;
+    padding: 15px 25px;
+    margin: 0 10px;
+    font-size: 1.2rem;
     border-radius: 5px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 nav a:hover {
-    background-color: #ff6347;
+    background-color: #ff5722;
+    transform: scale(1.1);
 }
 
 /* Hero Bölümü */
 .hero {
-    background-image: url('https://example.com/school-image.jpg');
-    background-size: cover;
-    background-position: center;
-    color: white;
-    padding: 80px 20px;
     text-align: center;
+    padding: 150px 20px;
+    animation: slideIn 1.5s ease-in-out;
 }
-
-/* Kutucuklu Bölüm (About, Etkinlikler vb.) */
-.section-box {
-    background-color: white;
-    padding: 40px 20px;
-    margin: 20px 0;
-    border-radius: 10px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+.hero h2 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    font-weight: bold;
 }
-.section-box h3 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-}
-.section-box p {
-    font-size: 1.2rem;
-    color: #555;
-}
-
-/* Etkinlikler */
-.event-item {
-    background-color: #f1f1f1;
-    padding: 20px;
-    margin: 10px 0;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-.event-item h4 {
+.hero p {
     font-size: 1.5rem;
-    color: #333;
+    max-width: 800px;
+    margin: 20px auto;
+    color: #ddd;
 }
 
-/* Galeri */
-.gallery-container {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-.gallery-container img {
-    width: 32%;
+/* Hakkımızda Bölümü */
+.about {
+    text-align: center;
+    padding: 80px 20px;
+    background: #333;
+    color: #fff;
+    margin-top: 50px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.about h3 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+.about p {
+    font-size: 1.2rem;
+    max-width: 900px;
+    margin: 20px auto;
+    color: #ddd;
+}
+
+/* Etkinlikler Bölümü */
+.events {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 50px 20px;
+    background: #444;
+}
+.event-item {
+    background-color: #555;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease;
 }
-.gallery-container img:hover {
+.event-item h4 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+.event-item p {
+    font-size: 1rem;
+    color: #ddd;
+}
+.event-item:hover {
     transform: scale(1.05);
 }
 
-/* Sohbet */
+/* Fotoğraf Galerisi */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 50px 20px;
+    background: #333;
+}
+.gallery img {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+.gallery img:hover {
+    transform: scale(1.05);
+}
+
+/* Sohbet Botu */
 .chatbot {
     position: fixed;
     bottom: 30px;
@@ -119,11 +172,11 @@ nav a:hover {
     transition: all 0.3s ease;
 }
 .chatbot:hover {
-    background-color: #ff6347;
+    background-color: #ff5722;
     transform: scale(1.1);
 }
 
-/* Chatbot Popup */
+/* Sohbet Popup */
 .chat-popup {
     position: fixed;
     bottom: 100px;
@@ -139,12 +192,31 @@ nav a:hover {
     overflow-y: auto;
     animation: slideUp 0.5s ease;
 }
+.messages {
+    height: 250px;
+    overflow-y: scroll;
+    margin-bottom: 10px;
+}
+.messages p {
+    margin: 5px 0;
+}
+.messages .user-message {
+    color: #333;
+}
+.messages .bot-message {
+    color: #ff5722;
+}
 .chat-popup input {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 5px;
     border: 2px solid #ddd;
+}
+
+@keyframes slideUp {
+    0% { transform: translateY(100%); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
 }
 
 /* Footer */
@@ -156,18 +228,136 @@ footer {
     font-size: 1rem;
 }
 
-/* Animasyon */
-@keyframes slideUp {
-    0% { transform: translateY(100%); opacity: 0; }
-    100% { transform: translateY(0); opacity: 1; }
-}
-
 /* Responsive Tasarım */
 @media screen and (max-width: 768px) {
-    .section-box, .gallery-container, .event-item {
-        width: 100%;
-    }
     .hero h2 {
         font-size: 2.5rem;
     }
+    .hero p {
+        font-size: 1.3rem;
+    }
+    .about p {
+        font-size: 1.1rem;
+    }
+    .chatbot {
+        font-size: 1.5rem;
+    }
+    .events {
+        grid-template-columns: 1fr;
+    }
+    .gallery {
+        grid-template-columns: 1fr;
+    }
 }
+    </style>
+</head>
+<body>
+
+<!-- Header Bölümü -->
+<header>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/T%C3%BCrkiye_B%C3%BCy%C3%BCk_Mill%C3%AE_E%C4%9Fitim_Bakanl%C4%B1%C4%9F%C4%B1_logo.svg" alt="Milli Eğitim Bakanlığı Logo" class="logo">
+    <h1>Reha Gündüz Aksoy Anadolu Lisesi</h1>
+    <p>Geleceğin Yazılımcıları Burada Yetişiyor!</p>
+    <div id="clock"></div>
+</header>
+
+<!-- Menü -->
+<nav>
+    <a href="#about">Hakkımızda</a>
+    <a href="#services">Hizmetler</a>
+    <a href="#events">Etkinlikler</a>
+    <a href="#gallery">Galeri</a>
+    <a href="#contact">İletişim</a>
+</nav>
+
+<!-- Hero Bölümü -->
+<div class="hero">
+    <h2>Okulumuz Hakkında</h2>
+    <p>Reha Gündüz Aksoy Anadolu Lisesi, Gaziantep'te yer alıyor ve eğitimde teknolojiye odaklanmış bir okul olarak tanınmaktadır. Öğrencilerimize yazılım, robotik ve dijital medya gibi modern alanlarda eğitim verilmektedir.</p>
+</div>
+
+<!-- Hakkımızda Bölümü -->
+<div class="about" id="about">
+    <h3>Okulumuz Hakkında</h3>
+    <p>Okulumuz, modern teknoloji ve bilimsel gelişmeleri takip ederek, öğrencilere ileri düzey eğitim sunmaktadır. Yazılım, robotik, yapay zeka ve dijital medya gibi konularda öğrencilere çeşitli fırsatlar sunuyoruz.</p>
+</div>
+
+<!-- Etkinlikler Bölümü -->
+<div class="events" id="events">
+    <h3>Etkinlikler</h3>
+    <div class="event-item">
+        <h4>Yazılım Atölyesi</h4>
+        <p>Öğrencilerimize yazılım geliştirme becerilerini kazandırmak için her hafta düzenli olarak yazılım atölyeleri gerçekleştiriyoruz.</p>
+    </div>
+    <div class="event-item">
+        <h4>Bilim Fuarı</h4>
+        <p>Her yıl düzenlediğimiz bilim fuarında öğrencilerimizin projeleri sergilenir ve çeşitli ödüller kazanılır.</p>
+    </div>
+</div>
+
+<!-- Fotoğraf Galerisi -->
+<div class="gallery" id="gallery">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Photo_Gallery.jpg" alt="Okul Etkinliği 1">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Technology.jpg" alt="Teknoloji Etkinliği 2">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/7/70/Student_Project.jpg" alt="Öğrenci Projesi 3">
+</div>
+
+<!-- Sohbet Botu -->
+<div class="chatbot" onclick="toggleChatbot()">💬</div>
+<div class="chat-popup" id="chatPopup">
+    <div class="messages" id="chatMessages"></div>
+    <input type="text" id="chatInput" placeholder="Mesajınızı yazın...">
+</div>
+
+<!-- Footer Bölümü -->
+<footer>
+    <p>&copy; 2025 Reha Gündüz Aksoy Anadolu Lisesi. Tüm Hakları Saklıdır.</p>
+</footer>
+
+<!-- JavaScript -->
+<script>
+    // Saat Gösterimi
+    function updateClock() {
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
+        document.getElementById('clock').textContent = `Türkiye Saati: ${hours}:${minutes}:${seconds}`;
+    }
+    setInterval(updateClock, 1000);
+
+    // Sohbet Botu Açma/Kapama
+    function toggleChatbot() {
+        var chatPopup = document.getElementById('chatPopup');
+        chatPopup.style.display = chatPopup.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // Sohbet Fonksiyonu
+    const responses = {
+        "Okul hakkında bilgi istiyorum": "Reha Gündüz Aksoy Anadolu Lisesi, Gaziantep'te yer alıyor ve eğitimde teknolojiye odaklanmış bir okul olarak tanınmaktadır.",
+        "Okulun amacı nedir": "Amacımız, öğrencilere yazılım ve teknoloji becerileri kazandırmaktır.",
+        "Ne tür etkinlikler yapıyorsunuz": "Okulumuzda yazılım, teknoloji ve bilim etkinlikleri düzenlenmektedir.",
+        "Okulun başarıları nelerdir": "Okulumuz, yazılım yarışmalarında ödüller kazanmış ve öğrencilerini başarılı bir şekilde mezun etmiştir."
+    };
+
+    document.getElementById('chatInput').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            var userInput = event.target.value.trim();
+            if (userInput) {
+                var messagesDiv = document.getElementById('chatMessages');
+                var userName = "Kullanıcı";
+                messagesDiv.innerHTML += `<p><b>${userName}:</b> ${userInput}</p>`;
+                if (responses[userInput]) {
+                    messagesDiv.innerHTML += `<p><b>Bot:</b> ${responses[userInput]}</p>`;
+                } else {
+                    messagesDiv.innerHTML += `<p><b>Bot:</b> Üzgünüm, bunu anlayamadım. Lütfen başka bir soru sorun.</p>`;
+                }
+                event.target.value = '';
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
