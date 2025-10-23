@@ -32,6 +32,11 @@
             border-radius: 10px;
             background: rgba(0, 0, 0, 0.8);
             box-shadow: 0 0 30px rgba(0, 255, 0, 0.6);
+            display: none;
+        }
+
+        .container.active {
+            display: block;
         }
 
         h1 {
@@ -49,26 +54,7 @@
             }
         }
 
-        .card-inputs {
-            margin-top: 30px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            justify-items: center;
-        }
-
-        input {
-            padding: 12px;
-            font-size: 20px;
-            background: #222;
-            border: 2px solid #0f0;
-            color: #0f0;
-            width: 250px;
-            text-align: center;
-            border-radius: 5px;
-        }
-
-        button {
+        .button {
             margin-top: 20px;
             padding: 15px 30px;
             background-color: #333;
@@ -79,41 +65,43 @@
             border-radius: 5px;
         }
 
-        button:hover {
+        .button:hover {
             background-color: #0f0;
             color: #000;
-        }
-
-        .card-output {
-            margin-top: 20px;
-            font-size: 24px;
-        }
-
-        .error {
-            color: red;
-        }
-
-        .success {
-            color: green;
-        }
-
-        .multiple-check {
-            margin-top: 20px;
         }
 
         .input-box {
             display: flex;
             justify-content: center;
             align-items: center;
+            margin-bottom: 10px;
         }
 
         .input-box input {
             width: 400px;
-            margin-bottom: 10px;
+            padding: 12px;
+            font-size: 18px;
+            background: #222;
+            border: 2px solid #0f0;
+            color: #0f0;
+            margin-right: 10px;
+            border-radius: 5px;
         }
 
         .input-box button {
-            width: 200px;
+            width: 150px;
+            padding: 12px;
+            font-size: 18px;
+            background-color: #222;
+            border: 2px solid #0f0;
+            color: #0f0;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .input-box button:hover {
+            background-color: #0f0;
+            color: #000;
         }
 
         .dynamic-bg {
@@ -136,33 +124,83 @@
                 transform: translate(100%, 100%);
             }
         }
+
+        .link-section {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .link-section a {
+            color: #0f0;
+            text-decoration: none;
+            font-size: 18px;
+            margin: 0 10px;
+            display: inline-block;
+        }
+
+        .link-section a:hover {
+            color: #fff;
+        }
+
+        .status {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+
+        .status.live {
+            color: green;
+        }
+
+        .status.dead {
+            color: red;
+        }
+
+        .message {
+            color: red;
+            font-size: 18px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
 
 <div class="dynamic-bg"></div>
 
-<div class="container">
+<!-- Giriş/Kayıt Paneli -->
+<div class="container" id="loginRegisterContainer">
+    <h1>DearSiber - Giriş & Kayıt</h1>
+    <div class="input-box">
+        <input type="text" id="username" placeholder="Kullanıcı Adı">
+    </div>
+    <div class="input-box">
+        <input type="password" id="password" placeholder="Şifre">
+    </div>
+    <button class="button" onclick="register()">Kaydol</button>
+    <button class="button" onclick="login()">Giriş Yap</button>
+</div>
+
+<!-- Kart Generator ve Kontrol Paneli -->
+<div class="container" id="cardGeneratorContainer">
     <h1>Hacker Kart Generator</h1>
 
-    <div class="card-inputs">
-        <div class="input-box">
-            <input type="text" id="cardNumber1" placeholder="Kart Numarası 1 (16 Haneli)">
-        </div>
-        <div class="input-box">
-            <input type="text" id="cardNumber2" placeholder="Kart Numarası 2 (16 Haneli)">
-        </div>
-        <div class="input-box">
-            <input type="text" id="cardNumber3" placeholder="Kart Numarası 3 (16 Haneli)">
-        </div>
+    <div class="input-box">
+        <input type="text" id="cardNumber" placeholder="Kart Numarası (16 Haneli)">
+        <button class="button" onclick="validateCard()">Kontrol Et</button>
     </div>
 
-    <button onclick="validateCards()">Kartları Doğrula</button>
+    <div id="output" class="status"></div>
 
-    <div id="output" class="card-output"></div>
+    <div class="link-section">
+        <a href="https://t.me/+IFx5aGB37Ws5NDFk" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Telegram_logo.svg/120px-Telegram_logo.svg.png" alt="Telegram" width="40"> Telegram Kanal 1</a>
+        <a href="https://t.me/+icW90vpzScthOTRk" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Telegram_logo.svg/120px-Telegram_logo.svg.png" alt="Telegram" width="40"> Telegram Kanal 2</a>
+    </div>
 </div>
 
 <script>
+    // Global variable for user status
+    let userLoggedIn = false;
+
+    // Simulate the API response (in reality, you would use an actual API here)
     function luhnCheck(cardNumber) {
         let sum = 0;
         let shouldDouble = false;
@@ -177,42 +215,52 @@
         return (sum % 10 === 0);
     }
 
-    function generateCardDetails(cardNumber) {
-        const formattedCard = `${cardNumber.slice(0, 4)}-${cardNumber.slice(4, 8)}-${cardNumber.slice(8, 12)}-${cardNumber.slice(12)}`;
-        const expirationDate = `${Math.floor(Math.random() * 12) + 1}/${Math.floor(Math.random() * (2030 - 2023) + 2023)}`;
-        const cvv = Math.floor(Math.random() * 900) + 100;
-        return `
-            <p><strong>Formatlı Kart Numarası:</strong> ${formattedCard}</p>
-            <p><strong>Son Kullanma Tarihi:</strong> ${expirationDate}</p>
-            <p><strong>CVV:</strong> ${cvv}</p>
-        `;
+    function validateCard() {
+        if (!userLoggedIn) {
+            alert("Önce giriş yapmalısınız!");
+            return;
+        }
+        const cardNumber = document.getElementById('cardNumber').value.replace(/\D/g, '');
+        const output = document.getElementById('output');
+
+        if (cardNumber.length === 16 && luhnCheck(cardNumber)) {
+            output.classList.remove('dead');
+            output.classList.add('live');
+            output.innerText = "Kart Geçerli!";
+        } else {
+            output.classList.remove('live');
+            output.classList.add('dead');
+            output.innerText = "Kart Geçersiz!";
+        }
     }
 
-    function validateCards() {
-        const cardNumbers = [
-            document.getElementById('cardNumber1').value.replace(/\D/g, ''),
-            document.getElementById('cardNumber2').value.replace(/\D/g, ''),
-            document.getElementById('cardNumber3').value.replace(/\D/g, '')
-        ];
+    // Register and Login functions
+    function register() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
 
-        let output = '';
-        let validCards = 0;
-
-        cardNumbers.forEach((cardNumber, index) => {
-            if (cardNumber.length === 16 && luhnCheck(cardNumber)) {
-                output += `<p class="success">Kart ${index + 1} Geçerli!</p>`;
-                output += generateCardDetails(cardNumber);
-                validCards++;
-            } else {
-                output += `<p class="error">Kart ${index + 1} Geçersiz!</p>`;
-            }
-        });
-
-        if (validCards === 0) {
-            output += '<p class="error">Hiçbir Kart Geçerli Değil!</p>';
+        if (username && password) {
+            alert("Kaydınız başarılı! Giriş yapabilirsiniz.");
+            document.getElementById('loginRegisterContainer').style.display = 'none';
+            document.getElementById('cardGeneratorContainer').style.display = 'block';
+            userLoggedIn = true;
+        } else {
+            alert("Lütfen tüm alanları doldurun.");
         }
+    }
 
-        document.getElementById('output').innerHTML = output;
+    function login() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        if (username === "admin" && password === "123456") {
+            alert("Giriş başarılı!");
+            document.getElementById('loginRegisterContainer').style.display = 'none';
+            document.getElementById('cardGeneratorContainer').style.display = 'block';
+            userLoggedIn = true;
+        } else {
+            alert("Hatalı giriş bilgileri!");
+        }
     }
 </script>
 
