@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacker Kart Generator</title>
+    <title>Hacker Kart Generator - DearSiber</title>
     <style>
         * {
             margin: 0;
@@ -12,7 +12,7 @@
         }
 
         body {
-            background: #000;
+            background: #111;
             color: #0f0;
             font-family: 'Courier New', Courier, monospace;
             display: flex;
@@ -160,6 +160,27 @@
             font-size: 18px;
             margin-top: 20px;
         }
+
+        .auth-code-box {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .auth-code-box.active {
+            display: block;
+        }
+
+        .auth-code-box input {
+            width: 200px;
+            font-size: 18px;
+            padding: 10px;
+            margin-right: 10px;
+        }
+
+        .auth-code-box button {
+            font-size: 18px;
+            padding: 10px;
+        }
     </style>
 </head>
 <body>
@@ -177,6 +198,7 @@
     </div>
     <button class="button" onclick="register()">Kaydol</button>
     <button class="button" onclick="login()">Giriş Yap</button>
+    <div id="message" class="message"></div>
 </div>
 
 <!-- Kart Generator ve Kontrol Paneli -->
@@ -190,6 +212,11 @@
 
     <div id="output" class="status"></div>
 
+    <div class="auth-code-box" id="authCodeBox">
+        <input type="text" id="authCodeInput" placeholder="Doğrulama Kodu">
+        <button class="button" onclick="verifyCode()">Kodu Doğrula</button>
+    </div>
+
     <div class="link-section">
         <a href="https://t.me/+IFx5aGB37Ws5NDFk" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Telegram_logo.svg/120px-Telegram_logo.svg.png" alt="Telegram" width="40"> Telegram Kanal 1</a>
         <a href="https://t.me/+icW90vpzScthOTRk" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Telegram_logo.svg/120px-Telegram_logo.svg.png" alt="Telegram" width="40"> Telegram Kanal 2</a>
@@ -197,10 +224,11 @@
 </div>
 
 <script>
-    // Global variable for user status
+    // Global variables
     let userLoggedIn = false;
+    let authCode = null;
 
-    // Simulate the API response (in reality, you would use an actual API here)
+    // Luhn Algorithm to validate card number
     function luhnCheck(cardNumber) {
         let sum = 0;
         let shouldDouble = false;
@@ -215,6 +243,7 @@
         return (sum % 10 === 0);
     }
 
+    // Validate card
     function validateCard() {
         if (!userLoggedIn) {
             alert("Önce giriş yapmalısınız!");
@@ -234,32 +263,51 @@
         }
     }
 
-    // Register and Login functions
+    // Register user
     function register() {
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
 
         if (username && password) {
-            alert("Kaydınız başarılı! Giriş yapabilirsiniz.");
-            document.getElementById('loginRegisterContainer').style.display = 'none';
-            document.getElementById('cardGeneratorContainer').style.display = 'block';
-            userLoggedIn = true;
+            authCode = generateAuthCode();
+            alert("Kaydınız başarılı! Kayıt kodu gönderildi.");
+            document.getElementById('message').innerText = "Kod: " + authCode;
+            document.getElementById('authCodeBox').classList.add('active');
         } else {
             alert("Lütfen tüm alanları doldurun.");
         }
     }
 
+    // Login user
     function login() {
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
 
         if (username === "admin" && password === "123456") {
-            alert("Giriş başarılı!");
+            authCode = generateAuthCode();
+            alert("Giriş başarılı! Kayıt kodu gönderildi.");
+            document.getElementById('message').innerText = "Kod: " + authCode;
+            document.getElementById('authCodeBox').classList.add('active');
+        } else {
+            alert("Hatalı giriş bilgileri!");
+        }
+    }
+
+    // Generate a random 6 character auth code
+    function generateAuthCode() {
+        return Math.random().toString(36).substring(2, 8).toUpperCase();
+    }
+
+    // Verify the entered authentication code
+    function verifyCode() {
+        const inputCode = document.getElementById('authCodeInput').value;
+        if (inputCode === authCode) {
             document.getElementById('loginRegisterContainer').style.display = 'none';
             document.getElementById('cardGeneratorContainer').style.display = 'block';
             userLoggedIn = true;
+            alert("Doğrulama başarılı! Giriş yaptınız.");
         } else {
-            alert("Hatalı giriş bilgileri!");
+            alert("Geçersiz doğrulama kodu!");
         }
     }
 </script>
