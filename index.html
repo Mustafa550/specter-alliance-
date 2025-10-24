@@ -13,56 +13,41 @@
             padding: 0;
             height: 100%;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            justify-content: flex-start;
+            align-items: flex-start;
             flex-direction: column;
             overflow: hidden;
+            width: 100%;
         }
 
-        /* Parlayan Kelimeler */
-        .flashing-text {
-            position: absolute;
-            top: 10%;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 30px;
-            animation: flash 1.5s infinite;
-        }
-
-        @keyframes flash {
-            0% { opacity: 0; color: #00FF00; }
-            50% { opacity: 1; color: #FF0000; }
-            100% { opacity: 0; color: #00FF00; }
-        }
-
-        /* Para Gösterimi Sağ Üst Köşe */
-        .money-display {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 20px;
+        /* Para ve Saat Gösterimi Üstte */
+        .top-bar {
+            width: 100%;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
             color: #00FF00;
+            font-size: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            z-index: 10;
         }
 
-        /* Saat Gösterimi */
-        .time-display {
-            position: absolute;
-            top: 40px;
-            right: 20px;
-            font-size: 20px;
-            color: #00FF00;
+        .top-bar span {
+            font-weight: bold;
         }
 
-        /* Oyun Paneli */
+        /* Oyun Alanı */
         .game-panel {
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.7);
             padding: 20px;
+            margin-top: 70px;
             border: 2px solid #00FF00;
             text-align: center;
             border-radius: 10px;
-            width: 400px;
-            display: block;
-            z-index: 10;
+            width: 300px;
             box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
         }
 
@@ -82,77 +67,74 @@
             background-color: #FF0000;
         }
 
-        /* Profil ve Durum Paneli */
-        .status-panel {
-            background-color: rgba(0, 0, 0, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            width: 500px;
-            text-align: center;
-            color: #00FF00;
-            display: none;
-        }
-
-        .status-panel p {
-            margin: 5px;
-        }
-
         /* Profil Sayfası */
         .profile-panel {
             background-color: rgba(0, 0, 0, 0.7);
             padding: 20px;
             border-radius: 10px;
-            width: 400px;
+            width: 300px;
             text-align: center;
             color: #00FF00;
             display: none;
         }
 
+        .status-panel {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+            color: #00FF00;
+            margin-top: 20px;
+        }
+
+        /* Oyun Durumları */
+        .game-area {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 10px;
+        }
+
         .footer-panel {
             position: absolute;
-            bottom: 10px;
-            right: 10px;
+            bottom: 20px;
+            right: 20px;
             font-size: 18px;
             color: #00FF00;
         }
 
-        /* Gelişmiş Oyun Alanı */
-        .game-area {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            gap: 15px;
-            margin-top: 20px;
+        /* Parlayan ve Sönen Kelimeler */
+        .flashing-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            font-size: 30px;
+            color: #00FF00;
+            animation: flash 1.5s infinite;
         }
 
-        .game-area button {
-            padding: 10px;
-            background-color: #00FF00;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            color: black;
-            width: 150px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-        }
-
-        .game-area button:hover {
-            background-color: #FF0000;
+        @keyframes flash {
+            0% { opacity: 0; color: #00FF00; }
+            50% { opacity: 1; color: #FF0000; }
+            100% { opacity: 0; color: #00FF00; }
         }
 
     </style>
 </head>
 <body>
 
-    <!-- Para Gösterimi Sağ Üst Köşe -->
-    <div class="money-display" id="moneyDisplay">Para: 0 $</div>
+    <!-- Para ve Saat Gösterimi Üstte -->
+    <div class="top-bar">
+        <span id="moneyDisplay">Para: 0 $</span>
+        <span id="timeDisplay">Saat: </span>
+    </div>
 
-    <!-- Saat Gösterimi Sağ Üst Köşe -->
-    <div class="time-display" id="timeDisplay">Saat: </div>
-
-    <!-- Parlayan Kelimeler -->
-    <div class="flashing-text">Hacker Simülasyonu Başladı...</div>
+    <!-- Parlayan ve Sönen Kelimeler -->
+    <div class="flashing-text">
+        Hacker Simülasyonu Başladı...
+    </div>
 
     <!-- Oyun Başlatma Paneli -->
     <div class="game-panel" id="gamePanel">
@@ -168,9 +150,6 @@
         <p>Karnınız: <span id="hunger">100</span>%</p>
         <p>Hapisteki Süre: <span id="prisonTime">0</span> sn</p>
         <p>Suç İşleme Oranı: <span id="crimeRate">50</span>%</p>
-        <button onclick="performHack()">Kod Yaz</button>
-        <button onclick="buyFood()">Yemek Al</button>
-        <button onclick="commitCrime()">Suç İşle</button>
         <div class="game-area">
             <button onclick="performHack()">Kod Yaz</button>
             <button onclick="buyFood()">Yemek Al</button>
@@ -292,16 +271,16 @@
             }
         }
 
-        // Çıkış işlevi
-        function exitGame() {
-            alert("Oyundan çıkılıyor...");
-            window.location.reload(); // Sayfayı yeniden yükler
-        }
-
         // Profil sayfasına geçiş
         function backToGame() {
             document.getElementById("profilePanel").style.display = "none";
             document.getElementById("statusPanel").style.display = "block";
+        }
+
+        // Çıkış işlevi
+        function exitGame() {
+            alert("Oyundan çıkılıyor...");
+            window.location.reload(); // Sayfayı yeniden yükler
         }
     </script>
 </body>
