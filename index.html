@@ -3,190 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ŞİRİN - Kişisel Web Sitesi</title>
+    <title>DEARKUMAR</title>
     <style>
-        body {
-            background-color: #1a1a1a;
-            color: #00FF00;
-            font-family: 'Courier New', Courier, monospace;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            flex-direction: column;
-            min-height: 100vh;
-            width: 100%;
-        }
-
-        /* Üst Menü */
-        .top-menu {
-            width: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: #00FF00;
-            padding: 15px;
-            font-size: 24px;
-            text-align: center;
-            font-weight: bold;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 10;
-        }
-
-        /* Dinamik Saat */
-        .time-display {
-            position: fixed;
-            top: 10px;
-            right: 20px;
-            font-size: 18px;
-            color: #00FF00;
-        }
-
-        /* İçerik Bölgesi */
-        .content-container {
-            margin-top: 100px;
-            padding: 20px;
-            width: 90%;
-            max-width: 1200px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .section {
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 20px;
-            border-radius: 10px;
-            border: 2px solid #00FF00;
-        }
-
-        .section h2, .section h3 {
-            margin-top: 0;
-        }
-
-        .section p {
-            font-size: 18px;
-        }
-
-        /* Sosyal Medya Bağlantıları */
-        .social-links {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-        }
-
-        .social-links a {
-            text-decoration: none;
-            color: #00FF00;
-            font-size: 20px;
-            padding: 10px;
-            border: 2px solid #00FF00;
-            border-radius: 5px;
-        }
-
-        .social-links a:hover {
-            background-color: #00FF00;
-            color: black;
-        }
-
-        /* İletişim Butonu */
-        .contact-section {
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            border: 2px solid #00FF00;
-        }
-
-        .contact-section button {
-            padding: 12px 20px;
-            background-color: #00FF00;
-            border: none;
-            color: black;
-            font-size: 18px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .contact-section button:hover {
-            background-color: #FF0000;
-        }
-
-        /* Footer */
-        .footer {
-            background-color: rgba(0, 0, 0, 0.8);
-            padding: 10px;
-            text-align: center;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            color: #00FF00;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #1a1a2e, #0f3460, #533483, #e94560); background-size: 400% 400%; animation: gradientShift 10s ease infinite; color: #fff; min-height: 100vh; }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; text-align: center; }
+        h1 { font-size: 3.5em; margin-bottom: 20px; text-shadow: 0 0 20px #ffd700, 0 0 30px #ff6b6b; animation: glow 1.5s infinite alternate; }
+        @keyframes glow { 0% { text-shadow: 0 0 10px #ffd700, 0 0 20px #ff6b6b; } 100% { text-shadow: 0 0 20px #ffd700, 0 0 40px #ff6b6b; } }
+        .channel-link { margin: 20px 0; }
+        .channel-link a { color: #ffd700; text-decoration: none; padding: 12px 25px; border: 3px solid #ffd700; border-radius: 50px; background: rgba(0,0,0,0.5); display: inline-block; animation: neon 1.5s infinite alternate, pulse 1s infinite; transition: all 0.3s; }
+        .channel-link a:hover { background: #ffd700; color: #1a1a2e; transform: scale(1.1); box-shadow: 0 0 30px #ffd700; }
+        @keyframes neon { 0% { box-shadow: 0 0 10px #ffd700, 0 0 20px #ff6b6b; } 100% { box-shadow: 0 0 20px #ffd700, 0 0 40px #ff6b6b; } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        .auth-section, .about-section { background: rgba(0,0,0,0.7); padding: 25px; border-radius: 15px; margin: 20px auto; max-width: 400px; box-shadow: 0 0 40px rgba(255,215,0,0.4); animation: fadeIn 0.8s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        input { width: 100%; padding: 12px; margin: 8px 0; border: none; border-radius: 8px; background: rgba(255,255,255,0.1); color: white; font-size: 16px; }
+        input::placeholder { color: #ccc; }
+        button { width: 100%; padding: 12px; margin: 8px 0; border: none; border-radius: 8px; background: linear-gradient(45deg, #ff6b6b, #ee5a52); color: white; font-size: 16px; cursor: pointer; transition: all 0.3s; box-shadow: 0 5px 15px rgba(255,107,107,0.4); }
+        button:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255,107,107,0.6); }
+        .game-section, .admin-section, .chat-section, .users-section, .profile-section { display: none; animation: slideIn 0.5s; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+        .balance { font-size: 26px; color: #ffd700; margin: 20px 0; text-shadow: 0 0 15px #ffd700; }
+        .game-buttons, .admin-buttons, .profile-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin: 20px 0; }
+        .game-btn, .admin-btn, .profile-btn { padding: 12px; background: linear-gradient(45deg, #4ecdc4, #44a08d); color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 15px; transition: all 0.3s; box-shadow: 0 5px 15px rgba(78,205,196,0.4); transform: perspective(500px) rotateX(5deg); }
+        .game-btn:hover, .admin-btn:hover, .profile-btn:hover { transform: perspective(500px) rotateX(0deg) translateY(-3px); box-shadow: 0 10px 30px rgba(78,205,196,0.6); }
+        .result, .admin-result, .users-list, .profile-result { font-size: 18px; margin: 20px 0; padding: 15px; border-radius: 10px; background: rgba(0,0,0,0.6); min-height: 50px; }
+        .logout-btn { background: linear-gradient(45deg, #ff6b6b, #ee5a52); margin-top: 20px; }
+        .chat-section { background: rgba(0,0,0,0.7); padding: 20px; border-radius: 15px; margin: 20px auto; max-width: 600px; }
+        #chat-messages { max-height: 400px; overflow-y: auto; margin-bottom: 10px; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .chat-message { padding: 8px; margin: 5px 0; background: rgba(255,255,255,0.2); border-radius: 8px; position: relative; }
+        .chat-message.pinned { border: 2px solid #ffd700; background: rgba(255,215,0,0.3); }
+        .chat-message .reply-btn, .chat-message .delete-btn, .chat-message .pin-btn, .chat-message .dm-btn { font-size: 12px; padding: 5px; margin-left: 10px; background: #ff6b6b; display: inline-block; }
+        #chat-input { width: 60%; display: inline-block; }
+        #chat-send, #chat-share { width: 15%; display: inline-block; margin-left: 5px; }
+        .slot-animation { font-size: 2em; display: inline-block; animation: spin 0.5s linear 3; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .profile-img { width: 50px; height: 50px; border-radius: 50%; margin: 10px; }
     </style>
 </head>
 <body>
-
-    <!-- Üst Menü -->
-    <div class="top-menu">
-        ŞİRİN - Kişisel Web Sitesi
-    </div>
-
-    <!-- Dinamik Saat -->
-    <div class="time-display" id="timeDisplay">
-        Saat: 
-    </div>
-
-    <!-- İçerik Bölgesi -->
-    <div class="content-container">
-
-        <!-- Hakkımda Bölümü -->
-        <div class="section" id="aboutMe">
-            <h2>Hakkımda</h2>
-            <p>Merhaba! Ben ŞİRİN. Dijital dünyada yazılım geliştirme, web tasarımı ve çeşitli projelerde yer alıyorum. Yaratıcı projeler geliştirmeyi ve yeni şeyler öğrenmeyi çok seviyorum.</p>
+    <div class="container">
+        <h1>DEARKUMAR</h1>
+        <div class="channel-link">
+            <a href="https://t.me/+icW90vpzScthOTRk" target="_blank">Telegram Kanalı - Bonus Kazan! ✨</a>
         </div>
-
-        <!-- Kanallar ve Sosyal Medya -->
-        <div class="section">
-            <h3>Kanallarım ve Sosyal Medya</h3>
-            <p>Youtube Kanalım, Instagram, Twitter gibi sosyal medya hesaplarım üzerinden projelerimle ilgili gelişmeleri takip edebilirsiniz.</p>
-            <div class="social-links">
-                <a href="https://www.youtube.com/channel/UCxxxxxxx" target="_blank">Youtube</a>
-                <a href="https://www.instagram.com/_0sirin0_" target="_blank">Instagram</a>
-                <a href="https://twitter.com/_0sirin0_" target="_blank">Twitter</a>
+        <div class="about-section">
+            <h2>Hakkımızda</h2>
+            <p>DEARKUMAR ile limitsiz eğlence, büyük kazançlar! En heyecanlı oyunlar, günlük bonuslar ve VIP ayrıcalıklarıyla gerçek kumar deneyimi burada!</p>
+        </div>
+        <div id="auth">
+            <div id="login" class="auth-section">
+                <h2>Giriş Yap</h2>
+                <input type="text" id="login_username" placeholder="Kullanıcı Adı veya Gmail">
+                <input type="password" id="login_password" placeholder="Şifre">
+                <button onclick="login()">Giriş</button>
             </div>
+            <div id="register" class="auth-section" style="display:none;">
+                <h2>Kayıt Ol</h2>
+                <input type="email" id="reg_email" placeholder="Gmail">
+                <input type="text" id="reg_name" placeholder="İsim">
+                <input type="text" id="reg_surname" placeholder="Soyisim">
+                <input type="text" id="reg_username" placeholder="Kullanıcı Adı">
+                <input type="password" id="reg_password" placeholder="Şifre">
+                <button onclick="register()">Kayıt Ol</button>
+                <button onclick="showLogin()">Giriş Yap</button>
+            </div>
+            <button onclick="showRegister()">Kayıt Ol</button>
         </div>
-
-        <!-- İcraatlarım -->
-        <div class="section">
-            <h3>İcraatlarım</h3>
-            <p>Çeşitli projelerde yer aldım. Web uygulamaları, oyunlar, yazılım araçları ve daha fazlası. Her projemde bir şeyler öğrendim ve her geçen gün daha fazla şey geliştirmeyi hedefliyorum.</p>
+        <div id="game-section" class="game-section">
+            <div class="balance" id="balance">Bakiye: 100.000 TL</div>
+            <div class="game-buttons">
+                <button class="game-btn" onclick="playRisk()">Risk (%50 2x)</button>
+                <button class="game-btn" onclick="playDice()">Zar (5-6: 2x, 7: 3x)</button>
+                <button class="game-btn" onclick="playSlot()">Slot (Üç Aynı: 3x)</button>
+                <button class="game-btn" onclick="playCoinflip()">Coinflip (%45 2x)</button>
+                <button class="game-btn" onclick="playRoulette()">Rulet (%45 2x)</button>
+                <button class="game-btn" onclick="playBlackjack()">Blackjack (%40 2x)</button>
+                <button class="game-btn" onclick="playPoker()">Poker (%30 3x)</button>
+                <button class="game-btn" onclick="claimDaily()">Günlük Bonus</button>
+                <button class="game-btn" onclick="sendMoney()">Para Gönder</button>
+                <button class="game-btn" onclick="showRich()">Zenginler</button>
+                <button class="game-btn" onclick="becomeVIP()">VIP Ol</button>
+                <button class="game-btn" onclick="showUsers()">Kullanıcılar</button>
+                <button class="game-btn" onclick="showProfile()">Profil</button>
+                <button class="game-btn" onclick="addFriend()">Arkadaş Ekle</button>
+                <button class="game-btn" onclick="viewStats()">İstatistiklerim</button>
+            </div>
+            <div class="result" id="result"></div>
+            <div class="chat-section" id="chat-section">
+                <h2>Sohbet</h2>
+                <div id="chat-messages"></div>
+                <input type="text" id="chat-input" placeholder="Mesaj yaz...">
+                <button id="chat-send" onclick="sendChat()">Gönder</button>
+                <button id="chat-share" onclick="shareWin()">Kazancı Paylaş</button>
+            </div>
+            <div class="users-section" id="users-section">
+                <h2>Kullanıcılar</h2>
+                <div class="users-list" id="users-list"></div>
+            </div>
+            <div class="profile-section" id="profile-section">
+                <h2>Profil</h2>
+                <img id="profile-img" class="profile-img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" alt="Profil">
+                <div class="profile-buttons">
+                    <button class="profile-btn" onclick="editProfile()">Profil Düzenle</button>
+                    <button class="profile-btn" onclick="viewHistory()">Oyun Geçmişi</button>
+                    <button class="profile-btn" onclick="uploadProfilePic()">Resim Yükle</button>
+                </div>
+                <div class="profile-result" id="profile-result"></div>
+            </div>
+            <button class="logout-btn" onclick="logout()">Çıkış Yap</button>
         </div>
-
-        <!-- İletişim Bölümü -->
-        <div class="contact-section">
-            <h3>Yardım mı İstiyorsunuz?</h3>
-            <p>Instagram üzerinden benimle iletişime geçebilirsiniz. Yardıma ihtiyacınız varsa hemen yazın!</p>
-            <a href="https://www.instagram.com/_0sirin0_/"><button>İletişime Geç</button></a>
+        <div id="admin-section" class="admin-section">
+            <h2>Admin Paneli</h2>
+            <div class="balance" id="admin-balance">Bakiye: 999.999.999 TL</div>
+            <div class="admin-buttons">
+                <button class="admin-btn" onclick="adminGive()">Bakiye Ver</button>
+                <button class="admin-btn" onclick="adminTake()">Bakiye Al</button>
+                <button class="admin-btn" onclick="adminSet()">Bakiye Set</button>
+                <button class="admin-btn" onclick="showRich()">En Zenginler</button>
+                <button class="admin-btn" onclick="adminBroadcast()">Toplu Mesaj</button>
+                <button class="admin-btn" onclick="adminBan()">Ban</button>
+                <button class="admin-btn" onclick="adminUnban()">Ban Kaldır</button>
+                <button class="admin-btn" onclick="adminAddAdmin()">Admin Ekle</button>
+                <button class="admin-btn" onclick="adminRemoveAdmin()">Admin Çıkar</button>
+                <button class="admin-btn" onclick="adminReset()">Kullanıcı Sıfırla</button>
+                <button class="admin-btn" onclick="adminSetDaily()">Günlük Bonus Ayar</button>
+                <button class="admin-btn" onclick="adminStats()">İstatistik</button>
+                <button class="admin-btn" onclick="adminLogs()">Loglar</button>
+                <button class="admin-btn" onclick="adminUserHistory()">Kullanıcı Geçmişi</button>
+                <button class="admin-btn" onclick="adminResetAll()">Toplu Sıfırlama</button>
+                <button class="admin-btn" onclick="adminToggleVIP()">VIP Ata/Kaldır</button>
+                <button class="admin-btn" onclick="adminStartTournament()">Turnuva Başlat</button>
+                <button class="admin-btn" onclick="adminPromoCode()">Promosyon Kodu</button>
+                <button class="admin-btn" onclick="showUsers(true)">Kullanıcılar</button>
+                <button class="admin-btn" onclick="adminDeleteChat()">Sohbet Mesajı Sil</button>
+                <button class="admin-btn" onclick="adminUnbanIP()">IP Ban Kaldır</button>
+                <button class="admin-btn" onclick="adminResetPassword()">Şifre Sıfırla</button>
+                <button class="admin-btn" onclick="adminSetSessionTimeout()">Oturum Süresi</button>
+                <button class="admin-btn" onclick="adminPinChat()">Mesaj Sabitle</button>
+                <button class="admin-btn" onclick="adminGameStats()">Oyun İstatistikleri</button>
+                <button class="admin-btn" onclick="adminToggleMaintenance()">Bakım Modu</button>
+                <button class="admin-btn" onclick="adminChangeIP()">IP Değiştir</button>
+            </div>
+            <div class="admin-result" id="admin-result"></div>
+            <button class="logout-btn" onclick="logout()">Çıkış Yap</button>
         </div>
-
     </div>
-
-    <!-- Footer -->
-    <div class="footer">
-        <p>&copy; 2025 ŞİRİN | Tüm Hakları Saklıdır</p>
-    </div>
-
     <script>
-        // Saatin her saniye güncellenmesi için JavaScript
-        setInterval(() => {
-            const timeDisplay = document.getElementById('timeDisplay');
-            const now = new Date();
-            timeDisplay.innerHTML = `Saat: ${now.toLocaleTimeString()}`;
-        }, 1000);
-    </script>
+        const ADMIN_CREDENTIALS = { username: 'sirin31', password: 'Sirin31' };
+        const PROTECTED_IPS = ['46.196.249.45'];
+        let currentUser = null, balance = 100000, isVIP = false, isAdmin = false, sessionToken = null;
+        let users = JSON.parse(localStorage.getItem('users')) || {};
+        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+        let ipAttempts = JSON.parse(localStorage.getItem('ipAttempts')) || {};
+        let bannedIPs = JSON.parse(localStorage.getItem('bannedIPs')) || [];
+        let chatMessages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+        let settings = JSON.parse(localStorage.getItem('settings')) || { dailyBonus: 50000, sessionTimeout: 30 * 60 * 1000, maintenance: false };
+        const DEFAULT_DAILY = 50000, SPECIAL_ONE_TIME = 100000, LOW_THRESHOLD = 10000;
+        const GAME_PROBS = { risk: 0.50, coinflip: 0.45, roulette: 0.45, blackjack: 0.40, poker: 0.30, dice: 0.6, slot: 0.6 };
+        const SLOT_SYMBOLS = ['🍒', '🍋', '⭐', '🔔', '7️⃣'];
+        const RATE_LIMIT = { max: 5, windowMs: 5 * 60 * 1000, banDuration: 60 * 60 * 1000 };
+        let userIP = 'unknown', lastWin = null;
 
-</body>
-</html>
+        // Tüm banları kaldır
+        Object.values(users).forEach(u => u.banned = false);
+        bannedIPs.length = 0;
+        saveData();
+
+        fetch('https://api.ipify.org?format=json').then(res => res.json()).then(data => userIP = data.ip).catch(() => {});
+
+  function saveData() {
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('transactions', JSON.stringify(transactions));
+            localStorage.setItem('ipAttempts', JSON.stringify(ipAttempts));
+            localStorage.setItem('bannedIPs', JSON.stringify(bannedIPs));
+            localStorage.setItem('chatMessages', JSON.stringify(chatMessages));
+            localStorage.setItem('settings', JSON.stringify(settings));
+        }
+
+        function money(a) { return a.toLocaleString() + ' TL'; }
+
+        function generateToken() { return Math.random().toString(36).substr(2) + Date.now(); }
+
+        function checkRateLimit() {
+            if (PROTECTED_IPS.includes(userIP)) return true;
+            const now = Date.now();
+            ipAttempts[userIP] = ipAttempts[userIP] || { count: 0, last: now, bannedUntil: null };
+            if (ipAttempts[userIP].bannedUntil && now < ipAttempts[userIP].bannedUntil) {
+                alert(`IP banlı, bekle: ${Math.ceil((ipAttempts[userIP].bannedUntil - now) / 60000)} dk`);
+                return false;
+            }
+            if (now - ipAttempts[userIP].last > RATE_LIMIT.windowMs) ipAttempts[userIP] = { count: 0, last: now, bannedUntil: null };
+            ipAttempts[userIP].count++;
+            if (ipAttempts[userIP].count > RATE_LIMIT.max) {
+                ipAttempts[userIP].bannedUntil = now + RATE_LIMIT.banDuration;
+                if (!PROTECTED_IPS.includes(userIP)) bannedIPs.push(userIP);
+                saveData();
+                alert('Çok fazla deneme, IP 1 saat banlandı!');
+                return false;
+            }
+            saveData();
+            return true;
+        }
+
+        function checkIPBan() {
+            if (PROTECTED_IPS.includes(userIP) || (currentUser && currentUser.username === ADMIN_CREDENTIALS.username)) return false;
+            if (bannedIPs.includes(userIP)) {
+                alert('Bu IP engellenmiş! Admin ile iletişime geç.');
+                return true;
+            }
+            const ipUsers = Object.values(users).filter(u => u.ip === userIP);
+            if (ipUsers.length > 2) {
+                ipUsers.forEach(u => delete users[u.username]);
+                if (!PROTECTED_IPS.includes(userIP)) bannedIPs.push(userIP);
+                saveData();
+                alert('Aynı IP’den 2’den fazla hesap tespit edildi, hesaplar silindi ve IP engellendi!');
+                return true;
+            }
+            return false;
+        }
