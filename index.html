@@ -12,163 +12,77 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
-        }
-
-        .container {
-            position: relative;
             height: 100vh;
-            width: 100%;
-            padding: 20px;
         }
 
-        .title {
-            text-align: center;
-            font-size: 40px;
-            margin-top: 5%;
-            text-shadow: 0 0 5px #00FF00, 0 0 10px #00FF00;
-            animation: titleEffect 3s infinite;
-        }
-
-        @keyframes titleEffect {
-            0% { color: #00FF00; }
-            50% { color: #FF0000; }
-            100% { color: #00FF00; }
-        }
-
-        .floating-text {
+        /* Kayan yeşil yazılar */
+        .scrolling-text {
             position: absolute;
-            top: 20%;
+            top: 50%;
             left: 100%;
-            font-size: 18px;
-            animation: float 10s linear infinite;
+            font-size: 20px;
             font-weight: bold;
+            animation: scrollText 10s linear infinite;
             color: #00FF00;
         }
 
-        @keyframes float {
+        @keyframes scrollText {
             0% { left: 100%; }
             100% { left: -100%; }
         }
 
-        .box {
-            position: absolute;
-            width: 250px;
-            height: 50px;
-            border: 2px solid #00FF00;
-            background-color: rgba(0, 255, 0, 0.1);
-            color: #00FF00;
-            font-size: 18px;
-            padding: 10px;
-            opacity: 0;
-            animation: move 10s infinite;
-        }
-
-        @keyframes move {
-            0% { opacity: 0; top: 5%; left: 10%; }
-            25% { opacity: 1; top: 15%; left: 30%; }
-            50% { opacity: 1; top: 30%; left: 60%; }
-            75% { opacity: 1; top: 50%; left: 90%; }
-            100% { opacity: 0; top: 70%; left: 10%; }
-        }
-
-        .code {
-            position: absolute;
-            bottom: 10%;
-            left: 10%;
-            font-size: 18px;
-            animation: blink 1s infinite;
-            color: #00FF00;
-        }
-
-        @keyframes blink {
-            0% { color: #00FF00; }
-            50% { color: transparent; }
-            100% { color: #00FF00; }
-        }
-
-        .hacker-input {
-            position: absolute;
-            bottom: 5%;
-            left: 30%;
-            width: 40%;
-            padding: 15px;
-            background-color: #333;
-            color: #00FF00;
-            border: 1px solid #00FF00;
-            font-size: 18px;
-            outline: none;
-        }
-
-        .hacker-input:focus {
-            border-color: #FF0000;
-            background-color: #222;
-        }
-
-        .secret-message {
+        /* Merkezi form stili */
+        .login-container {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 22px;
-            color: #FF0000;
-            opacity: 0;
-            animation: reveal 5s forwards;
+            width: 300px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border: 2px solid #00FF00;
+            text-align: center;
         }
 
-        @keyframes reveal {
-            0% { opacity: 0; }
-            50% { opacity: 0.7; }
-            100% { opacity: 1; }
-        }
-
-        .system-info {
-            position: absolute;
-            top: 10%;
-            right: 10%;
-            font-size: 18px;
+        .login-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #00FF00;
+            background-color: #222;
             color: #00FF00;
-            opacity: 0.8;
+            font-size: 16px;
         }
 
-        .compiling {
-            position: absolute;
-            top: 80%;
-            left: 40%;
-            font-size: 18px;
-            color: #00FF00;
-            animation: compilingAnim 3s infinite;
+        .login-container input:focus {
+            border-color: #FF0000;
+            outline: none;
         }
 
-        @keyframes compilingAnim {
-            0% { color: #00FF00; }
-            50% { color: #FF0000; }
-            100% { color: #00FF00; }
+        .login-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #00FF00;
+            color: black;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
         }
 
-        .error-message {
-            position: absolute;
-            top: 20%;
-            right: 15%;
-            font-size: 20px;
-            color: #FF0000;
-            opacity: 0;
-            animation: errorAnim 5s infinite;
+        .login-container button:hover {
+            background-color: #FF0000;
         }
 
-        @keyframes errorAnim {
-            0% { opacity: 0; }
-            50% { opacity: 1; }
-            100% { opacity: 0; }
-        }
-
+        /* Sonsuz Yükleme Çubuğu */
         .loading-bar {
             position: absolute;
-            bottom: 3%;
-            left: 10%;
-            width: 80%;
-            height: 8px;
-            background-color: #222;
+            bottom: 10%;
+            left: 50%;
+            width: 60%;
+            height: 10px;
+            background-color: #333;
             border-radius: 5px;
+            margin-left: -30%;
         }
 
         .loading-bar span {
@@ -183,93 +97,58 @@
             0% { width: 0%; }
             100% { width: 100%; }
         }
-
-        .network-image {
-            position: absolute;
-            top: 60%;
-            right: 5%;
-            width: 200px;
-            height: 200px;
-            border: 2px solid #00FF00;
-        }
-
-        .timer {
-            position: absolute;
-            bottom: 15%;
-            left: 75%;
-            font-size: 25px;
-            color: #00FF00;
-        }
-
-        .timer span {
-            animation: countDown 60s linear infinite;
-        }
-
-        @keyframes countDown {
-            0% { content: "60s"; }
-            100% { content: "0s"; }
-        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="title">
-            Hacker Simülasyonu
-        </div>
+    <!-- Sonsuz kayan yeşil yazılar -->
+    <div class="scrolling-text">
+        Sistem güvenliği kontrol ediliyor... Lütfen bekleyin...
+    </div>
 
-        <div class="floating-text">
-            "Ağ trafiği izleniyor... lütfen bekleyin."
-        </div>
+    <!-- Kullanıcı Girişi ve Kayıt Formu -->
+    <div class="login-container">
+        <h2>Hacker Girişi</h2>
+        <input type="text" id="username" placeholder="Kullanıcı Adı">
+        <input type="password" id="password" placeholder="Şifre">
+        <button onclick="login()">Giriş Yap</button>
+        <button onclick="register()">Kayıt Ol</button>
+    </div>
 
-        <div class="secret-message">
-            Gizli Şifre: 1234ABCD
-        </div>
-
-        <div class="error-message">
-            Sistem hatası! Kod geçersiz!
-        </div>
-
-        <div class="system-info">
-            Sistem Bilgisi: CPU %98 | RAM %80 | Ağ: Aktif
-        </div>
-
-        <div class="compiling">
-            Kod derleniyor...
-        </div>
-
-        <div class="loading-bar">
-            <span></span>
-        </div>
-
-        <input class="hacker-input" type="text" placeholder="Komut Girin...">
-
-        <div class="box">Sistemde işlem yapılıyor...</div>
-        <div class="box">Yükleniyor...</div>
-        <div class="box">Veritabanı erişimi sağlandı.</div>
-        <div class="box">Dosya şifresi çözüldü!</div>
-
-        <div class="code">
-            $ kod_dizisi_çalıştır();
-        </div>
-
-        <img src="https://via.placeholder.com/150" class="network-image" alt="Network Traffic">
-
-        <div class="timer">
-            <span>60s</span>
-        </div>
+    <!-- Yükleme Çubuğu -->
+    <div class="loading-bar">
+        <span></span>
     </div>
 
     <script>
-        window.onload = function() {
-            const boxes = document.querySelectorAll('.box');
-            boxes.forEach(box => {
-                const randomLeft = Math.random() * 90;
-                const randomTop = Math.random() * 60;
-                box.style.left = randomLeft + '%';
-                box.style.top = randomTop + '%';
-                box.style.animationDelay = Math.random() * 5 + "s";
-            };
-        };
+        // Giriş yapma işlevi
+        function login() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            if (username === "" || password === "") {
+                alert("Kullanıcı adı ve şifre gerekli!");
+                return;
+            }
+
+            // Giriş başarılı olduğunda yapılacak işlemler
+            alert("Hoş geldiniz, " + username + "!");
+            // Burada daha fazla işlem ekleyebilirsin (örneğin yönlendirme).
+        }
+
+        // Kayıt olma işlevi
+        function register() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            if (username === "" || password === "") {
+                alert("Kullanıcı adı ve şifre gerekli!");
+                return;
+            }
+
+            // Kayıt başarılı olduğunda yapılacak işlemler
+            alert("Kayıt başarılı, " + username + "!");
+            // Burada daha fazla işlem ekleyebilirsin (örneğin veritabanına ekleme).
+        }
     </script>
 </body>
 </html>
