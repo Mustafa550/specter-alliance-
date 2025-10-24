@@ -13,18 +13,23 @@
             padding: 0;
             overflow: hidden;
             height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
         }
 
-        /* Kayan Yeşil Kod Satırları (Arka Plan) */
+        /* Arka Planda Hızla Akan Kod Satırları */
         .scrolling-codes {
             position: absolute;
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 18px;
+            font-size: 16px;
             color: #00FF00;
             white-space: nowrap;
-            animation: scrollCodes 3s linear infinite;
+            animation: scrollCodes 2s linear infinite;
+            z-index: -1;
         }
 
         @keyframes scrollCodes {
@@ -32,63 +37,51 @@
             100% { top: 100%; }
         }
 
-        /* Maskeli Hacker Görseli (Sönüp Yanma Efekti) */
-        .hacker-image {
+        /* Parlayan ve Sönen Kelimeler */
+        .flashing-text {
             position: absolute;
             top: 20%;
-            right: 10%;
-            width: 150px;
-            height: 150px;
-            background-image: url('https://via.placeholder.com/150'); /* Placeholder resim */
-            background-size: cover;
-            opacity: 0;
-            animation: fadeInOut 5s infinite;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 30px;
+            animation: flash 1.5s infinite;
         }
 
-        @keyframes fadeInOut {
-            0% { opacity: 0; }
-            50% { opacity: 1; }
-            100% { opacity: 0; }
+        @keyframes flash {
+            0% { opacity: 0; color: #00FF00; }
+            50% { opacity: 1; color: #FF0000; }
+            100% { opacity: 0; color: #00FF00; }
         }
 
         /* Giriş ve Kayıt Formu */
         .login-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 320px;
             background-color: rgba(0, 0, 0, 0.7);
             padding: 20px;
             border: 2px solid #00FF00;
-            text-align: center;
             border-radius: 10px;
+            width: 300px;
+            text-align: center;
+            z-index: 10;
+            display: block;
         }
 
         .login-container input {
             width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid #00FF00;
+            padding: 10px;
+            margin-bottom: 10px;
             background-color: #222;
             color: #00FF00;
-            font-size: 16px;
+            border: 1px solid #00FF00;
             border-radius: 5px;
-        }
-
-        .login-container input:focus {
-            border-color: #FF0000;
-            outline: none;
         }
 
         .login-container button {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             background-color: #00FF00;
             color: black;
             border: none;
             cursor: pointer;
-            font-size: 16px;
             border-radius: 5px;
         }
 
@@ -96,24 +89,66 @@
             background-color: #FF0000;
         }
 
-        /* Oyun Başlangıcı için Buton */
-        .start-game {
-            position: absolute;
-            top: 70%;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 20px;
-            padding: 15px;
+        /* Oyun Paneli */
+        .game-panel {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border: 2px solid #00FF00;
+            text-align: center;
+            border-radius: 10px;
+            width: 350px;
+            display: none;
+        }
+
+        .game-panel button {
+            width: 100%;
+            padding: 12px;
             background-color: #00FF00;
             color: black;
             border: none;
             cursor: pointer;
-            width: 200px;
-            text-align: center;
+            font-size: 16px;
             border-radius: 5px;
+            margin-top: 10px;
         }
 
-        .start-game:hover {
+        /* Durum Paneli */
+        .status-panel {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            width: 350px;
+            text-align: center;
+            color: #00FF00;
+            display: none;
+            margin-top: 20px;
+        }
+
+        .status-panel p {
+            margin: 5px;
+        }
+
+        /* Sağ Alt Köşe Paneli */
+        .footer-panel {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 18px;
+            color: #00FF00;
+        }
+
+        .footer-panel button {
+            padding: 10px;
+            background-color: #00FF00;
+            color: black;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .footer-panel button:hover {
             background-color: #FF0000;
         }
     </style>
@@ -122,17 +157,23 @@
 
     <!-- Arka Plan Kayan Kodlar -->
     <div class="scrolling-codes">
-        Veritabanı bağlantısı sağlanıyor...<br>
+        Veritabanı başlatıldı...<br>
         Ağ trafiği izleniyor...<br>
-        Sistemde işlem yapılıyor...<br>
+        Kod çözülüyor...<br>
+        Kullanıcı doğrulaması yapılıyor...<br>
         Şifre çözülüyor...<br>
+        Sistemde işlem yapılıyor...<br>
+        Veritabanı hatası...<br>
+        Hacking işlemi tamamlanıyor...<br>
     </div>
 
-    <!-- Maskeli Hacker Görseli -->
-    <div class="hacker-image"></div>
+    <!-- Parlayan ve Sönen Kelimeler -->
+    <div class="flashing-text">
+        Hacker Simülasyonu Başladı...
+    </div>
 
     <!-- Giriş ve Kayıt Formu -->
-    <div class="login-container">
+    <div class="login-container" id="loginForm">
         <h2>Hacker Girişi</h2>
         <input type="text" id="username" placeholder="Kullanıcı Adı">
         <input type="password" id="password" placeholder="Şifre">
@@ -140,11 +181,35 @@
         <button onclick="register()">Kayıt Ol</button>
     </div>
 
-    <!-- Oyun Başlangıcı Butonu -->
-    <div class="start-game" id="gameButton" style="display: none;" onclick="startGame()">Hackerlik Yapmak İster Misiniz?</div>
+    <!-- Oyun Başlatma Paneli -->
+    <div class="game-panel" id="gamePanel">
+        <h3>Hacker Olmak İster Misiniz?</h3>
+        <button onclick="startHacking()">Hackerlik Başlat</button>
+    </div>
+
+    <!-- Durum Paneli (Hackerlik Oyun Durumu) -->
+    <div class="status-panel" id="statusPanel">
+        <p>Para: <span id="money">0</span> $</p>
+        <p>Karnınız: <span id="hunger">100</span>%</p>
+        <p>Hapisteki Süre: <span id="prisonTime">0</span> sn</p>
+        <button onclick="performHack()">Kod Yaz</button>
+        <button onclick="buyFood()">Yemek Al</button>
+        <button onclick="commitCrime()">Suç İşle</button>
+    </div>
+
+    <!-- Alt Panel (Düğmeler) -->
+    <div class="footer-panel">
+        <button onclick="exitGame()">Çık</button>
+    </div>
 
     <script>
-        // Giriş yapma işlevi
+        let money = 0;
+        let hunger = 100;
+        let prisonTime = 0;
+        let hacking = false;
+        let intervalId;
+
+        // Giriş işlevi
         function login() {
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
@@ -155,11 +220,11 @@
             }
 
             alert("Hoş geldiniz, " + username + "!");
-            document.querySelector(".login-container").style.display = "none"; // Formu gizle
-            document.getElementById("gameButton").style.display = "block"; // Oyun butonunu göster
+            document.getElementById("loginForm").style.display = "none";
+            document.getElementById("gamePanel").style.display = "block";
         }
 
-        // Kayıt olma işlevi
+        // Kayıt işlevi
         function register() {
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
@@ -170,14 +235,76 @@
             }
 
             alert("Kayıt başarılı, " + username + "!");
-            document.querySelector(".login-container").style.display = "none"; // Formu gizle
-            document.getElementById("gameButton").style.display = "block"; // Oyun butonunu göster
+            document.getElementById("loginForm").style.display = "none";
+            document.getElementById("gamePanel").style.display = "block";
         }
 
-        // Oyun Başlatma İşlevi
-        function startGame() {
-            alert("Hackerlik oyunu başladı! \n\n 1. Polise yakalanma \n 2. Ev hayat baskını \n 3. PC'de kod yazma \n 4. Kredi kartı bilgileri satma");
-            // Oyun süreci burada başlar, farklı içerik ekleyebilirsin.
+        // Hackerlik başlatma
+        function startHacking() {
+            document.getElementById("gamePanel").style.display = "none";
+            document.getElementById("statusPanel").style.display = "block";
+            beginGame();
+        }
+
+        // Oyun başlatma
+        function beginGame() {
+            intervalId = setInterval(function() {
+                hunger -= 1; // Zamanla açlık azalacak
+                document.getElementById("hunger").innerText = hunger;
+
+                if (hunger <= 0) {
+                    alert("Öldünüz! Yetersiz beslenme.");
+                    clearInterval(intervalId);
+                    return;
+                }
+
+                // Hapisteki zaman
+                if (prisonTime > 0) {
+                    document.getElementById("prisonTime").innerText = prisonTime;
+                    prisonTime++;
+                }
+            }, 1000);
+        }
+
+        // Kod yazma
+        function performHack() {
+            if (prisonTime > 0) {
+                alert("Hapistesiniz! Çıkmanız için 10 dakika beklemeniz gerekiyor.");
+                return;
+            }
+
+            let earnedMoney = Math.floor(Math.random() * 1000);
+            money += earnedMoney;
+            document.getElementById("money").innerText = money;
+            alert("Kod yazdınız ve " + earnedMoney + " $ kazandınız!");
+        }
+
+        // Yemek al
+        function buyFood() {
+            if (money >= 50) {
+                hunger = 100;
+                money -= 50;
+                document.getElementById("money").innerText = money;
+                alert("Yemek aldınız, açlık %100 oldu!");
+            } else {
+                alert("Yeterli paranız yok!");
+            }
+        }
+
+        // Suç işleme (hapise girme)
+        function commitCrime() {
+            if (Math.random() < 0.5) {
+                alert("Suç işlediniz ve hapse girdiniz!");
+                prisonTime = 10; // 10 saniye hapisteyiz
+            } else {
+                alert("Suç işlediniz ama yakalanmadınız!");
+            }
+        }
+
+        // Çıkış işlevi
+        function exitGame() {
+            alert("Oyundan çıkılıyor...");
+            window.location.reload(); // Sayfayı yeniden yükler
         }
     </script>
 </body>
