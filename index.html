@@ -15,43 +15,65 @@
             height: 100vh;
         }
 
-        /* Kayan yeşil yazılar */
-        .scrolling-text {
+        /* Kayan Yeşil Kod Satırları (Arka Plan) */
+        .scrolling-codes {
             position: absolute;
-            top: 50%;
-            left: 100%;
-            font-size: 20px;
-            font-weight: bold;
-            animation: scrollText 10s linear infinite;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 18px;
             color: #00FF00;
+            white-space: nowrap;
+            animation: scrollCodes 3s linear infinite;
         }
 
-        @keyframes scrollText {
-            0% { left: 100%; }
-            100% { left: -100%; }
+        @keyframes scrollCodes {
+            0% { top: -100%; }
+            100% { top: 100%; }
         }
 
-        /* Merkezi form stili */
+        /* Maskeli Hacker Görseli (Sönüp Yanma Efekti) */
+        .hacker-image {
+            position: absolute;
+            top: 20%;
+            right: 10%;
+            width: 150px;
+            height: 150px;
+            background-image: url('https://via.placeholder.com/150'); /* Placeholder resim */
+            background-size: cover;
+            opacity: 0;
+            animation: fadeInOut 5s infinite;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* Giriş ve Kayıt Formu */
         .login-container {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 300px;
+            width: 320px;
             background-color: rgba(0, 0, 0, 0.7);
             padding: 20px;
             border: 2px solid #00FF00;
             text-align: center;
+            border-radius: 10px;
         }
 
         .login-container input {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             margin-bottom: 15px;
             border: 1px solid #00FF00;
             background-color: #222;
             color: #00FF00;
             font-size: 16px;
+            border-radius: 5px;
         }
 
         .login-container input:focus {
@@ -61,51 +83,55 @@
 
         .login-container button {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             background-color: #00FF00;
             color: black;
             border: none;
             cursor: pointer;
             font-size: 16px;
+            border-radius: 5px;
         }
 
         .login-container button:hover {
             background-color: #FF0000;
         }
 
-        /* Sonsuz Yükleme Çubuğu */
-        .loading-bar {
+        /* Oyun Başlangıcı için Buton */
+        .start-game {
             position: absolute;
-            bottom: 10%;
+            top: 70%;
             left: 50%;
-            width: 60%;
-            height: 10px;
-            background-color: #333;
-            border-radius: 5px;
-            margin-left: -30%;
-        }
-
-        .loading-bar span {
-            display: block;
-            width: 0%;
-            height: 100%;
+            transform: translateX(-50%);
+            font-size: 20px;
+            padding: 15px;
             background-color: #00FF00;
-            animation: loadProgress 10s infinite;
+            color: black;
+            border: none;
+            cursor: pointer;
+            width: 200px;
+            text-align: center;
+            border-radius: 5px;
         }
 
-        @keyframes loadProgress {
-            0% { width: 0%; }
-            100% { width: 100%; }
+        .start-game:hover {
+            background-color: #FF0000;
         }
     </style>
 </head>
 <body>
-    <!-- Sonsuz kayan yeşil yazılar -->
-    <div class="scrolling-text">
-        Sistem güvenliği kontrol ediliyor... Lütfen bekleyin...
+
+    <!-- Arka Plan Kayan Kodlar -->
+    <div class="scrolling-codes">
+        Veritabanı bağlantısı sağlanıyor...<br>
+        Ağ trafiği izleniyor...<br>
+        Sistemde işlem yapılıyor...<br>
+        Şifre çözülüyor...<br>
     </div>
 
-    <!-- Kullanıcı Girişi ve Kayıt Formu -->
+    <!-- Maskeli Hacker Görseli -->
+    <div class="hacker-image"></div>
+
+    <!-- Giriş ve Kayıt Formu -->
     <div class="login-container">
         <h2>Hacker Girişi</h2>
         <input type="text" id="username" placeholder="Kullanıcı Adı">
@@ -114,10 +140,8 @@
         <button onclick="register()">Kayıt Ol</button>
     </div>
 
-    <!-- Yükleme Çubuğu -->
-    <div class="loading-bar">
-        <span></span>
-    </div>
+    <!-- Oyun Başlangıcı Butonu -->
+    <div class="start-game" id="gameButton" style="display: none;" onclick="startGame()">Hackerlik Yapmak İster Misiniz?</div>
 
     <script>
         // Giriş yapma işlevi
@@ -130,9 +154,9 @@
                 return;
             }
 
-            // Giriş başarılı olduğunda yapılacak işlemler
             alert("Hoş geldiniz, " + username + "!");
-            // Burada daha fazla işlem ekleyebilirsin (örneğin yönlendirme).
+            document.querySelector(".login-container").style.display = "none"; // Formu gizle
+            document.getElementById("gameButton").style.display = "block"; // Oyun butonunu göster
         }
 
         // Kayıt olma işlevi
@@ -145,9 +169,15 @@
                 return;
             }
 
-            // Kayıt başarılı olduğunda yapılacak işlemler
             alert("Kayıt başarılı, " + username + "!");
-            // Burada daha fazla işlem ekleyebilirsin (örneğin veritabanına ekleme).
+            document.querySelector(".login-container").style.display = "none"; // Formu gizle
+            document.getElementById("gameButton").style.display = "block"; // Oyun butonunu göster
+        }
+
+        // Oyun Başlatma İşlevi
+        function startGame() {
+            alert("Hackerlik oyunu başladı! \n\n 1. Polise yakalanma \n 2. Ev hayat baskını \n 3. PC'de kod yazma \n 4. Kredi kartı bilgileri satma");
+            // Oyun süreci burada başlar, farklı içerik ekleyebilirsin.
         }
     </script>
 </body>
