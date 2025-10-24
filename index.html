@@ -11,36 +11,23 @@
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
             padding: 0;
-            overflow: hidden;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
+            overflow: hidden;
         }
 
-        /* Arka Planda Hızla Akan Kod Satırları */
+        /* Arka Plan Kayan Kod Satırları Kaldırıldı, Sadeleştirildi */
         .scrolling-codes {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 16px;
-            color: #00FF00;
-            white-space: nowrap;
-            animation: scrollCodes 2s linear infinite;
-            z-index: -1;
-        }
-
-        @keyframes scrollCodes {
-            0% { top: -100%; }
-            100% { top: 100%; }
+            display: none;
         }
 
         /* Parlayan ve Sönen Kelimeler */
         .flashing-text {
             position: absolute;
-            top: 20%;
+            top: 10%;
             left: 50%;
             transform: translateX(-50%);
             font-size: 30px;
@@ -53,42 +40,6 @@
             100% { opacity: 0; color: #00FF00; }
         }
 
-        /* Giriş ve Kayıt Formu */
-        .login-container {
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 20px;
-            border: 2px solid #00FF00;
-            border-radius: 10px;
-            width: 300px;
-            text-align: center;
-            z-index: 10;
-            display: block;
-        }
-
-        .login-container input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            background-color: #222;
-            color: #00FF00;
-            border: 1px solid #00FF00;
-            border-radius: 5px;
-        }
-
-        .login-container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #00FF00;
-            color: black;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .login-container button:hover {
-            background-color: #FF0000;
-        }
-
         /* Oyun Paneli */
         .game-panel {
             background-color: rgba(0, 0, 0, 0.7);
@@ -96,8 +47,9 @@
             border: 2px solid #00FF00;
             text-align: center;
             border-radius: 10px;
-            width: 350px;
+            width: 400px;
             display: none;
+            z-index: 10;
         }
 
         .game-panel button {
@@ -112,23 +64,32 @@
             margin-top: 10px;
         }
 
+        .game-panel button:hover {
+            background-color: #FF0000;
+        }
+
         /* Durum Paneli */
         .status-panel {
             background-color: rgba(0, 0, 0, 0.8);
             padding: 20px;
             border-radius: 10px;
-            width: 350px;
+            width: 400px;
             text-align: center;
             color: #00FF00;
             display: none;
-            margin-top: 20px;
         }
 
         .status-panel p {
             margin: 5px;
         }
 
-        /* Sağ Alt Köşe Paneli */
+        /* Hapisteki Arkadaşlar */
+        .prison-friends {
+            color: #FF0000;
+            margin-top: 20px;
+        }
+
+        /* Ekran Boyutu ve Oyun Görünümü */
         .footer-panel {
             position: absolute;
             bottom: 10px;
@@ -136,49 +97,13 @@
             font-size: 18px;
             color: #00FF00;
         }
-
-        .footer-panel button {
-            padding: 10px;
-            background-color: #00FF00;
-            color: black;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-
-        .footer-panel button:hover {
-            background-color: #FF0000;
-        }
     </style>
 </head>
 <body>
 
-    <!-- Arka Plan Kayan Kodlar -->
-    <div class="scrolling-codes">
-        Veritabanı başlatıldı...<br>
-        Ağ trafiği izleniyor...<br>
-        Kod çözülüyor...<br>
-        Kullanıcı doğrulaması yapılıyor...<br>
-        Şifre çözülüyor...<br>
-        Sistemde işlem yapılıyor...<br>
-        Veritabanı hatası...<br>
-        Hacking işlemi tamamlanıyor...<br>
-    </div>
-
     <!-- Parlayan ve Sönen Kelimeler -->
     <div class="flashing-text">
         Hacker Simülasyonu Başladı...
-    </div>
-
-    <!-- Giriş ve Kayıt Formu -->
-    <div class="login-container" id="loginForm">
-        <h2>Hacker Girişi</h2>
-        <input type="text" id="username" placeholder="Kullanıcı Adı">
-        <input type="password" id="password" placeholder="Şifre">
-        <button onclick="login()">Giriş Yap</button>
-        <button onclick="register()">Kayıt Ol</button>
     </div>
 
     <!-- Oyun Başlatma Paneli -->
@@ -187,14 +112,20 @@
         <button onclick="startHacking()">Hackerlik Başlat</button>
     </div>
 
-    <!-- Durum Paneli (Hackerlik Oyun Durumu) -->
+    <!-- Durum Paneli -->
     <div class="status-panel" id="statusPanel">
         <p>Para: <span id="money">0</span> $</p>
         <p>Karnınız: <span id="hunger">100</span>%</p>
         <p>Hapisteki Süre: <span id="prisonTime">0</span> sn</p>
+        <p>Suç İşleme Oranı: <span id="crimeRate">50</span>%</p>
         <button onclick="performHack()">Kod Yaz</button>
         <button onclick="buyFood()">Yemek Al</button>
         <button onclick="commitCrime()">Suç İşle</button>
+        <div class="prison-friends" id="prisonFriends" style="display:none;">
+            <h4>Hapisteki Arkadaşlarınız:</h4>
+            <p id="friend1">Ali - İyi Bir Hacker</p>
+            <p id="friend2">Veli - Yavaş Ama Güvenilir</p>
+        </div>
     </div>
 
     <!-- Alt Panel (Düğmeler) -->
@@ -206,47 +137,18 @@
         let money = 0;
         let hunger = 100;
         let prisonTime = 0;
+        let crimeRate = 50;
         let hacking = false;
         let intervalId;
 
-        // Giriş işlevi
-        function login() {
-            const username = document.getElementById("username").value;
-            const password = document.getElementById("password").value;
-
-            if (username === "" || password === "") {
-                alert("Kullanıcı adı ve şifre gerekli!");
-                return;
-            }
-
-            alert("Hoş geldiniz, " + username + "!");
-            document.getElementById("loginForm").style.display = "none";
-            document.getElementById("gamePanel").style.display = "block";
-        }
-
-        // Kayıt işlevi
-        function register() {
-            const username = document.getElementById("username").value;
-            const password = document.getElementById("password").value;
-
-            if (username === "" || password === "") {
-                alert("Kullanıcı adı ve şifre gerekli!");
-                return;
-            }
-
-            alert("Kayıt başarılı, " + username + "!");
-            document.getElementById("loginForm").style.display = "none";
-            document.getElementById("gamePanel").style.display = "block";
-        }
-
-        // Hackerlik başlatma
+        // Oyun Başlatma
         function startHacking() {
-            document.getElementById("gamePanel").style.display = "none";
-            document.getElementById("statusPanel").style.display = "block";
+            document.getElementById("gamePanel").style.display = "none"; // Oyun Başlangıcını Gizle
+            document.getElementById("statusPanel").style.display = "block"; // Durum Panelini Göster
             beginGame();
         }
 
-        // Oyun başlatma
+        // Oyun Başlatma
         function beginGame() {
             intervalId = setInterval(function() {
                 hunger -= 1; // Zamanla açlık azalacak
@@ -266,17 +168,27 @@
             }, 1000);
         }
 
-        // Kod yazma
+        // Kod Yazma
         function performHack() {
             if (prisonTime > 0) {
                 alert("Hapistesiniz! Çıkmanız için 10 dakika beklemeniz gerekiyor.");
                 return;
             }
 
-            let earnedMoney = Math.floor(Math.random() * 1000);
+            let type = prompt("Ne ile ilgili kod yazmak istersiniz? (Hırsızlık, Kredi Kartı, Oyun Site)");
+
+            let earnedMoney = 0;
+            if (type.toLowerCase() === "hırsızlık") {
+                earnedMoney = Math.floor(Math.random() * 1000);
+            } else if (type.toLowerCase() === "kredi kartı") {
+                earnedMoney = Math.floor(Math.random() * 2000);
+            } else if (type.toLowerCase() === "oyun site") {
+                earnedMoney = Math.floor(Math.random() * 500);
+            }
+
             money += earnedMoney;
             document.getElementById("money").innerText = money;
-            alert("Kod yazdınız ve " + earnedMoney + " $ kazandınız!");
+            alert(type + " konusunda kod yazdınız ve " + earnedMoney + " $ kazandınız!");
         }
 
         // Yemek al
@@ -293,7 +205,7 @@
 
         // Suç işleme (hapise girme)
         function commitCrime() {
-            if (Math.random() < 0.5) {
+            if (Math.random() < crimeRate / 100) {
                 alert("Suç işlediniz ve hapse girdiniz!");
                 prisonTime = 10; // 10 saniye hapisteyiz
             } else {
