@@ -783,3 +783,190 @@
             saveData();
             document.getElementById('admin-result').innerHTML = `<b style="color:green;">🪙 Günlük bonus ${money(amount)} oldu!</b>`;
         }
+
+        function adminStats() {
+            if (!checkSession()) return;
+            const userCount = Object.keys(users).length;
+            const totalBalance = Object.values(users).reduce((sum, u) => sum + u.balance, 0);
+            const totalWins = transactions.filter(t => t.type.includes('_win')).length;
+            const winAmount = transactions.filter(t => t.type.includes('_win')).reduce((sum, t) => sum + t.amount, 0);
+            document.getElementById('admin-result').innerHTML = `<b>📊 İstatistik:</b><br>Kullanıcı: ${userCount}<br>Toplam Bakiye: ${money(totalBalance)}<br>Kazanılan: ${money(winAmount)} (${totalWins} oyun)`;
+        }
+
+        function adminLogs() {
+            if (!checkSession()) return;
+            const logs = transactions.slice(-20).map(t => `ID: ${t.userId} - ${t.type}: ${money(t.amount)} - ${t.ts}`).join('<br>');
+            document.getElementById('admin-result').innerHTML = `<b>📜 Son 20 Log:</b><br>${logs || 'Log yok!'}`;
+        }
+
+        function adminUserHistory() {
+            if (!checkSession()) return;
+            const username = prompt('Kullanıcı adı:');
+            if (!username || !users[username]) {
+                alert('Kullanıcı adı gir veya kullanıcı bulunamadı!');
+                return;
+            }
+            const userTx = transactions.filter(t => t.userId === username).slice(-20).map(t => `${t.type}: ${money(t.amount)} - ${t.note} - ${t.ts}`).join('<br>');
+            document.getElementById('admin-result').innerHTML = `<b>📜 ${username} Geçmişi:</b><br>${userTx || 'Geçmiş yok!'}`;
+        }
+
+        function adminResetAll() {
+            if (!checkSession()) return;
+            if (!confirm('Tüm kullanıcıların bakiyesi sıfırlanacak, emin misiniz?')) return;
+            Object.values(users).forEach(u => u.balance = 0);
+            addTransaction('system', 'reset_all', 0, 'All balances reset');
+            saveData();
+            document.getElementById('admin-result').innerHTML = '<b style="color:green;">🗑️ Tüm bakiyeler sıfırlandı!</b>';
+        }
+
+        function adminToggleVIP() {
+            if (!checkSession()) return;
+            const username = prompt('Kullanıcı adı:');
+            if (!username || !users[username]) {
+                alert('Kullanıcı adı gir veya kullanıcı bulunamadı!');
+                return;
+            }
+            users[username].isVIP = !users[username].isVIP;
+            saveData();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">🌟 ${username} ${users[username].isVIP ? 'VIP yapıldı!' : 'VIP kaldırıldı!'}</b>`;
+        }
+
+        function adminStartTournament() {
+            if (!checkSession()) return;
+            const prize = prompt('Turnuva ödülü (TL):');
+            if (!prize || isNaN(prize) || prize <= 0) {
+                alert('Geçerli ödül miktarı gir!');
+                return;
+            }
+            addTransaction('system', 'tournament', parseInt(prize), 'Tournament started');
+            chatMessages.push({ id: Date.now(), username: 'Sistem', text: `🏆 Turnuva başladı! Ödül: ${money(prize)}`, timestamp: new Date().toISOString(), pinned: true });
+            saveData();
+            loadChat();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">🏆 Turnuva başlatıldı! Ödül: ${money(prize)}</b>`;
+        }
+
+        function adminPromoCode() {
+            if (!checkSession()) return;
+            const code = prompt('Promosyon kodu:');
+            const amount = prompt('Ödül miktarı:');
+            const duration = prompt('Geçerlilik süresi (saat):');
+            if (!code || !amount || isNaN(amount) || amount <= 0 || !duration || isNaN(duration)) {
+                alert('Geçerli kod, miktar ve süre gir!');
+                return;
+            }
+            addTransaction('system', 'promo_code', parseInt(amount), `Code: ${code}, Duration: ${duration}h`);
+            chatMessages.push({ id: Date.now(), username: 'Sistem', text: `🎁 Yeni promosyon kodu: ${code} (${money(amount)}, ${duration} saat)`, timestamp: new Date().toISOString(), pinned: true });
+            saveData();
+            loadChat();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">🎁 Promosyon kodu ${code} (${money(amount)}) oluşturuldu!</b>`;
+        }
+
+        function adminDeleteChat() {
+            if (!checkSession()) return;
+            const id = prompt('Silinecek mesaj ID’si (sohbetteki ID):');
+            const index = chatMessages.findIndex(m => m.id == id);
+            if (index === -1) {
+                alert('Mesaj bulunamadı!');
+                return;
+            }
+            chatMessages.splice(index, 1);
+            saveData();
+            loadChat();
+            document.getElementById('admin-result').innerHTML = '<b style="color:green;">🗑️ Mesaj silindi!</b>';
+        }
+
+        function adminPinChat(index) {
+            if (!checkSession()) return;
+            chatMessages[index].pinned = !chatMessages[index].pinned;
+            saveData();
+            loadChat();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">📌 Mesaj ${chatMessages[index].pinned ? 'sabitledi!' : 'kaldırıldı!'}</b>`;
+        }
+
+        function adminUnbanIP() {
+            if (!checkSession()) return;
+            const ip = prompt('Kaldırılacak IP:');
+            if (!ip) {
+                alert('IP gir!');
+                return;
+            }
+            const index = bannedIPs.indexOf(ip);
+            if (index === -1) {
+                alert('IP banlı değil!');
+                return;
+            }
+            bannedIPs.splice(index, 1);
+            delete ipAttempts[ip];
+            saveData();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">🔓 IP ${ip} banı kaldırıldı!</b>`;
+        }
+
+        function adminResetPassword() {
+            if (!checkSession()) return;
+            const username = prompt('Kullanıcı adı:');
+            if (!username || !users[username]) {
+                alert('Kullanıcı adı gir veya kullanıcı bulunamadı!');
+                return;
+            }
+            const newPassword = prompt('Yeni şifre:');
+            if (!newPassword) {
+                alert('Şifre gir!');
+                return;
+            }
+            users[username].password = btoa(newPassword);
+            saveData();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">🔑 ${username} şifresi sıfırlandı!</b>`;
+        }
+
+   function adminSetSessionTimeout() {
+            if (!checkSession()) return;
+            const minutes = prompt('Oturum süresi (dakika):');
+            if (!minutes || isNaN(minutes) || minutes <= 0) {
+                alert('Geçerli süre gir!');
+                return;
+            }
+            settings.sessionTimeout = parseInt(minutes) * 60 * 1000;
+            saveData();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">⏰ Oturum süresi ${minutes} dakikaya ayarlandı!</b>`;
+        }
+
+        function adminGameStats() {
+            if (!checkSession()) return;
+            const games = Object.keys(GAME_PROBS);
+            let txt = '<b>🎲 Oyun İstatistikleri:</b><br>';
+            games.forEach(g => {
+                const wins = transactions.filter(t => t.type === `${g}_win`).length;
+                const bets = transactions.filter(t => t.type === `${g}_bet`).length;
+                const winRate = bets ? (wins / bets * 100).toFixed(2) : 0;
+                txt += `${g.toUpperCase()}: ${bets} oyun, ${wins} kazanç (${winRate}%)<br>`;
+            });
+            document.getElementById('admin-result').innerHTML = txt;
+        }
+
+        function adminToggleMaintenance() {
+            if (!checkSession()) return;
+            settings.maintenance = !settings.maintenance;
+            saveData();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">🛠️ Bakım modu ${settings.maintenance ? 'açıldı' : 'kapatıldı'}!</b>`;
+            if (settings.maintenance) {
+                chatMessages.push({ id: Date.now(), username: 'Sistem', text: '🛠️ Site bakım moduna alındı!', timestamp: new Date().toISOString(), pinned: true });
+                loadChat();
+            }
+        }
+
+        function adminChangeIP() {
+            if (!checkSession()) return;
+            const username = prompt('Kullanıcı adı:');
+            const newIP = prompt('Yeni IP:');
+            if (!username || !newIP || !users[username]) {
+                alert('Geçerli kullanıcı adı ve IP gir!');
+                return;
+            }
+            users[username].ip = newIP;
+            saveData();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">🌐 ${username} IP’si ${newIP} olarak değiştirildi!</b>`;
+        }
+    </script>
+</body>
+</html>
+
