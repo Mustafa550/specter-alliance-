@@ -223,3 +223,182 @@
             }
             return false;
         }
+
+
+        function checkSession() {
+            if (!sessionToken || !currentUser || (currentUser.sessionToken && currentUser.sessionToken !== sessionToken)) {
+                logout();
+                alert('Oturum geçersiz, tekrar giriş yap!');
+                return false;
+            }
+            return true;
+        }
+
+        function showRegister() {
+            document.getElementById('login').style.display = 'none';
+            document.getElementById('register').style.display = 'block';
+        }
+
+        function showLogin() {
+            document.getElementById('register').style.display = 'none';
+            document.getElementById('login').style.display = 'block';
+        }
+
+        function register() {
+            if (!checkRateLimit() || checkIPBan()) return;
+            const email = document.getElementById('reg_email').value;
+            const name = document.getElementById('reg_name').value;
+            const surname = document.getElementById('reg_surname').value;
+            const username = document.getElementById('reg_username').value;
+            const password = document.getElementById('reg_password').value;
+            if (!email || !name || !surname || !username || !password) {
+                alert('Tüm alanları doldurun!');
+                return;
+            }
+            if (users[username] || Object.values(users).some(u => u.email === email)) {
+                alert('Kullanıcı adı veya email zaten kayıtlı!');
+                return;
+            }
+            const hash = btoa(password);
+            users[username] = { email, name, surname, username, password: hash, balance: 100000, lastDaily: null, tookSpecial: false, banned: false, isVIP: false, isAdmin: false, ip: userIP, sessionToken: null, friends: [], profilePic: null };
+            saveData();
+            alert('Kayıt başarılı! Giriş yap.');
+            showLogin();
+        }
+
+   function login() {
+            if (!checkRateLimit()) return;
+            const username = document.getElementById('login_username').value;
+            const password = document.getElementById('login_password').value;
+            const hash = btoa(password);
+            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                currentUser = { username: 'admin', balance: 999999999, isAdmin: true };
+                isAdmin = true;
+                sessionToken = generateToken();
+                document.getElementById('auth').style.display = 'none';
+                document.getElementById('admin-section').style.display = 'block';
+                document.getElementById('admin-balance').innerText = `Bakiye: ${money(currentUser.balance)}`;
+                alert('Admin girişi başarılı!');
+                return;
+            }
+            const user = users[username] || Object.values(users).find(u => u.email === username);
+            if (user && user.password === hash && !user.banned) {
+                currentUser = user;
+                balance = user.balance;
+                isVIP = user.isVIP;
+                isAdmin = user.isAdmin;
+                sessionToken = generateToken();
+                user.sessionToken = sessionToken;
+                document.getElementById('auth').style.display = 'none';
+                document.getElementById('game-section').style.display = 'block';
+                document.getElementById('chat-section').style.display = 'block';
+                document.getElementById('balance').innerText = `Bakiye: ${money(balance)}`;
+                loadChat();
+                saveData();
+                alert('Giriş başarılı!');
+            } else {
+                alert('Hatalı giriş veya banlı hesap!');
+            }
+        }
+
+        function logout() {
+            if (currentUser && !isAdmin) {
+                users[currentUser.username].balance = balance;
+                users[currentUser.username].isVIP = isVIP;
+                users[currentUser.username].sessionToken = null;
+                saveData();
+            }
+            currentUser = null;
+            balance = 0;
+            isVIP = false;
+            isAdmin = false;
+            sessionToken = null;
+            document.getElementById('game-section').style.display = 'none';
+            document.getElementById('chat-section').style.display = 'none';
+            document.getElementById('users-section').style.display = 'none';
+            document.getElementById('profile-section').style.display = 'none';
+            document.getElementById('admin-section').style.display = 'none';
+            document.getElementById('auth').style.display = 'block';
+            alert('Çıkış yapıldı!');
+        }
+
+        function addTransaction(userId, type, amount, note) {
+            transactions.push({ ts: new Date().toISOString(), userId, type, amount, note });
+            saveData();
+        }
+
+        function playSound(type) {
+            const sounds = {
+                slot: 'https://freesound.org/data/previews/216/216090_2565576-lq.mp3',
+                dice: 'https://freesound.org/data/previews/165/165166_2722356-lq.mp3',
+                coinflip: 'https://freesound.org/data/previews/100/100151_1599256-lq.mp3',
+                roulette: 'https://freesound.org/data/previews/262/262434_4284968-lq.mp3',
+                blackjack: 'https://freesound.org/data/previews/145/145412_2606144-lq.mp3',
+                poker: 'https://freesound.org/data/previews/145/145412_2606144-lq.mp3',
+                win: 'https://freesound.org/data/previews/387/387739_7060106-lq.mp3',
+                notification: 'https://freesound.org/data/previews/242/242207_1774666-lq.mp3'
+            };
+            new Audio(sounds[type]).play().catch(() => {});
+        }
+
+        function playGame(game, bet, chance, multiplier, anim, extra = '') {
+            if (!checkSession() || settings.maintenance) {
+                alert(settings.maintenance ? 'Site bakımda!' : 'Oturum geçersiz!');
+                return;
+            }
+            if (!bet || isNaN(bet) || bet <= 0 || (!isAdmin && bet > balance)) {
+                alert('Geçerli miktar gir!');
+                return;
+            }
+            const betAmount = parseInt(bet);
+            if (!isAdmin) balance -= betAmount;
+            addTransaction(currentUser.username, `${game}_bet`, -betAmount, `${game}_bet`);
+            playSound(game);
+            document.getElementById('result').innerHTML = `<span class="slot-animation">${anim}</span> İşlemde...`;
+            setTimeout(() => {
+                const winChance = isVIP ? chance + 0.25 : chance;
+                const win = Math.random() < winChance;
+                let winAmt = 0, resultText = '';
+                if (game === 'slot') {
+                    const s = Array(3).fill().map(() => SLOT_SYMBOLS[Math.floor(Math.random() * SLOT_SYMBOLS.length)]);
+                    const slotText = ` | ${s.join(' | ')} | `;
+                    if (s[0] === s[1] && s[1] === s[2] && Math.random() < winChance * 0.2) {
+                        winAmt = betAmount * 3;
+                        resultText = `<b style="color:green;">🎰 ${slotText} — Üç aynı! Kazandın: ${money(winAmt)}!</b>`;
+                    } else if ((s[0] === s[1] || s[1] === s[2] || s[0] === s[2]) && Math.random() < winChance * 0.4) {
+                        winAmt = betAmount * 2;
+
+                              resultText = `<b style="color:orange;">🎰 ${slotText} — Çift! Kazandın: ${money(winAmt)}!</b>`;
+                    } else {
+                        resultText = `<b style="color:red;">🎰 ${slotText} — Kaybettin: ${money(betAmount)}!</b>`;
+                    }
+                } else if (game === 'dice') {
+                    const roll = Math.floor(Math.random() * 7) + 1;
+                    if (roll >= 5 && Math.random() < winChance) {
+                        multiplier = roll === 7 ? 3 : 2;
+                        winAmt = betAmount * multiplier;
+                        resultText = `<b style="color:green;">🎲 Zar: ${roll} — Kazandın: ${money(winAmt)}!</b>`;
+                    } else {
+                        resultText = `<b style="color:red;">🎲 Zar: ${roll} — Kaybettin: ${money(betAmount)}!</b>`;
+                    }
+                } else {
+                    const outcome = extra || (Math.random() < 0.5 ? 'Baş' : 'Yazı');
+                    if (win) {
+                        winAmt = betAmount * multiplier;
+                        resultText = `<b style="color:green;">${anim} ${outcome} — Kazandın: ${money(winAmt)}!</b>`;
+                    } else {
+                        resultText = `<b style="color:red;">${anim} ${outcome} — Kaybettin: ${money(betAmount)}!</b>`;
+                    }
+                }
+                if (winAmt > 0) {
+                    if (!isAdmin) balance += winAmt;
+                    addTransaction(currentUser.username, `${game}_win`, winAmt, `${game}_win`);
+                    lastWin = { game, amount: winAmt };
+                    playSound('win');
+                }
+                document.getElementById('result').innerHTML = resultText;
+                document.getElementById('balance').innerText = `Bakiye: ${money(isAdmin ? 999999999 : balance)}`;
+                if (!isAdmin) users[currentUser.username].balance = balance;
+                saveData();
+            }, 1000);
+        }
