@@ -19,15 +19,10 @@
             overflow: hidden;
         }
 
-        /* Arka Plan Kayan Kod Satırları Kaldırıldı, Sadeleştirildi */
-        .scrolling-codes {
-            display: none;
-        }
-
         /* Parlayan ve Sönen Kelimeler */
         .flashing-text {
             position: absolute;
-            top: 10%;
+            top: 20%;
             left: 50%;
             transform: translateX(-50%);
             font-size: 30px;
@@ -40,7 +35,7 @@
             100% { opacity: 0; color: #00FF00; }
         }
 
-        /* Oyun Paneli */
+        /* Oyun Başlatma Paneli */
         .game-panel {
             background-color: rgba(0, 0, 0, 0.7);
             padding: 20px;
@@ -48,7 +43,7 @@
             text-align: center;
             border-radius: 10px;
             width: 400px;
-            display: none;
+            display: block;
             z-index: 10;
         }
 
@@ -89,7 +84,7 @@
             margin-top: 20px;
         }
 
-        /* Ekran Boyutu ve Oyun Görünümü */
+        /* Alt Panel (Düğmeler) */
         .footer-panel {
             position: absolute;
             bottom: 10px;
@@ -97,6 +92,7 @@
             font-size: 18px;
             color: #00FF00;
         }
+
     </style>
 </head>
 <body>
