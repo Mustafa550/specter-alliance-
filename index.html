@@ -11,7 +11,7 @@
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
             padding: 0;
-            height: 100vh;
+            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -22,7 +22,7 @@
         /* Parlayan ve Sönen Kelimeler */
         .flashing-text {
             position: absolute;
-            top: 20%;
+            top: 10%;
             left: 50%;
             transform: translateX(-50%);
             font-size: 30px;
@@ -42,7 +42,7 @@
             border: 2px solid #00FF00;
             text-align: center;
             border-radius: 10px;
-            width: 400px;
+            width: 500px;
             display: block;
             z-index: 10;
         }
@@ -68,7 +68,7 @@
             background-color: rgba(0, 0, 0, 0.8);
             padding: 20px;
             border-radius: 10px;
-            width: 400px;
+            width: 500px;
             text-align: center;
             color: #00FF00;
             display: none;
@@ -78,13 +78,6 @@
             margin: 5px;
         }
 
-        /* Hapisteki Arkadaşlar */
-        .prison-friends {
-            color: #FF0000;
-            margin-top: 20px;
-        }
-
-        /* Alt Panel (Düğmeler) */
         .footer-panel {
             position: absolute;
             bottom: 10px;
@@ -105,11 +98,13 @@
     <!-- Oyun Başlatma Paneli -->
     <div class="game-panel" id="gamePanel">
         <h3>Hacker Olmak İster Misiniz?</h3>
+        <input type="text" id="username" placeholder="Kullanıcı Adı">
         <button onclick="startHacking()">Hackerlik Başlat</button>
     </div>
 
     <!-- Durum Paneli -->
     <div class="status-panel" id="statusPanel">
+        <p>Kullanıcı: <span id="userDisplay">Kullanıcı</span></p>
         <p>Para: <span id="money">0</span> $</p>
         <p>Karnınız: <span id="hunger">100</span>%</p>
         <p>Hapisteki Süre: <span id="prisonTime">0</span> sn</p>
@@ -117,11 +112,6 @@
         <button onclick="performHack()">Kod Yaz</button>
         <button onclick="buyFood()">Yemek Al</button>
         <button onclick="commitCrime()">Suç İşle</button>
-        <div class="prison-friends" id="prisonFriends" style="display:none;">
-            <h4>Hapisteki Arkadaşlarınız:</h4>
-            <p id="friend1">Ali - İyi Bir Hacker</p>
-            <p id="friend2">Veli - Yavaş Ama Güvenilir</p>
-        </div>
     </div>
 
     <!-- Alt Panel (Düğmeler) -->
@@ -135,16 +125,26 @@
         let prisonTime = 0;
         let crimeRate = 50;
         let hacking = false;
+        let userName = "";
         let intervalId;
 
-        // Oyun Başlatma
+        // Kullanıcı adı girildikten sonra oyun başlatılacak
         function startHacking() {
-            document.getElementById("gamePanel").style.display = "none"; // Oyun Başlangıcını Gizle
-            document.getElementById("statusPanel").style.display = "block"; // Durum Panelini Göster
+            userName = document.getElementById("username").value.trim();
+
+            if (userName === "") {
+                alert("Lütfen kullanıcı adınızı girin.");
+                return;
+            }
+
+            // Paneli güncelle ve oyun başlat
+            document.getElementById("userDisplay").innerText = userName;
+            document.getElementById("gamePanel").style.display = "none";
+            document.getElementById("statusPanel").style.display = "block";
             beginGame();
         }
 
-        // Oyun Başlatma
+        // Oyun Başlatma ve Durumları Güncelleme
         function beginGame() {
             intervalId = setInterval(function() {
                 hunger -= 1; // Zamanla açlık azalacak
