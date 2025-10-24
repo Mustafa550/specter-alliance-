@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacker Site</title>
+    <title>Hacker Simülasyonu</title>
     <style>
         body {
             background-color: #111;
@@ -24,8 +24,8 @@
         .title {
             text-align: center;
             font-size: 40px;
-            margin-top: 10%;
-            text-shadow: 0 0 5px #00FF00, 0 0 10px #00FF00, 0 0 15px #00FF00;
+            margin-top: 5%;
+            text-shadow: 0 0 5px #00FF00, 0 0 10px #00FF00;
             animation: titleEffect 3s infinite;
         }
 
@@ -37,10 +37,10 @@
 
         .floating-text {
             position: absolute;
-            top: 25%;
+            top: 20%;
             left: 100%;
-            font-size: 20px;
-            animation: float 12s linear infinite;
+            font-size: 18px;
+            animation: float 10s linear infinite;
             font-weight: bold;
             color: #00FF00;
         }
@@ -52,7 +52,7 @@
 
         .box {
             position: absolute;
-            width: 300px;
+            width: 250px;
             height: 50px;
             border: 2px solid #00FF00;
             background-color: rgba(0, 255, 0, 0.1);
@@ -60,15 +60,15 @@
             font-size: 18px;
             padding: 10px;
             opacity: 0;
-            animation: move 8s infinite;
+            animation: move 10s infinite;
         }
 
         @keyframes move {
             0% { opacity: 0; top: 5%; left: 10%; }
-            25% { opacity: 1; top: 15%; left: 40%; }
-            50% { opacity: 1; top: 25%; left: 70%; }
-            75% { opacity: 1; top: 35%; left: 20%; }
-            100% { opacity: 0; top: 45%; left: 90%; }
+            25% { opacity: 1; top: 15%; left: 30%; }
+            50% { opacity: 1; top: 30%; left: 60%; }
+            75% { opacity: 1; top: 50%; left: 90%; }
+            100% { opacity: 0; top: 70%; left: 10%; }
         }
 
         .code {
@@ -183,56 +183,79 @@
             0% { width: 0%; }
             100% { width: 100%; }
         }
+
+        .network-image {
+            position: absolute;
+            top: 60%;
+            right: 5%;
+            width: 200px;
+            height: 200px;
+            border: 2px solid #00FF00;
+        }
+
+        .timer {
+            position: absolute;
+            bottom: 15%;
+            left: 75%;
+            font-size: 25px;
+            color: #00FF00;
+        }
+
+        .timer span {
+            animation: countDown 60s linear infinite;
+        }
+
+        @keyframes countDown {
+            0% { content: "60s"; }
+            100% { content: "0s"; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="title">
-            Hacker Sistemi Çalışıyor
+            Hacker Simülasyonu
         </div>
 
-        <!-- Floating Text -->
         <div class="floating-text">
             "Ağ trafiği izleniyor... lütfen bekleyin."
         </div>
 
-        <!-- Secret Message -->
         <div class="secret-message">
             Gizli Şifre: 1234ABCD
         </div>
 
-        <!-- Error Message -->
         <div class="error-message">
             Sistem hatası! Kod geçersiz!
         </div>
 
-        <!-- System Info -->
         <div class="system-info">
             Sistem Bilgisi: CPU %98 | RAM %80 | Ağ: Aktif
         </div>
 
-        <!-- Compiling Animation -->
         <div class="compiling">
             Kod derleniyor...
         </div>
 
-        <!-- Loading Bar -->
         <div class="loading-bar">
             <span></span>
         </div>
 
-        <!-- Hacker Input -->
         <input class="hacker-input" type="text" placeholder="Komut Girin...">
 
-        <!-- Dynamic Boxes -->
         <div class="box">Sistemde işlem yapılıyor...</div>
         <div class="box">Yükleniyor...</div>
         <div class="box">Veritabanı erişimi sağlandı.</div>
         <div class="box">Dosya şifresi çözüldü!</div>
 
-        <!-- Code Message -->
         <div class="code">
             $ kod_dizisi_çalıştır();
+        </div>
+
+        <img src="https://via.placeholder.com/150" class="network-image" alt="Network Traffic">
+
+        <div class="timer">
+            <span>60s</span>
         </div>
     </div>
 
