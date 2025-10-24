@@ -19,7 +19,7 @@
             overflow: hidden;
         }
 
-        /* Parlayan ve Sönen Kelimeler */
+        /* Parlayan Kelimeler */
         .flashing-text {
             position: absolute;
             top: 10%;
@@ -35,16 +35,35 @@
             100% { opacity: 0; color: #00FF00; }
         }
 
-        /* Oyun Başlatma Paneli */
+        /* Para Gösterimi Sağ Üst Köşe */
+        .money-display {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 20px;
+            color: #00FF00;
+        }
+
+        /* Saat Gösterimi */
+        .time-display {
+            position: absolute;
+            top: 40px;
+            right: 20px;
+            font-size: 20px;
+            color: #00FF00;
+        }
+
+        /* Oyun Paneli */
         .game-panel {
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.8);
             padding: 20px;
             border: 2px solid #00FF00;
             text-align: center;
             border-radius: 10px;
-            width: 500px;
+            width: 400px;
             display: block;
             z-index: 10;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
         }
 
         .game-panel button {
@@ -63,7 +82,7 @@
             background-color: #FF0000;
         }
 
-        /* Durum Paneli */
+        /* Profil ve Durum Paneli */
         .status-panel {
             background-color: rgba(0, 0, 0, 0.8);
             padding: 20px;
@@ -78,6 +97,17 @@
             margin: 5px;
         }
 
+        /* Profil Sayfası */
+        .profile-panel {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            text-align: center;
+            color: #00FF00;
+            display: none;
+        }
+
         .footer-panel {
             position: absolute;
             bottom: 10px;
@@ -86,14 +116,43 @@
             color: #00FF00;
         }
 
+        /* Gelişmiş Oyun Alanı */
+        .game-area {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .game-area button {
+            padding: 10px;
+            background-color: #00FF00;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: black;
+            width: 150px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .game-area button:hover {
+            background-color: #FF0000;
+        }
+
     </style>
 </head>
 <body>
 
-    <!-- Parlayan ve Sönen Kelimeler -->
-    <div class="flashing-text">
-        Hacker Simülasyonu Başladı...
-    </div>
+    <!-- Para Gösterimi Sağ Üst Köşe -->
+    <div class="money-display" id="moneyDisplay">Para: 0 $</div>
+
+    <!-- Saat Gösterimi Sağ Üst Köşe -->
+    <div class="time-display" id="timeDisplay">Saat: </div>
+
+    <!-- Parlayan Kelimeler -->
+    <div class="flashing-text">Hacker Simülasyonu Başladı...</div>
 
     <!-- Oyun Başlatma Paneli -->
     <div class="game-panel" id="gamePanel">
@@ -112,9 +171,21 @@
         <button onclick="performHack()">Kod Yaz</button>
         <button onclick="buyFood()">Yemek Al</button>
         <button onclick="commitCrime()">Suç İşle</button>
+        <div class="game-area">
+            <button onclick="performHack()">Kod Yaz</button>
+            <button onclick="buyFood()">Yemek Al</button>
+            <button onclick="commitCrime()">Suç İşle</button>
+        </div>
     </div>
 
-    <!-- Alt Panel (Düğmeler) -->
+    <!-- Profil Sayfası -->
+    <div class="profile-panel" id="profilePanel">
+        <h3>Profil: <span id="profileUser">Kullanıcı</span></h3>
+        <p>Başarılar: 10</p>
+        <p>Hapiste Kalma Süresi: 5 Gün</p>
+        <button onclick="backToGame()">Oyuna Geri Dön</button>
+    </div>
+
     <div class="footer-panel">
         <button onclick="exitGame()">Çık</button>
     </div>
@@ -127,6 +198,7 @@
         let hacking = false;
         let userName = "";
         let intervalId;
+        let gameTime = 0;
 
         // Kullanıcı adı girildikten sonra oyun başlatılacak
         function startHacking() {
@@ -137,8 +209,11 @@
                 return;
             }
 
-            // Paneli güncelle ve oyun başlat
+            // Profil adı gösterimi
             document.getElementById("userDisplay").innerText = userName;
+            document.getElementById("profileUser").innerText = userName;
+
+            // Paneli güncelle ve oyun başlat
             document.getElementById("gamePanel").style.display = "none";
             document.getElementById("statusPanel").style.display = "block";
             beginGame();
@@ -161,6 +236,14 @@
                     document.getElementById("prisonTime").innerText = prisonTime;
                     prisonTime++;
                 }
+
+                // Gün geçişi, her 2 dakika bir gün geçiyor
+                gameTime++;
+                if (gameTime % 2 === 0) {
+                    let date = new Date();
+                    document.getElementById("timeDisplay").innerText = "Saat: " + date.toLocaleTimeString();
+                }
+
             }, 1000);
         }
 
@@ -213,6 +296,12 @@
         function exitGame() {
             alert("Oyundan çıkılıyor...");
             window.location.reload(); // Sayfayı yeniden yükler
+        }
+
+        // Profil sayfasına geçiş
+        function backToGame() {
+            document.getElementById("profilePanel").style.display = "none";
+            document.getElementById("statusPanel").style.display = "block";
         }
     </script>
 </body>
