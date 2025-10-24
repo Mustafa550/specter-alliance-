@@ -3,285 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacker Simülasyonu</title>
+    <title>ŞİRİN - Kişisel Web Sitesi</title>
     <style>
         body {
-            background-color: #111;
+            background-color: #1a1a1a;
             color: #00FF00;
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
             padding: 0;
-            height: 100%;
             display: flex;
-            justify-content: flex-start;
+            justify-content: center;
             align-items: flex-start;
             flex-direction: column;
-            overflow: hidden;
+            min-height: 100vh;
             width: 100%;
         }
 
-        /* Para ve Saat Gösterimi Üstte */
-        .top-bar {
+        /* Üst Menü */
+        .top-menu {
             width: 100%;
-            padding: 10px;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.8);
             color: #00FF00;
-            font-size: 18px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 15px;
+            font-size: 24px;
+            text-align: center;
+            font-weight: bold;
             position: fixed;
             top: 0;
+            left: 0;
             z-index: 10;
         }
 
-        .top-bar span {
-            font-weight: bold;
-        }
-
-        /* Oyun Alanı */
-        .game-panel {
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 20px;
-            margin-top: 70px;
-            border: 2px solid #00FF00;
-            text-align: center;
-            border-radius: 10px;
-            width: 300px;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
-        }
-
-        .game-panel button {
-            width: 100%;
-            padding: 12px;
-            background-color: #00FF00;
-            color: black;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-
-        .game-panel button:hover {
-            background-color: #FF0000;
-        }
-
-        /* Profil Sayfası */
-        .profile-panel {
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 20px;
-            border-radius: 10px;
-            width: 300px;
-            text-align: center;
-            color: #00FF00;
-            display: none;
-        }
-
-        .status-panel {
-            background-color: rgba(0, 0, 0, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            width: 300px;
-            text-align: center;
-            color: #00FF00;
-            margin-top: 20px;
-        }
-
-        /* Oyun Durumları */
-        .game-area {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .footer-panel {
-            position: absolute;
-            bottom: 20px;
+        /* Dinamik Saat */
+        .time-display {
+            position: fixed;
+            top: 10px;
             right: 20px;
             font-size: 18px;
             color: #00FF00;
         }
 
-        /* Parlayan ve Sönen Kelimeler */
-        .flashing-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translateX(-50%) translateY(-50%);
-            font-size: 30px;
+        /* İçerik Bölgesi */
+        .content-container {
+            margin-top: 100px;
+            padding: 20px;
+            width: 90%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .section {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #00FF00;
+        }
+
+        .section h2, .section h3 {
+            margin-top: 0;
+        }
+
+        .section p {
+            font-size: 18px;
+        }
+
+        /* Sosyal Medya Bağlantıları */
+        .social-links {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            text-decoration: none;
             color: #00FF00;
-            animation: flash 1.5s infinite;
+            font-size: 20px;
+            padding: 10px;
+            border: 2px solid #00FF00;
+            border-radius: 5px;
         }
 
-        @keyframes flash {
-            0% { opacity: 0; color: #00FF00; }
-            50% { opacity: 1; color: #FF0000; }
-            100% { opacity: 0; color: #00FF00; }
+        .social-links a:hover {
+            background-color: #00FF00;
+            color: black;
         }
 
+        /* İletişim Butonu */
+        .contact-section {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #00FF00;
+        }
+
+        .contact-section button {
+            padding: 12px 20px;
+            background-color: #00FF00;
+            border: none;
+            color: black;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .contact-section button:hover {
+            background-color: #FF0000;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            color: #00FF00;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Para ve Saat Gösterimi Üstte -->
-    <div class="top-bar">
-        <span id="moneyDisplay">Para: 0 $</span>
-        <span id="timeDisplay">Saat: </span>
+    <!-- Üst Menü -->
+    <div class="top-menu">
+        ŞİRİN - Kişisel Web Sitesi
     </div>
 
-    <!-- Parlayan ve Sönen Kelimeler -->
-    <div class="flashing-text">
-        Hacker Simülasyonu Başladı...
+    <!-- Dinamik Saat -->
+    <div class="time-display" id="timeDisplay">
+        Saat: 
     </div>
 
-    <!-- Oyun Başlatma Paneli -->
-    <div class="game-panel" id="gamePanel">
-        <h3>Hacker Olmak İster Misiniz?</h3>
-        <input type="text" id="username" placeholder="Kullanıcı Adı">
-        <button onclick="startHacking()">Hackerlik Başlat</button>
-    </div>
+    <!-- İçerik Bölgesi -->
+    <div class="content-container">
 
-    <!-- Durum Paneli -->
-    <div class="status-panel" id="statusPanel">
-        <p>Kullanıcı: <span id="userDisplay">Kullanıcı</span></p>
-        <p>Para: <span id="money">0</span> $</p>
-        <p>Karnınız: <span id="hunger">100</span>%</p>
-        <p>Hapisteki Süre: <span id="prisonTime">0</span> sn</p>
-        <p>Suç İşleme Oranı: <span id="crimeRate">50</span>%</p>
-        <div class="game-area">
-            <button onclick="performHack()">Kod Yaz</button>
-            <button onclick="buyFood()">Yemek Al</button>
-            <button onclick="commitCrime()">Suç İşle</button>
+        <!-- Hakkımda Bölümü -->
+        <div class="section" id="aboutMe">
+            <h2>Hakkımda</h2>
+            <p>Merhaba! Ben ŞİRİN. Dijital dünyada yazılım geliştirme, web tasarımı ve çeşitli projelerde yer alıyorum. Yaratıcı projeler geliştirmeyi ve yeni şeyler öğrenmeyi çok seviyorum.</p>
         </div>
+
+        <!-- Kanallar ve Sosyal Medya -->
+        <div class="section">
+            <h3>Kanallarım ve Sosyal Medya</h3>
+            <p>Youtube Kanalım, Instagram, Twitter gibi sosyal medya hesaplarım üzerinden projelerimle ilgili gelişmeleri takip edebilirsiniz.</p>
+            <div class="social-links">
+                <a href="https://www.youtube.com/channel/UCxxxxxxx" target="_blank">Youtube</a>
+                <a href="https://www.instagram.com/_0sirin0_" target="_blank">Instagram</a>
+                <a href="https://twitter.com/_0sirin0_" target="_blank">Twitter</a>
+            </div>
+        </div>
+
+        <!-- İcraatlarım -->
+        <div class="section">
+            <h3>İcraatlarım</h3>
+            <p>Çeşitli projelerde yer aldım. Web uygulamaları, oyunlar, yazılım araçları ve daha fazlası. Her projemde bir şeyler öğrendim ve her geçen gün daha fazla şey geliştirmeyi hedefliyorum.</p>
+        </div>
+
+        <!-- İletişim Bölümü -->
+        <div class="contact-section">
+            <h3>Yardım mı İstiyorsunuz?</h3>
+            <p>Instagram üzerinden benimle iletişime geçebilirsiniz. Yardıma ihtiyacınız varsa hemen yazın!</p>
+            <a href="https://www.instagram.com/_0sirin0_/"><button>İletişime Geç</button></a>
+        </div>
+
     </div>
 
-    <!-- Profil Sayfası -->
-    <div class="profile-panel" id="profilePanel">
-        <h3>Profil: <span id="profileUser">Kullanıcı</span></h3>
-        <p>Başarılar: 10</p>
-        <p>Hapiste Kalma Süresi: 5 Gün</p>
-        <button onclick="backToGame()">Oyuna Geri Dön</button>
-    </div>
-
-    <div class="footer-panel">
-        <button onclick="exitGame()">Çık</button>
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 ŞİRİN | Tüm Hakları Saklıdır</p>
     </div>
 
     <script>
-        let money = 0;
-        let hunger = 100;
-        let prisonTime = 0;
-        let crimeRate = 50;
-        let hacking = false;
-        let userName = "";
-        let intervalId;
-        let gameTime = 0;
-
-        // Kullanıcı adı girildikten sonra oyun başlatılacak
-        function startHacking() {
-            userName = document.getElementById("username").value.trim();
-
-            if (userName === "") {
-                alert("Lütfen kullanıcı adınızı girin.");
-                return;
-            }
-
-            // Profil adı gösterimi
-            document.getElementById("userDisplay").innerText = userName;
-            document.getElementById("profileUser").innerText = userName;
-
-            // Paneli güncelle ve oyun başlat
-            document.getElementById("gamePanel").style.display = "none";
-            document.getElementById("statusPanel").style.display = "block";
-            beginGame();
-        }
-
-        // Oyun Başlatma ve Durumları Güncelleme
-        function beginGame() {
-            intervalId = setInterval(function() {
-                hunger -= 1; // Zamanla açlık azalacak
-                document.getElementById("hunger").innerText = hunger;
-
-                if (hunger <= 0) {
-                    alert("Öldünüz! Yetersiz beslenme.");
-                    clearInterval(intervalId);
-                    return;
-                }
-
-                // Hapisteki zaman
-                if (prisonTime > 0) {
-                    document.getElementById("prisonTime").innerText = prisonTime;
-                    prisonTime++;
-                }
-
-                // Gün geçişi, her 2 dakika bir gün geçiyor
-                gameTime++;
-                if (gameTime % 2 === 0) {
-                    let date = new Date();
-                    document.getElementById("timeDisplay").innerText = "Saat: " + date.toLocaleTimeString();
-                }
-
-            }, 1000);
-        }
-
-        // Kod Yazma
-        function performHack() {
-            if (prisonTime > 0) {
-                alert("Hapistesiniz! Çıkmanız için 10 dakika beklemeniz gerekiyor.");
-                return;
-            }
-
-            let type = prompt("Ne ile ilgili kod yazmak istersiniz? (Hırsızlık, Kredi Kartı, Oyun Site)");
-
-            let earnedMoney = 0;
-            if (type.toLowerCase() === "hırsızlık") {
-                earnedMoney = Math.floor(Math.random() * 1000);
-            } else if (type.toLowerCase() === "kredi kartı") {
-                earnedMoney = Math.floor(Math.random() * 2000);
-            } else if (type.toLowerCase() === "oyun site") {
-                earnedMoney = Math.floor(Math.random() * 500);
-            }
-
-            money += earnedMoney;
-            document.getElementById("money").innerText = money;
-            alert(type + " konusunda kod yazdınız ve " + earnedMoney + " $ kazandınız!");
-        }
-
-        // Yemek al
-        function buyFood() {
-            if (money >= 50) {
-                hunger = 100;
-                money -= 50;
-                document.getElementById("money").innerText = money;
-                alert("Yemek aldınız, açlık %100 oldu!");
-            } else {
-                alert("Yeterli paranız yok!");
-            }
-        }
-
-        // Suç işleme (hapise girme)
-        function commitCrime() {
-            if (Math.random() < crimeRate / 100) {
-                alert("Suç işlediniz ve hapse girdiniz!");
-                prisonTime = 10; // 10 saniye hapisteyiz
-            } else {
-                alert("Suç işlediniz ama yakalanmadınız!");
-            }
-        }
-
-        // Profil sayfasına geçiş
-        function backToGame() {
-            document.getElementById("profilePanel").style.display = "none";
-            document.getElementById("statusPanel").style.display = "block";
-        }
-
-        // Çıkış işlevi
-        function exitGame() {
-            alert("Oyundan çıkılıyor...");
-            window.location.reload(); // Sayfayı yeniden yükler
-        }
+        // Saatin her saniye güncellenmesi için JavaScript
+        setInterval(() => {
+            const timeDisplay = document.getElementById('timeDisplay');
+            const now = new Date();
+            timeDisplay.innerHTML = `Saat: ${now.toLocaleTimeString()}`;
+        }, 1000);
     </script>
+
 </body>
 </html>
