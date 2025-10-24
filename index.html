@@ -18,68 +18,14 @@
             position: relative;
             height: 100vh;
             width: 100%;
-        }
-
-        .box {
-            position: absolute;
-            width: 250px;
-            height: 50px;
-            border: 2px solid #00FF00;
-            background-color: rgba(0, 255, 0, 0.1);
-            color: #00FF00;
-            font-size: 18px;
-            padding: 10px;
-            opacity: 0;
-            animation: move 10s infinite;
-        }
-
-        @keyframes move {
-            0% {
-                opacity: 0;
-                top: 0;
-                left: 100%;
-            }
-            25% {
-                opacity: 1;
-                top: 20%;
-                left: 50%;
-            }
-            50% {
-                opacity: 1;
-                top: 40%;
-                left: 20%;
-            }
-            75% {
-                opacity: 1;
-                top: 60%;
-                left: 80%;
-            }
-            100% {
-                opacity: 0;
-                top: 100%;
-                left: 100%;
-            }
-        }
-
-        .code {
-            font-size: 20px;
-            animation: blink 1s infinite;
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-        }
-
-        @keyframes blink {
-            0% { color: #00FF00; }
-            50% { color: transparent; }
-            100% { color: #00FF00; }
+            padding: 20px;
         }
 
         .title {
             text-align: center;
-            margin-top: 20%;
-            font-size: 30px;
-            text-shadow: 0 0 5px #00FF00, 0 0 10px #00FF00;
+            font-size: 40px;
+            margin-top: 10%;
+            text-shadow: 0 0 5px #00FF00, 0 0 10px #00FF00, 0 0 15px #00FF00;
             animation: titleEffect 3s infinite;
         }
 
@@ -91,10 +37,12 @@
 
         .floating-text {
             position: absolute;
-            top: 30%;
+            top: 25%;
             left: 100%;
-            font-size: 18px;
-            animation: float 10s linear infinite;
+            font-size: 20px;
+            animation: float 12s linear infinite;
+            font-weight: bold;
+            color: #00FF00;
         }
 
         @keyframes float {
@@ -102,12 +50,66 @@
             100% { left: -100%; }
         }
 
+        .box {
+            position: absolute;
+            width: 300px;
+            height: 50px;
+            border: 2px solid #00FF00;
+            background-color: rgba(0, 255, 0, 0.1);
+            color: #00FF00;
+            font-size: 18px;
+            padding: 10px;
+            opacity: 0;
+            animation: move 8s infinite;
+        }
+
+        @keyframes move {
+            0% { opacity: 0; top: 5%; left: 10%; }
+            25% { opacity: 1; top: 15%; left: 40%; }
+            50% { opacity: 1; top: 25%; left: 70%; }
+            75% { opacity: 1; top: 35%; left: 20%; }
+            100% { opacity: 0; top: 45%; left: 90%; }
+        }
+
+        .code {
+            position: absolute;
+            bottom: 10%;
+            left: 10%;
+            font-size: 18px;
+            animation: blink 1s infinite;
+            color: #00FF00;
+        }
+
+        @keyframes blink {
+            0% { color: #00FF00; }
+            50% { color: transparent; }
+            100% { color: #00FF00; }
+        }
+
+        .hacker-input {
+            position: absolute;
+            bottom: 5%;
+            left: 30%;
+            width: 40%;
+            padding: 15px;
+            background-color: #333;
+            color: #00FF00;
+            border: 1px solid #00FF00;
+            font-size: 18px;
+            outline: none;
+        }
+
+        .hacker-input:focus {
+            border-color: #FF0000;
+            background-color: #222;
+        }
+
         .secret-message {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 20px;
+            font-size: 22px;
             color: #FF0000;
             opacity: 0;
             animation: reveal 5s forwards;
@@ -115,48 +117,23 @@
 
         @keyframes reveal {
             0% { opacity: 0; }
-            50% { opacity: 0.5; }
+            50% { opacity: 0.7; }
             100% { opacity: 1; }
-        }
-
-        .hacker-input {
-            position: absolute;
-            bottom: 10px;
-            left: 40%;
-            width: 40%;
-            padding: 10px;
-            background-color: #333;
-            color: #00FF00;
-            border: 1px solid #00FF00;
-        }
-
-        .error-message {
-            position: absolute;
-            top: 20%;
-            left: 60%;
-            color: #FF0000;
-            font-size: 18px;
-            animation: errorAnim 3s infinite;
-        }
-
-        @keyframes errorAnim {
-            0% { opacity: 0; }
-            50% { opacity: 1; }
-            100% { opacity: 0; }
         }
 
         .system-info {
             position: absolute;
             top: 10%;
-            left: 10%;
+            right: 10%;
             font-size: 18px;
             color: #00FF00;
+            opacity: 0.8;
         }
 
         .compiling {
             position: absolute;
             top: 80%;
-            left: 30%;
+            left: 40%;
             font-size: 18px;
             color: #00FF00;
             animation: compilingAnim 3s infinite;
@@ -168,6 +145,44 @@
             100% { color: #00FF00; }
         }
 
+        .error-message {
+            position: absolute;
+            top: 20%;
+            right: 15%;
+            font-size: 20px;
+            color: #FF0000;
+            opacity: 0;
+            animation: errorAnim 5s infinite;
+        }
+
+        @keyframes errorAnim {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .loading-bar {
+            position: absolute;
+            bottom: 3%;
+            left: 10%;
+            width: 80%;
+            height: 8px;
+            background-color: #222;
+            border-radius: 5px;
+        }
+
+        .loading-bar span {
+            display: block;
+            width: 0%;
+            height: 100%;
+            background-color: #00FF00;
+            animation: loadProgress 10s infinite;
+        }
+
+        @keyframes loadProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
     </style>
 </head>
 <body>
@@ -193,7 +208,7 @@
 
         <!-- System Info -->
         <div class="system-info">
-            Sistem Bilgisi: CPU %98 | RAM %80
+            Sistem Bilgisi: CPU %98 | RAM %80 | Ağ: Aktif
         </div>
 
         <!-- Compiling Animation -->
@@ -201,14 +216,21 @@
             Kod derleniyor...
         </div>
 
+        <!-- Loading Bar -->
+        <div class="loading-bar">
+            <span></span>
+        </div>
+
         <!-- Hacker Input -->
         <input class="hacker-input" type="text" placeholder="Komut Girin...">
 
-        <div class="box" style="top: 15%; left: 30%;">Sistemde işlem yapılıyor...</div>
-        <div class="box" style="top: 45%; left: 70%;">Yükleniyor...</div>
-        <div class="box" style="top: 65%; left: 10%;">Veritabanı erişimi sağlandı.</div>
-        <div class="box" style="top: 85%; left: 50%;">Dosya şifresi çözüldü!</div>
+        <!-- Dynamic Boxes -->
+        <div class="box">Sistemde işlem yapılıyor...</div>
+        <div class="box">Yükleniyor...</div>
+        <div class="box">Veritabanı erişimi sağlandı.</div>
+        <div class="box">Dosya şifresi çözüldü!</div>
 
+        <!-- Code Message -->
         <div class="code">
             $ kod_dizisi_çalıştır();
         </div>
@@ -218,11 +240,12 @@
         window.onload = function() {
             const boxes = document.querySelectorAll('.box');
             boxes.forEach(box => {
-                const randomLeft = Math.random() * 100;
-                const randomTop = Math.random() * 100;
+                const randomLeft = Math.random() * 90;
+                const randomTop = Math.random() * 60;
                 box.style.left = randomLeft + '%';
                 box.style.top = randomTop + '%';
-            });
+                box.style.animationDelay = Math.random() * 5 + "s";
+            };
         };
     </script>
 </body>
