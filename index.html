@@ -22,7 +22,7 @@
 
         .box {
             position: absolute;
-            width: 200px;
+            width: 250px;
             height: 50px;
             border: 2px solid #00FF00;
             background-color: rgba(0, 255, 0, 0.1);
@@ -64,6 +64,9 @@
         .code {
             font-size: 20px;
             animation: blink 1s infinite;
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
         }
 
         @keyframes blink {
@@ -77,26 +80,141 @@
             margin-top: 20%;
             font-size: 30px;
             text-shadow: 0 0 5px #00FF00, 0 0 10px #00FF00;
+            animation: titleEffect 3s infinite;
         }
+
+        @keyframes titleEffect {
+            0% { color: #00FF00; }
+            50% { color: #FF0000; }
+            100% { color: #00FF00; }
+        }
+
+        .floating-text {
+            position: absolute;
+            top: 30%;
+            left: 100%;
+            font-size: 18px;
+            animation: float 10s linear infinite;
+        }
+
+        @keyframes float {
+            0% { left: 100%; }
+            100% { left: -100%; }
+        }
+
+        .secret-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+            color: #FF0000;
+            opacity: 0;
+            animation: reveal 5s forwards;
+        }
+
+        @keyframes reveal {
+            0% { opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .hacker-input {
+            position: absolute;
+            bottom: 10px;
+            left: 40%;
+            width: 40%;
+            padding: 10px;
+            background-color: #333;
+            color: #00FF00;
+            border: 1px solid #00FF00;
+        }
+
+        .error-message {
+            position: absolute;
+            top: 20%;
+            left: 60%;
+            color: #FF0000;
+            font-size: 18px;
+            animation: errorAnim 3s infinite;
+        }
+
+        @keyframes errorAnim {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .system-info {
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            font-size: 18px;
+            color: #00FF00;
+        }
+
+        .compiling {
+            position: absolute;
+            top: 80%;
+            left: 30%;
+            font-size: 18px;
+            color: #00FF00;
+            animation: compilingAnim 3s infinite;
+        }
+
+        @keyframes compilingAnim {
+            0% { color: #00FF00; }
+            50% { color: #FF0000; }
+            100% { color: #00FF00; }
+        }
+
     </style>
 </head>
 <body>
     <div class="container">
         <div class="title">
-            Sistem Güvenliği Kırıldı
+            Hacker Sistemi Çalışıyor
         </div>
 
-        <div class="box" style="top: 10%; left: 10%;">Hacker aktif!</div>
-        <div class="box" style="top: 30%; left: 40%;">Giriş başarılı!</div>
-        <div class="box" style="top: 50%; left: 70%;">Şifre çözüldü!</div>
+        <!-- Floating Text -->
+        <div class="floating-text">
+            "Ağ trafiği izleniyor... lütfen bekleyin."
+        </div>
 
-        <div class="code" style="position: absolute; bottom: 10px; left: 10px;">
+        <!-- Secret Message -->
+        <div class="secret-message">
+            Gizli Şifre: 1234ABCD
+        </div>
+
+        <!-- Error Message -->
+        <div class="error-message">
+            Sistem hatası! Kod geçersiz!
+        </div>
+
+        <!-- System Info -->
+        <div class="system-info">
+            Sistem Bilgisi: CPU %98 | RAM %80
+        </div>
+
+        <!-- Compiling Animation -->
+        <div class="compiling">
+            Kod derleniyor...
+        </div>
+
+        <!-- Hacker Input -->
+        <input class="hacker-input" type="text" placeholder="Komut Girin...">
+
+        <div class="box" style="top: 15%; left: 30%;">Sistemde işlem yapılıyor...</div>
+        <div class="box" style="top: 45%; left: 70%;">Yükleniyor...</div>
+        <div class="box" style="top: 65%; left: 10%;">Veritabanı erişimi sağlandı.</div>
+        <div class="box" style="top: 85%; left: 50%;">Dosya şifresi çözüldü!</div>
+
+        <div class="code">
             $ kod_dizisi_çalıştır();
         </div>
     </div>
 
     <script>
-        // Randomize box positions on load
         window.onload = function() {
             const boxes = document.querySelectorAll('.box');
             boxes.forEach(box => {
