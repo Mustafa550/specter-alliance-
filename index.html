@@ -605,3 +605,181 @@
             loadChat();
             document.getElementById('chat-input').value = '';
         }
+
+        function replyChat(index) {
+            if (!checkSession()) return;
+            const text = prompt('Yanıt yaz:');
+            if (text) sendChat(chatMessages[index].id);
+        }
+
+        function sendDM(index) {
+            if (!checkSession()) return;
+            const text = prompt(`Özel mesaj (${chatMessages[index].username}'a):`);
+            if (text) sendChat(null, chatMessages[index].username);
+        }
+
+        function deleteChat(index) {
+            if (!checkSession()) return;
+            if (chatMessages[index].username !== currentUser.username && !isAdmin) {
+                alert('Yalnızca kendi mesajlarını silebilirsin!');
+                return;
+            }
+            chatMessages.splice(index, 1);
+            saveData();
+            loadChat();
+        }
+
+        function shareWin() {
+            if (!checkSession() || !lastWin) {
+                alert('Paylaşacak kazanç yok!');
+                return;
+            }
+            const text = `🎉 ${lastWin.game.toUpperCase()} oynadım ve ${money(lastWin.amount)} kazandım!`;
+            sendChat(null, null, text);
+        }
+
+        function adminGive() {
+            if (!checkSession()) return;
+            const username = prompt('Kullanıcı adı:');
+            const amount = prompt('Miktar:');
+            if (!username || !amount || isNaN(amount) || amount <= 0) {
+                alert('Geçerli kullanıcı adı ve miktar gir!');
+                return;
+            }
+            const target = users[username];
+            if (!target) {
+                alert('Kullanıcı bulunamadı!');
+                return;
+            }
+            target.balance += parseInt(amount);
+            addTransaction(username, 'admin_give', amount, 'admin_give');
+            users[username].balance = target.balance;
+            saveData();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">💰 ${money(amount)} ${username}'e eklendi!</b>`;
+        }
+
+        function adminTake() {
+            if (!checkSession()) return;
+            const username = prompt('Kullanıcı adı:');
+            const amount = prompt('Miktar:');
+            if (!username || !amount || isNaN(amount) || amount <= 0) {
+                alert('Geçerli kullanıcı adı ve miktar gir!');
+                return;
+            }
+            const target = users[username];
+            if (!target) {
+                alert('Kullanıcı bulunamadı!');
+                return;
+            }
+            target.balance = Math.max(0, target.balance - parseInt(amount));
+            addTransaction(username, 'admin_take', -amount, 'admin_take');
+            users[username].balance = target.balance;
+            saveData();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">💰 ${money(amount)} ${username}'den alındı!</b>`;
+        }
+
+        function adminSet() {
+            if (!checkSession()) return;
+            const username = prompt('Kullanıcı adı:');
+            const amount = prompt('Miktar:');
+            if (!username || !amount || isNaN(amount) || amount < 0) {
+                alert('Geçerli kullanıcı adı ve miktar gir!');
+                return;
+            }
+            const target = users[username];
+            if (!target) {
+                alert('Kullanıcı bulunamadı!');
+                return;
+            }
+            target.balance = parseInt(amount);
+            addTransaction(username, 'admin_set', amount, 'admin_set');
+            users[username].balance = target.balance;
+            saveData();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">💰 ${username} bakiyesi ${money(amount)} oldu!</b>`;
+        }
+
+        function adminBroadcast() {
+            if (!checkSession()) return;
+            const msg = prompt('Toplu mesaj:');
+            if (!msg) {
+                alert('Mesaj gir!');
+                return;
+            }
+            Object.keys(users).forEach(u => addTransaction(u, 'broadcast', 0, msg));
+            chatMessages.push({ id: Date.now(), username: 'Sistem', text: `📢 ${msg}`, timestamp: new Date().toISOString(), pinned: false });
+            saveData();
+            loadChat();
+            document.getElementById('admin-result').innerHTML = '<b style="color:green;">📩 Toplu mesaj gönderildi!</b>';
+        }
+
+        function adminBan() {
+            if (!checkSession()) return;
+            const username = prompt('Kullanıcı adı:');
+            if (!username || !users[username]) {
+                alert('Kullanıcı adı gir veya kullanıcı bulunamadı!');
+                return;
+            }
+            users[username].banned = true;
+            saveData();
+            document.getElementById('admin-result').innerHTML = `<b style="color:red;">👮 ${username} banlandı!</b>`;
+        }
+
+             function adminUnban() {
+            if (!checkSession()) return;
+            const username = prompt('Kullanıcı adı:');
+            if (!username || !users[username]) {
+                alert('Kullanıcı adı gir veya kullanıcı bulunamadı!');
+                return;
+            }
+            users[username].banned = false;
+            saveData();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">👮 ${username} banı kaldırıldı!</b>`;
+        }
+
+        function adminAddAdmin() {
+            if (!checkSession()) return;
+            const username = prompt('Kullanıcı adı:');
+            if (!username || !users[username]) {
+                alert('Kullanıcı adı gir veya kullanıcı bulunamadı!');
+                return;
+            }
+            users[username].isAdmin = true;
+            saveData();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">👑 ${username} admin yapıldı!</b>`;
+        }
+
+        function adminRemoveAdmin() {
+            if (!checkSession()) return;
+            const username = prompt('Kullanıcı adı:');
+            if (!username || !users[username]) {
+                alert('Kullanıcı adı gir veya kullanıcı bulunamadı!');
+                return;
+            }
+            users[username].isAdmin = false;
+            saveData();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">👑 ${username} adminliği kaldırıldı!</b>`;
+        }
+
+    function adminReset() {
+            if (!checkSession()) return;
+            const username = prompt('Kullanıcı adı:');
+            if (!username || !users[username]) {
+                alert('Kullanıcı adı gir veya kullanıcı bulunamadı!');
+                return;
+            }
+            delete users[username];
+            saveData();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">🗑️ ${username} sıfırlandı!</b>`;
+        }
+
+        function adminSetDaily() {
+            if (!checkSession()) return;
+            const amount = prompt('Günlük bonus miktarı:');
+            if (!amount || isNaN(amount) || amount <= 0) {
+                alert('Geçerli miktar gir!');
+                return;
+            }
+            settings.dailyBonus = parseInt(amount);
+            saveData();
+            document.getElementById('admin-result').innerHTML = `<b style="color:green;">🪙 Günlük bonus ${money(amount)} oldu!</b>`;
+        }
