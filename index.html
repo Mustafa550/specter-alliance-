@@ -3,314 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacker Kart Generator - DearSiber</title>
+    <title>Hacker Site</title>
     <style>
-        * {
+        body {
+            background-color: #111;
+            color: #00FF00;
+            font-family: 'Courier New', Courier, monospace;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: #111;
-            color: #0f0;
-            font-family: 'Courier New', Courier, monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             overflow: hidden;
-            flex-direction: column;
         }
 
         .container {
+            position: relative;
+            height: 100vh;
             width: 100%;
-            max-width: 800px;
-            text-align: center;
-            padding: 20px;
-            border: 2px solid #0f0;
-            border-radius: 10px;
-            background: rgba(0, 0, 0, 0.8);
-            box-shadow: 0 0 30px rgba(0, 255, 0, 0.6);
-            display: none;
         }
 
-        .container.active {
-            display: block;
-        }
-
-        h1 {
-            font-size: 50px;
-            text-transform: uppercase;
-            animation: glow 1.5s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            0% {
-                text-shadow: 0 0 10px #0f0, 0 0 20px #0f0, 0 0 30px #0f0, 0 0 40px #0f0;
-            }
-            100% {
-                text-shadow: 0 0 20px #0f0, 0 0 30px #0f0, 0 0 40px #0f0, 0 0 50px #0f0;
-            }
-        }
-
-        .button {
-            margin-top: 20px;
-            padding: 15px 30px;
-            background-color: #333;
-            border: 2px solid #0f0;
-            color: #0f0;
-            cursor: pointer;
-            font-size: 20px;
-            border-radius: 5px;
-        }
-
-        .button:hover {
-            background-color: #0f0;
-            color: #000;
-        }
-
-        .input-box {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .input-box input {
-            width: 400px;
-            padding: 12px;
-            font-size: 18px;
-            background: #222;
-            border: 2px solid #0f0;
-            color: #0f0;
-            margin-right: 10px;
-            border-radius: 5px;
-        }
-
-        .input-box button {
-            width: 150px;
-            padding: 12px;
-            font-size: 18px;
-            background-color: #222;
-            border: 2px solid #0f0;
-            color: #0f0;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .input-box button:hover {
-            background-color: #0f0;
-            color: #000;
-        }
-
-        .dynamic-bg {
+        .box {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/stripes.png');
-            background-size: cover;
-            z-index: -1;
-            animation: bgAnimation 20s linear infinite;
+            width: 200px;
+            height: 50px;
+            border: 2px solid #00FF00;
+            background-color: rgba(0, 255, 0, 0.1);
+            color: #00FF00;
+            font-size: 18px;
+            padding: 10px;
+            opacity: 0;
+            animation: move 10s infinite;
         }
 
-        @keyframes bgAnimation {
+        @keyframes move {
             0% {
-                transform: translate(0, 0);
+                opacity: 0;
+                top: 0;
+                left: 100%;
+            }
+            25% {
+                opacity: 1;
+                top: 20%;
+                left: 50%;
+            }
+            50% {
+                opacity: 1;
+                top: 40%;
+                left: 20%;
+            }
+            75% {
+                opacity: 1;
+                top: 60%;
+                left: 80%;
             }
             100% {
-                transform: translate(100%, 100%);
+                opacity: 0;
+                top: 100%;
+                left: 100%;
             }
         }
 
-        .link-section {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .link-section a {
-            color: #0f0;
-            text-decoration: none;
-            font-size: 18px;
-            margin: 0 10px;
-            display: inline-block;
-        }
-
-        .link-section a:hover {
-            color: #fff;
-        }
-
-        .status {
-            margin-top: 20px;
+        .code {
             font-size: 20px;
+            animation: blink 1s infinite;
         }
 
-        .status.live {
-            color: green;
+        @keyframes blink {
+            0% { color: #00FF00; }
+            50% { color: transparent; }
+            100% { color: #00FF00; }
         }
 
-        .status.dead {
-            color: red;
-        }
-
-        .message {
-            color: red;
-            font-size: 18px;
-            margin-top: 20px;
-        }
-
-        .auth-code-box {
-            display: none;
-            margin-top: 20px;
-        }
-
-        .auth-code-box.active {
-            display: block;
-        }
-
-        .auth-code-box input {
-            width: 200px;
-            font-size: 18px;
-            padding: 10px;
-            margin-right: 10px;
-        }
-
-        .auth-code-box button {
-            font-size: 18px;
-            padding: 10px;
+        .title {
+            text-align: center;
+            margin-top: 20%;
+            font-size: 30px;
+            text-shadow: 0 0 5px #00FF00, 0 0 10px #00FF00;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <div class="title">
+            Sistem Güvenliği Kırıldı
+        </div>
 
-<div class="dynamic-bg"></div>
+        <div class="box" style="top: 10%; left: 10%;">Hacker aktif!</div>
+        <div class="box" style="top: 30%; left: 40%;">Giriş başarılı!</div>
+        <div class="box" style="top: 50%; left: 70%;">Şifre çözüldü!</div>
 
-<!-- Giriş/Kayıt Paneli -->
-<div class="container" id="loginRegisterContainer">
-    <h1>DearSiber - Giriş & Kayıt</h1>
-    <div class="input-box">
-        <input type="text" id="username" placeholder="Kullanıcı Adı">
-    </div>
-    <div class="input-box">
-        <input type="password" id="password" placeholder="Şifre">
-    </div>
-    <button class="button" onclick="register()">Kaydol</button>
-    <button class="button" onclick="login()">Giriş Yap</button>
-    <div id="message" class="message"></div>
-</div>
-
-<!-- Kart Generator ve Kontrol Paneli -->
-<div class="container" id="cardGeneratorContainer">
-    <h1>Hacker Kart Generator</h1>
-
-    <div class="input-box">
-        <input type="text" id="cardNumber" placeholder="Kart Numarası (16 Haneli)">
-        <button class="button" onclick="validateCard()">Kontrol Et</button>
+        <div class="code" style="position: absolute; bottom: 10px; left: 10px;">
+            $ kod_dizisi_çalıştır();
+        </div>
     </div>
 
-    <div id="output" class="status"></div>
-
-    <div class="auth-code-box" id="authCodeBox">
-        <input type="text" id="authCodeInput" placeholder="Doğrulama Kodu">
-        <button class="button" onclick="verifyCode()">Kodu Doğrula</button>
-    </div>
-
-    <div class="link-section">
-        <a href="https://t.me/+IFx5aGB37Ws5NDFk" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Telegram_logo.svg/120px-Telegram_logo.svg.png" alt="Telegram" width="40"> Telegram Kanal 1</a>
-        <a href="https://t.me/+icW90vpzScthOTRk" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Telegram_logo.svg/120px-Telegram_logo.svg.png" alt="Telegram" width="40"> Telegram Kanal 2</a>
-    </div>
-</div>
-
-<script>
-    // Global variables
-    let userLoggedIn = false;
-    let authCode = null;
-
-    // Luhn Algorithm to validate card number
-    function luhnCheck(cardNumber) {
-        let sum = 0;
-        let shouldDouble = false;
-        for (let i = cardNumber.length - 1; i >= 0; i--) {
-            let digit = parseInt(cardNumber.charAt(i));
-            if (shouldDouble) {
-                if ((digit *= 2) > 9) digit -= 9;
-            }
-            sum += digit;
-            shouldDouble = !shouldDouble;
-        }
-        return (sum % 10 === 0);
-    }
-
-    // Validate card
-    function validateCard() {
-        if (!userLoggedIn) {
-            alert("Önce giriş yapmalısınız!");
-            return;
-        }
-        const cardNumber = document.getElementById('cardNumber').value.replace(/\D/g, '');
-        const output = document.getElementById('output');
-
-        if (cardNumber.length === 16 && luhnCheck(cardNumber)) {
-            output.classList.remove('dead');
-            output.classList.add('live');
-            output.innerText = "Kart Geçerli!";
-        } else {
-            output.classList.remove('live');
-            output.classList.add('dead');
-            output.innerText = "Kart Geçersiz!";
-        }
-    }
-
-    // Register user
-    function register() {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-
-        if (username && password) {
-            authCode = generateAuthCode();
-            alert("Kaydınız başarılı! Kayıt kodu gönderildi.");
-            document.getElementById('message').innerText = "Kod: " + authCode;
-            document.getElementById('authCodeBox').classList.add('active');
-        } else {
-            alert("Lütfen tüm alanları doldurun.");
-        }
-    }
-
-    // Login user
-    function login() {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-
-        if (username === "admin" && password === "123456") {
-            authCode = generateAuthCode();
-            alert("Giriş başarılı! Kayıt kodu gönderildi.");
-            document.getElementById('message').innerText = "Kod: " + authCode;
-            document.getElementById('authCodeBox').classList.add('active');
-        } else {
-            alert("Hatalı giriş bilgileri!");
-        }
-    }
-
-    // Generate a random 6 character auth code
-    function generateAuthCode() {
-        return Math.random().toString(36).substring(2, 8).toUpperCase();
-    }
-
-    // Verify the entered authentication code
-    function verifyCode() {
-        const inputCode = document.getElementById('authCodeInput').value;
-        if (inputCode === authCode) {
-            document.getElementById('loginRegisterContainer').style.display = 'none';
-            document.getElementById('cardGeneratorContainer').style.display = 'block';
-            userLoggedIn = true;
-            alert("Doğrulama başarılı! Giriş yaptınız.");
-        } else {
-            alert("Geçersiz doğrulama kodu!");
-        }
-    }
-</script>
-
+    <script>
+        // Randomize box positions on load
+        window.onload = function() {
+            const boxes = document.querySelectorAll('.box');
+            boxes.forEach(box => {
+                const randomLeft = Math.random() * 100;
+                const randomTop = Math.random() * 100;
+                box.style.left = randomLeft + '%';
+                box.style.top = randomTop + '%';
+            });
+        };
+    </script>
 </body>
 </html>
