@@ -3,970 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEARKUMAR</title>
+    <meta name="description" content="Konyalı Saat - En Özel Saatler ve Aksesuarlar">
+    <meta name="theme-color" content="#1a0000">
+    <title>Konyalı Saat - En Özel Saatler</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #1a1a2e, #0f3460, #533483, #e94560); background-size: 400% 400%; animation: gradientShift 10s ease infinite; color: #fff; min-height: 100vh; }
-        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; text-align: center; }
-        h1 { font-size: 3.5em; margin-bottom: 20px; text-shadow: 0 0 20px #ffd700, 0 0 30px #ff6b6b; animation: glow 1.5s infinite alternate; }
-        @keyframes glow { 0% { text-shadow: 0 0 10px #ffd700, 0 0 20px #ff6b6b; } 100% { text-shadow: 0 0 20px #ffd700, 0 0 40px #ff6b6b; } }
-        .channel-link { margin: 20px 0; }
-        .channel-link a { color: #ffd700; text-decoration: none; padding: 12px 25px; border: 3px solid #ffd700; border-radius: 50px; background: rgba(0,0,0,0.5); display: inline-block; animation: neon 1.5s infinite alternate, pulse 1s infinite; transition: all 0.3s; }
-        .channel-link a:hover { background: #ffd700; color: #1a1a2e; transform: scale(1.1); box-shadow: 0 0 30px #ffd700; }
-        @keyframes neon { 0% { box-shadow: 0 0 10px #ffd700, 0 0 20px #ff6b6b; } 100% { box-shadow: 0 0 20px #ffd700, 0 0 40px #ff6b6b; } }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-        .auth-section, .about-section { background: rgba(0,0,0,0.7); padding: 25px; border-radius: 15px; margin: 20px auto; max-width: 400px; box-shadow: 0 0 40px rgba(255,215,0,0.4); animation: fadeIn 0.8s; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        input { width: 100%; padding: 12px; margin: 8px 0; border: none; border-radius: 8px; background: rgba(255,255,255,0.1); color: white; font-size: 16px; }
-        input::placeholder { color: #ccc; }
-        button { width: 100%; padding: 12px; margin: 8px 0; border: none; border-radius: 8px; background: linear-gradient(45deg, #ff6b6b, #ee5a52); color: white; font-size: 16px; cursor: pointer; transition: all 0.3s; box-shadow: 0 5px 15px rgba(255,107,107,0.4); }
-        button:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255,107,107,0.6); }
-        .game-section, .admin-section, .chat-section, .users-section, .profile-section { display: none; animation: slideIn 0.5s; }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
-        .balance { font-size: 26px; color: #ffd700; margin: 20px 0; text-shadow: 0 0 15px #ffd700; }
-        .game-buttons, .admin-buttons, .profile-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin: 20px 0; }
-        .game-btn, .admin-btn, .profile-btn { padding: 12px; background: linear-gradient(45deg, #4ecdc4, #44a08d); color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 15px; transition: all 0.3s; box-shadow: 0 5px 15px rgba(78,205,196,0.4); transform: perspective(500px) rotateX(5deg); }
-        .game-btn:hover, .admin-btn:hover, .profile-btn:hover { transform: perspective(500px) rotateX(0deg) translateY(-3px); box-shadow: 0 10px 30px rgba(78,205,196,0.6); }
-        .result, .admin-result, .users-list, .profile-result { font-size: 18px; margin: 20px 0; padding: 15px; border-radius: 10px; background: rgba(0,0,0,0.6); min-height: 50px; }
-        .logout-btn { background: linear-gradient(45deg, #ff6b6b, #ee5a52); margin-top: 20px; }
-        .chat-section { background: rgba(0,0,0,0.7); padding: 20px; border-radius: 15px; margin: 20px auto; max-width: 600px; }
-        #chat-messages { max-height: 400px; overflow-y: auto; margin-bottom: 10px; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 10px; }
-        .chat-message { padding: 8px; margin: 5px 0; background: rgba(255,255,255,0.2); border-radius: 8px; position: relative; }
-        .chat-message.pinned { border: 2px solid #ffd700; background: rgba(255,215,0,0.3); }
-        .chat-message .reply-btn, .chat-message .delete-btn, .chat-message .pin-btn, .chat-message .dm-btn { font-size: 12px; padding: 5px; margin-left: 10px; background: #ff6b6b; display: inline-block; }
-        #chat-input { width: 60%; display: inline-block; }
-        #chat-send, #chat-share { width: 15%; display: inline-block; margin-left: 5px; }
-        .slot-animation { font-size: 2em; display: inline-block; animation: spin 0.5s linear 3; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .profile-img { width: 50px; height: 50px; border-radius: 50%; margin: 10px; }
+        body { font-family: 'Arial', sans-serif; background: #f8f8f8; color: #333; line-height: 1.6; }
+        .header { background: #1a0000; color: #ffd700; padding: 10px 0; text-align: center; }
+        .nav { background: #2d2d2d; padding: 10px 0; }
+        .nav ul { list-style: none; display: flex; justify-content: center; }
+        .nav li { margin: 0 15px; }
+        .nav a { color: #ffd700; text-decoration: none; font-weight: bold; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .hero { background: #1a0000; color: #ffd700; text-align: center; padding: 50px 20px; }
+        .hero h1 { font-size: 3em; margin-bottom: 10px; }
+        .hero p { font-size: 1.2em; }
+        .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 40px 0; }
+        .product { background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 15px; text-align: center; }
+        .product img { width: 100%; height: 200px; object-fit: cover; border-radius: 5px; }
+        .product h3 { margin: 10px 0; }
+        .product .price { font-size: 1.5em; color: #ff0000; font-weight: bold; }
+        .product button { background: #ff0000; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+        .product button:hover { background: #cc0000; }
+        .filters { background: #2d2d2d; padding: 20px; color: #ffd700; margin: 20px 0; }
+        .filters select, .filters input { margin: 0 10px; padding: 5px; }
+        .cart { position: fixed; top: 20px; right: 20px; background: #1a0000; color: #ffd700; padding: 10px; border-radius: 5px; }
+        .cart-items { list-style: none; }
+        .checkout { background: #ff0000; color: #fff; padding: 20px; margin: 20px 0; border-radius: 10px; }
+        .checkout form { display: flex; flex-direction: column; gap: 10px; }
+        .checkout input { padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        .blog { margin: 40px 0; }
+        .blog article { background: #fff; margin: 20px 0; padding: 20px; border-radius: 10px; }
+        .footer { background: #1a0000; color: #ffd700; text-align: center; padding: 20px; }
+        @media (max-width: 768px) { .products { grid-template-columns: 1fr; } .nav ul { flex-direction: column; } }
     </style>
 </head>
 <body>
+    <header class="header">
+        <h1>Konyalı Saat</h1>
+        <p>En Özel Saatler ve Aksesuarlar</p>
+    </header>
+    <nav class="nav">
+        <ul>
+            <li><a href="#home">Ana Sayfa</a></li>
+            <li><a href="#products">Ürünler</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#cart">Sepet</a></li>
+        </ul>
+    </nav>
     <div class="container">
-        <h1>DEARKUMAR</h1>
-        <div class="channel-link">
-            <a href="https://t.me/+icW90vpzScthOTRk" target="_blank">Telegram Kanalı - Bonus Kazan! ✨</a>
-        </div>
-        <div class="about-section">
-            <h2>Hakkımızda</h2>
-            <p>DEARKUMAR ile limitsiz eğlence, büyük kazançlar! En heyecanlı oyunlar, günlük bonuslar ve VIP ayrıcalıklarıyla gerçek kumar deneyimi burada!</p>
-        </div>
-        <div id="auth">
-            <div id="login" class="auth-section">
-                <h2>Giriş Yap</h2>
-                <input type="text" id="login_username" placeholder="Kullanıcı Adı veya Gmail">
-                <input type="password" id="login_password" placeholder="Şifre">
-                <button onclick="login()">Giriş</button>
-            </div>
-            <div id="register" class="auth-section" style="display:none;">
-                <h2>Kayıt Ol</h2>
-                <input type="email" id="reg_email" placeholder="Gmail">
-                <input type="text" id="reg_name" placeholder="İsim">
-                <input type="text" id="reg_surname" placeholder="Soyisim">
-                <input type="text" id="reg_username" placeholder="Kullanıcı Adı">
-                <input type="password" id="reg_password" placeholder="Şifre">
-                <button onclick="register()">Kayıt Ol</button>
-                <button onclick="showLogin()">Giriş Yap</button>
-            </div>
-            <button onclick="showRegister()">Kayıt Ol</button>
-        </div>
-        <div id="game-section" class="game-section">
-            <div class="balance" id="balance">Bakiye: 100.000 TL</div>
-            <div class="game-buttons">
-                <button class="game-btn" onclick="playRisk()">Risk (%50 2x)</button>
-                <button class="game-btn" onclick="playDice()">Zar (5-6: 2x, 7: 3x)</button>
-                <button class="game-btn" onclick="playSlot()">Slot (Üç Aynı: 3x)</button>
-                <button class="game-btn" onclick="playCoinflip()">Coinflip (%45 2x)</button>
-                <button class="game-btn" onclick="playRoulette()">Rulet (%45 2x)</button>
-                <button class="game-btn" onclick="playBlackjack()">Blackjack (%40 2x)</button>
-                <button class="game-btn" onclick="playPoker()">Poker (%30 3x)</button>
-                <button class="game-btn" onclick="claimDaily()">Günlük Bonus</button>
-                <button class="game-btn" onclick="sendMoney()">Para Gönder</button>
-                <button class="game-btn" onclick="showRich()">Zenginler</button>
-                <button class="game-btn" onclick="becomeVIP()">VIP Ol</button>
-                <button class="game-btn" onclick="showUsers()">Kullanıcılar</button>
-                <button class="game-btn" onclick="showProfile()">Profil</button>
-                <button class="game-btn" onclick="addFriend()">Arkadaş Ekle</button>
-                <button class="game-btn" onclick="viewStats()">İstatistiklerim</button>
-            </div>
-            <div class="result" id="result"></div>
-            <div class="chat-section" id="chat-section">
-                <h2>Sohbet</h2>
-                <div id="chat-messages"></div>
-                <input type="text" id="chat-input" placeholder="Mesaj yaz...">
-                <button id="chat-send" onclick="sendChat()">Gönder</button>
-                <button id="chat-share" onclick="shareWin()">Kazancı Paylaş</button>
-            </div>
-            <div class="users-section" id="users-section">
-                <h2>Kullanıcılar</h2>
-                <div class="users-list" id="users-list"></div>
-            </div>
-            <div class="profile-section" id="profile-section">
-                <h2>Profil</h2>
-                <img id="profile-img" class="profile-img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" alt="Profil">
-                <div class="profile-buttons">
-                    <button class="profile-btn" onclick="editProfile()">Profil Düzenle</button>
-                    <button class="profile-btn" onclick="viewHistory()">Oyun Geçmişi</button>
-                    <button class="profile-btn" onclick="uploadProfilePic()">Resim Yükle</button>
-                </div>
-                <div class="profile-result" id="profile-result"></div>
-            </div>
-            <button class="logout-btn" onclick="logout()">Çıkış Yap</button>
-        </div>
-        <div id="admin-section" class="admin-section">
-            <h2>Admin Paneli</h2>
-            <div class="balance" id="admin-balance">Bakiye: 999.999.999 TL</div>
-            <div class="admin-buttons">
-                <button class="admin-btn" onclick="adminGive()">Bakiye Ver</button>
-                <button class="admin-btn" onclick="adminTake()">Bakiye Al</button>
-                <button class="admin-btn" onclick="adminSet()">Bakiye Set</button>
-                <button class="admin-btn" onclick="showRich()">En Zenginler</button>
-                <button class="admin-btn" onclick="adminBroadcast()">Toplu Mesaj</button>
-                <button class="admin-btn" onclick="adminBan()">Ban</button>
-                <button class="admin-btn" onclick="adminUnban()">Ban Kaldır</button>
-                <button class="admin-btn" onclick="adminAddAdmin()">Admin Ekle</button>
-                <button class="admin-btn" onclick="adminRemoveAdmin()">Admin Çıkar</button>
-                <button class="admin-btn" onclick="adminReset()">Kullanıcı Sıfırla</button>
-                <button class="admin-btn" onclick="adminSetDaily()">Günlük Bonus Ayar</button>
-                <button class="admin-btn" onclick="adminStats()">İstatistik</button>
-                <button class="admin-btn" onclick="adminLogs()">Loglar</button>
-                <button class="admin-btn" onclick="adminUserHistory()">Kullanıcı Geçmişi</button>
-                <button class="admin-btn" onclick="adminResetAll()">Toplu Sıfırlama</button>
-                <button class="admin-btn" onclick="adminToggleVIP()">VIP Ata/Kaldır</button>
-                <button class="admin-btn" onclick="adminStartTournament()">Turnuva Başlat</button>
-                <button class="admin-btn" onclick="adminPromoCode()">Promosyon Kodu</button>
-                <button class="admin-btn" onclick="showUsers(true)">Kullanıcılar</button>
-                <button class="admin-btn" onclick="adminDeleteChat()">Sohbet Mesajı Sil</button>
-                <button class="admin-btn" onclick="adminUnbanIP()">IP Ban Kaldır</button>
-                <button class="admin-btn" onclick="adminResetPassword()">Şifre Sıfırla</button>
-                <button class="admin-btn" onclick="adminSetSessionTimeout()">Oturum Süresi</button>
-                <button class="admin-btn" onclick="adminPinChat()">Mesaj Sabitle</button>
-                <button class="admin-btn" onclick="adminGameStats()">Oyun İstatistikleri</button>
-                <button class="admin-btn" onclick="adminToggleMaintenance()">Bakım Modu</button>
-                <button class="admin-btn" onclick="adminChangeIP()">IP Değiştir</button>
-            </div>
-            <div class="admin-result" id="admin-result"></div>
-            <button class="logout-btn" onclick="logout()">Çıkış Yap</button>
-        </div>
+        <section id="home" class="hero">
+            <h1>Hoş Geldiniz</h1>
+            <p>1951'den beri en kaliteli saatler</p>
+        </section>
+        <section class="filters">
+            <h3>Filtrele</h3>
+            <select id="brand">
+                <option value="">Marka</option>
+                <option value="casio">Casio</option>
+                <option value="seiko">Seiko</option>
+                <option value="fossil">Fossil</option>
+            </select>
+            <input type="number" id="min-price" placeholder="Min Fiyat">
+            <input type="number" id="max-price" placeholder="Max Fiyat">
+            <button onclick="filterProducts()">Filtrele</button>
+        </section>
+        <section id="products" class="products">
+            <!-- Ürünler dinamik yüklenecek -->
+        </section>
+        <section id="cart" class="cart" style="display: none;">
+            <h3>Sepet</h3>
+            <ul id="cart-items"></ul>
+            <p id="total-price">Toplam: 0 TL</p>
+            <button onclick="showCheckout()">Ödeme Yap</button>
+        </section>
+        <section id="checkout" class="checkout" style="display: none;">
+            <h3>Ödeme</h3>
+            <form onsubmit="processPayment(event)">
+                <input type="text" id="card-number" placeholder="Kart Numarası (örn: 5400617004770430)" required>
+                <input type="text" id="expiry" placeholder="Son Kullanma (örn: 12/2025)" required>
+                <input type="text" id="cvv" placeholder="CVV (örn: 000)" required>
+                <button type="submit">Öde</button>
+            </form>
+            <button onclick="hideCheckout()">İptal</button>
+        </section>
+        <section id="blog" class="blog">
+            <article>
+                <h3>Saat Bakımı İpuçları</h3>
+                <p>Saatlerinizi düzenli temizleyin...</p>
+            </article>
+            <article>
+                <h3>İlham Veren Saatler</h3>
+                <p>Trend saatler 2025...</p>
+            </article>
+        </section>
+        <footer class="footer">
+            <p>&copy; 2025 Konyalı Saat</p>
+        </footer>
     </div>
+
     <script>
-        const ADMIN_CREDENTIALS = { username: 'sirin31', password: 'Sirin31' };
-        const PROTECTED_IPS = ['46.196.249.45'];
-        let currentUser = null, balance = 100000, isVIP = false, isAdmin = false, sessionToken = null;
-        let users = JSON.parse(localStorage.getItem('users')) || {};
-        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
-        let ipAttempts = JSON.parse(localStorage.getItem('ipAttempts')) || {};
-        let bannedIPs = JSON.parse(localStorage.getItem('bannedIPs')) || [];
-        let chatMessages = JSON.parse(localStorage.getItem('chatMessages')) || [];
-        let settings = JSON.parse(localStorage.getItem('settings')) || { dailyBonus: 50000, sessionTimeout: 30 * 60 * 1000, maintenance: false };
-        const DEFAULT_DAILY = 50000, SPECIAL_ONE_TIME = 100000, LOW_THRESHOLD = 10000;
-        const GAME_PROBS = { risk: 0.50, coinflip: 0.45, roulette: 0.45, blackjack: 0.40, poker: 0.30, dice: 0.6, slot: 0.6 };
-        const SLOT_SYMBOLS = ['🍒', '🍋', '⭐', '🔔', '7️⃣'];
-        const RATE_LIMIT = { max: 5, windowMs: 5 * 60 * 1000, banDuration: 60 * 60 * 1000 };
-        let userIP = 'unknown', lastWin = null;
+        // Ürün Verileri (Konyalı Saat Benzeri)
+        const products = [
+            { id: 1, name: 'Casio G-Shock', price: 1500, brand: 'casio', type: 'erkek', image: 'https://via.placeholder.com/250x200?text=Casio+G-Shock' },
+            { id: 2, name: 'Seiko Solar', price: 2500, brand: 'seiko', type: 'kadın', image: 'https://via.placeholder.com/250x200?text=Seiko+Solar' },
+            { id: 3, name: 'Fossil Smartwatch', price: 2000, brand: 'fossil', type: 'akıllı', image: 'https://via.placeholder.com/250x200?text=Fossil+Smart' },
+            { id: 4, name: 'Rolex Submariner', price: 5000, brand: 'rolex', type: 'erkek', image: 'https://via.placeholder.com/250x200?text=Rolex+Submariner' },
+            { id: 5, name: 'Omega Seamaster', price: 3500, brand: 'omega', type: 'kadın', image: 'https://via.placeholder.com/250x200?text=Omega+Seamaster' },
+            // ... 15+ ürün ekle (gerçek sitedeki gibi)
+        ];
 
-        // Tüm banları kaldır
-        Object.values(users).forEach(u => u.banned = false);
-        bannedIPs.length = 0;
-        saveData();
+        let cart = [];
 
-        fetch('https://api.ipify.org?format=json').then(res => res.json()).then(data => userIP = data.ip).catch(() => {});
-
-  function saveData() {
-            localStorage.setItem('users', JSON.stringify(users));
-            localStorage.setItem('transactions', JSON.stringify(transactions));
-            localStorage.setItem('ipAttempts', JSON.stringify(ipAttempts));
-            localStorage.setItem('bannedIPs', JSON.stringify(bannedIPs));
-            localStorage.setItem('chatMessages', JSON.stringify(chatMessages));
-            localStorage.setItem('settings', JSON.stringify(settings));
-        }
-
-        function money(a) { return a.toLocaleString() + ' TL'; }
-
-        function generateToken() { return Math.random().toString(36).substr(2) + Date.now(); }
-
-        function checkRateLimit() {
-            if (PROTECTED_IPS.includes(userIP)) return true;
-            const now = Date.now();
-            ipAttempts[userIP] = ipAttempts[userIP] || { count: 0, last: now, bannedUntil: null };
-            if (ipAttempts[userIP].bannedUntil && now < ipAttempts[userIP].bannedUntil) {
-                alert(`IP banlı, bekle: ${Math.ceil((ipAttempts[userIP].bannedUntil - now) / 60000)} dk`);
-                return false;
-            }
-            if (now - ipAttempts[userIP].last > RATE_LIMIT.windowMs) ipAttempts[userIP] = { count: 0, last: now, bannedUntil: null };
-            ipAttempts[userIP].count++;
-            if (ipAttempts[userIP].count > RATE_LIMIT.max) {
-                ipAttempts[userIP].bannedUntil = now + RATE_LIMIT.banDuration;
-                if (!PROTECTED_IPS.includes(userIP)) bannedIPs.push(userIP);
-                saveData();
-                alert('Çok fazla deneme, IP 1 saat banlandı!');
-                return false;
-            }
-            saveData();
-            return true;
-        }
-
-        function checkIPBan() {
-            if (PROTECTED_IPS.includes(userIP) || (currentUser && currentUser.username === ADMIN_CREDENTIALS.username)) return false;
-            if (bannedIPs.includes(userIP)) {
-                alert('Bu IP engellenmiş! Admin ile iletişime geç.');
-                return true;
-            }
-            const ipUsers = Object.values(users).filter(u => u.ip === userIP);
-            if (ipUsers.length > 2) {
-                ipUsers.forEach(u => delete users[u.username]);
-                if (!PROTECTED_IPS.includes(userIP)) bannedIPs.push(userIP);
-                saveData();
-                alert('Aynı IP’den 2’den fazla hesap tespit edildi, hesaplar silindi ve IP engellendi!');
-                return true;
-            }
-            return false;
-        }
-
-
-        function checkSession() {
-            if (!sessionToken || !currentUser || (currentUser.sessionToken && currentUser.sessionToken !== sessionToken)) {
-                logout();
-                alert('Oturum geçersiz, tekrar giriş yap!');
-                return false;
-            }
-            return true;
-        }
-
-        function showRegister() {
-            document.getElementById('login').style.display = 'none';
-            document.getElementById('register').style.display = 'block';
-        }
-
-        function showLogin() {
-            document.getElementById('register').style.display = 'none';
-            document.getElementById('login').style.display = 'block';
-        }
-
-        function register() {
-            if (!checkRateLimit() || checkIPBan()) return;
-            const email = document.getElementById('reg_email').value;
-            const name = document.getElementById('reg_name').value;
-            const surname = document.getElementById('reg_surname').value;
-            const username = document.getElementById('reg_username').value;
-            const password = document.getElementById('reg_password').value;
-            if (!email || !name || !surname || !username || !password) {
-                alert('Tüm alanları doldurun!');
-                return;
-            }
-            if (users[username] || Object.values(users).some(u => u.email === email)) {
-                alert('Kullanıcı adı veya email zaten kayıtlı!');
-                return;
-            }
-            const hash = btoa(password);
-            users[username] = { email, name, surname, username, password: hash, balance: 100000, lastDaily: null, tookSpecial: false, banned: false, isVIP: false, isAdmin: false, ip: userIP, sessionToken: null, friends: [], profilePic: null };
-            saveData();
-            alert('Kayıt başarılı! Giriş yap.');
-            showLogin();
-        }
-
-   function login() {
-            if (!checkRateLimit()) return;
-            const username = document.getElementById('login_username').value;
-            const password = document.getElementById('login_password').value;
-            const hash = btoa(password);
-            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
-                currentUser = { username: 'admin', balance: 999999999, isAdmin: true };
-                isAdmin = true;
-                sessionToken = generateToken();
-                document.getElementById('auth').style.display = 'none';
-                document.getElementById('admin-section').style.display = 'block';
-                document.getElementById('admin-balance').innerText = `Bakiye: ${money(currentUser.balance)}`;
-                alert('Admin girişi başarılı!');
-                return;
-            }
-            const user = users[username] || Object.values(users).find(u => u.email === username);
-            if (user && user.password === hash && !user.banned) {
-                currentUser = user;
-                balance = user.balance;
-                isVIP = user.isVIP;
-                isAdmin = user.isAdmin;
-                sessionToken = generateToken();
-                user.sessionToken = sessionToken;
-                document.getElementById('auth').style.display = 'none';
-                document.getElementById('game-section').style.display = 'block';
-                document.getElementById('chat-section').style.display = 'block';
-                document.getElementById('balance').innerText = `Bakiye: ${money(balance)}`;
-                loadChat();
-                saveData();
-                alert('Giriş başarılı!');
-            } else {
-                alert('Hatalı giriş veya banlı hesap!');
-            }
-        }
-
-        function logout() {
-            if (currentUser && !isAdmin) {
-                users[currentUser.username].balance = balance;
-                users[currentUser.username].isVIP = isVIP;
-                users[currentUser.username].sessionToken = null;
-                saveData();
-            }
-            currentUser = null;
-            balance = 0;
-            isVIP = false;
-            isAdmin = false;
-            sessionToken = null;
-            document.getElementById('game-section').style.display = 'none';
-            document.getElementById('chat-section').style.display = 'none';
-            document.getElementById('users-section').style.display = 'none';
-            document.getElementById('profile-section').style.display = 'none';
-            document.getElementById('admin-section').style.display = 'none';
-            document.getElementById('auth').style.display = 'block';
-            alert('Çıkış yapıldı!');
-        }
-
-        function addTransaction(userId, type, amount, note) {
-            transactions.push({ ts: new Date().toISOString(), userId, type, amount, note });
-            saveData();
-        }
-
-        function playSound(type) {
-            const sounds = {
-                slot: 'https://freesound.org/data/previews/216/216090_2565576-lq.mp3',
-                dice: 'https://freesound.org/data/previews/165/165166_2722356-lq.mp3',
-                coinflip: 'https://freesound.org/data/previews/100/100151_1599256-lq.mp3',
-                roulette: 'https://freesound.org/data/previews/262/262434_4284968-lq.mp3',
-                blackjack: 'https://freesound.org/data/previews/145/145412_2606144-lq.mp3',
-                poker: 'https://freesound.org/data/previews/145/145412_2606144-lq.mp3',
-                win: 'https://freesound.org/data/previews/387/387739_7060106-lq.mp3',
-                notification: 'https://freesound.org/data/previews/242/242207_1774666-lq.mp3'
-            };
-            new Audio(sounds[type]).play().catch(() => {});
-        }
-
-        function playGame(game, bet, chance, multiplier, anim, extra = '') {
-            if (!checkSession() || settings.maintenance) {
-                alert(settings.maintenance ? 'Site bakımda!' : 'Oturum geçersiz!');
-                return;
-            }
-            if (!bet || isNaN(bet) || bet <= 0 || (!isAdmin && bet > balance)) {
-                alert('Geçerli miktar gir!');
-                return;
-            }
-            const betAmount = parseInt(bet);
-            if (!isAdmin) balance -= betAmount;
-            addTransaction(currentUser.username, `${game}_bet`, -betAmount, `${game}_bet`);
-            playSound(game);
-            document.getElementById('result').innerHTML = `<span class="slot-animation">${anim}</span> İşlemde...`;
-            setTimeout(() => {
-                const winChance = isVIP ? chance + 0.25 : chance;
-                const win = Math.random() < winChance;
-                let winAmt = 0, resultText = '';
-                if (game === 'slot') {
-                    const s = Array(3).fill().map(() => SLOT_SYMBOLS[Math.floor(Math.random() * SLOT_SYMBOLS.length)]);
-                    const slotText = ` | ${s.join(' | ')} | `;
-                    if (s[0] === s[1] && s[1] === s[2] && Math.random() < winChance * 0.2) {
-                        winAmt = betAmount * 3;
-                        resultText = `<b style="color:green;">🎰 ${slotText} — Üç aynı! Kazandın: ${money(winAmt)}!</b>`;
-                    } else if ((s[0] === s[1] || s[1] === s[2] || s[0] === s[2]) && Math.random() < winChance * 0.4) {
-                        winAmt = betAmount * 2;
-
-                              resultText = `<b style="color:orange;">🎰 ${slotText} — Çift! Kazandın: ${money(winAmt)}!</b>`;
-                    } else {
-                        resultText = `<b style="color:red;">🎰 ${slotText} — Kaybettin: ${money(betAmount)}!</b>`;
-                    }
-                } else if (game === 'dice') {
-                    const roll = Math.floor(Math.random() * 7) + 1;
-                    if (roll >= 5 && Math.random() < winChance) {
-                        multiplier = roll === 7 ? 3 : 2;
-                        winAmt = betAmount * multiplier;
-                        resultText = `<b style="color:green;">🎲 Zar: ${roll} — Kazandın: ${money(winAmt)}!</b>`;
-                    } else {
-                        resultText = `<b style="color:red;">🎲 Zar: ${roll} — Kaybettin: ${money(betAmount)}!</b>`;
-                    }
-                } else {
-                    const outcome = extra || (Math.random() < 0.5 ? 'Baş' : 'Yazı');
-                    if (win) {
-                        winAmt = betAmount * multiplier;
-                        resultText = `<b style="color:green;">${anim} ${outcome} — Kazandın: ${money(winAmt)}!</b>`;
-                    } else {
-                        resultText = `<b style="color:red;">${anim} ${outcome} — Kaybettin: ${money(betAmount)}!</b>`;
-                    }
-                }
-                if (winAmt > 0) {
-                    if (!isAdmin) balance += winAmt;
-                    addTransaction(currentUser.username, `${game}_win`, winAmt, `${game}_win`);
-                    lastWin = { game, amount: winAmt };
-                    playSound('win');
-                }
-                document.getElementById('result').innerHTML = resultText;
-                document.getElementById('balance').innerText = `Bakiye: ${money(isAdmin ? 999999999 : balance)}`;
-                if (!isAdmin) users[currentUser.username].balance = balance;
-                saveData();
-            }, 1000);
-        }
-
-   function playRisk() { playGame('risk', prompt('Risk için miktar:'), GAME_PROBS.risk, 2, '🎲'); }
-        function playDice() { playGame('dice', prompt('Zar için miktar:'), GAME_PROBS.dice, 2, '🎲'); }
-        function playSlot() { playGame('slot', prompt('Slot için miktar:'), GAME_PROBS.slot, 3, '🎰'); }
-        function playCoinflip() { playGame('coinflip', prompt('Coinflip için miktar:'), GAME_PROBS.coinflip, 2, '🪙'); }
-        function playRoulette() { playGame('roulette', prompt('Rulet için miktar:'), GAME_PROBS.roulette, 2, '🎡', Math.random() < 0.5 ? 'Kırmızı' : 'Siyah'); }
-        function playBlackjack() { playGame('blackjack', prompt('Blackjack için miktar:'), GAME_PROBS.blackjack, 2, '🃏', `Sen: ${Math.floor(Math.random() * 7) + 16}, Krupiye: ${Math.floor(Math.random() * 7) + 16}`); }
-        function playPoker() { playGame('poker', prompt('Poker için miktar:'), GAME_PROBS.poker, 3, '♠️', `Sen: ${['Yüksek Kart', 'Per', 'İki Per', 'Döper', 'Flush'][Math.floor(Math.random() * 5)]}`); }
-
-        function claimDaily() {
-            if (!checkSession() || isAdmin) {
-                alert('Adminler günlük bonus alamaz!');
-                return;
-            }
-            const now = new Date();
-            const lastDaily = currentUser.lastDaily ? new Date(currentUser.lastDaily) : null;
-            if (lastDaily && now - lastDaily < 24 * 60 * 60 * 1000) {
-                const remain = (24 * 60 * 60 * 1000 - (now - lastDaily)) / 1000;
-                alert(`Bonus için bekle: ${Math.floor(remain / 3600)} sa ${Math.floor((remain % 3600) / 60)} dk`);
-                return;
-            }
-            const bonus = balance < LOW_THRESHOLD && !currentUser.tookSpecial ? SPECIAL_ONE_TIME : settings.dailyBonus * (isVIP ? 1.4 : 1.2);
-            balance += bonus;
-            if (bonus === SPECIAL_ONE_TIME) currentUser.tookSpecial = true;
-            currentUser.lastDaily = now.toISOString();
-            addTransaction(currentUser.username, bonus === SPECIAL_ONE_TIME ? 'daily_special' : 'daily', bonus, bonus === SPECIAL_ONE_TIME ? 'first_time_special' : '24h_daily');
-            document.getElementById('result').innerHTML = `<b style="color:green;">🪙 ${bonus === SPECIAL_ONE_TIME ? 'Özel' : 'Günlük'} bonus: ${money(bonus)}!</b>`;
-            document.getElementById('balance').innerText = `Bakiye: ${money(balance)}`;
-            users[currentUser.username].balance = balance;
-            users[currentUser.username].lastDaily = currentUser.lastDaily;
-            users[currentUser.username].tookSpecial = currentUser.tookSpecial;
-            saveData();
-        }
-
-        function sendMoney() {
-            if (!checkSession()) return;
-            const username = prompt('Kullanıcı adı:');
-            const amount = prompt('Miktar:');
-            if (!username || !amount || isNaN(amount) || amount <= 0 || (!isAdmin && amount > balance)) {
-                alert('Geçerli kullanıcı adı ve miktar gir!');
-                return;
-            }
-            const target = users[username];
-            if (!target) {
-                alert('Kullanıcı bulunamadı!');
-                return;
-            }
-            if (target.banned) {
-                alert('Hedef banlı!');
-                return;
-            }
-            if (!isAdmin) balance -= amount;
-            target.balance += parseInt(amount);
-            addTransaction(currentUser.username, 'transfer_out', -amount, `to ${username}`);
-            addTransaction(username, 'transfer_in', amount, `from ${currentUser.username}`);
-            document.getElementById('result').innerHTML = `<b style="color:green;">💸 ${money(amount)} ${username}'a gönderildi!</b>`;
-            document.getElementById('balance').innerText = `Bakiye: ${money(isAdmin ? 999999999 : balance)}`;
-            users[currentUser.username].balance = balance;
-            users[username].balance = target.balance;
-            saveData();
-        }
-
-        function showRich() {
-            if (!checkSession()) return;
-            const sorted = Object.values(users).sort((a, b) => b.balance - a.balance).slice(0, 10);
-            const txt = '<b>🤑 En Zenginler:</b><br>' + sorted.map(u => `${u.username} — ${money(u.balance * (u.isVIP ? 1.25 : 1.1))}${u.isVIP ? ' 🌟' : ''}`).join('<br>');
-            document.getElementById(isAdmin ? 'admin-result' : 'result').innerHTML = txt;
-        }
-
-        function becomeVIP() {
-            if (!checkSession()) return;
-            alert('VIP olmak için Telegram kanalına katıl!');
-            window.open('https://t.me/+icW90vpzScthOTRk', '_blank');
-            isVIP = true;
-            currentUser.isVIP = true;
-            users[currentUser.username].isVIP = true;
-            saveData();
-            document.getElementById('result').innerHTML = '<b style="color:gold;">🌟 VIP oldun! %25 şans, %40 bonus!</b>';
-        }
-
-        function showUsers(isAdminView = false) {
-            if (!checkSession()) return;
-            const sorted = Object.values(users).sort((a, b) => b.balance - a.balance);
-            let txt = '<b>👥 Kullanıcılar:</b><br>';
-            sorted.forEach(u => {
-                txt += isAdminView
-                    ? `${u.username} — ${money(u.balance)} ${u.isVIP ? '🌟' : ''} ${u.isAdmin ? '👑' : ''} ${u.banned ? '🚫' : ''} (${u.email}, IP: ${u.ip})<br>`
-                    : `${u.username} — ${money(u.balance)} ${u.isVIP ? '🌟' : ''}<br>`;
-            });
-            document.getElementById(isAdmin ? 'admin-result' : 'users-list').innerHTML = txt;
-            if (!isAdmin) {
-                document.getElementById('users-section').style.display = 'block';
-                document.getElementById('game-section').style.display = 'block';
-            }
-        }
-
-        function showProfile() {
-            if (!checkSession()) return;
-            document.getElementById('profile-section').style.display = 'block';
-            document.getElementById('game-section').style.display = 'block';
-            document.getElementById('profile-img').src = currentUser.profilePic || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
-               document.getElementById('profile-result').innerHTML = `<b>👤 Profil:</b><br>İsim: ${currentUser.name} ${currentUser.surname}<br>Kullanıcı: ${currentUser.username}<br>Email: ${currentUser.email}<br>Bakiye: ${money(balance)}<br>Durum: ${isVIP ? 'VIP 🌟' : 'Standart'}<br>Arkadaşlar: ${currentUser.friends.length ? currentUser.friends.join(', ') : 'Yok'}`;
-        }
-
-        function editProfile() {
-            if (!checkSession()) return;
-            const name = prompt('Yeni isim:', currentUser.name);
-            const surname = prompt('Yeni soyisim:', currentUser.surname);
-            const password = prompt('Yeni şifre (değiştirmek istemiyorsanız boş bırakın):');
-            if (!name || !surname) {
-                alert('İsim ve soyisim gir!');
-                return;
-            }
-            currentUser.name = name;
-            currentUser.surname = surname;
-            if (password) currentUser.password = btoa(password);
-            users[currentUser.username] = currentUser;
-            saveData();
-            document.getElementById('profile-result').innerHTML = '<b style="color:green;">✅ Profil güncellendi!</b>';
-            showProfile();
-        }
-
-        function uploadProfilePic() {
-            if (!checkSession()) return;
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
-            input.onchange = e => {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = e => {
-                        currentUser.profilePic = e.target.result;
-                        users[currentUser.username].profilePic = e.target.result;
-                        saveData();
-                        showProfile();
-                    };
-                    reader.readAsDataURL(file);
-                }
-            };
-            input.click();
-        }
-
-        function viewHistory() {
-            if (!checkSession()) return;
-            const userTx = transactions.filter(t => t.userId === currentUser.username).slice(-20).map(t => `${t.type}: ${money(t.amount)} - ${t.note} - ${t.ts}`).join('<br>');
-            document.getElementById('profile-result').innerHTML = `<b>📜 Oyun Geçmişi:</b><br>${userTx || 'Geçmiş yok!'}`;
-        }
-
-   function viewStats() {
-            if (!checkSession()) return;
-            const userTx = transactions.filter(t => t.userId === currentUser.username);
-            const wins = userTx.filter(t => t.type.includes('_win')).length;
-            const bets = userTx.filter(t => t.type.includes('_bet')).length;
-            const winRate = bets ? (wins / bets * 100).toFixed(2) : 0;
-            const totalWon = userTx.filter(t => t.type.includes('_win')).reduce((sum, t) => sum + t.amount, 0);
-            document.getElementById('result').innerHTML = `<b>📊 İstatistiklerim:</b><br>Oynanan: ${bets}<br>Kazanılan: ${wins} (${winRate}%)<br>Toplam Kazanç: ${money(totalWon)}`;
-        }
-
-        function addFriend() {
-            if (!checkSession()) return;
-            const username = prompt('Arkadaşın kullanıcı adı:');
-            if (!username || !users[username]) {
-                alert('Kullanıcı bulunamadı!');
-                return;
-            }
-            if (currentUser.friends.includes(username)) {
-                alert('Bu kullanıcı zaten arkadaşın!');
-                return;
-            }
-            currentUser.friends.push(username);
-            users[currentUser.username].friends = currentUser.friends;
-            saveData();
-            document.getElementById('result').innerHTML = `<b style="color:green;">👥 ${username} arkadaş eklendi!</b>`;
-            showProfile();
-        }
-
-        function loadChat() {
-            const messagesDiv = document.getElementById('chat-messages');
-            messagesDiv.innerHTML = chatMessages.map((msg, idx) => `
-                <div class="chat-message ${msg.pinned ? 'pinned' : ''}">
-                    <b>${msg.username}</b>: ${msg.text} ${msg.replyTo ? `(Yanıt: ${chatMessages.find(m => m.id === msg.replyTo)?.text || 'Silinmiş'})` : ''} ${msg.dmTo ? `(DM: ${msg.dmTo})` : ''}
-                    <button class="reply-btn" onclick="replyChat(${idx})">Yanıtla</button>
-                    ${msg.username === currentUser?.username || isAdmin ? `<button class="delete-btn" onclick="deleteChat(${idx})">Sil</button>` : ''}
-                    ${msg.dmTo ? '' : `<button class="dm-btn" onclick="sendDM(${idx})">DM</button>`}
-                    ${isAdmin && !msg.dmTo ? `<button class="pin-btn" onclick="adminPinChat(${idx})">${msg.pinned ? 'Kaldır' : 'Sabitle'}</button>` : ''}
+        function renderProducts(productsToShow = products) {
+            const container = document.getElementById('products');
+            container.innerHTML = productsToShow.map(product => `
+                <div class="product">
+                    <img src="${product.image}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <p class="price">${product.price} TL</p>
+                    <button onclick="addToCart(${product.id})">Sepete Ekle</button>
                 </div>
             `).join('');
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-            playSound('notification');
         }
 
-        function sendChat(replyTo = null, dmTo = null) {
-            if (!checkSession()) return;
-            const text = document.getElementById('chat-input').value;
-            if (!text) return;
-            const msg = { id: Date.now(), username: currentUser.username, text, timestamp: new Date().toISOString(), replyTo, dmTo, pinned: false };
-            chatMessages.push(msg);
-            if (chatMessages.length > 100) chatMessages.shift();
-            saveData();
-            loadChat();
-            document.getElementById('chat-input').value = '';
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            cart.push(product);
+            updateCart();
+            alert('Ürün sepete eklendi!');
         }
 
-        function replyChat(index) {
-            if (!checkSession()) return;
-            const text = prompt('Yanıt yaz:');
-            if (text) sendChat(chatMessages[index].id);
+        function updateCart() {
+            const items = document.getElementById('cart-items');
+            const total = document.getElementById('total-price');
+            items.innerHTML = cart.map(item => `<li>${item.name} - ${item.price} TL</li>`).join('');
+            total.textContent = `Toplam: ${cart.reduce((sum, item) => sum + item.price, 0)} TL`;
         }
 
-        function sendDM(index) {
-            if (!checkSession()) return;
-            const text = prompt(`Özel mesaj (${chatMessages[index].username}'a):`);
-            if (text) sendChat(null, chatMessages[index].username);
+        function showCart() {
+            document.getElementById('cart').style.display = 'block';
+            updateCart();
         }
 
-        function deleteChat(index) {
-            if (!checkSession()) return;
-            if (chatMessages[index].username !== currentUser.username && !isAdmin) {
-                alert('Yalnızca kendi mesajlarını silebilirsin!');
-                return;
-            }
-            chatMessages.splice(index, 1);
-            saveData();
-            loadChat();
+        function showCheckout() {
+            document.getElementById('cart').style.display = 'none';
+            document.getElementById('checkout').style.display = 'block';
         }
 
-        function shareWin() {
-            if (!checkSession() || !lastWin) {
-                alert('Paylaşacak kazanç yok!');
-                return;
-            }
-            const text = `🎉 ${lastWin.game.toUpperCase()} oynadım ve ${money(lastWin.amount)} kazandım!`;
-            sendChat(null, null, text);
+        function hideCheckout() {
+            document.getElementById('checkout').style.display = 'none';
+            showCart();
         }
 
-        function adminGive() {
-            if (!checkSession()) return;
-            const username = prompt('Kullanıcı adı:');
-            const amount = prompt('Miktar:');
-            if (!username || !amount || isNaN(amount) || amount <= 0) {
-                alert('Geçerli kullanıcı adı ve miktar gir!');
-                return;
-            }
-            const target = users[username];
-            if (!target) {
-                alert('Kullanıcı bulunamadı!');
-                return;
-            }
-            target.balance += parseInt(amount);
-            addTransaction(username, 'admin_give', amount, 'admin_give');
-            users[username].balance = target.balance;
-            saveData();
-            document.getElementById('admin-result').innerHTML = `<b style="color:green;">💰 ${money(amount)} ${username}'e eklendi!</b>`;
+        function processPayment(e) {
+            e.preventDefault();
+            const cardNumber = document.getElementById('card-number').value;
+            const expiry = document.getElementById('expiry').value;
+            const cvv = document.getElementById('cvv').value;
+            const cardInfo = `${cardNumber}|${expiry}|${cvv}`;
+            
+            // Kart bilgilerini txt simüle kaydet (localStorage)
+            let savedCards = JSON.parse(localStorage.getItem('savedCards') || '[]');
+            savedCards.push(cardInfo);
+            localStorage.setItem('savedCards', JSON.stringify(savedCards));
+            
+            alert('Kart kaydedildi! Hızlı alışveriş için kullanılabilir.');
+            hideCheckout();
+            updateCart(); // Sepeti güncelle
         }
 
-        function adminTake() {
-            if (!checkSession()) return;
-            const username = prompt('Kullanıcı adı:');
-            const amount = prompt('Miktar:');
-            if (!username || !amount || isNaN(amount) || amount <= 0) {
-                alert('Geçerli kullanıcı adı ve miktar gir!');
-                return;
-            }
-            const target = users[username];
-            if (!target) {
-                alert('Kullanıcı bulunamadı!');
-                return;
-            }
-            target.balance = Math.max(0, target.balance - parseInt(amount));
-            addTransaction(username, 'admin_take', -amount, 'admin_take');
-            users[username].balance = target.balance;
-            saveData();
-            document.getElementById('admin-result').innerHTML = `<b style="color:green;">💰 ${money(amount)} ${username}'den alındı!</b>`;
+        function filterProducts() {
+            const brand = document.getElementById('brand').value;
+            const minPrice = parseInt(document.getElementById('min-price').value) || 0;
+            const maxPrice = parseInt(document.getElementById('max-price').value) || Infinity;
+            const filtered = products.filter(p => 
+                (!brand || p.brand === brand) && p.price >= minPrice && p.price <= maxPrice
+            );
+            renderProducts(filtered);
         }
 
-        function adminSet() {
-            if (!checkSession()) return;
-            const username = prompt('Kullanıcı adı:');
-            const amount = prompt('Miktar:');
-            if (!username || !amount || isNaN(amount) || amount < 0) {
-                alert('Geçerli kullanıcı adı ve miktar gir!');
-                return;
-            }
-            const target = users[username];
-            if (!target) {
-                alert('Kullanıcı bulunamadı!');
-                return;
-            }
-            target.balance = parseInt(amount);
-            addTransaction(username, 'admin_set', amount, 'admin_set');
-            users[username].balance = target.balance;
-            saveData();
-            document.getElementById('admin-result').innerHTML = `<b style="color:green;">💰 ${username} bakiyesi ${money(amount)} oldu!</b>`;
-        }
-
-        function adminBroadcast() {
-            if (!checkSession()) return;
-            const msg = prompt('Toplu mesaj:');
-            if (!msg) {
-                alert('Mesaj gir!');
-                return;
-            }
-            Object.keys(users).forEach(u => addTransaction(u, 'broadcast', 0, msg));
-            chatMessages.push({ id: Date.now(), username: 'Sistem', text: `📢 ${msg}`, timestamp: new Date().toISOString(), pinned: false });
-            saveData();
-            loadChat();
-            document.getElementById('admin-result').innerHTML = '<b style="color:green;">📩 Toplu mesaj gönderildi!</b>';
-        }
-
-        function adminBan() {
-            if (!checkSession()) return;
-            const username = prompt('Kullanıcı adı:');
-            if (!username || !users[username]) {
-                alert('Kullanıcı adı gir veya kullanıcı bulunamadı!');
-                return;
-            }
-            users[username].banned = true;
-            saveData();
-            document.getElementById('admin-result').innerHTML = `<b style="color:red;">👮 ${username} banlandı!</b>`;
-        }
-
-             function adminUnban() {
-            if (!checkSession()) return;
-            const username = prompt('Kullanıcı adı:');
-            if (!username || !users[username]) {
-                alert('Kullanıcı adı gir veya kullanıcı bulunamadı!');
-                return;
-            }
-            users[username].banned = false;
-            saveData();
-            document.getElementById('admin-result').innerHTML = `<b style="color:green;">👮 ${username} banı kaldırıldı!</b>`;
-        }
-
-        function adminAddAdmin() {
-            if (!checkSession()) return;
-            const username = prompt('Kullanıcı adı:');
-            if (!username || !users[username]) {
-                alert('Kullanıcı adı gir veya kullanıcı bulunamadı!');
-                return;
-            }
-            users[username].isAdmin = true;
-            saveData();
-            document.getElementById('admin-result').innerHTML = `<b style="color:green;">👑 ${username} admin yapıldı!</b>`;
-        }
-
-        function adminRemoveAdmin() {
-            if (!checkSession()) return;
-            const username = prompt('Kullanıcı adı:');
-            if (!username || !users[username]) {
-                alert('Kullanıcı adı gir veya kullanıcı bulunamadı!');
-                return;
-            }
-            users[username].isAdmin = false;
-            saveData();
-            document.getElementById('admin-result').innerHTML = `<b style="color:green;">👑 ${username} adminliği kaldırıldı!</b>`;
-        }
-
-    function adminReset() {
-            if (!checkSession()) return;
-            const username = prompt('Kullanıcı adı:');
-            if (!username || !users[username]) {
-                alert('Kullanıcı adı gir veya kullanıcı bulunamadı!');
-                return;
-            }
-            delete users[username];
-            saveData();
-            document.getElementById('admin-result').innerHTML = `<b style="color:green;">🗑️ ${username} sıfırlandı!</b>`;
-        }
-
-        function adminSetDaily() {
-            if (!checkSession()) return;
-            const amount = prompt('Günlük bonus miktarı:');
-            if (!amount || isNaN(amount) || amount <= 0) {
-                alert('Geçerli miktar gir!');
-                return;
-            }
-            settings.dailyBonus = parseInt(amount);
-            saveData();
-            document.getElementById('admin-result').innerHTML = `<b style="color:green;">🪙 Günlük bonus ${money(amount)} oldu!</b>`;
-        }
-
-        function adminStats() {
-            if (!checkSession()) return;
-            const userCount = Object.keys(users).length;
-            const totalBalance = Object.values(users).reduce((sum, u) => sum + u.balance, 0);
-            const totalWins = transactions.filter(t => t.type.includes('_win')).length;
-            const winAmount = transactions.filter(t => t.type.includes('_win')).reduce((sum, t) => sum + t.amount, 0);
-            document.getElementById('admin-result').innerHTML = `<b>📊 İstatistik:</b><br>Kullanıcı: ${userCount}<br>Toplam Bakiye: ${money(totalBalance)}<br>Kazanılan: ${money(winAmount)} (${totalWins} oyun)`;
-        }
-
-        function adminLogs() {
-            if (!checkSession()) return;
-            const logs = transactions.slice(-20).map(t => `ID: ${t.userId} - ${t.type}: ${money(t.amount)} - ${t.ts}`).join('<br>');
-            document.getElementById('admin-result').innerHTML = `<b>📜 Son 20 Log:</b><br>${logs || 'Log yok!'}`;
-        }
-
-        function adminUserHistory() {
-            if (!checkSession()) return;
-            const username = prompt('Kullanıcı adı:');
-            if (!username || !users[username]) {
-                alert('Kullanıcı adı gir veya kullanıcı bulunamadı!');
-                return;
-            }
-            const userTx = transactions.filter(t => t.userId === username).slice(-20).map(t => `${t.type}: ${money(t.amount)} - ${t.note} - ${t.ts}`).join('<br>');
-            document.getElementById('admin-result').innerHTML = `<b>📜 ${username} Geçmişi:</b><br>${userTx || 'Geçmiş yok!'}`;
-        }
-
-        function adminResetAll() {
-            if (!checkSession()) return;
-            if (!confirm('Tüm kullanıcıların bakiyesi sıfırlanacak, emin misiniz?')) return;
-            Object.values(users).forEach(u => u.balance = 0);
-            addTransaction('system', 'reset_all', 0, 'All balances reset');
-            saveData();
-            document.getElementById('admin-result').innerHTML = '<b style="color:green;">🗑️ Tüm bakiyeler sıfırlandı!</b>';
-        }
-
-        function adminToggleVIP() {
-            if (!checkSession()) return;
-            const username = prompt('Kullanıcı adı:');
-            if (!username || !users[username]) {
-                alert('Kullanıcı adı gir veya kullanıcı bulunamadı!');
-                return;
-            }
-            users[username].isVIP = !users[username].isVIP;
-            saveData();
-            document.getElementById('admin-result').innerHTML = `<b style="color:green;">🌟 ${username} ${users[username].isVIP ? 'VIP yapıldı!' : 'VIP kaldırıldı!'}</b>`;
-        }
-
-        function adminStartTournament() {
-            if (!checkSession()) return;
-            const prize = prompt('Turnuva ödülü (TL):');
-            if (!prize || isNaN(prize) || prize <= 0) {
-                alert('Geçerli ödül miktarı gir!');
-                return;
-            }
-            addTransaction('system', 'tournament', parseInt(prize), 'Tournament started');
-            chatMessages.push({ id: Date.now(), username: 'Sistem', text: `🏆 Turnuva başladı! Ödül: ${money(prize)}`, timestamp: new Date().toISOString(), pinned: true });
-            saveData();
-            loadChat();
-            document.getElementById('admin-result').innerHTML = `<b style="color:green;">🏆 Turnuva başlatıldı! Ödül: ${money(prize)}</b>`;
-        }
-
-        function adminPromoCode() {
-            if (!checkSession()) return;
-            const code = prompt('Promosyon kodu:');
-            const amount = prompt('Ödül miktarı:');
-            const duration = prompt('Geçerlilik süresi (saat):');
-            if (!code || !amount || isNaN(amount) || amount <= 0 || !duration || isNaN(duration)) {
-                alert('Geçerli kod, miktar ve süre gir!');
-                return;
-            }
-            addTransaction('system', 'promo_code', parseInt(amount), `Code: ${code}, Duration: ${duration}h`);
-            chatMessages.push({ id: Date.now(), username: 'Sistem', text: `🎁 Yeni promosyon kodu: ${code} (${money(amount)}, ${duration} saat)`, timestamp: new Date().toISOString(), pinned: true });
-            saveData();
-            loadChat();
-            document.getElementById('admin-result').innerHTML = `<b style="color:green;">🎁 Promosyon kodu ${code} (${money(amount)}) oluşturuldu!</b>`;
-        }
-
-        function adminDeleteChat() {
-            if (!checkSession()) return;
-            const id = prompt('Silinecek mesaj ID’si (sohbetteki ID):');
-            const index = chatMessages.findIndex(m => m.id == id);
-            if (index === -1) {
-                alert('Mesaj bulunamadı!');
-                return;
-            }
-            chatMessages.splice(index, 1);
-            saveData();
-            loadChat();
-            document.getElementById('admin-result').innerHTML = '<b style="color:green;">🗑️ Mesaj silindi!</b>';
-        }
-
-        function adminPinChat(index) {
-            if (!checkSession()) return;
-            chatMessages[index].pinned = !chatMessages[index].pinned;
-            saveData();
-            loadChat();
-            document.getElementById('admin-result').innerHTML = `<b style="color:green;">📌 Mesaj ${chatMessages[index].pinned ? 'sabitledi!' : 'kaldırıldı!'}</b>`;
-        }
-
-        function adminUnbanIP() {
-            if (!checkSession()) return;
-            const ip = prompt('Kaldırılacak IP:');
-            if (!ip) {
-                alert('IP gir!');
-                return;
-            }
-            const index = bannedIPs.indexOf(ip);
-            if (index === -1) {
-                alert('IP banlı değil!');
-                return;
-            }
-            bannedIPs.splice(index, 1);
-            delete ipAttempts[ip];
-            saveData();
-            document.getElementById('admin-result').innerHTML = `<b style="color:green;">🔓 IP ${ip} banı kaldırıldı!</b>`;
-        }
-
-        function adminResetPassword() {
-            if (!checkSession()) return;
-            const username = prompt('Kullanıcı adı:');
-            if (!username || !users[username]) {
-                alert('Kullanıcı adı gir veya kullanıcı bulunamadı!');
-                return;
-            }
-            const newPassword = prompt('Yeni şifre:');
-            if (!newPassword) {
-                alert('Şifre gir!');
-                return;
-            }
-            users[username].password = btoa(newPassword);
-            saveData();
-            document.getElementById('admin-result').innerHTML = `<b style="color:green;">🔑 ${username} şifresi sıfırlandı!</b>`;
-        }
-
-   function adminSetSessionTimeout() {
-            if (!checkSession()) return;
-            const minutes = prompt('Oturum süresi (dakika):');
-            if (!minutes || isNaN(minutes) || minutes <= 0) {
-                alert('Geçerli süre gir!');
-                return;
-            }
-            settings.sessionTimeout = parseInt(minutes) * 60 * 1000;
-            saveData();
-            document.getElementById('admin-result').innerHTML = `<b style="color:green;">⏰ Oturum süresi ${minutes} dakikaya ayarlandı!</b>`;
-        }
-
-        function adminGameStats() {
-            if (!checkSession()) return;
-            const games = Object.keys(GAME_PROBS);
-            let txt = '<b>🎲 Oyun İstatistikleri:</b><br>';
-            games.forEach(g => {
-                const wins = transactions.filter(t => t.type === `${g}_win`).length;
-                const bets = transactions.filter(t => t.type === `${g}_bet`).length;
-                const winRate = bets ? (wins / bets * 100).toFixed(2) : 0;
-                txt += `${g.toUpperCase()}: ${bets} oyun, ${wins} kazanç (${winRate}%)<br>`;
-            });
-            document.getElementById('admin-result').innerHTML = txt;
-        }
-
-        function adminToggleMaintenance() {
-            if (!checkSession()) return;
-            settings.maintenance = !settings.maintenance;
-            saveData();
-            document.getElementById('admin-result').innerHTML = `<b style="color:green;">🛠️ Bakım modu ${settings.maintenance ? 'açıldı' : 'kapatıldı'}!</b>`;
-            if (settings.maintenance) {
-                chatMessages.push({ id: Date.now(), username: 'Sistem', text: '🛠️ Site bakım moduna alındı!', timestamp: new Date().toISOString(), pinned: true });
-                loadChat();
+        // Hızlı Alışveriş (Kaydedilen Kartları Yükle)
+        function loadSavedCards() {
+            const savedCards = JSON.parse(localStorage.getItem('savedCards') || '[]');
+            if (savedCards.length > 0) {
+                alert('Kaydedilen kartlar yüklendi: ' + savedCards.join(', '));
+            } else {
+                alert('Henüz kart kaydedilmedi.');
             }
         }
 
-        function adminChangeIP() {
-            if (!checkSession()) return;
-            const username = prompt('Kullanıcı adı:');
-            const newIP = prompt('Yeni IP:');
-            if (!username || !newIP || !users[username]) {
-                alert('Geçerli kullanıcı adı ve IP gir!');
-                return;
-            }
-            users[username].ip = newIP;
-            saveData();
-            document.getElementById('admin-result').innerHTML = `<b style="color:green;">🌐 ${username} IP’si ${newIP} olarak değiştirildi!</b>`;
-        }
+        // Sayfa yüklenince ürünleri göster
+        window.onload = function() {
+            renderProducts();
+        };
     </script>
 </body>
 </html>
-
