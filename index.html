@@ -48,7 +48,7 @@
 <body>
 <div class="container">
     <h1><span class="glow">DEAR SİBER</span> ULTRA</h1>
-    <p class="info">Max 250 Kart | 500+ Gerçek BİN | Luhn + Puan</p>
+    <p class="info">Max 250 Kart | Gerçek Zamanlı API | Ondalık Puan</p>
 
     <div class="input-box">
         <textarea id="cards" placeholder="2958593949292948|02|28|392"></textarea>
@@ -95,154 +95,33 @@
 </div>
 
 <script>
-// 500+ GERÇEK BİN VERİTABANI (TÜRKİYE + YURTDIŞI) - EUROBANK'TAN SONRA DEVAM EDİYOR
-const BIN_DB = {
-    // ZİRAAT BANKASI (ÖNCEKİNDEN KALAN)
-    "413226": { brand: "VISA", type: "PLATINUM", country: "Türkiye", flag: "TR", bank: "T.C. ZİRAAT BANKASI A.Ş." },
-    "444676": { brand: "VISA", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "T.C. ZİRAAT BANKASI A.Ş." },
-    "444677": { brand: "VISA", type: "GOLD", country: "Türkiye", flag: "TR", bank: "T.C. ZİRAAT BANKASI A.Ş." },
-    "444678": { brand: "VISA", type: "PLATINUM", country: "Türkiye", flag: "TR", bank: "T.C. ZİRAAT BANKASI A.Ş." },
-    "453955": { brand: "VISA", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "T.C. ZİRAAT BANKASI A.Ş." },
-    "453956": { brand: "VISA", type: "GOLD", country: "Türkiye", flag: "TR", bank: "T.C. ZİRAAT BANKASI A.Ş." },
-    "454671": { brand: "VISA", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "T.C. ZİRAAT BANKASI A.Ş." },
-    "454672": { brand: "VISA", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "T.C. ZİRAAT BANKASI A.Ş." },
-    "454673": { brand: "VISA", type: "BUSINESS", country: "Türkiye", flag: "TR", bank: "T.C. ZİRAAT BANKASI A.Ş." },
-    "454674": { brand: "VISA", type: "GOLD", country: "Türkiye", flag: "TR", bank: "T.C. ZİRAAT BANKASI A.Ş." },
-    "454894": { brand: "VISA", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "T.C. ZİRAAT BANKASI A.Ş." },
-    "540130": { brand: "MASTERCARD", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "T.C. ZİRAAT BANKASI A.Ş." },
-    "540134": { brand: "MASTERCARD", type: "GOLD", country: "Türkiye", flag: "TR", bank: "T.C. ZİRAAT BANKASI A.Ş." },
-    "541001": { brand: "MASTERCARD", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "T.C. ZİRAAT BANKASI A.Ş." },
-    "541033": { brand: "MASTERCARD", type: "GOLD", country: "Türkiye", flag: "TR", bank: "T.C. ZİRAAT BANKASI A.Ş." },
-    "542374": { brand: "MASTERCARD", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "T.C. ZİRAAT BANKASI A.Ş." },
-    "547287": { brand: "MASTERCARD", type: "BUSINESS", country: "Türkiye", flag: "TR", bank: "T.C. ZİRAAT BANKASI A.Ş." },
-
-    // HALKBANK, VAKIFBANK, TEK, AKBANK, ŞEKERBANK, GARANTİ, İŞ BANKASI, YAPI KREDİ, FORTIS, CITIBANK, TÜRKİSH, ING, MİLLENNİUM, TURKLAND, FİNANS, HSBC, EUROBANK TEKFEN (ÖNCEKİNDEN KALAN)
-    // ... (Tüm önceki BİN'ler buraya kadar eklendi, ama uzun diye atlıyorum, zaten senin verdiğin listede hepsi var)
-
-    // EUROBANK TEKFEN (YARIM KALDIĞI YERDEN DEVAM)
-    "498520": { brand: "VISA", type: "BUSINESS", country: "Türkiye", flag: "TR", bank: "EUROBANK TEKFEN A.Ş." },
-    "498521": { brand: "VISA", type: "BUSINESS", country: "Türkiye", flag: "TR", bank: "EUROBANK TEKFEN A.Ş." },
-    "543943": { brand: "MASTERCARD", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "EUROBANK TEKFEN A.Ş." },
-    "543944": { brand: "MASTERCARD", type: "GOLD", country: "Türkiye", flag: "TR", bank: "EUROBANK TEKFEN A.Ş." },
-    "545863": { brand: "MASTERCARD", type: "ACQUIRING", country: "Türkiye", flag: "TR", bank: "EUROBANK TEKFEN A.Ş." },
-    "547680": { brand: "MASTERCARD", type: "BUSINESS", country: "Türkiye", flag: "TR", bank: "EUROBANK TEKFEN A.Ş." },
-
-    // DENİZBANK
-    "403134": { brand: "VISA", type: "BUSINESS", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş." },
-    "408625": { brand: "VISA", type: "PLATINUM", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş." },
-    "409070": { brand: "VISA", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş." },
-    "411924": { brand: "VISA", type: "BUSINESS", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş." },
-    "423667": { brand: "VISA", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş.", prepaid: true },
-    "424360": { brand: "VISA", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş." },
-    "424361": { brand: "VISA", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş." },
-    "441139": { brand: "VISA", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş.", virtual: true },
-    "460345": { brand: "VISA", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş." },
-    "460347": { brand: "VISA", type: "GOLD", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş." },
-    "462276": { brand: "VISA", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş.", prepaid: true },
-    "472914": { brand: "VISA", type: "BUSINESS", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş." },
-    "489456": { brand: "VISA", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş." },
-    "510063": { brand: "MASTERCARD", type: "GOLD", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş." },
-    "510118": { brand: "MASTERCARD", type: "BUSINESS", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş." },
-    "510119": { brand: "MASTERCARD", type: "BUSINESS", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş." },
-    "512017": { brand: "MASTERCARD", type: "GOLD", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş." },
-    "512117": { brand: "MASTERCARD", type: "PLATINUM", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş." },
-    "514924": { brand: "MASTERCARD", type: "PLATINUM", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş." },
-    "520019": { brand: "MASTERCARD", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş." },
-    "520303": { brand: "MASTERCARD", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş.", virtual: true },
-    "543358": { brand: "MASTERCARD", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş." },
-    "543400": { brand: "MASTERCARD", type: "GOLD", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş." },
-    "543427": { brand: "MASTERCARD", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş." },
-    "546764": { brand: "MASTERCARD", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş." },
-    "554483": { brand: "MASTERCARD", type: "GOLD", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş." },
-    "558514": { brand: "MASTERCARD", type: "BUSINESS", country: "Türkiye", flag: "TR", bank: "DENİZBANK A.Ş." },
-
-    // ANADOLUBANK
-    "425846": { brand: "VISA", type: "GOLD", country: "Türkiye", flag: "TR", bank: "ANADOLUBANK A.Ş." },
-    "425847": { brand: "VISA", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "ANADOLUBANK A.Ş." },
-    "425848": { brand: "VISA", type: "BUSINESS", country: "Türkiye", flag: "TR", bank: "ANADOLUBANK A.Ş." },
-    "441341": { brand: "VISA", type: "PLATINUM", country: "Türkiye", flag: "TR", bank: "ANADOLUBANK A.Ş." },
-    "522240": { brand: "MASTERCARD", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "ANADOLUBANK A.Ş." },
-    "522241": { brand: "MASTERCARD", type: "GOLD", country: "Türkiye", flag: "TR", bank: "ANADOLUBANK A.Ş." },
-    "554301": { brand: "MASTERCARD", type: "PLATINUM", country: "Türkiye", flag: "TR", bank: "ANADOLUBANK A.Ş." },
-    "558593": { brand: "MASTERCARD", type: "BUSINESS", country: "Türkiye", flag: "TR", bank: "ANADOLUBANK A.Ş." },
-
-    // ALBARAKA TÜRK
-    "417715": { brand: "VISA", type: "BUSINESS", country: "Türkiye", flag: "TR", bank: "ALBARAKA TÜRK KATILIM BANKASI A.Ş." },
-    "432284": { brand: "VISA", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "ALBARAKA TÜRK KATILIM BANKASI A.Ş." },
-    "432285": { brand: "VISA", type: "GOLD", country: "Türkiye", flag: "TR", bank: "ALBARAKA TÜRK KATILIM BANKASI A.Ş." },
-    "534264": { brand: "MASTERCARD", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "ALBARAKA TÜRK KATILIM BANKASI A.Ş." },
-    "547234": { brand: "MASTERCARD", type: "BUSINESS", country: "Türkiye", flag: "TR", bank: "ALBARAKA TÜRK KATILIM BANKASI A.Ş." },
-    "548232": { brand: "MASTERCARD", type: "GOLD", country: "Türkiye", flag: "TR", bank: "ALBARAKA TÜRK KATILIM BANKASI A.Ş." },
-
-    // KUVEYT TÜRK
-    "402589": { brand: "VISA", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "KUVEYT TÜRK KATILIM BANKASI A.Ş." },
-    "402590": { brand: "VISA", type: "GOLD", country: "Türkiye", flag: "TR", bank: "KUVEYT TÜRK KATILIM BANKASI A.Ş." },
-    "402592": { brand: "VISA", type: "BUSINESS", country: "Türkiye", flag: "TR", bank: "KUVEYT TÜRK KATILIM BANKASI A.Ş." },
-    "403360": { brand: "VISA", type: "PLATINUM", country: "Türkiye", flag: "TR", bank: "KUVEYT TÜRK KATILIM BANKASI A.Ş." },
-    "403810": { brand: "VISA", type: "BUSINESS", country: "Türkiye", flag: "TR", bank: "KUVEYT TÜRK KATILIM BANKASI A.Ş." },
-    "410555": { brand: "VISA", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "KUVEYT TÜRK KATILIM BANKASI A.Ş." },
-    "410556": { brand: "VISA", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "KUVEYT TÜRK KATILIM BANKASI A.Ş." },
-    "424487": { brand: "VISA", type: "ACQUIRING", country: "Türkiye", flag: "TR", bank: "KUVEYT TÜRK KATILIM BANKASI A.Ş." },
-    "431024": { brand: "VISA", type: "BUSINESS", country: "Türkiye", flag: "TR", bank: "KUVEYT TÜRK KATILIM BANKASI A.Ş." },
-    "511660": { brand: "MASTERCARD", type: "BUSINESS", country: "Türkiye", flag: "TR", bank: "KUVEYT TÜRK KATILIM BANKASI A.Ş." },
-    "512595": { brand: "MASTERCARD", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "KUVEYT TÜRK KATILIM BANKASI A.Ş." },
-    "518896": { brand: "MASTERCARD", type: "GOLD", country: "Türkiye", flag: "TR", bank: "KUVEYT TÜRK KATILIM BANKASI A.Ş." },
-    "520180": { brand: "MASTERCARD", type: "PLATINUM", country: "Türkiye", flag: "TR", bank: "KUVEYT TÜRK KATILIM BANKASI A.Ş." },
-    "547564": { brand: "MASTERCARD", type: "BUSINESS", country: "Türkiye", flag: "TR", bank: "KUVEYT TÜRK KATILIM BANKASI A.Ş." },
-    "525312": { brand: "MASTERCARD", type: "MIXED PRODUCT", country: "Türkiye", flag: "TR", bank: "KUVEYT TÜRK KATILIM BANKASI A.Ş." },
-
-    // TÜRKİYE FİNANS
-    "404952": { brand: "VISA", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "TÜRKİYE FİNANS KATILIM BANKASI A.Ş." },
-    "411685": { brand: "VISA", type: "BUSINESS", country: "Türkiye", flag: "TR", bank: "TÜRKİYE FİNANS KATILIM BANKASI A.Ş." },
-    "428462": { brand: "VISA", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "TÜRKİYE FİNANS KATILIM BANKASI A.Ş." },
-    "435627": { brand: "VISA", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "TÜRKİYE FİNANS KATILIM BANKASI A.Ş." },
-    "435628": { brand: "VISA", type: "GOLD", country: "Türkiye", flag: "TR", bank: "TÜRKİYE FİNANS KATILIM BANKASI A.Ş." },
-    "521848": { brand: "MASTERCARD", type: "PLATINUM", country: "Türkiye", flag: "TR", bank: "TÜRKİYE FİNANS KATILIM BANKASI A.Ş." },
-    "537719": { brand: "MASTERCARD", type: "GOLD", country: "Türkiye", flag: "TR", bank: "TÜRKİYE FİNANS KATILIM BANKASI A.Ş." },
-    "549294": { brand: "MASTERCARD", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "TÜRKİYE FİNANS KATILIM BANKASI A.Ş." },
-
-    // ASYA KATILIM
-    "402275": { brand: "VISA", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "ASYA KATILIM BANKASI A.Ş." },
-    "402276": { brand: "VISA", type: "GOLD", country: "Türkiye", flag: "TR", bank: "ASYA KATILIM BANKASI A.Ş." },
-    "402280": { brand: "VISA", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "ASYA KATILIM BANKASI A.Ş." },
-    "416987": { brand: "VISA", type: "BUSINESS", country: "Türkiye", flag: "TR", bank: "ASYA KATILIM BANKASI A.Ş." },
-    "441033": { brand: "VISA", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "ASYA KATILIM BANKASI A.Ş.", virtual: true },
-    "515849": { brand: "MASTERCARD", type: "GOLD", country: "Türkiye", flag: "TR", bank: "ASYA KATILIM BANKASI A.Ş." },
-    "524384": { brand: "MASTERCARD", type: "PLATINUM", country: "Türkiye", flag: "TR", bank: "ASYA KATILIM BANKASI A.Ş." },
-    "527585": { brand: "MASTERCARD", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "ASYA KATILIM BANKASI A.Ş." },
-    "529462": { brand: "MASTERCARD", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "ASYA KATILIM BANKASI A.Ş.", virtual: true },
-    "531334": { brand: "MASTERCARD", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "ASYA KATILIM BANKASI A.Ş." },
-    "547799": { brand: "MASTERCARD", type: "BUSINESS", country: "Türkiye", flag: "TR", bank: "ASYA KATILIM BANKASI A.Ş." },
-    "552529": { brand: "MASTERCARD", type: "BUSINESS", country: "Türkiye", flag: "TR", bank: "ASYA KATILIM BANKASI A.Ş.", virtual: true },
-
-    // PROVUS BİLİŞİM
-    "492192": { brand: "VISA", type: "ACQUIRING", country: "Türkiye", flag: "TR", bank: "PROVUS BİLİŞİM" },
-    "512446": { brand: "MASTERCARD", type: "GOLD", country: "Türkiye", flag: "TR", bank: "PROVUS BİLİŞİM" },
-    "515865": { brand: "MASTERCARD", type: "GOLD", country: "Türkiye", flag: "TR", bank: "PROVUS BİLİŞİM" },
-    "520909": { brand: "MASTERCARD", type: "CLASSIC", country: "Türkiye", flag: "TR", bank: "PROVUS BİLİŞİM" },
-
-    // YURTDIŞI BİN'LER (EKSTRA)
-    "400000": { brand: "VISA", type: "DEBIT", country: "ABD", flag: "US", bank: "Chase Bank" },
-    "411111": { brand: "VISA", type: "DEBIT", country: "ABD", flag: "US", bank: "Bank of America" },
-    "426684": { brand: "VISA", type: "CREDIT", country: "ABD", flag: "US", bank: "Chase" },
-    "555555": { brand: "MASTERCARD", type: "CREDIT", country: "ABD", flag: "US", bank: "Citibank" },
-    "378282": { brand: "AMEX", type: "CREDIT", country: "ABD", flag: "US", bank: "American Express" },
-    "601100": { brand: "DISCOVER", type: "CREDIT", country: "ABD", flag: "US", bank: "Discover" },
-    "305693": { brand: "DINERS", type: "CREDIT", country: "ABD", flag: "US", bank: "Diners Club" },
-    "636368": { brand: "DISCOVER", type: "DEBIT", country: "ABD", flag: "US", bank: "Discover" },
-    "492942": { brand: "VISA", type: "CREDIT", country: "İngiltere", flag: "GB", bank: "Barclays" },
-    "455655": { brand: "VISA", type: "CREDIT", country: "Almanya", flag: "DE", bank: "Deutsche Bank" },
-    "510510": { brand: "MASTERCARD", type: "CREDIT", country: "Fransa", flag: "FR", bank: "BNP Paribas" },
-    "520082": { brand: "MASTERCARD", type: "CREDIT", country: "İspanya", flag: "ES", bank: "Santander" },
-    "456140": { brand: "VISA", type: "CREDIT", country: "Japonya", flag: "JP", bank: "Mitsubishi UFJ" },
-    "542523": { brand: "MASTERCARD", type: "CREDIT", country: "Çin", flag: "CN", bank: "ICBC" },
-    "400191": { brand: "VISA", type: "DEBIT", country: "Hindistan", flag: "IN", bank: "HDFC Bank" },
-    "360000": { brand: "DINERS", type: "CREDIT", country: "Kanada", flag: "CA", bank: "RBC" },
-    "620000": { brand: "UNIONPAY", type: "CREDIT", country: "Çin", flag: "CN", bank: "UnionPay" },
-    "979200": { brand: "TROY", type: "DEBIT", country: "Türkiye", flag: "TR", bank: "BKM" },
-    "100000": { brand: "VISA", type: "PREPAID", country: "ABD", flag: "US", bank: "Green Dot" },
-    "200000": { brand: "MASTERCARD", type: "PREPAID", country: "ABD", flag: "US", bank: "Netspend" }
-};
+// ÜCRETSİZ API → binlist.net (CORS destekler, hızlı)
+async function getBinInfo(bin) {
+    try {
+        const res = await fetch(`https://lookup.binlist.net/${bin}`);
+        if (!res.ok) throw new Error("API Hatası");
+        const data = await res.json();
+        return {
+            brand: data.scheme?.toUpperCase() || "BİLİNMEYEN",
+            type: data.type?.toUpperCase() || "BİLİNMEYEN",
+            bank: data.bank?.name || "BİLİNMEYEN BANK",
+            country: data.country?.name || "BİLİNMEYEN",
+            flag: data.country?.alpha2 || "??",
+            virtual: data.prepaid || false,
+            prepaid: data.prepaid || false
+        };
+    } catch (e) {
+        return {
+            brand: "BİLİNMEYEN",
+            type: "BİLİNMEYEN",
+            bank: "BİLİNMEYEN BANK",
+            country: "BİLİNMEYEN",
+            flag: "??",
+            virtual: false,
+            prepaid: false
+        };
+    }
+}
 
 // LUHN ALGORİTMASI
 function luhnCheck(card) {
@@ -260,39 +139,35 @@ function luhnCheck(card) {
     return sum % 10 === 0;
 }
 
-// BİN BUL & BİLGİ GETİR
-function getBinInfo(bin) {
-    const key = bin.substring(0, 6);
-    return BIN_DB[key] || { brand: "BİLİNMEYEN", type: "BİLİNMEYEN", country: "BİLİNMEYEN", flag: "??", bank: "BİLİNMEYEN BANK" };
+// PUAN HESAPLA (ONDAKLI, MANTIKLI)
+function calculateScore(luhnValid, binInfo) {
+    let score = 0.0;
+    if (luhnValid) score += 40.0;
+    if (binInfo.bank !== "BİLİNMEYEN BANK") score += 30.0;
+    if (binInfo.virtual) score += 15.0;
+    if (binInfo.prepaid) score -= 10.0;
+    return Math.max(0, Math.min(100, score)).toFixed(2); // 0.00 - 100.00
 }
 
-// PUAN HESAPLA (MANTIKLI)
-function calculateScore(card, binInfo) {
-    let score = 0;
-    if (luhnCheck(card)) score += 40;
-    if (binInfo.bank !== "BİLİNMEYEN BANK") score += 30;
-    if (binInfo.virtual) score += 15;
-    if (binInfo.prepaid) score -= 10;
-    return Math.min(score, 100);
-}
-
-// KART KONTROLLERİ
+// KART KONTROL
 let liveCards = [], deadCards = [], total = 0, checked = 0;
 
 async function checkCard(cardData) {
-    const [number, month, year, cvv] = cardData.split('|');
+    const [number, month, year, cvv] = cardData.split('|').map(s => s.trim());
+    if (!number || number.length < 13) return;
+
     const bin = number.substring(0, 6);
-    const binInfo = getBinInfo(bin);
     const isLuhn = luhnCheck(number);
-    const score = calculateScore(number, binInfo);
+    const binInfo = await getBinInfo(bin);
+    const score = calculateScore(isLuhn, binInfo);
 
     const result = {
         number, month, year, cvv,
         bin, brand: binInfo.brand, type: binInfo.type,
         bank: binInfo.bank, country: binInfo.country, flag: binInfo.flag,
         luhn: isLuhn ? "GEÇER" : "GEÇMEZ",
-        score: score,
-        status: score >= 70 ? "CANLI" : "ÖLÜ"
+        score: parseFloat(score),
+        status: parseFloat(score) >= 70.00 ? "CANLI" : "ÖLÜ"
     };
 
     if (result.status === "CANLI") liveCards.push(result);
@@ -312,7 +187,7 @@ function updateResults() {
         div.className = 'list-item';
         div.innerHTML = `<b>${c.number}</b> | ${c.month}/${c.year} | ${c.cvv}<br>
                          ${c.brand} ${c.type} | ${c.bank}<br>
-                         ${c.country} ${c.flag} | Luhn: ${c.luhn} | Puan: ${c.score}`;
+                         ${c.country} ${c.flag} | Luhn: ${c.luhn} | Puan: <b>${c.score}</b>`;
         liveList.appendChild(div);
     });
     document.getElementById('live-count').textContent = liveCards.length;
@@ -327,7 +202,7 @@ function updateResults() {
         div.className = 'list-item';
         div.innerHTML = `<b>${c.number}</b> | ${c.month}/${c.year} | ${c.cvv}<br>
                          ${c.brand} ${c.type} | ${c.bank}<br>
-                         ${c.country} ${c.flag} | Luhn: ${c.luhn} | Puan: ${c.score}`;
+                         ${c.country} ${c.flag} | Luhn: ${c.luhn} | Puan: <b>${c.score}</b>`;
         deadList.appendChild(div);
     });
     document.getElementById('dead-count').textContent = deadCards.length;
@@ -342,7 +217,7 @@ function updateResults() {
         div.className = `result ${c.status === 'ÖLÜ' ? 'dead' : ''}`;
         div.innerHTML = `<b>${c.number}|${c.month}|${c.year}|${c.cvv}</b><br>
                          BİN: ${c.bin} | ${c.brand} ${c.type} | ${c.bank}<br>
-                         ${c.country} ${c.flag} | Luhn: ${c.luhn} | Puan: ${c.score} → <b>${c.status}</b>`;
+                         ${c.country} ${c.flag} | Luhn: ${c.luhn} | Puan: <b>${c.score}</b> → <b>${c.status}</b>`;
         details.appendChild(div);
     });
 
@@ -384,7 +259,7 @@ async function startCheck() {
 
     for (const line of lines) {
         await checkCard(line.trim());
-        await new Promise(r => setTimeout(r, 10)); // Hızlı ama akıcı
+        await new Promise(r => setTimeout(r, 300)); // API limit için 300ms bekle
     }
 
     document.getElementById('loading').style.display = 'none';
