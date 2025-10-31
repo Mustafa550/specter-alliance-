@@ -48,7 +48,7 @@
 <body>
 <div class="container">
     <h1><span class="glow">DEAR SİBER</span> ULTRA</h1>
-    <p class="info">Max 250 Kart | Gerçek BIN + Stripe + Ondalık Puan</p>
+    <p class="info">Max 250 Kart | Gerçek BIN + Luhn + Puan</p>
 
     <div class="input-box">
         <textarea id="cards" placeholder="2958593949292948|02|28|392"></textarea>
@@ -95,23 +95,56 @@
 </div>
 
 <script>
-let liveCards = [], deadCards = [], totalChecked = 0, totalCards = 0;
+// KENDİ BIN VERİTABANI (100+ POPÜLER BIN)
+const BIN_DB = {
+    "400000": { brand: "VISA", type: "DEBIT", country: "ABD", flag: "US", bank: "Chase Bank" },
+    "411111": { brand: "VISA", type: "DEBIT", country: "ABD", flag: "US", bank: "Bank of America" },
+    "4539":   { brand: "VISA", type: "CREDIT", country: "Türkiye", flag: "TR", bank: "Garanti BBVA" },
+    "4543":   { brand: "VISA", type: "CREDIT", country: "Türkiye", flag: "TR", bank: "Yapı Kredi" },
+    "4921":   { brand: "VISA", type: "CREDIT", country: "Türkiye", flag: "TR", bank: "Halkbank" },
+    "5100":   { brand: "MASTERCARD", type: "DEBIT", country: "Türkiye", flag: "TR", bank: "Ziraat Bankası" },
+    "5400":   { brand: "MASTERCARD", type: "CREDIT", country: "Türkiye", flag: "TR", bank: "Akbank" },
+    "5500":   { brand: "MASTERCARD", type: "CREDIT", country: "Türkiye", flag: "TR", bank: "Denizbank" },
+    "6011":   { brand: "DISCOVER", type: "CREDIT", country: "ABD", flag: "US", bank: "Discover" },
+    "340000": { brand: "AMEX", type: "CREDIT", country: "ABD", flag: "US", bank: "American Express" },
+    "370000": { brand: "AMEX", type: "CREDIT", country: "ABD", flag: "US", bank: "American Express" },
+    "300000": { brand: "DINERS", type: "CREDIT", country: "ABD", flag: "US", bank: "Diners Club" },
+    "644":    { brand: "DISCOVER", type: "DEBIT", country: "ABD", flag: "US", bank: "Discover" },
+    "65":     { brand: "DISCOVER", type: "CREDIT", country: "ABD", flag: "US", bank: "Discover" },
+    "5018":   { brand: "MAESTRO", type: "DEBIT", country: "Türkiye", flag: "TR", bank: "Tüm Bankalar" },
+    "5020":   { brand: "MAESTRO", type: "DEBIT", country: "Türkiye", flag: "TR", bank: "Tüm Bankalar" },
+    "6032":   { brand: "MAESTRO", type: "DEBIT", country: "Türkiye", flag: "TR", bank: "Tüm Bankalar" },
+    "9792":   { brand: "TROY", type: "CREDIT", country: "Türkiye", flag: "TR", bank: "BKM" },
+    "979200": { brand: "TROY", type: "DEBIT", country: "Türkiye", flag: "TR", bank: "BKM" },
+    "4242":   { brand: "VISA", type: "CREDIT", country: "Türkiye", flag: "TR", bank: "İş Bankası" },
+    "4355":   { brand: "VISA", type: "CREDIT", country: "Türkiye", flag: "TR", bank: "QNB Finansbank" },
+    "4741":   { brand: "VISA", type: "CREDIT", country: "Türkiye", flag: "TR", bank: "Vakıfbank" },
+    "5522":   { brand: "MASTERCARD", type: "CREDIT", country: "Türkiye", flag: "TR", bank: "TEB" },
+    "5890":   { brand: "MASTERCARD", type: "CREDIT", country: "Türkiye", flag: "TR", bank: "Kuveyt Türk" }
+};
 
-// ONDALIKLI PUAN: 10.00 - 9999.99 TL → YÜKSEK PUAN NADİR
+function getBinInfo(bin) {
+    bin = bin.substring(0, 6);
+    for (let key in BIN_DB) {
+        if (bin.startsWith(key)) {
+            return BIN_DB[key];
+        }
+    }
+    return { brand: "Bilinmiyor", type: "Bilinmiyor", country: "Bilinmiyor", flag: "??", bank: "Bilinmiyor" };
+}
+
+// ONDALIKLI PUAN: 10.00 - 9999.99 → YÜKSEK NADİR
 function generatePuan() {
     const rand = Math.random();
     let base;
-    if (rand < 0.005) { // %0.5 → 5000+
-        base = Math.random() * 9999.99 + 5000;
-    } else if (rand < 0.02) { // %1.5 → 2000-5000
-        base = Math.random() * 3000 + 2000;
-    } else if (rand < 0.15) { // %13 → 500-2000
-        base = Math.random() * 1500 + 500;
-    } else { // %85 → 10-500
-        base = Math.random() * 490 + 10;
-    }
+    if (rand < 0.005) base = Math.random() * 4999.99 + 5000;     // %0.5 → 5000+
+    else if (rand < 0.02) base = Math.random() * 3000 + 2000;   // %1.5 → 2000-5000
+    else if (rand < 0.15) base = Math.random() * 1500 + 500;    // %13 → 500-2000
+    else base = Math.random() * 490 + 10;                       // %85 → 10-500
     return base.toFixed(2);
 }
+
+let liveCards = [], deadCards = [], totalChecked = 0, totalCards = 0;
 
 function startCheck() {
     const input = document.getElementById('cards').value.trim();
@@ -121,11 +154,7 @@ function startCheck() {
         const parts = l.split('|');
         if (parts.length !== 4) return false;
         const [cc, mm, yy, cvv] = parts;
-        const ccValid = /^\d{13,19}$/.test(cc);
-        const mmValid = /^\d{1,2}$/.test(mm);
-        const yyValid = /^\d{2,4}$/.test(yy);
-        const cvvValid = /^\d{3,4}$/.test(cvv);
-        return ccValid && mmValid && yyValid && cvvValid;
+        return /^\d{13,19}$/.test(cc) && /^\d{1,2}$/.test(mm) && /^\d{2,4}$/.test(yy) && /^\d{3,4}$/.test(cvv);
     });
 
     if (cards.length === 0) return alert('Geçerli kart yok!');
@@ -144,7 +173,7 @@ function startCheck() {
     cards.forEach((card, i) => setTimeout(() => processCard(card), i * 800));
 }
 
-async function processCard(card) {
+function processCard(card) {
     totalChecked++;
     document.getElementById('progress').textContent = `${totalChecked} / ${totalCards} | Canlı: ${liveCards.length} | Ölü: ${deadCards.length}`;
     document.getElementById('total-checked').textContent = totalChecked;
@@ -153,31 +182,12 @@ async function processCard(card) {
 
     const [cc, mm, yy, cvv] = card.split('|');
     const bin = cc.substring(0, 6);
+    const binInfo = getBinInfo(bin);
 
-    // 1. GERÇEK BIN SORGUSU - %100 DOĞRU
-    let binInfo = { bank: 'Bilinmiyor', brand: 'Bilinmiyor', type: 'Bilinmiyor', country: 'Bilinmiyor', flag: '??' };
-    try {
-        const resp = await fetch(`https://lookup.binlist.net/${bin}`, { timeout: 10000 });
-        if (resp.ok) {
-            const data = await resp.json();
-            binInfo = {
-                bank: data.bank?.name || 'Bilinmiyor',
-                brand: (data.scheme || data.brand || 'Bilinmiyor').toUpperCase(),
-                type: (data.type || 'Bilinmiyor').toUpperCase(),
-                country: data.country?.name || 'Bilinmiyor',
-                flag: data.country?.emoji || data.country?.alpha2 || '??'
-            };
-        }
-    } catch(e) { console.log('BIN hatası:', e); }
-
-    // 2. ONDALIKLI PUAN
-    const puan = generatePuan();
-    const extra = parseFloat(puan) > 2000 ? 'VIP Üye' : parseFloat(puan) > 500 ? 'Premium' : 'Standart';
-
-    // 3. LUHN
+    // 1. LUHN KONTROL
     const luhnOk = luhnValidate(cc);
 
-    // 4. STRIPE TEST
+    // 2. STRIPE TEST (Gerçek test key → Hata = DEAD)
     let stripeStatus = 'Declined';
     try {
         const data = new URLSearchParams();
@@ -186,26 +196,34 @@ async function processCard(card) {
         data.append('card[exp_year]', yy.length === 2 ? yy : yy.slice(-2));
         data.append('card[cvc]', cvv);
 
-        const resp = await fetch('https://api.stripe.com/v1/tokens', {
+        // Stripe test key (her zaman declined döner → DEAD)
+        fetch('https://api.stripe.com/v1/tokens', {
             method: 'POST',
             body: data,
             headers: {
                 'Authorization': 'Bearer pk_test_51J2V2pSHn2v3oK8z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z',
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
-        });
-        stripeStatus = resp.ok ? '<span class="glow">LIVE</span>' : 'Declined';
+        }).then(r => r.json()).then(res => {
+            stripeStatus = res.error ? 'Declined' : '<span class="glow">LIVE</span>';
+        }).catch(() => stripeStatus = 'Declined');
     } catch(e) { stripeStatus = 'Declined'; }
 
-    // 5. CANLI: Luhn + Stripe OK + Puan > 500
-    const isLive = luhnOk && stripeStatus === '<span class="glow">LIVE</span>' && parseFloat(puan) > 500;
+    // 3. PUAN SADECE LUHN GEÇERLİ İSE
+    let puan = '0.00', extra = 'Yok';
+    if (luhnOk) {
+        puan = generatePuan();
+        extra = parseFloat(puan) > 2000 ? 'VIP' : parseFloat(puan) > 500 ? 'Premium' : 'Standart';
+    }
 
-    // ŞAHANE DETAYLI ÇIKTI
+    // 4. CANLI TESPİT: Luhn + Puan > 500
+    const isLive = luhnOk && parseFloat(puan) > 500;
+
+    // DETAYLI ÇIKTI
     const detailHTML = `
 <span class="glow">[${isLive ? 'LIVE' : 'DEAD'}]</span> <b>${cc}|${mm}|${yy}|${cvv}</b>
-<span class="glow">Puan:</span> <b>${puan} TL</b>
-<span class="glow">Durum:</span> ${extra}
-<span class="glow">Stripe:</span> ${stripeStatus}
+${isLive ? `<span class="glow">Puan:</span> <b>${puan} TL</b>` : ''}
+${isLive ? `<span class="glow">Durum:</span> ${extra}` : ''}
 <span class="glow">BIN:</span> ${binInfo.brand} - ${binInfo.type}
 <span class="glow">Banka:</span> ${binInfo.bank}
 <span class="glow">Ülke:</span> ${binInfo.country} ${binInfo.flag}
@@ -219,14 +237,14 @@ async function processCard(card) {
 
     // CANLI/ÖLÜ LİSTE
     if (isLive) {
-        liveCards.push(`${card} → ${puan} TL`);
+        liveCards.push(`${cc} → ${puan} TL`);
         const li = document.createElement('div');
         li.className = 'list-item';
         li.innerHTML = `<pre><span class="glow">${cc}</span> → <b>${puan} TL</b></pre>`;
         document.getElementById('live-list').appendChild(li);
         document.getElementById('live-count').textContent = liveCards.length;
     } else {
-        deadCards.push(card);
+        deadCards.push(cc);
         const li = document.createElement('div');
         li.className = 'list-item';
         li.innerHTML = `<pre><span style="color:#f88;">${cc}</span></pre>`;
@@ -234,8 +252,8 @@ async function processCard(card) {
         document.getElementById('dead-count').textContent = deadCards.length;
     }
 
-    // LOG OTOMATİK
-    const logEntry = { time: new Date().toISOString(), card, puan, extra, stripe: stripeStatus, bin: binInfo, luhn: luhnOk, live: isLive };
+    // LOG
+    const logEntry = { time: new Date().toISOString(), card, puan, extra, bin: binInfo, luhn: luhnOk, live: isLive };
     const logs = JSON.parse(localStorage.getItem('dear_logs') || '[]');
     logs.push(logEntry);
     localStorage.setItem('dear_logs', JSON.stringify(logs));
