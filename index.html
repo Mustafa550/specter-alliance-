@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DearSiber Ultra</title>
+    <title>DearSiber Checker</title>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Consolas', monospace; }
         body { background:#000; color:#0f0; padding:15px; line-height:1.6; }
@@ -47,8 +47,8 @@
 </head>
 <body>
 <div class="container">
-    <h1><span class="glow">DEAR SİBER</span> ULTRA</h1>
-    <p class="info">Max 250 Kart | Gerçek Zamanlı API | Ondalık Puan</p>
+    <h1><span class="glow">DEAR SİBER</span> CHECKER</h1>
+    <p class="info">Max 250 Kart | Gerçek API | Luhn + BİN Doğrulama</p>
 
     <div class="input-box">
         <textarea id="cards" placeholder="2958593949292948|02|28|392"></textarea>
@@ -95,40 +95,33 @@
 </div>
 
 <script>
-// ÜCRETSİZ API → binlist.net (CORS destekler, hızlı)
+// GERÇEK ZAMANLI ÜCRETSİZ API → https://lookup.binlist.net/
 async function getBinInfo(bin) {
     try {
-        const res = await fetch(`https://lookup.binlist.net/${bin}`);
-        if (!res.ok) throw new Error("API Hatası");
+        const res = await fetch(`https://lookup.binlist.net/${bin}`, {
+            headers: { 'Accept-Version': '3' }
+        });
+        if (!res.ok) return null;
         const data = await res.json();
         return {
-            brand: data.scheme?.toUpperCase() || "BİLİNMEYEN",
-            type: data.type?.toUpperCase() || "BİLİNMEYEN",
+            brand: (data.scheme || "BİLİNMEYEN").toUpperCase(),
+            type: (data.type || "BİLİNMEYEN").toUpperCase(),
             bank: data.bank?.name || "BİLİNMEYEN BANK",
             country: data.country?.name || "BİLİNMEYEN",
-            flag: data.country?.alpha2 || "??",
-            virtual: data.prepaid || false,
-            prepaid: data.prepaid || false
+            flag: data.country?.alpha2 || "??"
         };
     } catch (e) {
-        return {
-            brand: "BİLİNMEYEN",
-            type: "BİLİNMEYEN",
-            bank: "BİLİNMEYEN BANK",
-            country: "BİLİNMEYEN",
-            flag: "??",
-            virtual: false,
-            prepaid: false
-        };
+        return null;
     }
 }
 
-// LUHN ALGORİTMASI
-function luhnCheck(card) {
+// LUHN DOĞRULAMA
+function luhnCheck(cardNumber) {
+    const digits = cardNumber.replace(/\D/g, '').split('').map(Number);
     let sum = 0;
     let alternate = false;
-    for (let i = card.length - 1; i >= 0; i--) {
-        let digit = parseInt(card[i]);
+    for (let i = digits.length - 1; i >= 0; i--) {
+        let digit = digits[i];
         if (alternate) {
             digit *= 2;
             if (digit > 9) digit -= 9;
@@ -139,38 +132,33 @@ function luhnCheck(card) {
     return sum % 10 === 0;
 }
 
-// PUAN HESAPLA (ONDAKLI, MANTIKLI)
-function calculateScore(luhnValid, binInfo) {
-    let score = 0.0;
-    if (luhnValid) score += 40.0;
-    if (binInfo.bank !== "BİLİNMEYEN BANK") score += 30.0;
-    if (binInfo.virtual) score += 15.0;
-    if (binInfo.prepaid) score -= 10.0;
-    return Math.max(0, Math.min(100, score)).toFixed(2); // 0.00 - 100.00
-}
-
-// KART KONTROL
+// GLOBAL
 let liveCards = [], deadCards = [], total = 0, checked = 0;
 
-async function checkCard(cardData) {
-    const [number, month, year, cvv] = cardData.split('|').map(s => s.trim());
-    if (!number || number.length < 13) return;
+async function checkCard(cardLine) {
+    const [number, month, year, cvv] = cardLine.split('|').map(s => s.trim());
+    if (!number || !/^\d{13,19}$/.test(number)) return;
 
     const bin = number.substring(0, 6);
     const isLuhn = luhnCheck(number);
     const binInfo = await getBinInfo(bin);
-    const score = calculateScore(isLuhn, binInfo);
+
+    // CANLI: LUHN GEÇER + BİN VAR
+    const isLive = isLuhn && binInfo !== null;
 
     const result = {
         number, month, year, cvv,
-        bin, brand: binInfo.brand, type: binInfo.type,
-        bank: binInfo.bank, country: binInfo.country, flag: binInfo.flag,
+        bin,
+        brand: binInfo?.brand || "BİLİNMEYEN",
+        type: binInfo?.type || "BİLİNMEYEN",
+        bank: binInfo?.bank || "BİLİNMEYEN BANK",
+        country: binInfo?.country || "BİLİNMEYEN",
+        flag: binInfo?.flag || "??",
         luhn: isLuhn ? "GEÇER" : "GEÇMEZ",
-        score: parseFloat(score),
-        status: parseFloat(score) >= 70.00 ? "CANLI" : "ÖLÜ"
+        status: isLive ? "CANLI" : "ÖLÜ"
     };
 
-    if (result.status === "CANLI") liveCards.push(result);
+    if (isLive) liveCards.push(result);
     else deadCards.push(result);
 
     checked++;
@@ -187,7 +175,7 @@ function updateResults() {
         div.className = 'list-item';
         div.innerHTML = `<b>${c.number}</b> | ${c.month}/${c.year} | ${c.cvv}<br>
                          ${c.brand} ${c.type} | ${c.bank}<br>
-                         ${c.country} ${c.flag} | Luhn: ${c.luhn} | Puan: <b>${c.score}</b>`;
+                         ${c.country} ${c.flag} | Luhn: ${c.luhn}`;
         liveList.appendChild(div);
     });
     document.getElementById('live-count').textContent = liveCards.length;
@@ -202,7 +190,7 @@ function updateResults() {
         div.className = 'list-item';
         div.innerHTML = `<b>${c.number}</b> | ${c.month}/${c.year} | ${c.cvv}<br>
                          ${c.brand} ${c.type} | ${c.bank}<br>
-                         ${c.country} ${c.flag} | Luhn: ${c.luhn} | Puan: <b>${c.score}</b>`;
+                         ${c.country} ${c.flag} | Luhn: ${c.luhn}`;
         deadList.appendChild(div);
     });
     document.getElementById('dead-count').textContent = deadCards.length;
@@ -217,7 +205,7 @@ function updateResults() {
         div.className = `result ${c.status === 'ÖLÜ' ? 'dead' : ''}`;
         div.innerHTML = `<b>${c.number}|${c.month}|${c.year}|${c.cvv}</b><br>
                          BİN: ${c.bin} | ${c.brand} ${c.type} | ${c.bank}<br>
-                         ${c.country} ${c.flag} | Luhn: ${c.luhn} | Puan: <b>${c.score}</b> → <b>${c.status}</b>`;
+                         ${c.country} ${c.flag} | Luhn: ${c.luhn} → <b>${c.status}</b>`;
         details.appendChild(div);
     });
 
@@ -227,7 +215,7 @@ function updateResults() {
 function copyCards(type) {
     const cards = type === 'live' ? liveCards : deadCards;
     const text = cards.map(c => `${c.number}|${c.month}|${c.year}|${c.cvv}`).join('\n');
-    navigator.clipboard.writeText(text);
+    navigator.clipboard.writeText(text).then(() => alert(`${type.toUpperCase()} kopyalandı!`));
 }
 
 function downloadCards(type) {
@@ -238,17 +226,18 @@ function downloadCards(type) {
     const a = document.getElementById(type + '-dl');
     a.href = url;
     a.click();
-    URL.revokeObjectURL(url);
+    setTimeout(() => URL.revokeObjectURL(url), 100);
 }
 
 async function startCheck() {
     const input = document.getElementById('cards').value.trim();
     if (!input) return alert("Kart gir lan!");
 
-    const lines = input.split('\n').filter(l => l.trim());
+    const lines = input.split('\n').map(l => l.trim()).filter(l => l);
     if (lines.length > 250) return alert("Max 250 kart!");
 
     liveCards = []; deadCards = []; total = lines.length; checked = 0;
+
     document.getElementById('loading').style.display = 'block';
     document.getElementById('progress').textContent = `0 / ${total}`;
     document.getElementById('live-list').innerHTML = '';
@@ -258,8 +247,8 @@ async function startCheck() {
     document.getElementById('dead-actions').style.display = 'none';
 
     for (const line of lines) {
-        await checkCard(line.trim());
-        await new Promise(r => setTimeout(r, 300)); // API limit için 300ms bekle
+        await checkCard(line);
+        await new Promise(r => setTimeout(r, 400)); // API limit için
     }
 
     document.getElementById('loading').style.display = 'none';
