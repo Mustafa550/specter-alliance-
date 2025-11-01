@@ -94,7 +94,7 @@
 </div>
 
 <script>
-// SENİN STRIPE TEST KEY (ENTEGRE EDİLDİ!)
+// SENİN STRIPE TEST KEY (DOĞRU KULLANILIYOR!)
 const stripe = Stripe('pk_test_51SOarqIXpwqPxiuIhbpCoaV6ramzzUH2fbGfUPS8kHx168JvpyeTJziIU1cp7MgtumjJegGCzEeYZCMameLFJrYw004Iy3I2W8');
 
 // LUHN ALGORİTMASI
@@ -110,29 +110,34 @@ function luhnCheck(cardNumber) {
     return sum % 10 === 0;
 }
 
-// BINLIST.NET ENDPOINT → ÜLKE, BANKA, TÜR, LEVEL, EMOJI
+// BINLIST.NET → DOĞRU ENDPOINT, HEADER, TIMEOUT
 async function getBinInfo(bin) {
     try {
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 8000);
+        const timeout = setTimeout(() => controller.abort(), 10000);
         const res = await fetch(`https://lookup.binlist.net/${bin}`, {
-            headers: { 'Accept-Version': '3' },
+            method: 'GET',
+            headers: {
+                'Accept-Version': '3',
+                'User-Agent': 'Mozilla/5.0'
+            },
             signal: controller.signal
         });
         clearTimeout(timeout);
-        if (!res.ok) return null;
+        if (!res.ok) return { brand: "Bilinmeyen", type: "Bilinmeyen", bank: "Bilinmeyen Bank", country: "Bilinmeyen", flag: "Question", level: "Bilinmeyen", prepaid: "Bilinmeyen" };
         const data = await res.json();
         return {
             brand: (data.scheme || "Bilinmeyen").toUpperCase(),
             type: (data.type || "Bilinmeyen").toUpperCase(),
             bank: data.bank?.name || "Bilinmeyen Bank",
             country: data.country?.name || "Bilinmeyen",
-            flag: data.country?.emoji || data.country?.alpha2 || "??",
+            flag: data.country?.emoji || "Question",
             level: data.brand || "Bilinmeyen",
             prepaid: data.prepaid ? "PREPAID" : "NORMAL"
         };
     } catch (e) {
-        return null;
+        console.error("BINLIST HATASI:", e);
+        return { brand: "Hata", type: "Hata", bank: "Hata", country: "Hata", flag: "Cross", level: "Hata", prepaid: "Hata" };
     }
 }
 
@@ -141,16 +146,21 @@ async function checkWithStripe(number, month, year, cvv) {
     try {
         const { token, error } = await stripe.createToken('card', {
             number: number,
-            exp_month: month,
-            exp_year: year,
+            exp_month: parseInt(month),
+            exp_year: parseInt(year),
             cvc: cvv
         });
         if (error) {
-            return { valid: false, message: error.message };
+            return { valid: false, message: error.message || "Geçersiz kart" };
         }
-        return { valid: true, token: token.id, brand: token.card.brand, last4: token.card.last4 };
+        return { 
+            valid: true, 
+            token: token.id, 
+            brand: token.card.brand.toUpperCase(), 
+            last4: token.card.last4 
+        };
     } catch (e) {
-        return { valid: false, message: "Stripe hatası: " + e.message };
+        return { valid: false, message: "Stripe API hatası: " + e.message };
     }
 }
 
@@ -163,20 +173,24 @@ async function checkCard(cardLine) {
 
     const bin = number.substring(0, 6);
     const isLuhn = luhnCheck(number);
+
+    // BIN BİLGİSİ
     const binInfo = await getBinInfo(bin);
+
+    // STRIPE KONTROL
     const stripeResult = await checkWithStripe(number, month, year, cvv);
 
-    const isLive = isLuhn && binInfo !== null && stripeResult.valid === true;
+    const isLive = isLuhn && stripeResult.valid === true;
 
     const result = {
         number, month, year, cvv, bin,
-        brand: binInfo?.brand || stripeResult.brand || "Bilinmeyen",
-        type: binInfo?.type || "Bilinmeyen",
-        bank: binInfo?.bank || "Bilinmeyen Bank",
-        country: binInfo?.country || "Bilinmeyen",
-        flag: binInfo?.flag || "??",
-        level: binInfo?.level || "Bilinmeyen",
-        prepaid: binInfo?.prepaid || "Bilinmeyen",
+        brand: stripeResult.brand || binInfo.brand,
+        type: binInfo.type,
+        bank: binInfo.bank,
+        country: binInfo.country,
+        flag: binInfo.flag,
+        level: binInfo.level,
+        prepaid: binInfo.prepaid,
         luhn: isLuhn ? "GEÇER" : "GEÇMEZ",
         stripeValid: stripeResult.valid ? "Evet" : "Hayır",
         stripeMessage: stripeResult.message || "Token Oluştu",
@@ -192,12 +206,11 @@ async function checkCard(cardLine) {
     document.getElementById('progress').textContent = `${checked} / ${total}`;
     updateResults();
 
-    // RATE LIMIT: 6 saniye (binlist: 10/dk)
+    // RATE LIMIT: 6 saniye
     await new Promise(r => setTimeout(r, 6000));
 }
 
 function updateResults() {
-    // CANLI LİSTE
     const liveList = document.getElementById('live-list');
     liveList.innerHTML = '';
     liveCards.forEach(c => {
@@ -212,7 +225,6 @@ function updateResults() {
     document.getElementById('live-total').textContent = liveCards.length;
     if (liveCards.length > 0) document.getElementById('live-actions').style.display = 'flex';
 
-    // ÖLÜ LİSTE
     const deadList = document.getElementById('dead-list');
     deadList.innerHTML = '';
     deadCards.forEach(c => {
@@ -227,7 +239,6 @@ function updateResults() {
     document.getElementById('dead-total').textContent = deadCards.length;
     if (deadCards.length > 0) document.getElementById('dead-actions').style.display = 'flex';
 
-    // DETAYLI SONUÇLAR
     const details = document.getElementById('detailed-results');
     details.innerHTML = '';
     [...liveCards, ...deadCards].forEach(c => {
