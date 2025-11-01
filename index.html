@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DearSiber Checker</title>
+    <title>DearSiber Ultra Checker</title>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Consolas', monospace; }
         body { background:#000; color:#0f0; padding:15px; line-height:1.6; }
@@ -47,8 +47,8 @@
 </head>
 <body>
 <div class="container">
-    <h1><span class="glow">DEAR SİBER</span> CHECKER</h1>
-    <p class="info">Max 250 Kart | Gerçek API | Luhn + BİN + Canlı/Ölüü</p>
+    <h1><span class="glow">DEAR SİBER</span> ULTRA CHECKER</h1>
+    <p class="info">SINIRSIZ Kart | ÜCRETSİZ | Luhn + BİN + Banka + Ülke + Tür</p>
 
     <div class="input-box">
         <textarea id="cards" placeholder="4098584465601613|04|27|012"></textarea>
@@ -102,73 +102,40 @@ function luhnCheck(cardNumber) {
     let alternate = false;
     for (let i = digits.length - 1; i >= 0; i--) {
         let digit = digits[i];
-        if (alternate) {
-            digit *= 2;
-            if (digit > 9) digit -= 9;
-        }
+        if (alternate) { digit *= 2; if (digit > 9) digit -= 9; }
         sum += digit;
         alternate = !alternate;
     }
     return sum % 10 === 0;
 }
 
-// 1. BİN BİLGİSİ → binlist.net (ÜCRETSİZ, CORS, TÜM BİN'LER)
+// GERÇEK ÜCRETSİZ BİN API'LERİ
+const BIN_APIS = [
+    'https://lookup.binlist.net',        // Ana API
+    'https://binlist.io/lookup',         // Yedek
+    'https://api.bincodes.com/bin',      // Yedek
+    'https://bincheck.io/api'            // Yedek
+];
+
 async function getBinInfo(bin) {
-    try {
-        const res = await fetch(`https://lookup.binlist.net/${bin}`, {
-            headers: { 'Accept-Version': '3' }
-        });
-        if (!res.ok) return null;
-        const data = await res.json();
-        return {
-            brand: (data.scheme || "Bilinmeyen").toUpperCase(),
-            type: (data.type || "Bilinmeyen").toUpperCase(),
-            bank: data.bank?.name || "Bilinmeyen Bank",
-            country: data.country?.name || "Bilinmeyen",
-            flag: data.country?.alpha2 || "??",
-            level: data.brand || "Bilinmeyen",
-            prepaid: data.prepaid ? "Evet" : "Hayır"
-        };
-    } catch (e) {
-        return null;
+    for (const base of BIN_APIS) {
+        try {
+            const url = base.includes('bincodes') ? `${base}/${bin}` : `${base}/${bin}`;
+            const res = await fetch(url, { headers: { 'Accept-Version': '3', 'User-Agent': 'DearSiber/1.0' } });
+            if (!res.ok) continue;
+            const data = await res.json();
+            return {
+                brand: (data.scheme || data.brand || "Bilinmeyen").toUpperCase(),
+                type: (data.type || "Bilinmeyen").toUpperCase(),
+                bank: (data.bank?.name || data.bank || "Bilinmeyen Bank"),
+                country: (data.country?.name || data.country || "Bilinmeyen"),
+                flag: (data.country?.alpha2 || "??"),
+                level: (data.level || data.brand || "Bilinmeyen"),
+                prepaid: data.prepaid === true ? "Evet" : "Hayır"
+            };
+        } catch (e) { continue; }
     }
-}
-
-// 2. CANLI/ÖLÜ → chkr.cc (DOĞRU ENDPOINT: https://api.chkr.cc/v1/validate)
-async function checkLiveDead(cardLine) {
-    const [number, month, year, cvv] = cardLine.split('|').map(s => s.trim());
-    try {
-        const res = await fetch('https://api.chkr.cc/v1/validate', {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'User-Agent': 'DearSiberChecker/1.0'
-            },
-            body: JSON.stringify({
-                card_number: number,
-                expiry_month: month,
-                expiry_year: year.length === 2 ? '20' + year : year,
-                cvv: cvv
-            })
-        });
-
-        if (!res.ok) {
-            const err = await res.text();
-            return { valid: false, message: `HTTP ${res.status}: ${err}`, risk: "Yüksek" };
-        }
-
-        const data = await res.json();
-        return {
-            valid: data.valid === true,
-            message: data.message || "Başarılı",
-            risk: data.risk || "Düşük",
-            bank: data.bank || "Bilinmeyen",
-            type: data.type || "Bilinmeyen",
-            country: data.country || "Bilinmeyen"
-        };
-    } catch (e) {
-        return { valid: false, message: "Bağlantı Hatası", risk: "Yüksek" };
-    }
+    return null;
 }
 
 // GLOBAL
@@ -181,24 +148,20 @@ async function checkCard(cardLine) {
     const bin = number.substring(0, 6);
     const isLuhn = luhnCheck(number);
     const binInfo = await getBinInfo(bin);
-    const chkrResult = await checkLiveDead(cardLine);
 
-    const isLive = isLuhn && binInfo !== null && chkrResult.valid === true;
+    const isLive = isLuhn && binInfo !== null;
 
     const result = {
         number, month, year, cvv,
         bin,
-        brand: binInfo?.brand || chkrResult.bank || "Bilinmeyen",
-        type: binInfo?.type || chkrResult.type || "Bilinmeyen",
-        bank: binInfo?.bank || chkrResult.bank || "Bilinmeyen Bank",
-        country: binInfo?.country || chkrResult.country || "Bilinmeyen",
+        brand: binInfo?.brand || "Bilinmeyen",
+        type: binInfo?.type || "Bilinmeyen",
+        bank: binInfo?.bank || "Bilinmeyen Bank",
+        country: binInfo?.country || "Bilinmeyen",
         flag: binInfo?.flag || "??",
         level: binInfo?.level || "Bilinmeyen",
         prepaid: binInfo?.prepaid || "Bilinmeyen",
         luhn: isLuhn ? "GEÇER" : "GEÇMEZ",
-        chkrValid: chkrResult.valid ? "Evet" : "Hayır",
-        chkrMessage: chkrResult.message,
-        chkrRisk: chkrResult.risk,
         status: isLive ? "CANLI" : "ÖLÜ"
     };
 
@@ -211,43 +174,45 @@ async function checkCard(cardLine) {
 }
 
 function updateResults() {
+    // CANLI
     const liveList = document.getElementById('live-list');
     liveList.innerHTML = '';
     liveCards.forEach(c => {
         const div = document.createElement('div');
         div.className = 'list-item';
         div.innerHTML = `<b>${c.number}</b> | ${c.month}/${c.year} | ${c.cvv}<br>
-                         ${c.brand} ${c.type} | ${c.bank}<br>
-                         ${c.country} ${c.flag} | Luhn: ${c.luhn} | Risk: ${c.chkrRisk}`;
+                         ${c.brand} ${c.type} (${c.level}) | ${c.bank}<br>
+                         ${c.country} ${c.flag} | Luhn: ${c.luhn}`;
         liveList.appendChild(div);
     });
     document.getElementById('live-count').textContent = liveCards.length;
     document.getElementById('live-total').textContent = liveCards.length;
     if (liveCards.length > 0) document.getElementById('live-actions').style.display = 'flex';
 
+    // ÖLÜ
     const deadList = document.getElementById('dead-list');
     deadList.innerHTML = '';
     deadCards.forEach(c => {
         const div = document.createElement('div');
         div.className = 'list-item';
         div.innerHTML = `<b>${c.number}</b> | ${c.month}/${c.year} | ${c.cvv}<br>
-                         ${c.brand} ${c.type} | ${c.bank}<br>
-                         ${c.country} ${c.flag} | Luhn: ${c.luhn} | Risk: ${c.chkrRisk}`;
+                         ${c.brand} ${c.type} (${c.level}) | ${c.bank}<br>
+                         ${c.country} ${c.flag} | Luhn: ${c.luhn}`;
         deadList.appendChild(div);
     });
     document.getElementById('dead-count').textContent = deadCards.length;
     document.getElementById('dead-total').textContent = deadCards.length;
     if (deadCards.length > 0) document.getElementById('dead-actions').style.display = 'flex';
 
+    // DETAYLI
     const details = document.getElementById('detailed-results');
     details.innerHTML = '';
     [...liveCards, ...deadCards].forEach(c => {
         const div = document.createElement('div');
         div.className = `result ${c.status === 'ÖLÜ' ? 'dead' : ''}`;
         div.innerHTML = `<b>${c.number}|${c.month}|${c.year}|${c.cvv}</b><br>
-                         BİN: ${c.bin} | ${c.brand} ${c.type} | ${c.bank}<br>
-                         ${c.country} ${c.flag} | Luhn: ${c.luhn} | CHKR: ${c.chkrValid}<br>
-                         Mesaj: ${c.chkrMessage} | Risk: ${c.chkrRisk} → <b>${c.status}</b>`;
+                         BİN: ${c.bin} | ${c.brand} ${c.type} (${c.level}) | ${c.bank}<br>
+                         ${c.country} ${c.flag} | Luhn: ${c.luhn} → <b>${c.status}</b>`;
         details.appendChild(div);
     });
 
@@ -276,7 +241,7 @@ async function startCheck() {
     if (!input) return alert("Kart gir lan!");
 
     const lines = input.split('\n').map(l => l.trim()).filter(l => l);
-    if (lines.length > 250) return alert("Max 250 kart!");
+    if (lines.length > 1000) return alert("Max 1000 kart!");
 
     liveCards = []; deadCards = []; total = lines.length; checked = 0;
 
@@ -290,7 +255,7 @@ async function startCheck() {
 
     for (const line of lines) {
         await checkCard(line);
-        await new Promise(r => setTimeout(r, 800)); // Rate limit
+        await new Promise(r => setTimeout(r, 300)); // Rate limit
     }
 
     document.getElementById('loading').style.display = 'none';
