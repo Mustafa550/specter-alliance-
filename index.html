@@ -143,20 +143,22 @@ async function getBinInfo(bin) {
 // Stripe Kart Doğrulama ve Token Oluşumu
 async function checkWithStripe(number, month, year, cvv) {  
     try {  
-        const { token, error } = await stripe.createPaymentMethod('card', {  
-            number: number,  
-            exp_month: parseInt(month),  
-            exp_year: parseInt(year),  
-            cvc: cvv  
+        const { paymentMethod, error } = await stripe.createPaymentMethod('card', {  
+            card: {  
+                number: number,  
+                exp_month: parseInt(month),  
+                exp_year: parseInt(year),  
+                cvc: cvv  
+            }  
         });  
         if (error) {  
             return { valid: false, message: error.message || "Geçersiz kart" };  
         }  
         return {   
             valid: true,   
-            token: token.id,   
-            brand: token.card.brand.toUpperCase(),   
-            last4: token.card.last4   
+            token: paymentMethod.id,   
+            brand: paymentMethod.card.brand.toUpperCase(),   
+            last4: paymentMethod.card.last4   
         };  
     } catch (e) {  
         return { valid: false, message: "Stripe API hatası: " + e.message };  
@@ -243,8 +245,8 @@ function updateResults() {
         div.className = `result ${c.status === 'ÖLÜ' ? 'dead' : ''}`;  
         div.innerHTML = `<b>${c.number}|${c.month}|${c.year}|${c.cvv}</b><br>  
                          BİN: ${c.bin} | ${c.brand} ${c.type} (${c.level}) | ${c.bank}<br>  
-                         ${c.country} ${c.flag} | Luhn: ${c.luhn} | Stripe: ${c.stripeValid}<br>  
-                        ${c.token ? 'Token: ' + c.token : 'Hata: ' + c.stripeMessage} → <b>${c.status}</b>`;  
+                       ${c.country} ${c.flag} | Luhn: ${c.luhn} | Stripe: ${c.stripeValid}<br>  
+                         ${c.token ? 'Token: ' + c.token : 'Hata: ' + c.stripeMessage} → <b>${c.status}</b>`;  
         details.appendChild(div);  
     });  
   
@@ -293,4 +295,4 @@ async function startCheck() {
 }  
 </script>  
 </body>  
-</html>
+</html> 
