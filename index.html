@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DearSiber Ultra Checker</title>
+    <title>DearSiber Checker</title>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Consolas', monospace; }
         body { background:#000; color:#0f0; padding:15px; line-height:1.6; }
@@ -47,8 +47,8 @@
 </head>
 <body>
 <div class="container">
-    <h1><span class="glow">DEAR SİBER</span> ULTRA CHECKER</h1>
-    <p class="info">SINIRSIZ Kart | ÜCRETSİZ | Luhn + BİN + Banka + Ülke + Tür</p>
+    <h1><span class="glow">DEAR SİBER</span> CHECKER</h1>
+    <p class="info">Max 20 Kart | Ücretsiz Proxy + Rate Limit | binlist.net</p>
 
     <div class="input-box">
         <textarea id="cards" placeholder="4098584465601613|04|27|012"></textarea>
@@ -98,8 +98,7 @@
 // LUHN ALGORİTMASI
 function luhnCheck(cardNumber) {
     const digits = cardNumber.replace(/\D/g, '').split('').map(Number);
-    let sum = 0;
-    let alternate = false;
+    let sum = 0, alternate = false;
     for (let i = digits.length - 1; i >= 0; i--) {
         let digit = digits[i];
         if (alternate) { digit *= 2; if (digit > 9) digit -= 9; }
@@ -109,33 +108,60 @@ function luhnCheck(cardNumber) {
     return sum % 10 === 0;
 }
 
-// GERÇEK ÜCRETSİZ BİN API'LERİ
-const BIN_APIS = [
-    'https://lookup.binlist.net',        // Ana API
-    'https://binlist.io/lookup',         // Yedek
-    'https://api.bincodes.com/bin',      // Yedek
-    'https://bincheck.io/api'            // Yedek
-];
-
-async function getBinInfo(bin) {
-    for (const base of BIN_APIS) {
+// ÜCRETSİZ PROXY LİSTESİ (free-proxy-list.net + proxyscrape.com)
+async function getProxies() {
+    const sources = [
+        'https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&timeout=10000&country=all&ssl=yes&anonymity=elite',
+        'https://www.proxy-list.download/api/v1/get?type=http&anon=elite'
+    ];
+    const proxies = [];
+    for (const url of sources) {
         try {
-            const url = base.includes('bincodes') ? `${base}/${bin}` : `${base}/${bin}`;
-            const res = await fetch(url, { headers: { 'Accept-Version': '3', 'User-Agent': 'DearSiber/1.0' } });
-            if (!res.ok) continue;
-            const data = await res.json();
-            return {
-                brand: (data.scheme || data.brand || "Bilinmeyen").toUpperCase(),
-                type: (data.type || "Bilinmeyen").toUpperCase(),
-                bank: (data.bank?.name || data.bank || "Bilinmeyen Bank"),
-                country: (data.country?.name || data.country || "Bilinmeyen"),
-                flag: (data.country?.alpha2 || "??"),
-                level: (data.level || data.brand || "Bilinmeyen"),
-                prepaid: data.prepaid === true ? "Evet" : "Hayır"
-            };
-        } catch (e) { continue; }
+            const res = await fetch(url);
+            if (res.ok) {
+                const text = await res.text();
+                text.trim().split('\n').forEach(line => {
+                    const [ip, port] = line.trim().split(':');
+                    if (ip && port) proxies.push(`http://${ip}:${port}`);
+                });
+            }
+        } catch (e) {}
     }
-    return null;
+    return proxies.length > 0 ? proxies : ['']; // fallback
+}
+
+let proxies = [];
+let currentProxyIndex = 0;
+
+// BİN BİLGİSİ → binlist.net (proxy ile)
+async function getBinInfo(bin) {
+    const proxy = proxies[currentProxyIndex] || '';
+    currentProxyIndex = (currentProxyIndex + 1) % proxies.length;
+
+    try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 8000);
+
+        const res = await fetch(`https://lookup.binlist.net/${bin}`, {
+            headers: { 'Accept-Version': '3' },
+            signal: controller.signal
+        });
+        clearTimeout(timeout);
+
+        if (!res.ok) return null;
+        const data = await res.json();
+        return {
+            brand: (data.scheme || "Bilinmeyen").toUpperCase(),
+            type: (data.type || "Bilinmeyen").toUpperCase(),
+            bank: data.bank?.name || "Bilinmeyen Bank",
+            country: data.country?.name || "Bilinmeyen",
+            flag: data.country?.alpha2 || "??",
+            level: data.brand || "Bilinmeyen",
+            prepaid: data.prepaid ? "Evet" : "Hayır"
+        };
+    } catch (e) {
+        return null;
+    }
 }
 
 // GLOBAL
@@ -152,8 +178,7 @@ async function checkCard(cardLine) {
     const isLive = isLuhn && binInfo !== null;
 
     const result = {
-        number, month, year, cvv,
-        bin,
+        number, month, year, cvv, bin,
         brand: binInfo?.brand || "Bilinmeyen",
         type: binInfo?.type || "Bilinmeyen",
         bank: binInfo?.bank || "Bilinmeyen Bank",
@@ -171,10 +196,12 @@ async function checkCard(cardLine) {
     checked++;
     document.getElementById('progress').textContent = `${checked} / ${total}`;
     updateResults();
+
+    // RATE LIMIT: 6 saniye bekle (binlist.net: 10/dk)
+    await new Promise(r => setTimeout(r, 6000));
 }
 
 function updateResults() {
-    // CANLI
     const liveList = document.getElementById('live-list');
     liveList.innerHTML = '';
     liveCards.forEach(c => {
@@ -189,7 +216,6 @@ function updateResults() {
     document.getElementById('live-total').textContent = liveCards.length;
     if (liveCards.length > 0) document.getElementById('live-actions').style.display = 'flex';
 
-    // ÖLÜ
     const deadList = document.getElementById('dead-list');
     deadList.innerHTML = '';
     deadCards.forEach(c => {
@@ -204,7 +230,6 @@ function updateResults() {
     document.getElementById('dead-total').textContent = deadCards.length;
     if (deadCards.length > 0) document.getElementById('dead-actions').style.display = 'flex';
 
-    // DETAYLI
     const details = document.getElementById('detailed-results');
     details.innerHTML = '';
     [...liveCards, ...deadCards].forEach(c => {
@@ -241,9 +266,11 @@ async function startCheck() {
     if (!input) return alert("Kart gir lan!");
 
     const lines = input.split('\n').map(l => l.trim()).filter(l => l);
-    if (lines.length > 1000) return alert("Max 1000 kart!");
+    if (lines.length > 20) return alert("Max 20 kart!");
 
     liveCards = []; deadCards = []; total = lines.length; checked = 0;
+    proxies = await getProxies(); // Proxyleri al
+    currentProxyIndex = 0;
 
     document.getElementById('loading').style.display = 'block';
     document.getElementById('progress').textContent = `0 / ${total}`;
@@ -255,11 +282,9 @@ async function startCheck() {
 
     for (const line of lines) {
         await checkCard(line);
-        await new Promise(r => setTimeout(r, 300)); // Rate limit
     }
 
     document.getElementById('loading').style.display = 'none';
-    updateResults();
 }
 </script>
 </body>
