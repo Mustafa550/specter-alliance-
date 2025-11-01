@@ -14,7 +14,6 @@
         .info { text-align:center; font-size:1em; color:#0a0; margin-bottom:20px; animation:pulse 3s infinite; }  
         .glow { color:#0f0; text-shadow:0 0 10px #0f0; font-weight:bold; }  
         .input-box { background:#000; border:1px solid #0f0; padding:16px; border-radius:12px; margin-bottom:20px; }  
-        textarea { width:100%; height:130px; background:transparent; color:#0f0; border:none; font-size:1em; resize:none; outline:none; }  
         .btn { background:#0f0; color:#000; border:none; padding:14px 28px; margin:15px auto 0; display:block; border-radius:30px; font-weight:bold; cursor:pointer; font-size:1.1em; transition:0.4s; box-shadow:0 0 20px #0f0; width:100%; }  
         .btn:hover { background:#0c0; transform:scale(1.05); box-shadow:0 0 35px #0f0; }  
         .loading { display:none; text-align:center; margin:25px 0; font-size:1.2em; animation:blink 1.2s infinite; }  
@@ -47,7 +46,7 @@
 <body>  
 <div class="container">  
     <h1><span class="glow">DEAR SİBER</span> ULTRA CHECKER</h1>  
-    <p class="info">Max 20 Kart | Stripe + binlist.net | Ülke | Banka | Tür | Level</p>  
+    <p class="info">Max 20 Kart | Stripe + binlist.net | Ülke |/ Banka | Tür | Level</p>  
   
     <div class="input-box">  
         <textarea id="cards" placeholder="4242424242424242|12|27|123"></textarea>  
@@ -244,8 +243,9 @@ function updateResults() {
         const div = document.createElement('div');  
         div.className = `result ${c.status === 'ÖLÜ' ? 'dead' : ''}`;  
         div.innerHTML = `<b>${c.number}|${c.month}|${c.year}|${c.cvv}</b><br>  
-                         BİN: ${c.bin} | ${c.brand} ${c.type} (${c.level}) | ${c.bank}<br>  
-                       ${c.country} ${c.flag} | Luhn: ${c.luhn} | Stripe: ${c.stripeValid}<br>  
+                         BİN: ${c.bin} | 
+        ${c.brand} ${c.type} (${c.level}) | ${c.bank}<br>  
+                         ${c.country} ${c.flag} | Luhn: ${c.luhn} | Stripe: ${c.stripeValid}<br>  
                          ${c.token ? 'Token: ' + c.token : 'Hata: ' + c.stripeMessage} → <b>${c.status}</b>`;  
         details.appendChild(div);  
     });  
