@@ -94,10 +94,8 @@
 </div>  
   
 <script>  
-// SENİN STRIPE TEST KEY (DOĞRU KULLANILIYOR!)  
 const stripe = Stripe('pk_test_51SOarqIXpwqPxiuIhbpCoaV6ramzzUH2fbGfUPS8kHx168JvpyeTJziIU1cp7MgtumjJegGCzEeYZCMameLFJrYw004Iy3I2W8');  
   
-// LUHN ALGORİTMASI  
 function luhnCheck(cardNumber) {  
     const digits = cardNumber.replace(/\D/g, '').split('').map(Number);  
     let sum = 0, alternate = false;  
@@ -110,7 +108,6 @@ function luhnCheck(cardNumber) {
     return sum % 10 === 0;  
 }  
   
-// BINLIST.NET → DOĞRU ENDPOINT, HEADER, TIMEOUT  
 async function getBinInfo(bin) {  
     try {  
         const controller = new AbortController();  
@@ -141,7 +138,6 @@ async function getBinInfo(bin) {
     }  
 }  
   
-// STRIPE TOKEN OLUŞTUR (CANLI/ÖLÜ KONTROL)  
 async function checkWithStripe(number, month, year, cvv) {  
     try {  
         const { token, error } = await stripe.createToken('card', {  
@@ -164,7 +160,6 @@ async function checkWithStripe(number, month, year, cvv) {
     }  
 }  
   
-// GLOBAL  
 let liveCards = [], deadCards = [], total = 0, checked = 0;  
   
 async function checkCard(cardLine) {  
@@ -174,10 +169,8 @@ async function checkCard(cardLine) {
     const bin = number.substring(0, 6);  
     const isLuhn = luhnCheck(number);  
   
-    // BIN BİLGİSİ  
     const binInfo = await getBinInfo(bin);  
   
-    // STRIPE KONTROL  
     const stripeResult = await checkWithStripe(number, month, year, cvv);  
   
     const isLive = isLuhn && stripeResult.valid === true;  
@@ -206,7 +199,6 @@ async function checkCard(cardLine) {
     document.getElementById('progress').textContent = `${checked} / ${total}`;  
     updateResults();  
   
-    // RATE LIMIT: 6 saniye  
     await new Promise(r => setTimeout(r, 6000));  
 }  
   
@@ -247,7 +239,7 @@ function updateResults() {
         div.innerHTML = `<b>${c.number}|${c.month}|${c.year}|${c.cvv}</b><br>  
                          BİN: ${c.bin} | ${c.brand} ${c.type} (${c.level}) | ${c.bank}<br>  
                          ${c.country} ${c.flag} | Luhn: ${c.luhn} | Stripe: ${c.stripeValid}<br>  
-                       ${c.token ? 'Token: ' + c.token : 'Hata: ' + c.stripeMessage} → <b>${c.status}</b>`;  
+                        ${c.token ? 'Token: ' + c.token : 'Hata: ' + c.stripeMessage} → <b>${c.status}</b>`;  
         details.appendChild(div);  
     });  
   
