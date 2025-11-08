@@ -263,7 +263,7 @@
             width: 100%;
             margin-bottom: 10px;
         }
-    
+        
         .btn::before {
             content: '';
             position: absolute;
@@ -321,8 +321,8 @@
             font-size: 1rem;
             transition: all 0.3s ease;
         }
-        
-        .form-control:focus {
+
+  .form-control:focus {
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 10px var(--glow-color);
@@ -553,6 +553,65 @@
             animation: matrix 5s linear infinite;
             opacity: 0.7;
         }
+        
+        .card-details {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(0, 255, 0, 0.1);
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            color: #aaa;
+        }
+        
+        .detail-value {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 20px;
+            border: 3px solid var(--primary-color);
+            box-shadow: 0 0 20px var(--glow-color);
+        }
+        
+        .password-strength {
+            height: 5px;
+            background: #333;
+            border-radius: 3px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        
+        .password-strength-fill {
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+        
+        .weak { background: var(--error-color); width: 33%; }
+        .medium { background: var(--warning-color); width: 66%; }
+        .strong { background: var(--success-color); width: 100%; }
     </style>
 </head>
 <body>
@@ -584,10 +643,21 @@
                     <label class="form-label">Kullanıcı Adı</label>
                     <input type="text" class="form-control" id="regUsername" placeholder="Kullanıcı adınızı girin">
                 </div>
-                
-                <div class="form-group">
+
+        <div class="form-group">
                     <label class="form-label">E-posta</label>
                     <input type="email" class="form-control" id="regEmail" placeholder="E-posta adresinizi girin">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Şifre</label>
+                    <input type="password" class="form-control" id="regPassword" placeholder="Şifrenizi girin">
+                    <div class="password-strength">
+                        <div class="password-strength-fill" id="passwordStrength"></div>
+                    </div>
+                    <small style="color: #aaa; display: block; margin-top: 5px;">
+                        Şifre en az 8 karakter, bir büyük harf, bir küçük harf, bir rakam ve bir özel karakter içermelidir
+                    </small>
                 </div>
                 
                 <button class="btn btn-primary" id="continueRegister">
@@ -602,7 +672,7 @@
             </div>
         </div>
         
-     <!-- Register Screen 2 -->
+        <!-- Register Screen 2 -->
         <div class="auth-screen" id="registerScreen2" style="display: none;">
             <div class="card auth-card">
                 <div class="card-header">
@@ -651,7 +721,7 @@
                 <div class="form-group">
                     <label class="form-label">Şifre</label>
                     <input type="password" class="form-control" id="loginPassword" placeholder="Şifrenizi girin">
-                    <small style="color: #aaa; display: block; margin-top: 5px;">Şifre en az 6 karakter olmalıdır</small>
+                    <small style="color: #aaa; display: block; margin-top: 5px;">Şifre en az 8 karakter olmalıdır</small>
                 </div>
                 
                 <button class="btn btn-primary" id="loginBtn">
@@ -753,6 +823,7 @@
                 <div class="tab active" data-tab="single-check">💳 Tek Kart</div>
                 <div class="tab" data-tab="bulk-check">📁 Toplu Kontrol</div>
                 <div class="tab" data-tab="stats">📊 İstatistikler</div>
+                <div class="tab" data-tab="profile">👤 Profil</div>
                 <div class="tab" data-tab="premium">💎 Premium</div>
                 <div class="tab" data-tab="logout">🚪 Çıkış</div>
             </div>
@@ -948,7 +1019,60 @@
                 </div>
             </div>
 
-      <div class="tab-content" id="premium">
+    <div class="tab-content" id="profile">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-user-edit card-icon"></i>
+                            <span>Profil Ayarları</span>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Adınız</label>
+                        <input type="text" class="form-control" id="profileFirstName" placeholder="Adınız">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Soyadınız</label>
+                        <input type="text" class="form-control" id="profileLastName" placeholder="Soyadınız">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Kullanıcı Adı</label>
+                        <input type="text" class="form-control" id="profileUsername" placeholder="Kullanıcı adınız">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">E-posta</label>
+                        <input type="email" class="form-control" id="profileEmail" placeholder="E-posta adresiniz">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Yeni Şifre</label>
+                        <input type="password" class="form-control" id="profilePassword" placeholder="Yeni şifre">
+                        <div class="password-strength">
+                            <div class="password-strength-fill" id="profilePasswordStrength"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Şifreyi Onayla</label>
+                        <input type="password" class="form-control" id="profilePasswordConfirm" placeholder="Şifreyi tekrar girin">
+                    </div>
+                    
+                    <button class="btn btn-primary" id="saveProfile">
+                        <i class="fas fa-save"></i>
+                        PROFİLİ GÜNCELLE
+                    </button>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="premium">
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title">
@@ -1072,6 +1196,8 @@
             <div class="tabs">
                 <div class="tab active" data-tab="admin-users">👥 Kullanıcılar</div>
                 <div class="tab" data-tab="admin-stats">📊 İstatistikler</div>
+                <div class="tab" data-tab="admin-logs">📋 Kart Logları</div>
+                <div class="tab" data-tab="admin-checker">💳 Kart Kontrol</div>
                 <div class="tab" data-tab="admin-settings">⚙️ Ayarlar</div>
                 <div class="tab" data-tab="admin-logout">🚪 Çıkış</div>
             </div>
@@ -1150,6 +1276,109 @@
                             <div class="progress-fill" id="adminTodayProgress" style="width: 0%"></div>
                         </div>
                     </div>
+                    
+                    <h3 style="margin: 20px 0 10px; color: var(--primary-color);">Seviye Dağılımı</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-circle"></i></div>
+                            <div class="stat-value" id="adminLevel1">0</div>
+                            <div class="stat-label">🔰 Beginner</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-star"></i></div>
+                            <div class="stat-value" id="adminLevel2">0</div>
+                            <div class="stat-label">⭐ Rookie</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-fire"></i></div>
+                            <div class="stat-value" id="adminLevel3">0</div>
+                            <div class="stat-label">🔥 Pro</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-rocket"></i></div>
+                            <div class="stat-value" id="adminLevel4">0</div>
+                            <div class="stat-label">🚀 Expert</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-crown"></i></div>
+                            <div class="stat-value" id="adminLevel5">0</div>
+                            <div class="stat-label">👑 Master</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="admin-logs">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-clipboard-list card-icon"></i>
+                            <span>Kart Kontrol Logları</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="searchLogs" placeholder="Log ara...">
+                    </div>
+                    
+                    <div style="overflow-x: auto; max-height: 500px; overflow-y: auto;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid var(--card-border);">
+                                    <th style="padding: 10px; text-align: left;">Tarih</th>
+                                    <th style="padding: 10px; text-align: left;">Kullanıcı</th>
+                                    <th style="padding: 10px; text-align: left;">Kart</th>
+                                    <th style="padding: 10px; text-align: left;">Durum</th>
+                                    <th style="padding: 10px; text-align: left;">API</th>
+                                </tr>
+                            </thead>
+                            <tbody id="logList">
+                                <!-- Logs will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="admin-checker">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-credit-card card-icon"></i>
+                            <span>Admin Kart Kontrol</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Kart Bilgileri (numara|ay|yıl|cvv)</label>
+                        <input type="text" class="form-control" id="adminCardData" placeholder="4111111111111111|12|25|123">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">API Seçin</label>
+                        <select class="form-control" id="adminApiSelect">
+                            <option value="stripe">Stripe API</option>
+                            <option value="paypal">PayPal API</option>
+                            <option value="binlist">Binlist API</option>
+                            <option value="exxen">Exxen API</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn btn-primary btn-lg" id="adminCheckCard">
+                        <i class="fas fa-play"></i>
+                        KARTI KONTROL ET
+                    </button>
+                </div>
+                
+                <div class="card" id="adminResultCard" style="display: none;">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-poll card-icon"></i>
+                            <span>Kontrol Sonucu</span>
+                        </div>
+                    </div>
+                    
+                    <div id="adminResultDetails"></div>
                 </div>
             </div>
             
@@ -1160,52 +1389,8 @@
                             <i class="fas fa-cogs card-icon"></i>
                             <span>Sistem Ayarları</span>
                         </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Günlük Kullanıcı Limitleri</label>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
-                            <div>
-                                <label style="color: #aaa; font-size: 0.9rem;">Beginner</label>
-                                <input type="number" class="form-control" value="1000">
-                            </div>
-                            <div>
-                                <label style="color: #aaa; font-size: 0.9rem;">Rookie</label>
-                                <input type="number" class="form-control" value="2500">
-                            </div>
-                            <div>
-                                <label style="color: #aaa; font-size: 0.9rem;">Pro</label>
-                                <input type="number" class="form-control" value="5000">
-                            </div>
-                            <div>
-                                <label style="color: #aaa; font-size: 0.9rem;">Expert</label>
-                                <input type="number" class="form-control" value="10000">
-                            </div>
-                            <div>
-                                <label style="color: #aaa; font-size: 0.9rem;">Master</label>
-                                <input type="number" class="form-control" value="20000">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">API Rate Limit (dakika başına)</label>
-                        <input type="number" class="form-control" value="15">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Kullanıcı Rate Limit (dakika başına)</label>
-                        <input type="number" class="form-control" value="30">
-                    </div>
-                    
-                    <button class="btn btn-primary">
-                        <i class="fas fa-save"></i>
-                        AYARLARI KAYDET
-                    </button>
-                </div>
-            </div>
-            
-            <div class="tab-content" id="admin-logout">
+                
+<div class="tab-content" id="admin-logout">
                 <div class="card" style="text-align: center;">
                     <div class="card-header">
                         <div class="card-title">
@@ -1229,8 +1414,8 @@
             </div>
         </div>
     </div>
-
-      <div class="notification" id="notification"></div>
+    
+    <div class="notification" id="notification"></div>
 
     <script>
         // Matrix Background
@@ -1267,7 +1452,7 @@
         // User data management
         let currentUser = null;
         let users = JSON.parse(localStorage.getItem('ccCheckerUsers')) || [];
-        let cardsChecked = JSON.parse(localStorage.getItem('ccCheckerCards')) || { total: 0, live: 0, dead: 0 };
+        let cardLogs = JSON.parse(localStorage.getItem('ccCheckerLogs')) || [];
         
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
@@ -1286,15 +1471,25 @@
                 showMainApp();
             }
             
+            // Password strength checker
+            document.getElementById('regPassword').addEventListener('input', checkPasswordStrength);
+            document.getElementById('profilePassword').addEventListener('input', checkProfilePasswordStrength);
+            
             // Register screen 1 -> 2
             document.getElementById('continueRegister').addEventListener('click', () => {
                 const firstName = document.getElementById('firstName').value;
                 const lastName = document.getElementById('lastName').value;
                 const username = document.getElementById('regUsername').value;
                 const email = document.getElementById('regEmail').value;
+                const password = document.getElementById('regPassword').value;
                 
-                if (!firstName || !lastName || !username || !email) {
+                if (!firstName || !lastName || !username || !email || !password) {
                     showNotification('Lütfen tüm alanları doldurun!', 'error');
+                    return;
+                }
+                
+                if (!isValidPassword(password)) {
+                    showNotification('Şifre gereksinimleri karşılamıyor!', 'error');
                     return;
                 }
                 
@@ -1326,6 +1521,7 @@
                 const lastName = document.getElementById('lastName').value;
                 const username = document.getElementById('regUsername').value;
                 const email = document.getElementById('regEmail').value;
+                const password = document.getElementById('regPassword').value;
                 
                 // Create new user
                 const newUser = {
@@ -1334,13 +1530,15 @@
                     lastName,
                     username,
                     email,
+                    password: btoa(password), // Simple encoding for demo
                     level: 1,
                     dailyChecks: 0,
                     totalChecks: 0,
                     liveChecks: 0,
                     deadChecks: 0,
                     joinDate: new Date().toLocaleDateString('tr-TR'),
-                    isBanned: false
+                    isBanned: false,
+                    isAdmin: false
                 };
                 
                 users.push(newUser);
@@ -1364,15 +1562,15 @@
                     return;
                 }
                 
-                if (password.length < 6) {
-                    showNotification('Şifre en az 6 karakter olmalıdır!', 'error');
-                    return;
-                }
-                
                 const user = users.find(u => u.username === loginInput || u.email === loginInput);
                 
                 if (!user) {
                     showNotification('Kullanıcı bulunamadı!', 'error');
+                    return;
+                }
+                
+                if (user.password !== btoa(password)) {
+                    showNotification('Şifre hatalı!', 'error');
                     return;
                 }
                 
@@ -1385,17 +1583,18 @@
                 localStorage.setItem('ccCheckerCurrentUser', JSON.stringify(currentUser));
                 
                 showNotification('Giriş başarılı!', 'success');
-                showMainApp();
+                
+                if (user.isAdmin) {
+                    showAdminPanel();
+                } else {
+                    showMainApp();
+                }
             });
             
             // Admin login
             document.getElementById('adminLoginBtn').addEventListener('click', () => {
                 document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('adminPanel').style.display = 'block';
-                document.getElementById('authScreens').style.display = 'none';
-                
-                // Load admin data
-                loadAdminData();
+                showAdminLogin();
             });
             
             // Single card check
@@ -1437,7 +1636,43 @@
                     button.disabled = false;
                     
                     // Check card with selected API
-                    checkCardWithAPI(cardData, api);
+                    checkCardWithAPI(cardData, api, currentUser.username);
+                    
+                }, 2000);
+            });
+            
+            // Admin card check
+            document.getElementById('adminCheckCard').addEventListener('click', () => {
+                const cardData = document.getElementById('adminCardData').value.trim();
+                const api = document.getElementById('adminApiSelect').value;
+                
+                if (!cardData) {
+                    showNotification('Lütfen kart bilgilerini girin!', 'error');
+                    return;
+                }
+                
+                if (!isValidCardFormat(cardData)) {
+                    showNotification('Geçersiz kart formatı! Format: numara|ay|yıl|cvv', 'error');
+                    return;
+                }
+                
+                // Show loading animation
+                const button = document.getElementById('adminCheckCard');
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> KONTROL EDİLİYOR...';
+                button.disabled = true;
+                
+                // Show result card
+                document.getElementById('adminResultCard').style.display = 'block';
+                
+                // Simulate API call with delay
+                setTimeout(() => {
+                    // Reset button
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                    
+                    // Check card with selected API
+                    checkCardWithAPI(cardData, api, 'ADMIN');
                     
                 }, 2000);
             });
@@ -1489,10 +1724,59 @@
                     document.getElementById('bulkErrorCount').textContent = '0';
                     
                     // Start bulk check
-                    simulateBulkCheck(cards, api);
+                    simulateBulkCheck(cards, api, currentUser.username);
                 };
                 
                 reader.readAsText(file);
+            });
+            
+            // Save profile
+            document.getElementById('saveProfile').addEventListener('click', () => {
+                if (!currentUser) return;
+                
+                const firstName = document.getElementById('profileFirstName').value;
+                const lastName = document.getElementById('profileLastName').value;
+                const username = document.getElementById('profileUsername').value;
+                const email = document.getElementById('profileEmail').value;
+                const password = document.getElementById('profilePassword').value;
+                const passwordConfirm = document.getElementById('profilePasswordConfirm').value;
+                
+                if (!firstName || !lastName || !username || !email) {
+                    showNotification('Lütfen tüm alanları doldurun!', 'error');
+                    return;
+                }
+                
+        if (password && !isValidPassword(password)) {
+                    showNotification('Şifre gereksinimleri karşılamıyor!', 'error');
+                    return;
+                }
+                
+                if (password && password !== passwordConfirm) {
+                    showNotification('Şifreler eşleşmiyor!', 'error');
+                    return;
+                }
+                
+                // Update user
+                const userIndex = users.findIndex(u => u.id === currentUser.id);
+                if (userIndex !== -1) {
+                    users[userIndex].firstName = firstName;
+                    users[userIndex].lastName = lastName;
+                    users[userIndex].username = username;
+                    users[userIndex].email = email;
+                    
+                    if (password) {
+                        users[userIndex].password = btoa(password);
+                    }
+                    
+                    localStorage.setItem('ccCheckerUsers', JSON.stringify(users));
+                    
+                    // Update current user
+                    currentUser = users[userIndex];
+                    localStorage.setItem('ccCheckerCurrentUser', JSON.stringify(currentUser));
+                    
+                    showNotification('Profil başarıyla güncellendi!', 'success');
+                    updateUserInfo();
+                }
             });
             
             // Logout
@@ -1550,8 +1834,78 @@
             
             return true;
         }
-
-      function maskCardNumber(cardData) {
+        
+        function isValidPassword(password) {
+            const minLength = 8;
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasLowerCase = /[a-z]/.test(password);
+            const hasNumbers = /\d/.test(password);
+            const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+            
+            return password.length >= minLength && hasUpperCase && hasLowerCase && hasNumbers && hasSpecialChar;
+        }
+        
+        function checkPasswordStrength() {
+            const password = document.getElementById('regPassword').value;
+            const strengthBar = document.getElementById('passwordStrength');
+            
+            if (password.length === 0) {
+                strengthBar.className = 'password-strength-fill';
+                return;
+            }
+            
+            let strength = 0;
+            
+            // Length check
+            if (password.length >= 8) strength++;
+            
+            // Character variety checks
+            if (/[a-z]/.test(password)) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^a-zA-Z0-9]/.test(password)) strength++;
+            
+            // Update strength bar
+            if (strength <= 2) {
+                strengthBar.className = 'password-strength-fill weak';
+            } else if (strength <= 4) {
+                strengthBar.className = 'password-strength-fill medium';
+            } else {
+                strengthBar.className = 'password-strength-fill strong';
+            }
+        }
+        
+        function checkProfilePasswordStrength() {
+            const password = document.getElementById('profilePassword').value;
+            const strengthBar = document.getElementById('profilePasswordStrength');
+            
+            if (password.length === 0) {
+                strengthBar.className = 'password-strength-fill';
+                return;
+            }
+            
+            let strength = 0;
+            
+            // Length check
+            if (password.length >= 8) strength++;
+            
+            // Character variety checks
+            if (/[a-z]/.test(password)) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^a-zA-Z0-9]/.test(password)) strength++;
+            
+            // Update strength bar
+            if (strength <= 2) {
+                strengthBar.className = 'password-strength-fill weak';
+            } else if (strength <= 4) {
+                strengthBar.className = 'password-strength-fill medium';
+            } else {
+                strengthBar.className = 'password-strength-fill strong';
+            }
+        }
+        
+        function maskCardNumber(cardData) {
             const parts = cardData.split('|');
             if (parts.length !== 4) return cardData;
             
@@ -1601,6 +1955,46 @@
             // Update user info
             updateUserInfo();
         }
+        function showAdminPanel() {
+            document.getElementById('authScreens').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            
+            // Load admin data
+            loadAdminData();
+        }
+        
+        function showAdminLogin() {
+            // Create admin user if not exists
+            if (!users.find(u => u.username === 'Sirin31')) {
+                const adminUser = {
+                    id: 1,
+                    firstName: 'Admin',
+                    lastName: 'User',
+                    username: 'Sirin31',
+                    email: 'admin@dearsiber.com',
+                    password: btoa('Sirin3131'),
+                    level: 5,
+                    dailyChecks: 0,
+                    totalChecks: 0,
+                    liveChecks: 0,
+                    deadChecks: 0,
+                    joinDate: new Date().toLocaleDateString('tr-TR'),
+                    isBanned: false,
+                    isAdmin: true
+                };
+                users.push(adminUser);
+                localStorage.setItem('ccCheckerUsers', JSON.stringify(users));
+            }
+            
+            // Auto-fill admin credentials
+            document.getElementById('loginUsername').value = 'Sirin31';
+            document.getElementById('loginPassword').value = 'Sirin3131';
+            
+            // Auto login as admin
+            const loginBtn = document.getElementById('loginBtn');
+            loginBtn.click();
+        }
         
         function showAuthScreens() {
             document.getElementById('authScreens').style.display = 'block';
@@ -1616,6 +2010,7 @@
             document.getElementById('lastName').value = '';
             document.getElementById('regUsername').value = '';
             document.getElementById('regEmail').value = '';
+            document.getElementById('regPassword').value = '';
             document.getElementById('authCode').value = '';
             document.getElementById('loginUsername').value = '';
             document.getElementById('loginPassword').value = '';
@@ -1664,69 +2059,165 @@
             document.getElementById('statDailyLimit').textContent = dailyLimit;
             document.getElementById('statRemainingLimit').textContent = dailyLimit - currentUser.dailyChecks;
             document.getElementById('statUsedLimit').textContent = currentUser.dailyChecks;
+            
+            // Profile tab
+            document.getElementById('profileFirstName').value = currentUser.firstName;
+            document.getElementById('profileLastName').value = currentUser.lastName;
+            document.getElementById('profileUsername').value = currentUser.username;
+            document.getElementById('profileEmail').value = currentUser.email;
         }
         
-        function checkCardWithAPI(cardData, api) {
+        function checkCardWithAPI(cardData, api, username) {
             // In a real application, this would make actual API calls
-            // For demo, we'll simulate API responses
+            // For demo, we'll simulate API responses with realistic data
+            
+            const cardNumber = cardData.split('|')[0];
+            const cardTypes = ['Visa', 'MasterCard', 'American Express', 'Discover'];
+            const banks = ['Akbank', 'Garanti BBVA', 'İş Bankası', 'Yapı Kredi', 'Ziraat Bankası'];
+            const countries = ['Türkiye', 'ABD', 'Almanya', 'İngiltere', 'Fransa'];
             
             const results = {
                 stripe: [
-                    { status: 'live', message: 'Kart aktif ve çalışıyor' },
-                    { status: 'dead', message: 'Geçersiz kart numarası' },
-                    { status: 'error', message: 'API bağlantı hatası' }
+                    { 
+                        status: 'live', 
+                        message: 'Kart aktif ve çalışıyor',
+                        details: {
+                            country: countries[Math.floor(Math.random() * countries.length)],
+                            bank: banks[Math.floor(Math.random() * banks.length)],
+                            type: cardTypes[Math.floor(Math.random() * cardTypes.length)],
+                            owner: `${currentUser?.firstName || 'ADMIN'} ${currentUser?.lastName || 'USER'}`
+                        }
+                    },
+                    { 
+                        status: 'dead', 
+                        message: 'Geçersiz kart numarası',
+                        details: null
+                    },
+                    { 
+                        status: 'error', 
+                        message: 'API bağlantı hatası',
+                        details: null
+                    }
                 ],
                 paypal: [
-                    { status: 'live', message: 'Kart doğrulandı' },
-                    { status: 'dead', message: 'Kart reddedildi' },
-                    { status: 'error', message: 'PayPal API hatası' }
+                    { 
+                        status: 'live', 
+                        message: 'Kart doğrulandı',
+                        details: {
+                            country: countries[Math.floor(Math.random() * countries.length)],
+                            bank: banks[Math.floor(Math.random() * banks.length)],
+                            type: cardTypes[Math.floor(Math.random() * cardTypes.length)],
+                            owner: `${currentUser?.firstName || 'ADMIN'} ${currentUser?.lastName || 'USER'}`
+                        }
+                    },
+                    { 
+                        status: 'dead', 
+                        message: 'Kart reddedildi',
+                        details: null
+                    },
+                    { 
+                        status: 'error', 
+                        message: 'PayPal API hatası',
+                        details: null
+                    }
                 ],
                 binlist: [
-                    { status: 'live', message: 'Kart bilgileri doğru' },
-                    { status: 'dead', message: 'Geçersiz BIN' },
-                    { status: 'error', message: 'Binlist API hatası' }
+                    { 
+                        status: 'live', 
+                        message: 'Kart bilgileri doğru',
+                        details: {
+                            country: countries[Math.floor(Math.random() * countries.length)],
+                            bank: banks[Math.floor(Math.random() * banks.length)],
+                            type: cardTypes[Math.floor(Math.random() * cardTypes.length)],
+                            owner: `${currentUser?.firstName || 'ADMIN'} ${currentUser?.lastName || 'USER'}`
+                        }
+                    },
+                    { 
+                        status: 'dead', 
+                        message: 'Geçersiz BIN',
+                        details: null
+                    },
+                    { 
+                        status: 'error', 
+                        message: 'Binlist API hatası',
+                        details: null
+                    }
                 ],
                 exxen: [
-                    { status: 'live', message: 'Kart Exxen için uygun' },
-                    { status: 'dead', message: 'Kart Exxen için uygun değil' },
-                    { status: 'error', message: 'Exxen API hatası' }
+                    { 
+                        status: 'live', 
+                        message: 'Kart Exxen için uygun',
+                        details: {
+                            country: countries[Math.floor(Math.random() * countries.length)],
+                            bank: banks[Math.floor(Math.random() * banks.length)],
+                            type: cardTypes[Math.floor(Math.random() * cardTypes.length)],
+                            owner: `${currentUser?.firstName || 'ADMIN'} ${currentUser?.lastName || 'USER'}`
+                        }
+                    },
+                    { 
+                        status: 'dead', 
+                        message: 'Kart Exxen için uygun değil',
+                        details: null
+                    },
+                    { 
+                        status: 'error', 
+                        message: 'Exxen API hatası',
+                        details: null
+                    }
                 ]
             };
             
             const apiResults = results[api] || results.stripe;
             const result = apiResults[Math.floor(Math.random() * apiResults.length)];
             
-            // Update user stats
-            currentUser.dailyChecks++;
-            currentUser.totalChecks++;
+            // Log the check
+            const logEntry = {
+                id: Date.now(),
+                timestamp: new Date().toLocaleString('tr-TR'),
+                username: username,
+                cardData: maskCardNumber(cardData),
+                api: api,
+                status: result.status,
+                message: result.message,
+                details: result.details
+            };
             
-            if (result.status === 'live') {
-                currentUser.liveChecks++;
-                document.getElementById('liveCount').textContent = 
-                    parseInt(document.getElementById('liveCount').textContent) + 1;
-            } else if (result.status === 'dead') {
-                currentUser.deadChecks++;
-                document.getElementById('deadCount').textContent = 
-                    parseInt(document.getElementById('deadCount').textContent) + 1;
-            } else {
-                document.getElementById('errorCount').textContent = 
-                    parseInt(document.getElementById('errorCount').textContent) + 1;
+            cardLogs.unshift(logEntry);
+            localStorage.setItem('ccCheckerLogs', JSON.stringify(cardLogs));
+            
+            // Update user stats (if not admin)
+            if (currentUser && !currentUser.isAdmin) {
+                currentUser.dailyChecks++;
+                currentUser.totalChecks++;
+                
+                if (result.status === 'live') {
+                    currentUser.liveChecks++;
+                    document.getElementById('liveCount').textContent = 
+                        parseInt(document.getElementById('liveCount').textContent) + 1;
+                } else if (result.status === 'dead') {
+                    currentUser.deadChecks++;
+                    document.getElementById('deadCount').textContent = 
+                        parseInt(document.getElementById('deadCount').textContent) + 1;
+                } else {
+                    document.getElementById('errorCount').textContent = 
+                        parseInt(document.getElementById('errorCount').textContent) + 1;
+                }
+                
+                // Save user data
+                const userIndex = users.findIndex(u => u.id === currentUser.id);
+                if (userIndex !== -1) {
+                    users[userIndex] = currentUser;
+                    localStorage.setItem('ccCheckerUsers', JSON.stringify(users));
+                    localStorage.setItem('ccCheckerCurrentUser', JSON.stringify(currentUser));
+                }
             }
-            
-            // Save user data
-            const userIndex = users.findIndex(u => u.id === currentUser.id);
-            if (userIndex !== -1) {
-                users[userIndex] = currentUser;
-                localStorage.setItem('ccCheckerUsers', JSON.stringify(users));
-                localStorage.setItem('ccCheckerCurrentUser', JSON.stringify(currentUser));
-            }
-            
-            // Show result details
+
+      // Show result details
             const statusIcon = result.status === 'live' ? '✅' : result.status === 'dead' ? '❌' : '⚠️';
             const statusText = result.status === 'live' ? 'CANLI' : result.status === 'dead' ? 'ÖLÜ' : 'HATA';
             const statusColor = result.status === 'live' ? 'var(--success-color)' : result.status === 'dead' ? 'var(--error-color)' : 'var(--warning-color)';
             
-            document.getElementById('resultDetails').innerHTML = `
+            let resultHTML = `
                 <div style="padding: 15px; border-radius: 8px; background: rgba(0, 0, 0, 0.5); border-left: 4px solid ${statusColor};">
                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                         <span style="font-size: 1.5rem;">${statusIcon}</span>
@@ -1737,15 +2228,48 @@
                     <div style="margin-top: 10px; font-size: 0.9rem; color: #aaa;">
                         Kart: ${maskCardNumber(cardData)}
                     </div>
-                </div>
             `;
-              showNotification(`Kart kontrolü tamamlandı: ${statusText}`, result.status === 'live' ? 'success' : result.status === 'dead' ? 'error' : 'warning');
+            
+            if (result.details) {
+                resultHTML += `
+                    <div class="card-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Ülke:</span>
+                            <span class="detail-value">${result.details.country}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Banka:</span>
+                            <span class="detail-value">${result.details.bank}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Kart Türü:</span>
+                            <span class="detail-value">${result.details.type}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Sahip:</span>
+                            <span class="detail-value">${result.details.owner}</span>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            resultHTML += `</div>`;
+            
+            if (currentUser && currentUser.isAdmin) {
+                document.getElementById('adminResultDetails').innerHTML = resultHTML;
+            } else {
+                document.getElementById('resultDetails').innerHTML = resultHTML;
+            }
+            
+            showNotification(`Kart kontrolü tamamlandı: ${statusText}`, result.status === 'live' ? 'success' : result.status === 'dead' ? 'error' : 'warning');
             
             // Update user stats display
-            updateUserInfo();
+            if (currentUser && !currentUser.isAdmin) {
+                updateUserInfo();
+            }
         }
         
-        function simulateBulkCheck(cards, api) {
+        function simulateBulkCheck(cards, api, username) {
             const totalCards = cards.length;
             let processed = 0;
             let liveCount = 0;
@@ -1758,21 +2282,23 @@
                     showNotification(`Toplu kontrol tamamlandı! ${liveCount} canlı, ${deadCount} ölü, ${errorCount} hata`, 'success');
                     
                     // Update user stats
-                    currentUser.dailyChecks += totalCards;
-                    currentUser.totalChecks += totalCards;
-                    currentUser.liveChecks += liveCount;
-                    currentUser.deadChecks += deadCount;
-                    
-                    // Save user data
-                    const userIndex = users.findIndex(u => u.id === currentUser.id);
-                    if (userIndex !== -1) {
-                        users[userIndex] = currentUser;
-                        localStorage.setItem('ccCheckerUsers', JSON.stringify(users));
-                        localStorage.setItem('ccCheckerCurrentUser', JSON.stringify(currentUser));
+                    if (currentUser && !currentUser.isAdmin) {
+                        currentUser.dailyChecks += totalCards;
+                        currentUser.totalChecks += totalCards;
+                        currentUser.liveChecks += liveCount;
+                        currentUser.deadChecks += deadCount;
+                        
+                        // Save user data
+                        const userIndex = users.findIndex(u => u.id === currentUser.id);
+                        if (userIndex !== -1) {
+                            users[userIndex] = currentUser;
+                            localStorage.setItem('ccCheckerUsers', JSON.stringify(users));
+                            localStorage.setItem('ccCheckerCurrentUser', JSON.stringify(currentUser));
+                        }
+                        
+                        // Update user stats display
+                        updateUserInfo();
                     }
-                    
-                    // Update user stats display
-                    updateUserInfo();
                     
                     return;
                 }
@@ -1798,6 +2324,21 @@
                         errorCount++;
                         document.getElementById('bulkErrorCount').textContent = errorCount;
                     }
+                    
+                    // Log the check
+                    const logEntry = {
+                        id: Date.now() + processed,
+                        timestamp: new Date().toLocaleString('tr-TR'),
+                        username: username,
+                        cardData: maskCardNumber(cards[processed - 1]),
+                        api: api,
+                        status: result,
+                        message: result === 'live' ? 'Kart aktif' : result === 'dead' ? 'Kart ölü' : 'API hatası',
+                        details: null
+                    };
+                    
+                    cardLogs.unshift(logEntry);
+                    localStorage.setItem('ccCheckerLogs', JSON.stringify(cardLogs));
                     
                     // Process next card
                     processNextCard();
@@ -1832,13 +2373,13 @@
                         </span>
                     </td>
                     <td style="padding: 10px;">
-                        <button class="btn btn-secondary" style="padding: 5px 10px; margin: 2px;" onclick="adminChangeLevel(${user.id}, ${user.level + 1})">
+                        <button class="btn btn-secondary" style="padding: 5px 10px; margin: 2px; font-size: 0.8rem;" onclick="adminChangeLevel(${user.id}, ${user.level + 1})">
                             <i class="fas fa-arrow-up"></i>
                         </button>
-                        <button class="btn btn-secondary" style="padding: 5px 10px; margin: 2px;" onclick="adminChangeLevel(${user.id}, ${user.level - 1})">
+                        <button class="btn btn-secondary" style="padding: 5px 10px; margin: 2px; font-size: 0.8rem;" onclick="adminChangeLevel(${user.id}, ${user.level - 1})">
                             <i class="fas fa-arrow-down"></i>
                         </button>
-                        <button class="btn ${user.isBanned ? 'btn-primary' : 'btn-secondary'}" style="padding: 5px 10px; margin: 2px;" onclick="adminToggleBan(${user.id})">
+                        <button class="btn ${user.isBanned ? 'btn-primary' : 'btn-secondary'}" style="padding: 5px 10px; margin: 2px; font-size: 0.8rem;" onclick="adminToggleBan(${user.id})">
                             <i class="fas ${user.isBanned ? 'fa-unlock' : 'fa-ban'}"></i>
                         </button>
                     </td>
@@ -1853,12 +2394,48 @@
             const successRate = totalChecks > 0 ? Math.round((liveChecks / totalChecks) * 100) : 0;
             const todayChecks = users.reduce((sum, user) => sum + user.dailyChecks, 0);
             
+            // Level distribution
+            const level1 = users.filter(u => u.level === 1).length;
+            const level2 = users.filter(u => u.level === 2).length;
+            const level3 = users.filter(u => u.level === 3).length;
+            const level4 = users.filter(u => u.level === 4).length;
+            const level5 = users.filter(u => u.level === 5).length;
+            
             document.getElementById('adminTotalUsers').textContent = totalUsers;
             document.getElementById('adminTotalChecks').textContent = totalChecks;
             document.getElementById('adminLiveCards').textContent = liveChecks;
             document.getElementById('adminSuccessRate').textContent = `${successRate}%`;
             document.getElementById('adminTodayChecks').textContent = todayChecks;
             document.getElementById('adminTodayProgress').style.width = `${Math.min(100, (todayChecks / 10000) * 100)}%`;
+            
+            document.getElementById('adminLevel1').textContent = level1;
+            document.getElementById('adminLevel2').textContent = level2;
+            document.getElementById('adminLevel3').textContent = level3;
+            document.getElementById('adminLevel4').textContent = level4;
+            document.getElementById('adminLevel5').textContent = level5;
+            
+            // Load logs
+            const logList = document.getElementById('logList');
+            logList.innerHTML = '';
+            
+            cardLogs.slice(0, 50).forEach(log => {
+                const row = document.createElement('tr');
+                row.style.borderBottom = '1px solid rgba(0, 255, 0, 0.1)';
+                
+                const statusColor = log.status === 'live' ? 'var(--success-color)' : log.status === 'dead' ? 'var(--error-color)' : 'var(--warning-color)';
+                const statusIcon = log.status === 'live' ? '✅' : log.status === 'dead' ? '❌' : '⚠️';
+                
+                row.innerHTML = `
+                    <td style="padding: 10px; font-size: 0.9rem;">${log.timestamp}</td>
+                    <td style="padding: 10px; font-size: 0.9rem;">${log.username}</td>
+                    <td style="padding: 10px; font-size: 0.9rem;">${log.cardData}</td>
+                    <td style="padding: 10px; font-size: 0.9rem;">
+                        <span style="color: ${statusColor}">${statusIcon} ${log.status.toUpperCase()}</span>
+                    </td>
+                    <td style="padding: 10px; font-size: 0.9rem;">${log.api}</td>
+                `;
+                logList.appendChild(row);
+            });
         }
         
         // Admin functions
@@ -1885,7 +2462,7 @@
         };
         
         // Add some floating animations to elements
-        document.querySelectorAll('.logo-icon, .user-avatar, .card-icon').forEach(el => {
+        document.querySelectorAll('.logo-icon, .user-avatar, .card-icon, .profile-avatar').forEach(el => {
             el.classList.add('floating');
         });
     </script>
