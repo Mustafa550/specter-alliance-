@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BERKESANAL FreeByte Tool</title>
+    <title>DearSiber FreeByte </title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-md5/0.8.3/md5.min.js"></script>
     <style>
@@ -103,7 +103,7 @@
 ⠀⠀⠈⠻⢦⣀⠙⣷⡀⠀⣿⣿⣿⣿⣿⣿⡇⢀⣸⠏⣀⣴⠞⠁⠀⠀<br>
 ⠀⠀⠀⠀⠈⠙⠛⠿⡿⣦⣿⣿⣿⣿⣿⣿⣷⢿⡿⠟⠛⠀⠀⠀⠀⠀
         </div>
-        <h1 class="berkesanal-title text-center">BERKESANAL</h1>
+        <h1 class="ZAZA-title text-center">DEARSİBER</h1>
         <p class="small-text text-center">1 GB APP Günlük 50 FreeByte Tool</p>
         <div class="space-y-4">
             <div>
@@ -251,7 +251,7 @@
                     }
                 } else {
                     const limitMessage = startData?.code === "daily_limit_reached" 
-                        ? "Günlük FreeByte limitin doldu! Yarın yine gel, @berkeinternet'le uç! 😎"
+                        ? "Günlük FreeByte limitin doldu! Yarın yine gel, @DearSiber'le uç! 😎"
                         : `Limit doldu ⛔ (Status: ${startStatus}) - Detay: ${startData?.message || startText || 'API yanıt vermiyor'}`;
                     log(limitMessage, "text-red-400", startData?.code === "daily_limit_reached");
                     console.error('Start hatası:', startData || startText);
@@ -311,7 +311,7 @@
                     console.error('Giriş hatası:', data || text);
                 }
             } catch (e) {
-                log("Hata: " + e.message + " (API erişilemez ⛔ - Endpoint eski, @berkeinternet'e yeni tool sor!)", "text-red-400");
+                log("Hata: " + e.message + " (API erişilemez ⛔ - Endpoint eski, @DearSiber'e yeni tool sor!)", "text-red-400");
                 console.error('Giriş hatası:', e);
             } finally {
                 toggleLoading(false);
