@@ -3,2468 +3,320 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CC CHECKER PRO | DearSiber</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>BERKESANAL FreeByte Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-md5/0.8.3/md5.min.js"></script>
     <style>
-        :root {
-            --primary-color: #00ff00;
-            --primary-dark: #00cc00;
-            --primary-light: #33ff33;
-            --secondary-color: #000000;
-            --accent-color: #00ff88;
-            --text-color: #ffffff;
-            --card-bg: rgba(0, 0, 0, 0.7);
-            --card-border: rgba(0, 255, 0, 0.3);
-            --success-color: #00ff00;
-            --error-color: #ff3333;
-            --warning-color: #ffff00;
-            --glow-color: rgba(0, 255, 0, 0.7);
+        .ascii-art {
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre;
+            color: #10B981;
+            background-color: #1F2937;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            animation: glow 1.5s ease-in-out infinite alternate;
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Courier New', monospace;
+        .berkesanal-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: #10B981;
+            text-shadow: 0 0 10px #10B981, 0 0 20px #10B981, 0 0 30px #10B981;
+            animation: neon 1.5s ease-in-out infinite alternate;
         }
-        
+        .small-text {
+            font-family: 'Roboto', sans-serif;
+            font-size: 0.9rem;
+            color: #D1D5DB;
+        }
         body {
-            background: linear-gradient(135deg, #000000 0%, #001a00 100%);
-            color: var(--text-color);
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
+            background-color: #111827;
+            color: #F9FAFB;
         }
-        
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(0, 255, 0, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(0, 255, 0, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(0, 255, 0, 0.05) 0%, transparent 50%);
-            z-index: -1;
+        .output {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #1F2937;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            min-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #10B981;
         }
-        
-        .matrix-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.1;
-            pointer-events: none;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        /* Header Styles */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-            border-bottom: 1px solid var(--primary-color);
-            margin-bottom: 30px;
-            position: relative;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .logo-icon {
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            text-shadow: 0 0 10px var(--glow-color);
-            animation: pulse 2s infinite;
-        }
-        
-        .logo-text {
-            font-size: 1.8rem;
-            font-weight: bold;
-            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .user-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            border: 2px solid var(--primary-color);
-            box-shadow: 0 0 15px var(--glow-color);
-        }
-        
-        .user-details {
-            text-align: right;
-        }
-        
-        .username {
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-        
-        .user-level {
-            font-size: 0.9rem;
-            color: var(--accent-color);
-        }
-        
-        /* Card Styles */
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-        
-        .card:hover {
-            box-shadow: 0 0 25px var(--glow-color);
-            transform: translateY(-5px);
-        }
-        
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(0, 255, 0, 0.3);
-        }
-        
-        .card-title {
-            font-size: 1.4rem;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .card-icon {
-            font-size: 1.5rem;
-        }
-        
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        
-        .stat-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 15px var(--glow-color);
-        }
-        
-        .stat-value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--primary-color);
-            margin: 10px 0;
-        }
-        
-        .stat-label {
-            font-size: 0.9rem;
-            color: #cccccc;
-        }
-        
-        /* Progress Bar */
-        .progress-container {
-            margin: 15px 0;
-        }
-        
-        .progress-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-        }
-        
-        .progress-bar {
-            height: 10px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(to right, var(--primary-dark), var(--primary-color));
-            border-radius: 5px;
-            transition: width 1s ease;
-            position: relative;
-        }
-        
-        .progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            animation: shimmer 2s infinite;
-        }
-        
-        /* Button Styles */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px 24px;
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-            color: var(--secondary-color);
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: left 0.5s;
-        }
-        
-        .btn:hover::before {
-            left: 100%;
-        }
-        
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.4);
+            transform: scale(1.05);
+            transition: transform 0.2s ease-in-out;
+            box-shadow: 0 0 15px #10B981;
         }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        .retry-btn:hover {
+            transform: scale(1.05);
+            transition: transform 0.2s ease-in-out;
+            box-shadow: 0 0 15px #EF4444;
         }
-        
-        .btn-secondary {
-            background: transparent;
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
+        .limit-warning {
+            animation: neon-red 1.5s ease-in-out infinite alternate;
         }
-        
-        .btn-lg {
-            padding: 15px 30px;
-            font-size: 1.1rem;
-        }
-        
-        /* Form Styles */
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--primary-color);
-            font-weight: bold;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--card-border);
-            border-radius: 5px;
-            color: var(--text-color);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-  .form-control:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 10px var(--glow-color);
-        }
-        
-        /* Result Boxes */
-        .result-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .result-box {
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-        
-        .result-live {
-            background: rgba(0, 255, 0, 0.1);
-            border: 1px solid var(--success-color);
-            color: var(--success-color);
-            animation: pulse-green 2s infinite;
-        }
-        
-        .result-dead {
-            background: rgba(255, 51, 51, 0.1);
-            border: 1px solid var(--error-color);
-            color: var(--error-color);
-        }
-        
-        .result-error {
-            background: rgba(255, 255, 0, 0.1);
-            border: 1px solid var(--warning-color);
-            color: var(--warning-color);
-        }
-        
-        /* Tabs */
-        .tabs {
-            display: flex;
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--card-border);
-        }
-        
-        .tab {
-            padding: 12px 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-bottom: 3px solid transparent;
-            flex: 1;
-            text-align: center;
-        }
-        
-        .tab.active {
-            color: var(--primary-color);
-            border-bottom: 3px solid var(--primary-color);
-        }
-        
-        .tab-content {
+        .loading {
             display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        /* Auth Screens */
-        .auth-screen {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 80vh;
-        }
-        
-        .auth-card {
-            width: 100%;
-            max-width: 500px;
-            padding: 30px;
-        }
-        
-        /* Animations */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
-        @keyframes pulse-green {
-            0% { box-shadow: 0 0 5px var(--success-color); }
-            50% { box-shadow: 0 0 20px var(--success-color); }
-            100% { box-shadow: 0 0 5px var(--success-color); }
-        }
-        
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes glow {
-            0% { text-shadow: 0 0 5px var(--glow-color); }
-            50% { text-shadow: 0 0 20px var(--glow-color), 0 0 30px var(--glow-color); }
-            100% { text-shadow: 0 0 5px var(--glow-color); }
-        }
-        
-        @keyframes matrix {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100%); }
-        }
-        
-        /* Footer */
-        footer {
             text-align: center;
-            padding: 30px 0;
-            margin-top: 50px;
-            border-top: 1px solid var(--card-border);
-            color: #888;
+            color: #10B981;
         }
-        
-        .footer-logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-bottom: 10px;
-            animation: glow 3s infinite;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            header {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .user-info {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .tabs {
-                flex-wrap: wrap;
-            }
-            
-            .tab {
-                flex: 1 0 50%;
-            }
-        }
-        
-        /* Special Elements */
-        .glowing-text {
-            animation: glow 3s infinite;
-        }
-        
-        .floating {
-            animation: floating 3s ease-in-out infinite;
-        }
-        
-        @keyframes floating {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-        
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            border-radius: 5px;
-            color: white;
-            z-index: 1000;
-            transform: translateX(150%);
-            transition: transform 0.5s ease;
-        }
-        
-        .notification.show {
-            transform: translateX(0);
-        }
-        
-        .notification.success {
-            background: var(--success-color);
-        }
-        
-        .notification.error {
-            background: var(--error-color);
-        }
-        
-        .notification.warning {
-            background: var(--warning-color);
-            color: #000;
-        }
-        
-        .level-badge {
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            margin-left: 10px;
-        }
-        
-        .level-1 { background: #666; }
-        .level-2 { background: #00aa00; }
-        .level-3 { background: #0066ff; }
-        .level-4 { background: #9900ff; }
-        .level-5 { background: #ffcc00; color: #000; }
-        
-        .admin-panel {
-            display: none;
-        }
-        
-        .matrix-char {
-            position: absolute;
-            color: var(--primary-color);
-            font-family: monospace;
-            animation: matrix 5s linear infinite;
-            opacity: 0.7;
-        }
-        
-        .card-details {
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 15px;
-            border-left: 4px solid var(--success-color);
-        }
-        
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 5px 0;
-            border-bottom: 1px solid rgba(0, 255, 0, 0.1);
-        }
-        
-        .detail-row:last-child {
-            border-bottom: none;
-        }
-        
-        .detail-label {
-            color: #aaa;
-        }
-        
-        .detail-value {
-            color: var(--primary-color);
-            font-weight: bold;
-        }
-        
-        .profile-avatar {
-            width: 100px;
-            height: 100px;
+        .spinner {
+            border: 2px solid #10B981;
+            border-top: none;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            margin: 0 auto 20px;
-            border: 3px solid var(--primary-color);
-            box-shadow: 0 0 20px var(--glow-color);
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
         }
-        
-        .password-strength {
-            height: 5px;
-            background: #333;
-            border-radius: 3px;
-            margin-top: 5px;
-            overflow: hidden;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-        
-        .password-strength-fill {
-            height: 100%;
-            transition: width 0.3s ease;
+        @keyframes neon {
+            from { text-shadow: 0 0 5px #10B981, 0 0 10px #10B981, 0 0 15px #10B981; }
+            to { text-shadow: 0 0 10px #10B981, 0 0 20px #10B981, 0 0 30px #10B981; }
         }
-        
-        .weak { background: var(--error-color); width: 33%; }
-        .medium { background: var(--warning-color); width: 66%; }
-        .strong { background: var(--success-color); width: 100%; }
+        @keyframes neon-red {
+            from { text-shadow: 0 0 5px #EF4444, 0 0 10px #EF4444; }
+            to { text-shadow: 0 0 10px #EF4444, 0 0 20px #EF4444; }
+        }
+        @keyframes glow {
+            from { box-shadow: 0 0 5px #10B981; }
+            to { box-shadow: 0 0 15px #10B981; }
+        }
     </style>
 </head>
-<body>
-    <div class="matrix-bg" id="matrixBg"></div>
-    
-    <!-- Authentication Screens -->
-    <div id="authScreens">
-        <!-- Register Screen 1 -->
-        <div class="auth-screen" id="registerScreen1">
-            <div class="card auth-card">
-                <div class="card-header">
-                    <div class="card-title">
-                        <i class="fas fa-user-plus card-icon"></i>
-                        <span>KAYIT OL - 1/2</span>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Adınız</label>
-                    <input type="text" class="form-control" id="firstName" placeholder="Adınızı girin">
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Soyadınız</label>
-                    <input type="text" class="form-control" id="lastName" placeholder="Soyadınızı girin">
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Kullanıcı Adı</label>
-                    <input type="text" class="form-control" id="regUsername" placeholder="Kullanıcı adınızı girin">
-                </div>
-
-        <div class="form-group">
-                    <label class="form-label">E-posta</label>
-                    <input type="email" class="form-control" id="regEmail" placeholder="E-posta adresinizi girin">
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Şifre</label>
-                    <input type="password" class="form-control" id="regPassword" placeholder="Şifrenizi girin">
-                    <div class="password-strength">
-                        <div class="password-strength-fill" id="passwordStrength"></div>
-                    </div>
-                    <small style="color: #aaa; display: block; margin-top: 5px;">
-                        Şifre en az 8 karakter, bir büyük harf, bir küçük harf, bir rakam ve bir özel karakter içermelidir
-                    </small>
-                </div>
-                
-                <button class="btn btn-primary" id="continueRegister">
-                    <i class="fas fa-arrow-right"></i>
-                    DEVAM ET
-                </button>
-                
-                <div style="text-align: center; margin-top: 20px;">
-                    <span>Zaten hesabınız var mı? </span>
-                    <a href="#" id="goToLogin" style="color: var(--primary-color);">Giriş Yap</a>
-                </div>
-            </div>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-md w-full space-y-6">
+        <div class="ascii-art">
+⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣤⣤⣤⣤⣤⣤⣄⣀⡀⠀⠀⠀⠀⠀⠀⠀<br>
+⠀⠀⠀⢀⣠⡴⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏⢻⣟⡳⠶⣄⠀⠀⠀⠀<br>
+⠀⠀⣰⠟⠉⠀⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠸⣧⠀⠉⠻⣆⠀⠀<br>
+⠀⣼⠿⠶⠲⢶⡿⠿⠻⠿⣿⣿⣿⣿⣿⣿⡶⠖⠶⠿⡶⠶⠲⠟⣷⡀<br>
+⣨⡏⠀⠀⠀⣸⡃⠀⠀⠀⣿⣿⣿⣿⣿⣿⡇⠀⠀⠘⣿⠀⠀⠀⢘⣇<br>
+⣾⣄⣀⣀⣠⣿⣅⣀⣀⣤⣿⣿⣿⣿⣿⣿⣇⣀⣀⣤⣿⣄⣀⣀⣤⣿<br>
+⣻⡀⠀⠀⠀⣿⠄⠀⠀⠀⣿⣿⣿⣿⣿⣿⡆⠀⠀⠀⣿⠀⠀⠀⢀⣿<br>
+⠘⣷⠀⠀⠀⢼⡆⠀⠀⠀⣿⣿⣿⣿⣿⣿⡇⠀⠀⢰⡿⠀⠀⠀⣸⠃<br>
+⠀⠘⢿⡿⠿⠟⣿⠿⠿⠟⣿⣿⣿⣿⣿⣿⡿⠿⠟⣿⠿⠿⠿⣿⠟⠀<br>
+⠀⠀⠈⠻⢦⣀⠙⣷⡀⠀⣿⣿⣿⣿⣿⣿⡇⢀⣸⠏⣀⣴⠞⠁⠀⠀<br>
+⠀⠀⠀⠀⠈⠙⠛⠿⡿⣦⣿⣿⣿⣿⣿⣿⣷⢿⡿⠟⠛⠀⠀⠀⠀⠀
         </div>
-        
-        <!-- Register Screen 2 -->
-        <div class="auth-screen" id="registerScreen2" style="display: none;">
-            <div class="card auth-card">
-                <div class="card-header">
-                    <div class="card-title">
-                        <i class="fas fa-shield-alt card-icon"></i>
-                        <span>KAYIT OL - 2/2</span>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Doğrulama Kodu</label>
-                    <input type="text" class="form-control" id="authCode" placeholder="6 haneli kodu girin" maxlength="6">
-                    <small style="color: #aaa; display: block; margin-top: 5px;">Sistem tarafından oluşturulan 6 haneli kod</small>
-                </div>
-                
-                <div id="generatedCode" style="text-align: center; margin: 20px 0; padding: 15px; background: rgba(0, 255, 0, 0.1); border-radius: 5px; border: 1px solid var(--primary-color); font-size: 1.5rem; font-weight: bold; letter-spacing: 5px;">
-                    123456
-                </div>
-                
-                <button class="btn btn-primary" id="completeRegister">
-                    <i class="fas fa-check"></i>
-                    KAYDI TAMAMLA
-                </button>
-                
-                <div style="text-align: center; margin-top: 20px;">
-                    <a href="#" id="backToRegister1" style="color: var(--primary-color);">← Geri Dön</a>
-                </div>
+        <h1 class="berkesanal-title text-center">BERKESANAL</h1>
+        <p class="small-text text-center">1 GB APP Günlük 50 FreeByte Tool</p>
+        <div class="space-y-4">
+            <div>
+                <label for="msisdn" class="block small-text text-gray-300">Telefon Numarası (905xxxxxxxxx)</label>
+                <input type="text" id="msisdn" class="mt-1 block w-full p-2 rounded-md bg-gray-700 border-gray-600 text-white focus:ring-green-500 focus:border-green-500" placeholder="905xxxxxxxxx">
             </div>
-        </div>
-        
-        <!-- Login Screen -->
-        <div class="auth-screen" id="loginScreen" style="display: none;">
-            <div class="card auth-card">
-                <div class="card-header">
-                    <div class="card-title">
-                        <i class="fas fa-sign-in-alt card-icon"></i>
-                        <span>GİRİŞ YAP</span>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Kullanıcı Adı veya E-posta</label>
-                    <input type="text" class="form-control" id="loginUsername" placeholder="Kullanıcı adı veya e-posta">
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Şifre</label>
-                    <input type="password" class="form-control" id="loginPassword" placeholder="Şifrenizi girin">
-                    <small style="color: #aaa; display: block; margin-top: 5px;">Şifre en az 8 karakter olmalıdır</small>
-                </div>
-                
-                <button class="btn btn-primary" id="loginBtn">
-                    <i class="fas fa-lock-open"></i>
-                    GİRİŞ YAP
-                </button>
-                
-                <div style="text-align: center; margin-top: 20px;">
-                    <span>Hesabınız yok mu? </span>
-                    <a href="#" id="goToRegister" style="color: var(--primary-color);">Kayıt Ol</a>
-                </div>
-                
-                <!-- Admin Login Button -->
-                <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(0, 255, 0, 0.3);">
-                    <button class="btn btn-secondary" id="adminLoginBtn">
-                        <i class="fas fa-crown"></i>
-                        ADMIN GİRİŞİ
-                    </button>
-                </div>
+            <div>
+                <label for="pin" class="block small-text text-gray-300">PIN</label>
+                <input type="password" id="pin" class="mt-1 block w-full p-2 rounded-md bg-gray-700 border-gray-600 text-white focus:ring-green-500 focus:border-green-500" placeholder="PIN girin">
             </div>
+            <button id="girisBtn" onclick="giris()" class="btn w-full py-2 px-4 bg-green-600 text-white rounded-md hover:bg-green-700">Giriş Yap</button>
+            <button id="retryBtn" onclick="giris()" class="retry-btn w-full py-2 px-4 bg-red-600 text-white rounded-md hover:bg-red-700 hidden">Yarın Tekrar Dene</button>
+            <div id="loading" class="loading">⚡ İşlem devam ediyor... <span class="spinner"></span></div>
         </div>
+        <div id="output" class="output"></div>
+        <p class="small-text text-center mt-4">Dev: <a href="https://t.me/berkeinternet" target="_blank" class="text-green-400 hover:text-green-300">@berkeinternet</a> | <a href="https://www.1gb.app/" target="_blank" class="text-blue-400 hover:text-blue-300">Güncel App: 1gb.app</a></p>
     </div>
-    
-    <!-- Main Application -->
-    <div id="mainApp" style="display: none;">
-        <div class="container">
-            <header>
-                <div class="logo">
-                    <div class="logo-icon">💳</div>
-                    <div class="logo-text">CC CHECKER PRO</div>
-                </div>
-                <div class="user-info">
-                    <div class="user-avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="user-details">
-                        <div class="username" id="displayUsername">@Kullanıcı</div>
-                        <div class="user-level" id="displayLevel">🔰 Beginner Seviye</div>
-                    </div>
-                </div>
-            </header>
-            
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-chart-bar"></i></div>
-                    <div class="stat-value" id="totalChecks">0</div>
-                    <div class="stat-label">Toplam Kontrol</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
-                    <div class="stat-value" id="liveCards">0</div>
-                    <div class="stat-label">Canlı Kart</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
-                    <div class="stat-value" id="deadCards">0</div>
-                    <div class="stat-label">Ölü Kart</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-bolt"></i></div>
-                    <div class="stat-value" id="successRate">0%</div>
-                    <div class="stat-label">Başarı Oranı</div>
-                </div>
-            </div>
-            
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">
-                        <i class="fas fa-tachometer-alt card-icon"></i>
-                        <span>Kontrol Paneli</span>
-                    </div>
-                    <div class="card-actions">
-                        <span class="level-badge level-1" id="levelBadge">🔰 Beginner</span>
-                    </div>
-                </div>
-                
-                <div class="progress-container">
-                    <div class="progress-label">
-                        <span>Günlük Limit</span>
-                        <span id="dailyLimit">0 / 1000</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="dailyProgress" style="width: 0%"></div>
-                    </div>
-                </div>
-                
-                <div class="progress-container">
-                    <div class="progress-label">
-                        <span>Seviye İlerleme</span>
-                        <span id="levelProgress">0 / 500</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="levelProgressBar" style="width: 0%"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="tabs">
-                <div class="tab active" data-tab="single-check">💳 Tek Kart</div>
-                <div class="tab" data-tab="bulk-check">📁 Toplu Kontrol</div>
-                <div class="tab" data-tab="stats">📊 İstatistikler</div>
-                <div class="tab" data-tab="profile">👤 Profil</div>
-                <div class="tab" data-tab="premium">💎 Premium</div>
-                <div class="tab" data-tab="logout">🚪 Çıkış</div>
-            </div>
-            
-            <div class="tab-content active" id="single-check">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <i class="fas fa-credit-card card-icon"></i>
-                            <span>Kart Bilgilerini Girin</span>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Kart Bilgileri (numara|ay|yıl|cvv)</label>
-                        <input type="text" class="form-control" id="cardData" placeholder="4111111111111111|12|25|123">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">API Seçin</label>
-                        <select class="form-control" id="apiSelect">
-                            <option value="stripe">Stripe API</option>
-                            <option value="paypal">PayPal API</option>
-                            <option value="binlist">Binlist API</option>
-                            <option value="exxen">Exxen API</option>
-                        </select>
-                    </div>
-                    
-                    <button class="btn btn-primary btn-lg" id="checkCard">
-                        <i class="fas fa-play"></i>
-                        KARTI KONTROL ET
-                    </button>
-                </div>
-                
-                <div class="card" id="resultCard" style="display: none;">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <i class="fas fa-poll card-icon"></i>
-                            <span>Kontrol Sonucu</span>
-                        </div>
-                    </div>
-                    
-                    <div class="result-container">
-                        <div class="result-box result-live">
-                            <i class="fas fa-check-circle"></i>
-                            <div>CANLI</div>
-                            <div class="result-count" id="liveCount">0</div>
-                        </div>
-                        <div class="result-box result-dead">
-                            <i class="fas fa-times-circle"></i>
-                            <div>ÖLÜ</div>
-                            <div class="result-count" id="deadCount">0</div>
-                        </div>
-                        <div class="result-box result-error">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <div>HATA</div>
-                            <div class="result-count" id="errorCount">0</div>
-                        </div>
-                    </div>
-                    
-                    <div id="resultDetails" style="margin-top: 20px;"></div>
-                </div>
-            </div>
-            
-            <div class="tab-content" id="bulk-check">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <i class="fas fa-file-upload card-icon"></i>
-                            <span>Toplu Kart Yükleme</span>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Kart Listesi (.txt dosyası)</label>
-                        <input type="file" class="form-control" id="cardFile" accept=".txt">
-                        <small style="color: #aaa; display: block; margin-top: 5px;">Her satırda bir kart olmalıdır. Format: numara|ay|yıl|cvv</small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">API Seçin</label>
-                        <select class="form-control" id="bulkApiSelect">
-                            <option value="stripe">Stripe API</option>
-                            <option value="paypal">PayPal API</option>
-                            <option value="binlist">Binlist API</option>
-                            <option value="exxen">Exxen API</option>
-                        </select>
-                    </div>
-                    
-                    <button class="btn btn-primary btn-lg" id="uploadCards">
-                        <i class="fas fa-upload"></i>
-                        DOSYAYI YÜKLE & KONTROL ET
-                    </button>
-                </div>
-                
-                <div class="card" id="bulkResultCard" style="display: none;">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <i class="fas fa-chart-pie card-icon"></i>
-                            <span>Toplu Kontrol Sonucu</span>
-                        </div>
-                    </div>
-                    
-                    <div class="progress-container">
-                        <div class="progress-label">
-                            <span>İlerleme</span>
-                            <span id="progressText">0 / 0</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="bulkProgress" style="width: 0%"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="result-container">
-                        <div class="result-box result-live">
-                            <i class="fas fa-check-circle"></i>
-                            <div>CANLI</div>
-                            <div class="result-count" id="bulkLiveCount">0</div>
-                        </div>
-                        <div class="result-box result-dead">
-                            <i class="fas fa-times-circle"></i>
-                            <div>ÖLÜ</div>
-                            <div class="result-count" id="bulkDeadCount">0</div>
-                        </div>
-                        <div class="result-box result-error">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <div>HATA</div>
-                            <div class="result-count" id="bulkErrorCount">0</div>
-                        </div>
-                    </div>
-                    
-                    <div id="bulkResultDetails" style="margin-top: 20px;"></div>
-                </div>
-            </div>
-            
-            <div class="tab-content" id="stats">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <i class="fas fa-chart-line card-icon"></i>
-                            <span>Detaylı İstatistikler</span>
-                        </div>
-                    </div>
-                    
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-icon"><i class="fas fa-user"></i></div>
-                            <div class="stat-value" id="statUsername">@Kullanıcı</div>
-                            <div class="stat-label">Kullanıcı Adı</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon"><i class="fas fa-calendar"></i></div>
-                            <div class="stat-value" id="joinDate">15.10.2023</div>
-                            <div class="stat-label">Katılma Tarihi</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon"><i class="fas fa-percentage"></i></div>
-                            <div class="stat-value" id="statSuccessRate">%0</div>
-                            <div class="stat-label">Başarı Oranı</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon"><i class="fas fa-crown"></i></div>
-                            <div class="stat-value" id="statLevel">🔰</div>
-                            <div class="stat-label">Mevcut Seviye</div>
-                        </div>
-                    </div>
-                    
-                    <h3 style="margin: 20px 0 10px; color: var(--primary-color);">Seviye Bilgileri</h3>
-                    <div class="progress-container">
-                        <div class="progress-label">
-                            <span id="levelText">🔰 Beginner → ⭐ Rookie</span>
-                            <span id="levelProgressText">0 / 500</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="statLevelProgress" style="width: 0%"></div>
-                        </div>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
-                        <div class="stat-card">
-                            <div class="stat-label">Günlük Limit</div>
-                            <div class="stat-value" id="statDailyLimit">1000</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-label">Kalan Limit</div>
-                            <div class="stat-value" id="statRemainingLimit">1000</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-label">Kullanılan Limit</div>
-                            <div class="stat-value" id="statUsedLimit">0</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-    <div class="tab-content" id="profile">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <i class="fas fa-user-edit card-icon"></i>
-                            <span>Profil Ayarları</span>
-                        </div>
-                    </div>
-                    
-                    <div class="profile-avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Adınız</label>
-                        <input type="text" class="form-control" id="profileFirstName" placeholder="Adınız">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Soyadınız</label>
-                        <input type="text" class="form-control" id="profileLastName" placeholder="Soyadınız">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Kullanıcı Adı</label>
-                        <input type="text" class="form-control" id="profileUsername" placeholder="Kullanıcı adınız">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">E-posta</label>
-                        <input type="email" class="form-control" id="profileEmail" placeholder="E-posta adresiniz">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Yeni Şifre</label>
-                        <input type="password" class="form-control" id="profilePassword" placeholder="Yeni şifre">
-                        <div class="password-strength">
-                            <div class="password-strength-fill" id="profilePasswordStrength"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Şifreyi Onayla</label>
-                        <input type="password" class="form-control" id="profilePasswordConfirm" placeholder="Şifreyi tekrar girin">
-                    </div>
-                    
-                    <button class="btn btn-primary" id="saveProfile">
-                        <i class="fas fa-save"></i>
-                        PROFİLİ GÜNCELLE
-                    </button>
-                </div>
-            </div>
-            
-            <div class="tab-content" id="premium">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <i class="fas fa-crown card-icon"></i>
-                            <span>Premium Üyelik</span>
-                        </div>
-                    </div>
-                    
-                    <div style="text-align: center; margin-bottom: 30px;">
-                        <h2 class="glowing-text" style="color: var(--accent-color);">CC CHECKER PRO PREMIUM</h2>
-                        <p>En gelişmiş özelliklere erişin ve limitlerinizi 2 katına çıkarın!</p>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
-                        <div class="card" style="text-align: center;">
-                            <h3 style="color: var(--primary-color); margin-bottom: 15px;">💎 1 Aylık</h3>
-                            <div class="stat-value" style="color: var(--accent-color);">$9.99</div>
-                            <ul style="text-align: left; margin: 15px 0; padding-left: 20px;">
-                                <li>2x Günlük Limit</li>
-                                <li>Özel Kart Değerlendirme</li>
-                                <li>Priority API Erişimi</li>
-                                <li>Premium Destek</li>
-                            </ul>
-                            <button class="btn btn-primary">SATIN AL</button>
-                        </div>
-                        
-                        <div class="card" style="text-align: center; border: 2px solid var(--accent-color);">
-                            <h3 style="color: var(--accent-color); margin-bottom: 15px;">👑 3 Aylık</h3>
-                            <div class="stat-value" style="color: var(--accent-color);">$24.99</div>
-                            <div style="color: var(--primary-color); font-weight: bold; margin-bottom: 10px;">%20 İNDİRİM</div>
-                            <ul style="text-align: left; margin: 15px 0; padding-left: 20px;">
-                                <li>2x Günlük Limit</li>
-                                <li>Özel Kart Değerlendirme</li>
-                                <li>Priority API Erişimi</li>
-                                <li>Premium Destek</li>
-                                <li>Özel Proxy Erişimi</li>
-                            </ul>
-                            <button class="btn btn-primary">SATIN AL</button>
-                        </div>
-                        
-                        <div class="card" style="text-align: center;">
-                            <h3 style="color: var(--primary-color); margin-bottom: 15px;">🚀 1 Yıllık</h3>
-                            <div class="stat-value" style="color: var(--accent-color);">$79.99</div>
-                            <div style="color: var(--primary-color); font-weight: bold; margin-bottom: 10px;">%35 İNDİRİM</div>
-                            <ul style="text-align: left; margin: 15px 0; padding-left: 20px;">
-                                <li>2x Günlük Limit</li>
-                                <li>Özel Kart Değerlendirme</li>
-                                <li>Priority API Erişimi</li>
-                                <li>Premium Destek</li>
-                                <li>Özel Proxy Erişimi</li>
-                                <li>VIP Önceliği</li>
-                            </ul>
-                            <button class="btn btn-primary">SATIN AL</button>
-                        </div>
-                    </div>
-                    
-                    <div style="background: rgba(0, 255, 0, 0.1); padding: 15px; border-radius: 8px; border: 1px solid var(--primary-color);">
-                        <h3 style="color: var(--primary-color); margin-bottom: 10px;">Premium Avantajları</h3>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
-                            <div><i class="fas fa-check" style="color: var(--primary-color);"></i> 2x Günlük Kart Limit</div>
-                            <div><i class="fas fa-check" style="color: var(--primary-color);"></i> Özel Kart Değerlendirme</div>
-                            <div><i class="fas fa-check" style="color: var(--primary-color);"></i> Priority API Erişimi</div>
-                            <div><i class="fas fa-check" style="color: var(--primary-color);"></i> Gelişmiş İstatistikler</div>
-                            <div><i class="fas fa-check" style="color: var(--primary-color);"></i> Özel Destek Hattı</div>
-                            <div><i class="fas fa-check" style="color: var(--primary-color);"></i> Reklamsız Deneyim</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="tab-content" id="logout">
-                <div class="card" style="text-align: center;">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <i class="fas fa-sign-out-alt card-icon"></i>
-                            <span>Çıkış Yap</span>
-                        </div>
-                    </div>
-                    
-                    <p style="margin-bottom: 30px;">Çıkış yapmak istediğinizden emin misiniz?</p>
-                    
-                    <button class="btn btn-primary" id="confirmLogout">
-                        <i class="fas fa-sign-out-alt"></i>
-                        EVET, ÇIKIŞ YAP
-                    </button>
-                    
-                    <button class="btn btn-secondary" id="cancelLogout">
-                        <i class="fas fa-times"></i>
-                        İPTAL
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <footer>
-            <div class="footer-logo">CC CHECKER PRO</div>
-            <p>DearSiber Halka Açık Şirket | Tüm Hakları Saklıdır © 2023</p>
-            <p>Bu site yapay zeka tarafından değil, DearSiber uzmanları tarafından geliştirilmiştir.</p>
-        </footer>
-    </div>
-    
-    <!-- Admin Panel -->
-    <div id="adminPanel" class="admin-panel">
-        <div class="container">
-            <header>
-                <div class="logo">
-                    <div class="logo-icon">👑</div>
-                    <div class="logo-text">ADMIN PANEL</div>
-                </div>
-                <div class="user-info">
-                    <div class="user-avatar">
-                        <i class="fas fa-crown"></i>
-                    </div>
-                    <div class="user-details">
-                        <div class="username">Sirin31</div>
-                        <div class="user-level">ADMIN</div>
-                    </div>
-                </div>
-            </header>
-            
-            <div class="tabs">
-                <div class="tab active" data-tab="admin-users">👥 Kullanıcılar</div>
-                <div class="tab" data-tab="admin-stats">📊 İstatistikler</div>
-                <div class="tab" data-tab="admin-logs">📋 Kart Logları</div>
-                <div class="tab" data-tab="admin-checker">💳 Kart Kontrol</div>
-                <div class="tab" data-tab="admin-settings">⚙️ Ayarlar</div>
-                <div class="tab" data-tab="admin-logout">🚪 Çıkış</div>
-            </div>
-            
-            <div class="tab-content active" id="admin-users">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <i class="fas fa-users card-icon"></i>
-                            <span>Kullanıcı Yönetimi</span>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="searchUser" placeholder="Kullanıcı ara...">
-                    </div>
-                    
-                    <div style="overflow-x: auto;">
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <thead>
-                                <tr style="border-bottom: 1px solid var(--card-border);">
-                                    <th style="padding: 10px; text-align: left;">Kullanıcı</th>
-                                    <th style="padding: 10px; text-align: left;">Seviye</th>
-                                    <th style="padding: 10px; text-align: left;">Kontroller</th>
-                                    <th style="padding: 10px; text-align: left;">Durum</th>
-                                    <th style="padding: 10px; text-align: left;">İşlemler</th>
-                                </tr>
-                            </thead>
-                            <tbody id="userList">
-                                <!-- Users will be populated here -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="tab-content" id="admin-stats">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <i class="fas fa-chart-bar card-icon"></i>
-                            <span>Sistem İstatistikleri</span>
-                        </div>
-                    </div>
-                    
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-icon"><i class="fas fa-users"></i></div>
-                            <div class="stat-value" id="adminTotalUsers">0</div>
-                            <div class="stat-label">Toplam Kullanıcı</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon"><i class="fas fa-credit-card"></i></div>
-                            <div class="stat-value" id="adminTotalChecks">0</div>
-                            <div class="stat-label">Toplam Kontrol</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
-                            <div class="stat-value" id="adminLiveCards">0</div>
-                            <div class="stat-label">Canlı Kart</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon"><i class="fas fa-bolt"></i></div>
-                            <div class="stat-value" id="adminSuccessRate">0%</div>
-                            <div class="stat-label">Başarı Oranı</div>
-                        </div>
-                    </div>
-                    
-                    <h3 style="margin: 20px 0 10px; color: var(--primary-color);">Günlük Aktivite</h3>
-                    <div class="progress-container">
-                        <div class="progress-label">
-                            <span>Bugünkü Kontroller</span>
-                            <span id="adminTodayChecks">0</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="adminTodayProgress" style="width: 0%"></div>
-                        </div>
-                    </div>
-                    
-                    <h3 style="margin: 20px 0 10px; color: var(--primary-color);">Seviye Dağılımı</h3>
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-icon"><i class="fas fa-circle"></i></div>
-                            <div class="stat-value" id="adminLevel1">0</div>
-                            <div class="stat-label">🔰 Beginner</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon"><i class="fas fa-star"></i></div>
-                            <div class="stat-value" id="adminLevel2">0</div>
-                            <div class="stat-label">⭐ Rookie</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon"><i class="fas fa-fire"></i></div>
-                            <div class="stat-value" id="adminLevel3">0</div>
-                            <div class="stat-label">🔥 Pro</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon"><i class="fas fa-rocket"></i></div>
-                            <div class="stat-value" id="adminLevel4">0</div>
-                            <div class="stat-label">🚀 Expert</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon"><i class="fas fa-crown"></i></div>
-                            <div class="stat-value" id="adminLevel5">0</div>
-                            <div class="stat-label">👑 Master</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="tab-content" id="admin-logs">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <i class="fas fa-clipboard-list card-icon"></i>
-                            <span>Kart Kontrol Logları</span>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="searchLogs" placeholder="Log ara...">
-                    </div>
-                    
-                    <div style="overflow-x: auto; max-height: 500px; overflow-y: auto;">
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <thead>
-                                <tr style="border-bottom: 1px solid var(--card-border);">
-                                    <th style="padding: 10px; text-align: left;">Tarih</th>
-                                    <th style="padding: 10px; text-align: left;">Kullanıcı</th>
-                                    <th style="padding: 10px; text-align: left;">Kart</th>
-                                    <th style="padding: 10px; text-align: left;">Durum</th>
-                                    <th style="padding: 10px; text-align: left;">API</th>
-                                </tr>
-                            </thead>
-                            <tbody id="logList">
-                                <!-- Logs will be populated here -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="tab-content" id="admin-checker">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <i class="fas fa-credit-card card-icon"></i>
-                            <span>Admin Kart Kontrol</span>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Kart Bilgileri (numara|ay|yıl|cvv)</label>
-                        <input type="text" class="form-control" id="adminCardData" placeholder="4111111111111111|12|25|123">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">API Seçin</label>
-                        <select class="form-control" id="adminApiSelect">
-                            <option value="stripe">Stripe API</option>
-                            <option value="paypal">PayPal API</option>
-                            <option value="binlist">Binlist API</option>
-                            <option value="exxen">Exxen API</option>
-                        </select>
-                    </div>
-                    
-                    <button class="btn btn-primary btn-lg" id="adminCheckCard">
-                        <i class="fas fa-play"></i>
-                        KARTI KONTROL ET
-                    </button>
-                </div>
-                
-                <div class="card" id="adminResultCard" style="display: none;">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <i class="fas fa-poll card-icon"></i>
-                            <span>Kontrol Sonucu</span>
-                        </div>
-                    </div>
-                    
-                    <div id="adminResultDetails"></div>
-                </div>
-            </div>
-            
-            <div class="tab-content" id="admin-settings">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <i class="fas fa-cogs card-icon"></i>
-                            <span>Sistem Ayarları</span>
-                        </div>
-                
-<div class="tab-content" id="admin-logout">
-                <div class="card" style="text-align: center;">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <i class="fas fa-sign-out-alt card-icon"></i>
-                            <span>Admin Çıkış</span>
-                        </div>
-                    </div>
-                    
-                    <p style="margin-bottom: 30px;">Admin panelinden çıkış yapmak istediğinizden emin misiniz?</p>
-                    
-                    <button class="btn btn-primary" id="adminLogout">
-                        <i class="fas fa-sign-out-alt"></i>
-                        EVET, ÇIKIŞ YAP
-                    </button>
-                    
-                    <button class="btn btn-secondary" id="adminCancelLogout">
-                        <i class="fas fa-times"></i>
-                        İPTAL
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="notification" id="notification"></div>
 
     <script>
-        // Matrix Background
-        function createMatrix() {
-            const matrixBg = document.getElementById('matrixBg');
-            const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-            
-            for (let i = 0; i < 50; i++) {
-                const char = document.createElement('div');
-                char.className = 'matrix-char';
-                char.textContent = chars[Math.floor(Math.random() * chars.length)];
-                char.style.left = Math.random() * 100 + 'vw';
-                char.style.animationDelay = Math.random() * 5 + 's';
-                char.style.animationDuration = (3 + Math.random() * 7) + 's';
-                matrixBg.appendChild(char);
+        // Çıktı fonksiyonu
+        function log(message, color = 'text-gray-300', isLimit = false) {
+            try {
+                console.log('Log:', message); // Konsola yaz
+                const output = document.getElementById('output');
+                if (!output) {
+                    console.error('Output div bulunamadı!');
+                    return;
+                }
+                const p = document.createElement('p');
+                p.className = `${color} small-text ${isLimit ? 'limit-warning' : ''}`;
+                p.textContent = message;
+                output.appendChild(p);
+                output.scrollTop = output.scrollHeight;
+            } catch (e) {
+                console.error('Log hatası:', e);
             }
         }
-        
-        // Tab functionality
-        function setupTabs(container) {
-            container.querySelectorAll('.tab').forEach(tab => {
-                tab.addEventListener('click', () => {
-                    // Remove active class from all tabs and contents
-                    container.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                    container.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                    
-                    // Add active class to clicked tab and corresponding content
-                    tab.classList.add('active');
-                    container.querySelector(`#${tab.dataset.tab}`).classList.add('active');
-                });
-            });
-        }
-        
-        // User data management
-        let currentUser = null;
-        let users = JSON.parse(localStorage.getItem('ccCheckerUsers')) || [];
-        let cardLogs = JSON.parse(localStorage.getItem('ccCheckerLogs')) || [];
-        
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            createMatrix();
-            setupTabs(document.getElementById('mainApp'));
-            setupTabs(document.getElementById('adminPanel'));
-            
-            // Generate random auth code
-            const authCode = Math.floor(100000 + Math.random() * 900000);
-            document.getElementById('generatedCode').textContent = authCode;
-            
-            // Check if user is already logged in
-            const savedUser = localStorage.getItem('ccCheckerCurrentUser');
-            if (savedUser) {
-                currentUser = JSON.parse(savedUser);
-                showMainApp();
-            }
-            
-            // Password strength checker
-            document.getElementById('regPassword').addEventListener('input', checkPasswordStrength);
-            document.getElementById('profilePassword').addEventListener('input', checkProfilePasswordStrength);
-            
-            // Register screen 1 -> 2
-            document.getElementById('continueRegister').addEventListener('click', () => {
-                const firstName = document.getElementById('firstName').value;
-                const lastName = document.getElementById('lastName').value;
-                const username = document.getElementById('regUsername').value;
-                const email = document.getElementById('regEmail').value;
-                const password = document.getElementById('regPassword').value;
-                
-                if (!firstName || !lastName || !username || !email || !password) {
-                    showNotification('Lütfen tüm alanları doldurun!', 'error');
-                    return;
-                }
-                
-                if (!isValidPassword(password)) {
-                    showNotification('Şifre gereksinimleri karşılamıyor!', 'error');
-                    return;
-                }
-                
-                if (users.find(u => u.username === username)) {
-                    showNotification('Bu kullanıcı adı zaten alınmış!', 'error');
-                    return;
-                }
-                
-                if (users.find(u => u.email === email)) {
-                    showNotification('Bu e-posta adresi zaten kayıtlı!', 'error');
-                    return;
-                }
-                
-                document.getElementById('registerScreen1').style.display = 'none';
-                document.getElementById('registerScreen2').style.display = 'flex';
-            });
-            
-            // Complete registration
-            document.getElementById('completeRegister').addEventListener('click', () => {
-                const enteredCode = document.getElementById('authCode').value;
-                const generatedCode = document.getElementById('generatedCode').textContent;
-                
-                if (enteredCode !== generatedCode) {
-                    showNotification('Doğrulama kodu hatalı!', 'error');
-                    return;
-                }
-                
-                const firstName = document.getElementById('firstName').value;
-                const lastName = document.getElementById('lastName').value;
-                const username = document.getElementById('regUsername').value;
-                const email = document.getElementById('regEmail').value;
-                const password = document.getElementById('regPassword').value;
-                
-                // Create new user
-                const newUser = {
-                    id: Date.now(),
-                    firstName,
-                    lastName,
-                    username,
-                    email,
-                    password: btoa(password), // Simple encoding for demo
-                    level: 1,
-                    dailyChecks: 0,
-                    totalChecks: 0,
-                    liveChecks: 0,
-                    deadChecks: 0,
-                    joinDate: new Date().toLocaleDateString('tr-TR'),
-                    isBanned: false,
-                    isAdmin: false
-                };
-                
-                users.push(newUser);
-                localStorage.setItem('ccCheckerUsers', JSON.stringify(users));
-                
-                // Auto login
-                currentUser = newUser;
-                localStorage.setItem('ccCheckerCurrentUser', JSON.stringify(currentUser));
-                
-                showNotification('Kayıt başarılı! Hoş geldiniz!', 'success');
-                showMainApp();
-            });
-            
-            // Login
-            document.getElementById('loginBtn').addEventListener('click', () => {
-                const loginInput = document.getElementById('loginUsername').value;
-                const password = document.getElementById('loginPassword').value;
-                
-                if (!loginInput || !password) {
-                    showNotification('Lütfen tüm alanları doldurun!', 'error');
-                    return;
-                }
-                
-                const user = users.find(u => u.username === loginInput || u.email === loginInput);
-                
-                if (!user) {
-                    showNotification('Kullanıcı bulunamadı!', 'error');
-                    return;
-                }
-                
-                if (user.password !== btoa(password)) {
-                    showNotification('Şifre hatalı!', 'error');
-                    return;
-                }
-                
-                if (user.isBanned) {
-                    showNotification('Bu hesap askıya alınmış!', 'error');
-                    return;
-                }
-                
-                currentUser = user;
-                localStorage.setItem('ccCheckerCurrentUser', JSON.stringify(currentUser));
-                
-                showNotification('Giriş başarılı!', 'success');
-                
-                if (user.isAdmin) {
-                    showAdminPanel();
-                } else {
-                    showMainApp();
-                }
-            });
-            
-            // Admin login
-            document.getElementById('adminLoginBtn').addEventListener('click', () => {
-                document.getElementById('loginScreen').style.display = 'none';
-                showAdminLogin();
-            });
-            
-            // Single card check
-            document.getElementById('checkCard').addEventListener('click', () => {
-                if (!currentUser) return;
-                
-                const cardData = document.getElementById('cardData').value.trim();
-                const api = document.getElementById('apiSelect').value;
-                
-                if (!cardData) {
-                    showNotification('Lütfen kart bilgilerini girin!', 'error');
-                    return;
-                }
-                
-                if (!isValidCardFormat(cardData)) {
-                    showNotification('Geçersiz kart formatı! Format: numara|ay|yıl|cvv', 'error');
-                    return;
-                }
-                
-                // Check daily limit
-                if (currentUser.dailyChecks >= getDailyLimit(currentUser.level)) {
-                    showNotification('Günlük limitiniz doldu!', 'error');
-                    return;
-                }
-                
-                // Show loading animation
-                const button = document.getElementById('checkCard');
-                const originalText = button.innerHTML;
-                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> KONTROL EDİLİYOR...';
-                button.disabled = true;
-                
-                // Show result card
-                document.getElementById('resultCard').style.display = 'block';
-                
-                // Simulate API call with delay
-                setTimeout(() => {
-                    // Reset button
-                    button.innerHTML = originalText;
-                    button.disabled = false;
-                    
-                    // Check card with selected API
-                    checkCardWithAPI(cardData, api, currentUser.username);
-                    
-                }, 2000);
-            });
-            
-            // Admin card check
-            document.getElementById('adminCheckCard').addEventListener('click', () => {
-                const cardData = document.getElementById('adminCardData').value.trim();
-                const api = document.getElementById('adminApiSelect').value;
-                
-                if (!cardData) {
-                    showNotification('Lütfen kart bilgilerini girin!', 'error');
-                    return;
-                }
-                
-                if (!isValidCardFormat(cardData)) {
-                    showNotification('Geçersiz kart formatı! Format: numara|ay|yıl|cvv', 'error');
-                    return;
-                }
-                
-                // Show loading animation
-                const button = document.getElementById('adminCheckCard');
-                const originalText = button.innerHTML;
-                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> KONTROL EDİLİYOR...';
-                button.disabled = true;
-                
-                // Show result card
-                document.getElementById('adminResultCard').style.display = 'block';
-                
-                // Simulate API call with delay
-                setTimeout(() => {
-                    // Reset button
-                    button.innerHTML = originalText;
-                    button.disabled = false;
-                    
-                    // Check card with selected API
-                    checkCardWithAPI(cardData, api, 'ADMIN');
-                    
-                }, 2000);
-            });
-            
-            // Bulk card check
-            document.getElementById('uploadCards').addEventListener('click', () => {
-                if (!currentUser) return;
-                
-                const fileInput = document.getElementById('cardFile');
-                const api = document.getElementById('bulkApiSelect').value;
-                
-                if (!fileInput.files.length) {
-                    showNotification('Lütfen bir dosya seçin!', 'error');
-                    return;
-                }
-                
-                const file = fileInput.files[0];
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    const content = e.target.result;
-                    const cards = content.split('\n')
-                        .filter(line => line.trim() !== '')
-                        .filter(line => isValidCardFormat(line));
-                    
-                    if (cards.length === 0) {
-                        showNotification('Dosyada geçerli kart bulunamadı!', 'error');
-                        return;
-                    }
-                    
-                    if (cards.length > 50) {
-                        showNotification('Maksimum 50 kart yükleyebilirsiniz!', 'error');
-                        return;
-                    }
-                    
-                    // Check daily limit
-                    const remainingLimit = getDailyLimit(currentUser.level) - currentUser.dailyChecks;
-                    if (cards.length > remainingLimit) {
-                        showNotification(`Sadece ${remainingLimit} kart kontrol edebilirsiniz!`, 'error');
-                        return;
-                    }
-                    
-                    // Show bulk result card
-                    document.getElementById('bulkResultCard').style.display = 'block';
-                    
-                    // Reset counts
-                    document.getElementById('bulkLiveCount').textContent = '0';
-                    document.getElementById('bulkDeadCount').textContent = '0';
-                    document.getElementById('bulkErrorCount').textContent = '0';
-                    
-                    // Start bulk check
-                    simulateBulkCheck(cards, api, currentUser.username);
-                };
-                
-                reader.readAsText(file);
-            });
-            
-            // Save profile
-            document.getElementById('saveProfile').addEventListener('click', () => {
-                if (!currentUser) return;
-                
-                const firstName = document.getElementById('profileFirstName').value;
-                const lastName = document.getElementById('profileLastName').value;
-                const username = document.getElementById('profileUsername').value;
-                const email = document.getElementById('profileEmail').value;
-                const password = document.getElementById('profilePassword').value;
-                const passwordConfirm = document.getElementById('profilePasswordConfirm').value;
-                
-                if (!firstName || !lastName || !username || !email) {
-                    showNotification('Lütfen tüm alanları doldurun!', 'error');
-                    return;
-                }
-                
-        if (password && !isValidPassword(password)) {
-                    showNotification('Şifre gereksinimleri karşılamıyor!', 'error');
-                    return;
-                }
-                
-                if (password && password !== passwordConfirm) {
-                    showNotification('Şifreler eşleşmiyor!', 'error');
-                    return;
-                }
-                
-                // Update user
-                const userIndex = users.findIndex(u => u.id === currentUser.id);
-                if (userIndex !== -1) {
-                    users[userIndex].firstName = firstName;
-                    users[userIndex].lastName = lastName;
-                    users[userIndex].username = username;
-                    users[userIndex].email = email;
-                    
-                    if (password) {
-                        users[userIndex].password = btoa(password);
-                    }
-                    
-                    localStorage.setItem('ccCheckerUsers', JSON.stringify(users));
-                    
-                    // Update current user
-                    currentUser = users[userIndex];
-                    localStorage.setItem('ccCheckerCurrentUser', JSON.stringify(currentUser));
-                    
-                    showNotification('Profil başarıyla güncellendi!', 'success');
-                    updateUserInfo();
-                }
-            });
-            
-            // Logout
-            document.getElementById('confirmLogout').addEventListener('click', () => {
-                currentUser = null;
-                localStorage.removeItem('ccCheckerCurrentUser');
-                showNotification('Çıkış yapıldı!', 'success');
-                showAuthScreens();
-            });
-            
-            document.getElementById('cancelLogout').addEventListener('click', () => {
-                document.querySelector('.tab[data-tab="single-check"]').click();
-            });
-            
-            // Admin logout
-            document.getElementById('adminLogout').addEventListener('click', () => {
-                showNotification('Admin çıkışı yapıldı!', 'success');
-                showAuthScreens();
-            });
-            
-            document.getElementById('adminCancelLogout').addEventListener('click', () => {
-                document.querySelector('.admin-panel .tab[data-tab="admin-users"]').click();
-            });
-            
-            // Navigation between auth screens
-            document.getElementById('goToLogin').addEventListener('click', (e) => {
-                e.preventDefault();
-                document.getElementById('registerScreen1').style.display = 'none';
-                document.getElementById('loginScreen').style.display = 'flex';
-            });
-            
-            document.getElementById('goToRegister').addEventListener('click', (e) => {
-                e.preventDefault();
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('registerScreen1').style.display = 'flex';
-            });
-            
-            document.getElementById('backToRegister1').addEventListener('click', (e) => {
-                e.preventDefault();
-                document.getElementById('registerScreen2').style.display = 'none';
-                document.getElementById('registerScreen1').style.display = 'flex';
-            });
-        });
-        
-        // Helper functions
-        function isValidCardFormat(cardData) {
-            const parts = cardData.split('|');
-            if (parts.length !== 4) return false;
-            
-            const [number, month, year, cvv] = parts;
-            if (!/^\d+$/.test(number) || number.length < 15 || number.length > 16) return false;
-            if (!/^\d{1,2}$/.test(month) || parseInt(month) < 1 || parseInt(month) > 12) return false;
-            if (!/^\d{2,4}$/.test(year)) return false;
-            if (!/^\d{3,4}$/.test(cvv)) return false;
-            
-            return true;
-        }
-        
-        function isValidPassword(password) {
-            const minLength = 8;
-            const hasUpperCase = /[A-Z]/.test(password);
-            const hasLowerCase = /[a-z]/.test(password);
-            const hasNumbers = /\d/.test(password);
-            const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-            
-            return password.length >= minLength && hasUpperCase && hasLowerCase && hasNumbers && hasSpecialChar;
-        }
-        
-        function checkPasswordStrength() {
-            const password = document.getElementById('regPassword').value;
-            const strengthBar = document.getElementById('passwordStrength');
-            
-            if (password.length === 0) {
-                strengthBar.className = 'password-strength-fill';
-                return;
-            }
-            
-            let strength = 0;
-            
-            // Length check
-            if (password.length >= 8) strength++;
-            
-            // Character variety checks
-            if (/[a-z]/.test(password)) strength++;
-            if (/[A-Z]/.test(password)) strength++;
-            if (/[0-9]/.test(password)) strength++;
-            if (/[^a-zA-Z0-9]/.test(password)) strength++;
-            
-            // Update strength bar
-            if (strength <= 2) {
-                strengthBar.className = 'password-strength-fill weak';
-            } else if (strength <= 4) {
-                strengthBar.className = 'password-strength-fill medium';
-            } else {
-                strengthBar.className = 'password-strength-fill strong';
-            }
-        }
-        
-        function checkProfilePasswordStrength() {
-            const password = document.getElementById('profilePassword').value;
-            const strengthBar = document.getElementById('profilePasswordStrength');
-            
-            if (password.length === 0) {
-                strengthBar.className = 'password-strength-fill';
-                return;
-            }
-            
-            let strength = 0;
-            
-            // Length check
-            if (password.length >= 8) strength++;
-            
-            // Character variety checks
-            if (/[a-z]/.test(password)) strength++;
-            if (/[A-Z]/.test(password)) strength++;
-            if (/[0-9]/.test(password)) strength++;
-            if (/[^a-zA-Z0-9]/.test(password)) strength++;
-            
-            // Update strength bar
-            if (strength <= 2) {
-                strengthBar.className = 'password-strength-fill weak';
-            } else if (strength <= 4) {
-                strengthBar.className = 'password-strength-fill medium';
-            } else {
-                strengthBar.className = 'password-strength-fill strong';
-            }
-        }
-        
-        function maskCardNumber(cardData) {
-            const parts = cardData.split('|');
-            if (parts.length !== 4) return cardData;
-            
-            const number = parts[0];
-            const masked = number.substring(0, 6) + '******' + number.substring(number.length - 4);
-            return `${masked}|${parts[1]}|${parts[2]}|${parts[3]}`;
-        }
-        
-        function showNotification(message, type) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.className = `notification ${type}`;
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-        
-        function getDailyLimit(level) {
-            const limits = {
-                1: 1000,
-                2: 2500,
-                3: 5000,
-                4: 10000,
-                5: 20000
-            };
-            return limits[level] || 1000;
-        }
-        
-        function getLevelName(level) {
-            const names = {
-                1: { name: "🔰 Beginner", color: "level-1" },
-                2: { name: "⭐ Rookie", color: "level-2" },
-                3: { name: "🔥 Pro", color: "level-3" },
-                4: { name: "🚀 Expert", color: "level-4" },
-                5: { name: "👑 Master", color: "level-5" }
-            };
-            return names[level] || names[1];
-        }
-        
-        function showMainApp() {
-            document.getElementById('authScreens').style.display = 'none';
-            document.getElementById('mainApp').style.display = 'block';
-            document.getElementById('adminPanel').style.display = 'none';
-            
-            // Update user info
-            updateUserInfo();
-        }
-        function showAdminPanel() {
-            document.getElementById('authScreens').style.display = 'none';
-            document.getElementById('mainApp').style.display = 'none';
-            document.getElementById('adminPanel').style.display = 'block';
-            
-            // Load admin data
-            loadAdminData();
-        }
-        
-        function showAdminLogin() {
-            // Create admin user if not exists
-            if (!users.find(u => u.username === 'Sirin31')) {
-                const adminUser = {
-                    id: 1,
-                    firstName: 'Admin',
-                    lastName: 'User',
-                    username: 'Sirin31',
-                    email: 'admin@dearsiber.com',
-                    password: btoa('Sirin3131'),
-                    level: 5,
-                    dailyChecks: 0,
-                    totalChecks: 0,
-                    liveChecks: 0,
-                    deadChecks: 0,
-                    joinDate: new Date().toLocaleDateString('tr-TR'),
-                    isBanned: false,
-                    isAdmin: true
-                };
-                users.push(adminUser);
-                localStorage.setItem('ccCheckerUsers', JSON.stringify(users));
-            }
-            
-            // Auto-fill admin credentials
-            document.getElementById('loginUsername').value = 'Sirin31';
-            document.getElementById('loginPassword').value = 'Sirin3131';
-            
-            // Auto login as admin
-            const loginBtn = document.getElementById('loginBtn');
-            loginBtn.click();
-        }
-        
-        function showAuthScreens() {
-            document.getElementById('authScreens').style.display = 'block';
-            document.getElementById('mainApp').style.display = 'none';
-            document.getElementById('adminPanel').style.display = 'none';
-            
-            // Reset forms
-            document.getElementById('registerScreen1').style.display = 'flex';
-            document.getElementById('registerScreen2').style.display = 'none';
-            document.getElementById('loginScreen').style.display = 'none';
-            
-            document.getElementById('firstName').value = '';
-            document.getElementById('lastName').value = '';
-            document.getElementById('regUsername').value = '';
-            document.getElementById('regEmail').value = '';
-            document.getElementById('regPassword').value = '';
-            document.getElementById('authCode').value = '';
-            document.getElementById('loginUsername').value = '';
-            document.getElementById('loginPassword').value = '';
-        }
-        
-        function updateUserInfo() {
-            if (!currentUser) return;
-            
-            const levelInfo = getLevelName(currentUser.level);
-            
-            document.getElementById('displayUsername').textContent = `@${currentUser.username}`;
-            document.getElementById('displayLevel').textContent = levelInfo.name;
-            document.getElementById('levelBadge').textContent = levelInfo.name;
-            document.getElementById('levelBadge').className = `level-badge ${levelInfo.color}`;
-            
-            document.getElementById('totalChecks').textContent = currentUser.totalChecks;
-            document.getElementById('liveCards').textContent = currentUser.liveChecks;
-            document.getElementById('deadCards').textContent = currentUser.deadChecks;
-            
-            const successRate = currentUser.totalChecks > 0 ? 
-                Math.round((currentUser.liveChecks / currentUser.totalChecks) * 100) : 0;
-            document.getElementById('successRate').textContent = `${successRate}%`;
-            
-            const dailyLimit = getDailyLimit(currentUser.level);
-            document.getElementById('dailyLimit').textContent = `${currentUser.dailyChecks} / ${dailyLimit}`;
-            document.getElementById('dailyProgress').style.width = `${(currentUser.dailyChecks / dailyLimit) * 100}%`;
-            
-            // Level progress
-            const levelProgress = currentUser.totalChecks;
-            const nextLevel = currentUser.level < 5 ? currentUser.level + 1 : 5;
-            const nextLevelChecks = [0, 500, 2000, 5000, 10000][nextLevel - 1] || 10000;
-            
-            document.getElementById('levelProgress').textContent = `${levelProgress} / ${nextLevelChecks}`;
-            document.getElementById('levelProgressBar').style.width = `${Math.min(100, (levelProgress / nextLevelChecks) * 100)}%`;
-            
-            // Stats tab
-            document.getElementById('statUsername').textContent = `@${currentUser.username}`;
-            document.getElementById('joinDate').textContent = currentUser.joinDate;
-            document.getElementById('statSuccessRate').textContent = `%${successRate}`;
-            document.getElementById('statLevel').textContent = levelInfo.name.split(' ')[0];
-            
-            document.getElementById('levelText').textContent = `${levelInfo.name} → ${getLevelName(nextLevel).name}`;
-            document.getElementById('levelProgressText').textContent = `${levelProgress} / ${nextLevelChecks}`;
-            document.getElementById('statLevelProgress').style.width = `${Math.min(100, (levelProgress / nextLevelChecks) * 100)}%`;
-            
-            document.getElementById('statDailyLimit').textContent = dailyLimit;
-            document.getElementById('statRemainingLimit').textContent = dailyLimit - currentUser.dailyChecks;
-            document.getElementById('statUsedLimit').textContent = currentUser.dailyChecks;
-            
-            // Profile tab
-            document.getElementById('profileFirstName').value = currentUser.firstName;
-            document.getElementById('profileLastName').value = currentUser.lastName;
-            document.getElementById('profileUsername').value = currentUser.username;
-            document.getElementById('profileEmail').value = currentUser.email;
-        }
-        
-        function checkCardWithAPI(cardData, api, username) {
-            // In a real application, this would make actual API calls
-            // For demo, we'll simulate API responses with realistic data
-            
-            const cardNumber = cardData.split('|')[0];
-            const cardTypes = ['Visa', 'MasterCard', 'American Express', 'Discover'];
-            const banks = ['Akbank', 'Garanti BBVA', 'İş Bankası', 'Yapı Kredi', 'Ziraat Bankası'];
-            const countries = ['Türkiye', 'ABD', 'Almanya', 'İngiltere', 'Fransa'];
-            
-            const results = {
-                stripe: [
-                    { 
-                        status: 'live', 
-                        message: 'Kart aktif ve çalışıyor',
-                        details: {
-                            country: countries[Math.floor(Math.random() * countries.length)],
-                            bank: banks[Math.floor(Math.random() * banks.length)],
-                            type: cardTypes[Math.floor(Math.random() * cardTypes.length)],
-                            owner: `${currentUser?.firstName || 'ADMIN'} ${currentUser?.lastName || 'USER'}`
-                        }
-                    },
-                    { 
-                        status: 'dead', 
-                        message: 'Geçersiz kart numarası',
-                        details: null
-                    },
-                    { 
-                        status: 'error', 
-                        message: 'API bağlantı hatası',
-                        details: null
-                    }
-                ],
-                paypal: [
-                    { 
-                        status: 'live', 
-                        message: 'Kart doğrulandı',
-                        details: {
-                            country: countries[Math.floor(Math.random() * countries.length)],
-                            bank: banks[Math.floor(Math.random() * banks.length)],
-                            type: cardTypes[Math.floor(Math.random() * cardTypes.length)],
-                            owner: `${currentUser?.firstName || 'ADMIN'} ${currentUser?.lastName || 'USER'}`
-                        }
-                    },
-                    { 
-                        status: 'dead', 
-                        message: 'Kart reddedildi',
-                        details: null
-                    },
-                    { 
-                        status: 'error', 
-                        message: 'PayPal API hatası',
-                        details: null
-                    }
-                ],
-                binlist: [
-                    { 
-                        status: 'live', 
-                        message: 'Kart bilgileri doğru',
-                        details: {
-                            country: countries[Math.floor(Math.random() * countries.length)],
-                            bank: banks[Math.floor(Math.random() * banks.length)],
-                            type: cardTypes[Math.floor(Math.random() * cardTypes.length)],
-                            owner: `${currentUser?.firstName || 'ADMIN'} ${currentUser?.lastName || 'USER'}`
-                        }
-                    },
-                    { 
-                        status: 'dead', 
-                        message: 'Geçersiz BIN',
-                        details: null
-                    },
-                    { 
-                        status: 'error', 
-                        message: 'Binlist API hatası',
-                        details: null
-                    }
-                ],
-                exxen: [
-                    { 
-                        status: 'live', 
-                        message: 'Kart Exxen için uygun',
-                        details: {
-                            country: countries[Math.floor(Math.random() * countries.length)],
-                            bank: banks[Math.floor(Math.random() * banks.length)],
-                            type: cardTypes[Math.floor(Math.random() * cardTypes.length)],
-                            owner: `${currentUser?.firstName || 'ADMIN'} ${currentUser?.lastName || 'USER'}`
-                        }
-                    },
-                    { 
-                        status: 'dead', 
-                        message: 'Kart Exxen için uygun değil',
-                        details: null
-                    },
-                    { 
-                        status: 'error', 
-                        message: 'Exxen API hatası',
-                        details: null
-                    }
-                ]
-            };
-            
-            const apiResults = results[api] || results.stripe;
-            const result = apiResults[Math.floor(Math.random() * apiResults.length)];
-            
-            // Log the check
-            const logEntry = {
-                id: Date.now(),
-                timestamp: new Date().toLocaleString('tr-TR'),
-                username: username,
-                cardData: maskCardNumber(cardData),
-                api: api,
-                status: result.status,
-                message: result.message,
-                details: result.details
-            };
-            
-            cardLogs.unshift(logEntry);
-            localStorage.setItem('ccCheckerLogs', JSON.stringify(cardLogs));
-            
-            // Update user stats (if not admin)
-            if (currentUser && !currentUser.isAdmin) {
-                currentUser.dailyChecks++;
-                currentUser.totalChecks++;
-                
-                if (result.status === 'live') {
-                    currentUser.liveChecks++;
-                    document.getElementById('liveCount').textContent = 
-                        parseInt(document.getElementById('liveCount').textContent) + 1;
-                } else if (result.status === 'dead') {
-                    currentUser.deadChecks++;
-                    document.getElementById('deadCount').textContent = 
-                        parseInt(document.getElementById('deadCount').textContent) + 1;
-                } else {
-                    document.getElementById('errorCount').textContent = 
-                        parseInt(document.getElementById('errorCount').textContent) + 1;
-                }
-                
-                // Save user data
-                const userIndex = users.findIndex(u => u.id === currentUser.id);
-                if (userIndex !== -1) {
-                    users[userIndex] = currentUser;
-                    localStorage.setItem('ccCheckerUsers', JSON.stringify(users));
-                    localStorage.setItem('ccCheckerCurrentUser', JSON.stringify(currentUser));
-                }
-            }
 
-      // Show result details
-            const statusIcon = result.status === 'live' ? '✅' : result.status === 'dead' ? '❌' : '⚠️';
-            const statusText = result.status === 'live' ? 'CANLI' : result.status === 'dead' ? 'ÖLÜ' : 'HATA';
-            const statusColor = result.status === 'live' ? 'var(--success-color)' : result.status === 'dead' ? 'var(--error-color)' : 'var(--warning-color)';
-            
-            let resultHTML = `
-                <div style="padding: 15px; border-radius: 8px; background: rgba(0, 0, 0, 0.5); border-left: 4px solid ${statusColor};">
-                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                        <span style="font-size: 1.5rem;">${statusIcon}</span>
-                        <span style="font-weight: bold; color: ${statusColor};">${statusText}</span>
-                        <span style="margin-left: auto; font-size: 0.9rem; color: #aaa;">${api.toUpperCase()} API</span>
-                    </div>
-                    <div>${result.message}</div>
-                    <div style="margin-top: 10px; font-size: 0.9rem; color: #aaa;">
-                        Kart: ${maskCardNumber(cardData)}
-                    </div>
-            `;
-            
-            if (result.details) {
-                resultHTML += `
-                    <div class="card-details">
-                        <div class="detail-row">
-                            <span class="detail-label">Ülke:</span>
-                            <span class="detail-value">${result.details.country}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">Banka:</span>
-                            <span class="detail-value">${result.details.bank}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">Kart Türü:</span>
-                            <span class="detail-value">${result.details.type}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">Sahip:</span>
-                            <span class="detail-value">${result.details.owner}</span>
-                        </div>
-                    </div>
-                `;
-            }
-            
-            resultHTML += `</div>`;
-            
-            if (currentUser && currentUser.isAdmin) {
-                document.getElementById('adminResultDetails').innerHTML = resultHTML;
-            } else {
-                document.getElementById('resultDetails').innerHTML = resultHTML;
-            }
-            
-            showNotification(`Kart kontrolü tamamlandı: ${statusText}`, result.status === 'live' ? 'success' : result.status === 'dead' ? 'error' : 'warning');
-            
-            // Update user stats display
-            if (currentUser && !currentUser.isAdmin) {
-                updateUserInfo();
+        // Loading göster/gizle
+        function toggleLoading(show) {
+            try {
+                document.getElementById('loading').style.display = show ? 'block' : 'none';
+                document.getElementById('girisBtn').disabled = show;
+                const retryBtn = document.getElementById('retryBtn');
+                if (retryBtn) retryBtn.classList.toggle('hidden', show);
+            } catch (e) {
+                console.error('Loading toggle hatası:', e);
+                log('UI hatası: Loading durumu güncellenemedi 😕', 'text-red-400');
             }
         }
-        
-        function simulateBulkCheck(cards, api, username) {
-            const totalCards = cards.length;
-            let processed = 0;
-            let liveCount = 0;
-            let deadCount = 0;
-            let errorCount = 0;
-            
-            const processNextCard = () => {
-                if (processed >= totalCards) {
-                    // Bulk check completed
-                    showNotification(`Toplu kontrol tamamlandı! ${liveCount} canlı, ${deadCount} ölü, ${errorCount} hata`, 'success');
-                    
-                    // Update user stats
-                    if (currentUser && !currentUser.isAdmin) {
-                        currentUser.dailyChecks += totalCards;
-                        currentUser.totalChecks += totalCards;
-                        currentUser.liveChecks += liveCount;
-                        currentUser.deadChecks += deadCount;
-                        
-                        // Save user data
-                        const userIndex = users.findIndex(u => u.id === currentUser.id);
-                        if (userIndex !== -1) {
-                            users[userIndex] = currentUser;
-                            localStorage.setItem('ccCheckerUsers', JSON.stringify(users));
-                            localStorage.setItem('ccCheckerCurrentUser', JSON.stringify(currentUser));
-                        }
-                        
-                        // Update user stats display
-                        updateUserInfo();
+
+        // MD5 Hash üretimi
+        function hashuret(tid) {
+            try {
+                const secret = "6c2eefca87ae2259797c9f46f8a3c577";
+                const msg = tid + secret;
+                return md5(msg); // js-md5 ile hash
+            } catch (e) {
+                console.error('Hashuret hatası:', e);
+                log('Hash üretme hatası 😕', 'text-red-400');
+                return null;
+            }
+        }
+
+        // Response'ı güvenli oku
+        async function safeReadResponse(response) {
+            try {
+                const text = await response.clone().text();
+                try {
+                    const json = await response.json();
+                    return { json, text, status: response.status };
+                } catch {
+                    return { json: null, text, status: response.status };
+                }
+            } catch (e) {
+                console.error('Response okuma hatası:', e);
+                return { json: null, text: 'Response okunamadı', status: response.status };
+            }
+        }
+
+        // Ödül alma fonksiyonu
+        async function odul(token) {
+            const url = "https://3uptzlakwi.execute-api.eu-west-1.amazonaws.com/api/user/check-in";
+            const headers = {
+                'User-Agent': "okhttp/4.12.0",
+                'Accept-Encoding': "gzip",
+                'Content-Type': "application/json",
+                'Authorization': `Bearer ${token}`
+            };
+            try {
+                log('Ödül alınıyor... ⚡', 'text-yellow-400');
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify({ etkAccepted: false })
+                });
+                const { json: data, text, status } = await safeReadResponse(response);
+                if (response.ok) {
+                    log("Giriş ödülü alındı 🚀", "text-green-400");
+                } else {
+                    log(`Ödül alınamadı 😕 (Status: ${status}) - Detay: ${data?.message || text || 'Puan yükleme sorunu (API eski?)'}`, "text-red-400");
+                    console.error('Ödül alma hatası:', data || text);
+                }
+            } catch (e) {
+                log("Hata: " + e.message + " (API erişilemez ⛔ - 1gb.app'i indirip manuel dene!)", "text-red-400");
+                console.error('Ödül alma hatası:', e);
+            }
+        }
+
+        // Reklam işlemi fonksiyonu
+        async function gaci(token) {
+            const startUrl = "https://3uptzlakwi.execute-api.eu-west-1.amazonaws.com/api/admob/start";
+            const finishUrl = "https://3uptzlakwi.execute-api.eu-west-1.amazonaws.com/api/admob/finish";
+            const headers = {
+                'User-Agent': "okhttp/4.12.0",
+                'Accept-Encoding': "gzip",
+                'Content-Type': "application/json",
+                'Authorization': `Bearer ${token}`
+            };
+            try {
+                log('Reklam işlemi başlıyor... ⚡', 'text-yellow-400');
+                const startResponse = await fetch(startUrl, {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify({})
+                });
+                const { json: startData, text: startText, status: startStatus } = await safeReadResponse(startResponse);
+                if (startResponse.ok && startData?.transactionId) {
+                    const tid = startData.transactionId;
+                    log(`[+] ${tid}`, "text-yellow-400");
+                    const hash = hashuret(tid);
+                    if (!hash) return; // Hash hatası varsa dur
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    const finishResponse = await fetch(finishUrl, {
+                        method: 'POST',
+                        headers: headers,
+                        body: JSON.stringify({ transactionId: tid, hash: hash })
+                    });
+                    const { json: finishData, text: finishText, status: finishStatus } = await safeReadResponse(finishResponse);
+                    if (finishResponse.ok) {
+                        log("Tamamlandı 🎉", "text-green-400");
+                    } else {
+                        log(`Hata 😕 (Status: ${finishStatus}) - Detay: ${finishData?.message || finishText || 'Limit/Puan sorunu?'}`, "text-red-400");
+                        console.error('Finish hatası:', finishData || finishText);
                     }
-                    
+                } else {
+                    const limitMessage = startData?.code === "daily_limit_reached" 
+                        ? "Günlük FreeByte limitin doldu! Yarın yine gel, @berkeinternet'le uç! 😎"
+                        : `Limit doldu ⛔ (Status: ${startStatus}) - Detay: ${startData?.message || startText || 'API yanıt vermiyor'}`;
+                    log(limitMessage, "text-red-400", startData?.code === "daily_limit_reached");
+                    console.error('Start hatası:', startData || startText);
+                    if (startData?.code === "daily_limit_reached") {
+                        document.getElementById('retryBtn').classList.remove('hidden');
+                    }
+                }
+            } catch (e) {
+                log("Hata: " + e.message + " (API erişilemez ⛔ - 1gb.app'i indirip manuel dene!)", "text-red-400");
+                console.error('Reklam işlemi hatası:', e);
+            }
+        }
+
+        // Giriş fonksiyonu
+        async function giris() {
+            try {
+                log('Başlatılıyor... 🚀', 'text-yellow-400');
+                const msisdn = document.getElementById('msisdn').value.trim();
+                const pin = document.getElementById('pin').value.trim();
+                if (!msisdn.startsWith("905") || msisdn.length !== 12) {
+                    log("Numara hatalı 📱 (905 ile başla, tam 12 hane)", "text-red-400");
+                    console.error('Hatalı numara:', msisdn);
                     return;
                 }
-                
-                // Update progress
-                processed++;
-                const progress = (processed / totalCards) * 100;
-                document.getElementById('bulkProgress').style.width = `${progress}%`;
-                document.getElementById('progressText').textContent = `${processed} / ${totalCards}`;
-                
-                // Simulate API call with random result
-                setTimeout(() => {
-                    const results = ['live', 'dead', 'error'];
-                    const result = results[Math.floor(Math.random() * results.length)];
-                    
-                    if (result === 'live') {
-                        liveCount++;
-                        document.getElementById('bulkLiveCount').textContent = liveCount;
-                    } else if (result === 'dead') {
-                        deadCount++;
-                        document.getElementById('bulkDeadCount').textContent = deadCount;
-                    } else {
-                        errorCount++;
-                        document.getElementById('bulkErrorCount').textContent = errorCount;
+                if (!pin || !/^\d+$/.test(pin)) {
+                    log("PIN hatalı 🔐 (Sadece sayı, boş olamaz)", "text-red-400");
+                    console.error('Hatalı PIN:', pin);
+                    return;
+                }
+                toggleLoading(true);
+                log("Giriş deneniyor... ⚡", "text-yellow-400");
+                const url = "https://3uptzlakwi.execute-api.eu-west-1.amazonaws.com/api/auth/pin/verify";
+                const headers = {
+                    'User-Agent': "okhttp/4.12.0",
+                    'Accept-Encoding': "gzip",
+                    'Content-Type': "application/json"
+                };
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify({ msisdn: msisdn, osType: "ANDROID", pin: pin })
+                });
+                const { json: data, text, status } = await safeReadResponse(response);
+                if (response.ok && data?.token) {
+                    log("Giriş başarılı ✅", "text-green-400");
+                    const token = data.token;
+                    await odul(token);
+                    for (let i = 0; i < 4; i++) {
+                        log(`${i + 1}. istek ⚡`, "text-yellow-400");
+                        await gaci(token);
                     }
-                    
-                    // Log the check
-                    const logEntry = {
-                        id: Date.now() + processed,
-                        timestamp: new Date().toLocaleString('tr-TR'),
-                        username: username,
-                        cardData: maskCardNumber(cards[processed - 1]),
-                        api: api,
-                        status: result,
-                        message: result === 'live' ? 'Kart aktif' : result === 'dead' ? 'Kart ölü' : 'API hatası',
-                        details: null
-                    };
-                    
-                    cardLogs.unshift(logEntry);
-                    localStorage.setItem('ccCheckerLogs', JSON.stringify(cardLogs));
-                    
-                    // Process next card
-                    processNextCard();
-                }, 500);
-            };
-            
-            // Start processing
-            processNextCard();
-        }
-        
-        function loadAdminData() {
-            // Load users for admin panel
-            const userList = document.getElementById('userList');
-            userList.innerHTML = '';
-            
-            users.forEach(user => {
-                const levelInfo = getLevelName(user.level);
-                const row = document.createElement('tr');
-                row.style.borderBottom = '1px solid rgba(0, 255, 0, 0.1)';
-                row.innerHTML = `
-                    <td style="padding: 10px;">
-                        <div>@${user.username}</div>
-                        <div style="font-size: 0.8rem; color: #aaa;">${user.email}</div>
-                    </td>
-                    <td style="padding: 10px;">
-                        <span class="level-badge ${levelInfo.color}">${levelInfo.name}</span>
-                    </td>
-                    <td style="padding: 10px;">${user.totalChecks}</td>
-                    <td style="padding: 10px;">
-                        <span style="color: ${user.isBanned ? 'var(--error-color)' : 'var(--success-color)'}">
-                            ${user.isBanned ? '🚫 Banlı' : '✅ Aktif'}
-                        </span>
-                    </td>
-                    <td style="padding: 10px;">
-                        <button class="btn btn-secondary" style="padding: 5px 10px; margin: 2px; font-size: 0.8rem;" onclick="adminChangeLevel(${user.id}, ${user.level + 1})">
-                            <i class="fas fa-arrow-up"></i>
-                        </button>
-                        <button class="btn btn-secondary" style="padding: 5px 10px; margin: 2px; font-size: 0.8rem;" onclick="adminChangeLevel(${user.id}, ${user.level - 1})">
-                            <i class="fas fa-arrow-down"></i>
-                        </button>
-                        <button class="btn ${user.isBanned ? 'btn-primary' : 'btn-secondary'}" style="padding: 5px 10px; margin: 2px; font-size: 0.8rem;" onclick="adminToggleBan(${user.id})">
-                            <i class="fas ${user.isBanned ? 'fa-unlock' : 'fa-ban'}"></i>
-                        </button>
-                    </td>
-                `;
-                userList.appendChild(row);
-            });
-            
-            // Load admin stats
-            const totalUsers = users.length;
-            const totalChecks = users.reduce((sum, user) => sum + user.totalChecks, 0);
-            const liveChecks = users.reduce((sum, user) => sum + user.liveChecks, 0);
-            const successRate = totalChecks > 0 ? Math.round((liveChecks / totalChecks) * 100) : 0;
-            const todayChecks = users.reduce((sum, user) => sum + user.dailyChecks, 0);
-            
-            // Level distribution
-            const level1 = users.filter(u => u.level === 1).length;
-            const level2 = users.filter(u => u.level === 2).length;
-            const level3 = users.filter(u => u.level === 3).length;
-            const level4 = users.filter(u => u.level === 4).length;
-            const level5 = users.filter(u => u.level === 5).length;
-            
-            document.getElementById('adminTotalUsers').textContent = totalUsers;
-            document.getElementById('adminTotalChecks').textContent = totalChecks;
-            document.getElementById('adminLiveCards').textContent = liveChecks;
-            document.getElementById('adminSuccessRate').textContent = `${successRate}%`;
-            document.getElementById('adminTodayChecks').textContent = todayChecks;
-            document.getElementById('adminTodayProgress').style.width = `${Math.min(100, (todayChecks / 10000) * 100)}%`;
-            
-            document.getElementById('adminLevel1').textContent = level1;
-            document.getElementById('adminLevel2').textContent = level2;
-            document.getElementById('adminLevel3').textContent = level3;
-            document.getElementById('adminLevel4').textContent = level4;
-            document.getElementById('adminLevel5').textContent = level5;
-            
-            // Load logs
-            const logList = document.getElementById('logList');
-            logList.innerHTML = '';
-            
-            cardLogs.slice(0, 50).forEach(log => {
-                const row = document.createElement('tr');
-                row.style.borderBottom = '1px solid rgba(0, 255, 0, 0.1)';
-                
-                const statusColor = log.status === 'live' ? 'var(--success-color)' : log.status === 'dead' ? 'var(--error-color)' : 'var(--warning-color)';
-                const statusIcon = log.status === 'live' ? '✅' : log.status === 'dead' ? '❌' : '⚠️';
-                
-                row.innerHTML = `
-                    <td style="padding: 10px; font-size: 0.9rem;">${log.timestamp}</td>
-                    <td style="padding: 10px; font-size: 0.9rem;">${log.username}</td>
-                    <td style="padding: 10px; font-size: 0.9rem;">${log.cardData}</td>
-                    <td style="padding: 10px; font-size: 0.9rem;">
-                        <span style="color: ${statusColor}">${statusIcon} ${log.status.toUpperCase()}</span>
-                    </td>
-                    <td style="padding: 10px; font-size: 0.9rem;">${log.api}</td>
-                `;
-                logList.appendChild(row);
-            });
-        }
-        
-        // Admin functions
-        window.adminChangeLevel = function(userId, newLevel) {
-            if (newLevel < 1 || newLevel > 5) return;
-            
-            const userIndex = users.findIndex(u => u.id === userId);
-            if (userIndex !== -1) {
-                users[userIndex].level = newLevel;
-                localStorage.setItem('ccCheckerUsers', JSON.stringify(users));
-                loadAdminData();
-                showNotification('Kullanıcı seviyesi güncellendi!', 'success');
+                } else if (status === 400) {
+                    log(`Pin/Numara hatası 🔐 (Status: 400) - Detay: ${data?.message || text || 'Format sorunu? Önceki haftası puanı yüklenmiyor olabilir!' }`, "text-red-400");
+                    console.error('Giriş hatası detayı:', data || text);
+                } else {
+                    log(`Hata: ${data?.message || 'Bilinmeyen hata (API kapandı mı?)'} (Status: ${status}) - Detay: ${text || 'Erişim reddedildi'}`, "text-red-400");
+                    console.error('Giriş hatası:', data || text);
+                }
+            } catch (e) {
+                log("Hata: " + e.message + " (API erişilemez ⛔ - Endpoint eski, @berkeinternet'e yeni tool sor!)", "text-red-400");
+                console.error('Giriş hatası:', e);
+            } finally {
+                toggleLoading(false);
             }
-        };
-        
-        window.adminToggleBan = function(userId) {
-            const userIndex = users.findIndex(u => u.id === userId);
-            if (userIndex !== -1) {
-                users[userIndex].isBanned = !users[userIndex].isBanned;
-                localStorage.setItem('ccCheckerUsers', JSON.stringify(users));
-                loadAdminData();
-                showNotification(`Kullanıcı ${users[userIndex].isBanned ? 'banlandı' : 'banı kaldırıldı'}!`, 'success');
-            }
-        };
-        
-        // Add some floating animations to elements
-        document.querySelectorAll('.logo-icon, .user-avatar, .card-icon, .profile-avatar').forEach(el => {
-            el.classList.add('floating');
-        });
+        }
     </script>
 </body>
 </html>
