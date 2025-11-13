@@ -3,320 +3,760 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DearSiber FreeByte </title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-md5/0.8.3/md5.min.js"></script>
+    <title>DarkSiber Kart Checker</title>
     <style>
-        .ascii-art {
-            font-family: 'Courier New', Courier, monospace;
-            white-space: pre;
-            color: #10B981;
-            background-color: #1F2937;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            text-align: center;
-            animation: glow 1.5s ease-in-out infinite alternate;
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+        
+        :root {
+            --neon-green: #00ff41;
+            --neon-blue: #00ffff;
+            --neon-purple: #ff00ff;
+            --dark-bg: #0a0a0a;
+            --darker-bg: #050505;
+            --terminal-green: #00ff00;
+            --matrix-green: #00ff41;
         }
-        .DearSiber-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 3rem;
-            font-weight: 900;
-            color: #10B981;
-            text-shadow: 0 0 10px #10B981, 0 0 20px #10B981, 0 0 30px #10B981;
-            animation: neon 1.5s ease-in-out infinite alternate;
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .small-text {
-            font-family: 'Roboto', sans-serif;
-            font-size: 0.9rem;
-            color: #D1D5DB;
-        }
+        
         body {
-            background-color: #111827;
-            color: #F9FAFB;
+            background: var(--dark-bg);
+            color: var(--neon-green);
+            font-family: 'Share Tech Mono', monospace;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
         }
-        .output {
-            font-family: 'Courier New', Courier, monospace;
-            background-color: #1F2937;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            min-height: 200px;
-            overflow-y: auto;
-            border: 1px solid #10B981;
+        
+        /* Matrix rain background */
+        #matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
         }
-        .btn:hover {
-            transform: scale(1.05);
-            transition: transform 0.2s ease-in-out;
-            box-shadow: 0 0 15px #10B981;
+        
+        /* Glitch effect */
+        .glitch {
+            position: relative;
+            animation: glitch 5s infinite;
         }
-        .retry-btn:hover {
-            transform: scale(1.05);
-            transition: transform 0.2s ease-in-out;
-            box-shadow: 0 0 15px #EF4444;
+        
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
         }
-        .limit-warning {
-            animation: neon-red 1.5s ease-in-out infinite alternate;
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
         }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 2px solid var(--neon-green);
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.1), transparent);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--neon-blue);
+            margin-bottom: 20px;
+        }
+        
+        /* Token Section */
+        .token-section {
+            background: var(--darker-bg);
+            border: 1px solid var(--neon-green);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+            animation: fadeIn 1s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .token-input {
+            width: 100%;
+            padding: 15px;
+            background: transparent;
+            border: 1px solid var(--neon-green);
+            border-radius: 5px;
+            color: var(--neon-green);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .token-input:focus {
+            outline: none;
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+        
+        .token-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: var(--neon-blue);
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: none;
+            animation: slideUp 0.5s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Card Checker */
+        .checker-section {
+            background: var(--darker-bg);
+            border: 1px solid var(--neon-blue);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .card-input {
+            width: 100%;
+            padding: 15px;
+            background: transparent;
+            border: 1px solid var(--neon-blue);
+            border-radius: 5px;
+            color: var(--neon-green);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .card-input:focus {
+            outline: none;
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+        
+        .format-examples {
+            font-size: 0.9rem;
+            color: var(--neon-purple);
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            margin: 10px 0;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, var(--neon-green), var(--neon-blue));
+            color: var(--dark-bg);
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(0, 255, 65, 0.5);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--neon-purple);
+            color: var(--neon-purple);
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--neon-purple);
+            color: var(--dark-bg);
+            box-shadow: 0 0 25px rgba(255, 0, 255, 0.5);
+        }
+        
+        /* Results */
+        .results-section {
+            background: var(--darker-bg);
+            border: 1px solid var(--neon-purple);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.1);
+            display: none;
+        }
+        
+        .result-card {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--neon-green);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            animation: resultAppear 0.5s ease-out;
+        }
+        
+        @keyframes resultAppear {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .result-approved {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+        }
+        
+        .result-declined {
+            border-color: #ff0000;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+        }
+        
+        .result-error {
+            border-color: #ffff00;
+            box-shadow: 0 0 15px rgba(255, 255, 0, 0.3);
+        }
+        
+        /* Stats */
+        .stats-section {
+            background: var(--darker-bg);
+            border: 1px solid var(--neon-green);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .stat-card {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--neon-blue);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--neon-green);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--neon-blue);
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid var(--neon-green);
+            margin-top: 40px;
+            color: var(--neon-blue);
+        }
+        
+        .contact-link {
+            color: var(--neon-purple);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-link:hover {
+            text-shadow: 0 0 10px var(--neon-purple);
+        }
+        
+        /* Loading Animation */
         .loading {
             display: none;
             text-align: center;
-            color: #10B981;
+            padding: 40px;
         }
-        .spinner {
-            border: 2px solid #10B981;
-            border-top: none;
+        
+        .loader {
+            border: 5px solid rgba(0, 255, 65, 0.3);
+            border-top: 5px solid var(--neon-green);
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
+            width: 50px;
+            height: 50px;
             animation: spin 1s linear infinite;
-            display: inline-block;
+            margin: 0 auto 20px;
         }
+        
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        @keyframes neon {
-            from { text-shadow: 0 0 5px #10B981, 0 0 10px #10B981, 0 0 15px #10B981; }
-            to { text-shadow: 0 0 10px #10B981, 0 0 20px #10B981, 0 0 30px #10B981; }
+        
+        /* Terminal Style */
+        .terminal {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--neon-green);
+            border-radius: 5px;
+            padding: 15px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--terminal-green);
+            height: 200px;
+            overflow-y: auto;
+            margin-top: 20px;
         }
-        @keyframes neon-red {
-            from { text-shadow: 0 0 5px #EF4444, 0 0 10px #EF4444; }
-            to { text-shadow: 0 0 10px #EF4444, 0 0 20px #EF4444; }
+        
+        .terminal-line {
+            margin-bottom: 5px;
         }
-        @keyframes glow {
-            from { box-shadow: 0 0 5px #10B981; }
-            to { box-shadow: 0 0 15px #10B981; }
+        
+        .terminal-prompt {
+            color: var(--neon-blue);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
-    <div class="max-w-md w-full space-y-6">
-        <div class="ascii-art">
-⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣤⣤⣤⣤⣤⣤⣄⣀⡀⠀⠀⠀⠀⠀⠀⠀<br>
-⠀⠀⠀⢀⣠⡴⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏⢻⣟⡳⠶⣄⠀⠀⠀⠀<br>
-⠀⠀⣰⠟⠉⠀⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠸⣧⠀⠉⠻⣆⠀⠀<br>
-⠀⣼⠿⠶⠲⢶⡿⠿⠻⠿⣿⣿⣿⣿⣿⣿⡶⠖⠶⠿⡶⠶⠲⠟⣷⡀<br>
-⣨⡏⠀⠀⠀⣸⡃⠀⠀⠀⣿⣿⣿⣿⣿⣿⡇⠀⠀⠘⣿⠀⠀⠀⢘⣇<br>
-⣾⣄⣀⣀⣠⣿⣅⣀⣀⣤⣿⣿⣿⣿⣿⣿⣇⣀⣀⣤⣿⣄⣀⣀⣤⣿<br>
-⣻⡀⠀⠀⠀⣿⠄⠀⠀⠀⣿⣿⣿⣿⣿⣿⡆⠀⠀⠀⣿⠀⠀⠀⢀⣿<br>
-⠘⣷⠀⠀⠀⢼⡆⠀⠀⠀⣿⣿⣿⣿⣿⣿⡇⠀⠀⢰⡿⠀⠀⠀⣸⠃<br>
-⠀⠘⢿⡿⠿⠟⣿⠿⠿⠟⣿⣿⣿⣿⣿⣿⡿⠿⠟⣿⠿⠿⠿⣿⠟⠀<br>
-⠀⠀⠈⠻⢦⣀⠙⣷⡀⠀⣿⣿⣿⣿⣿⣿⡇⢀⣸⠏⣀⣴⠞⠁⠀⠀<br>
-⠀⠀⠀⠀⠈⠙⠛⠿⡿⣦⣿⣿⣿⣿⣿⣿⣷⢿⡿⠟⠛⠀⠀⠀⠀⠀
-        </div>
-        <h1 class="ZAZA-title text-center">DEARSİBER</h1>
-        <p class="small-text text-center">1 GB APP Günlük 50 FreeByte Tool</p>
-        <div class="space-y-4">
-            <div>
-                <label for="msisdn" class="block small-text text-gray-300">Telefon Numarası (905xxxxxxxxx)</label>
-                <input type="text" id="msisdn" class="mt-1 block w-full p-2 rounded-md bg-gray-700 border-gray-600 text-white focus:ring-green-500 focus:border-green-500" placeholder="905xxxxxxxxx">
+<body>
+    <!-- Matrix Rain Background -->
+    <canvas id="matrix"></canvas>
+    
+    <div class="container">
+        <!-- Header -->
+        <header class="header glitch">
+            <h1 class="title">DARKSiBER CHECKER</h1>
+            <p class="subtitle">Premium Kart Doğrulama Sistemi</p>
+            <div class="terminal">
+                <div class="terminal-line"><span class="terminal-prompt">system@darksiber:~$</span> Güvenlik sistemi aktif...</div>
+                <div class="terminal-line"><span class="terminal-prompt">system@darksiber:~$</span> Stripe Gateway bağlanıyor...</div>
+                <div class="terminal-line"><span class="terminal-prompt">system@darksiber:~$</span> Sistem hazır. Token bekleniyor...</div>
             </div>
-            <div>
-                <label for="pin" class="block small-text text-gray-300">PIN</label>
-                <input type="password" id="pin" class="mt-1 block w-full p-2 rounded-md bg-gray-700 border-gray-600 text-white focus:ring-green-500 focus:border-green-500" placeholder="PIN girin">
+        </header>
+        
+        <!-- Token Section -->
+        <section class="token-section">
+            <h2 style="margin-bottom: 20px; color: var(--neon-blue);">🔐 ERİŞİM TOKENİ</h2>
+            <input type="text" class="token-input" id="tokenInput" placeholder="Token giriniz...">
+            <button class="btn btn-primary" id="tokenSubmit">SİSTEME GİRİŞ</button>
+            <div class="token-info">
+                <span id="tokenStatus">Token bekleniyor...</span>
+                <span id="tokenExpiry"></span>
             </div>
-            <button id="girisBtn" onclick="giris()" class="btn w-full py-2 px-4 bg-green-600 text-white rounded-md hover:bg-green-700">Giriş Yap</button>
-            <button id="retryBtn" onclick="giris()" class="retry-btn w-full py-2 px-4 bg-red-600 text-white rounded-md hover:bg-red-700 hidden">Yarın Tekrar Dene</button>
-            <div id="loading" class="loading">⚡ İşlem devam ediyor... <span class="spinner"></span></div>
+        </section>
+        
+        <!-- Main Content (Hidden until token validation) -->
+        <div class="main-content" id="mainContent">
+            <!-- Card Checker Section -->
+            <section class="checker-section">
+                <h2 style="margin-bottom: 20px; color: var(--neon-blue);">💳 KART KONTROL</h2>
+                <div class="input-group">
+                    <input type="text" class="card-input" id="cardInput" placeholder="Kart bilgilerini girin...">
+                    <p class="format-examples">
+                        Desteklenen formatlar: 5116600044139993|10|2029|886 • 5116600044139993|10|29|886 • 5116600044139993:10:2029:886 • 5116600044139993:10:29:886
+                    </p>
+                </div>
+                <button class="btn btn-primary" id="checkCard">KARTI KONTROL ET</button>
+                <button class="btn btn-secondary" id="clearResults">SONUÇLARI TEMİZLE</button>
+            </section>
+            
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection">
+                <h2 style="margin-bottom: 20px; color: var(--neon-purple);">📊 KONTROL SONUÇLARI</h2>
+                <div id="resultsContainer"></div>
+            </section>
+            
+            <!-- Stats Section -->
+            <section class="stats-section">
+                <h2 style="margin-bottom: 20px; color: var(--neon-green);">📈 İSTATİSTİKLER</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalChecks">0</div>
+                        <div class="stat-label">Toplam Kontrol</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="approvedChecks">0</div>
+                        <div class="stat-label">Onaylanan</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="declinedChecks">0</div>
+                        <div class="stat-label">Reddedilen</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="successRate">0%</div>
+                        <div class="stat-label">Başarı Oranı</div>
+                    </div>
+                </div>
+            </section>
         </div>
-        <div id="output" class="output"></div>
-        <p class="small-text text-center mt-4">Dev: <a href="https://t.me/DearSiber" target="_blank" class="text-green-400 hover:text-green-300">@ZAZA</a> | <a href="https://www.1gb.app/" target="_blank" class="text-blue-400 hover:text-blue-300">Güncel App: 1gb.app</a></p>
+        
+        <!-- Loading Animation -->
+        <div class="loading" id="loading">
+            <div class="loader"></div>
+            <p>Kart kontrol ediliyor...</p>
+            <div class="terminal">
+                <div class="terminal-line"><span class="terminal-prompt">checker@darksiber:~$</span> Stripe Gateway'e bağlanılıyor...</div>
+                <div class="terminal-line"><span class="terminal-prompt">checker@darksiber:~$</span> Kart bilgileri doğrulanıyor...</div>
+                <div class="terminal-line"><span class="terminal-prompt">checker@darksiber:~$</span> Güvenlik kontrolleri yapılıyor...</div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2024 DarkSiber Checker | Tüm hakları saklıdır</p>
+            <p>Destek için: <a href="https://t.me/DearSiber" class="contact-link" target="_blank">@DearSiber</a></p>
+            <p style="margin-top: 10px; font-size: 0.8rem; color: var(--neon-purple);">Sistem güncelleme: <span id="lastUpdate">Yükleniyor...</span></p>
+        </footer>
     </div>
 
     <script>
-        // Çıktı fonksiyonu
-        function log(message, color = 'text-gray-300', isLimit = false) {
-            try {
-                console.log('Log:', message); // Konsola yaz
-                const output = document.getElementById('output');
-                if (!output) {
-                    console.error('Output div bulunamadı!');
-                    return;
+        // Matrix Rain Effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const chars = '01010101010101010101010101010101';
+        const charArray = chars.split('');
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        
+        for(let i = 0; i < columns; i++) {
+            drops[i] = 1;
+        }
+        
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#00ff41';
+            ctx.font = fontSize + 'px monospace';
+            
+            for(let i = 0; i < drops.length; i++) {
+                const text = charArray[Math.floor(Math.random() * charArray.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
                 }
-                const p = document.createElement('p');
-                p.className = `${color} small-text ${isLimit ? 'limit-warning' : ''}`;
-                p.textContent = message;
-                output.appendChild(p);
-                output.scrollTop = output.scrollHeight;
-            } catch (e) {
-                console.error('Log hatası:', e);
+                
+                drops[i]++;
             }
         }
-
-        // Loading göster/gizle
-        function toggleLoading(show) {
-            try {
-                document.getElementById('loading').style.display = show ? 'block' : 'none';
-                document.getElementById('girisBtn').disabled = show;
-                const retryBtn = document.getElementById('retryBtn');
-                if (retryBtn) retryBtn.classList.toggle('hidden', show);
-            } catch (e) {
-                console.error('Loading toggle hatası:', e);
-                log('UI hatası: Loading durumu güncellenemedi 😕', 'text-red-400');
+        
+        setInterval(drawMatrix, 35);
+        
+        // Token System
+        let currentToken = null;
+        let tokenExpiry = null;
+        
+        // Generate demo token (in real app, this would come from admin)
+        function generateDemoToken() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let token = '';
+            for (let i = 0; i < 32; i++) {
+                token += chars.charAt(Math.floor(Math.random() * chars.length));
             }
-        }
-
-        // MD5 Hash üretimi
-        function hashuret(tid) {
-            try {
-                const secret = "6c2eefca87ae2259797c9f46f8a3c577";
-                const msg = tid + secret;
-                return md5(msg); // js-md5 ile hash
-            } catch (e) {
-                console.error('Hashuret hatası:', e);
-                log('Hash üretme hatası 😕', 'text-red-400');
-                return null;
-            }
-        }
-
-        // Response'ı güvenli oku
-        async function safeReadResponse(response) {
-            try {
-                const text = await response.clone().text();
-                try {
-                    const json = await response.json();
-                    return { json, text, status: response.status };
-                } catch {
-                    return { json: null, text, status: response.status };
-                }
-            } catch (e) {
-                console.error('Response okuma hatası:', e);
-                return { json: null, text: 'Response okunamadı', status: response.status };
-            }
-        }
-
-        // Ödül alma fonksiyonu
-        async function odul(token) {
-            const url = "https://3uptzlakwi.execute-api.eu-west-1.amazonaws.com/api/user/check-in";
-            const headers = {
-                'User-Agent': "okhttp/4.12.0",
-                'Accept-Encoding': "gzip",
-                'Content-Type': "application/json",
-                'Authorization': `Bearer ${token}`
+            
+            // Set expiry to 2 days from now
+            const expiry = new Date();
+            expiry.setDate(expiry.getDate() + 2);
+            
+            return {
+                token: token,
+                expiry: expiry
             };
-            try {
-                log('Ödül alınıyor... ⚡', 'text-yellow-400');
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: headers,
-                    body: JSON.stringify({ etkAccepted: false })
-                });
-                const { json: data, text, status } = await safeReadResponse(response);
-                if (response.ok) {
-                    log("Giriş ödülü alındı 🚀", "text-green-400");
-                } else {
-                    log(`Ödül alınamadı 😕 (Status: ${status}) - Detay: ${data?.message || text || 'Puan yükleme sorunu (API eski?)'}`, "text-red-400");
-                    console.error('Ödül alma hatası:', data || text);
-                }
-            } catch (e) {
-                log("Hata: " + e.message + " (API erişilemez ⛔ - 1gb.app'i indirip manuel dene!)", "text-red-400");
-                console.error('Ödül alma hatası:', e);
-            }
         }
-
-        // Reklam işlemi fonksiyonu
-        async function gaci(token) {
-            const startUrl = "https://3uptzlakwi.execute-api.eu-west-1.amazonaws.com/api/admob/start";
-            const finishUrl = "https://3uptzlakwi.execute-api.eu-west-1.amazonaws.com/api/admob/finish";
-            const headers = {
-                'User-Agent': "okhttp/4.12.0",
-                'Accept-Encoding': "gzip",
-                'Content-Type': "application/json",
-                'Authorization': `Bearer ${token}`
-            };
-            try {
-                log('Reklam işlemi başlıyor... ⚡', 'text-yellow-400');
-                const startResponse = await fetch(startUrl, {
-                    method: 'POST',
-                    headers: headers,
-                    body: JSON.stringify({})
-                });
-                const { json: startData, text: startText, status: startStatus } = await safeReadResponse(startResponse);
-                if (startResponse.ok && startData?.transactionId) {
-                    const tid = startData.transactionId;
-                    log(`[+] ${tid}`, "text-yellow-400");
-                    const hash = hashuret(tid);
-                    if (!hash) return; // Hash hatası varsa dur
-                    await new Promise(resolve => setTimeout(resolve, 2000));
-                    const finishResponse = await fetch(finishUrl, {
-                        method: 'POST',
-                        headers: headers,
-                        body: JSON.stringify({ transactionId: tid, hash: hash })
-                    });
-                    const { json: finishData, text: finishText, status: finishStatus } = await safeReadResponse(finishResponse);
-                    if (finishResponse.ok) {
-                        log("Tamamlandı 🎉", "text-green-400");
-                    } else {
-                        log(`Hata 😕 (Status: ${finishStatus}) - Detay: ${finishData?.message || finishText || 'Limit/Puan sorunu?'}`, "text-red-400");
-                        console.error('Finish hatası:', finishData || finishText);
-                    }
+        
+        // Demo token for testing
+        const demoToken = generateDemoToken();
+        
+        document.getElementById('tokenInput').value = demoToken.token;
+        
+        document.getElementById('tokenSubmit').addEventListener('click', function() {
+            const tokenInput = document.getElementById('tokenInput').value.trim();
+            const tokenStatus = document.getElementById('tokenStatus');
+            const tokenExpiry = document.getElementById('tokenExpiry');
+            
+            if (tokenInput === demoToken.token) {
+                const now = new Date();
+                if (now < demoToken.expiry) {
+                    currentToken = demoToken;
+                    tokenStatus.textContent = '✅ Token geçerli';
+                    tokenStatus.style.color = '#00ff41';
+                    
+                    const expiryDate = demoToken.expiry.toLocaleDateString('tr-TR');
+                    tokenExpiry.textContent = `Süre: ${expiryDate}`;
+                    
+                    // Show main content
+                    document.getElementById('mainContent').style.display = 'block';
+                    
+                    // Update last update time
+                    document.getElementById('lastUpdate').textContent = new Date().toLocaleString('tr-TR');
+                    
                 } else {
-                    const limitMessage = startData?.code === "daily_limit_reached" 
-                        ? "Günlük FreeByte limitin doldu! Yarın yine gel, @DearSiber'le uç! 😎"
-                        : `Limit doldu ⛔ (Status: ${startStatus}) - Detay: ${startData?.message || startText || 'API yanıt vermiyor'}`;
-                    log(limitMessage, "text-red-400", startData?.code === "daily_limit_reached");
-                    console.error('Start hatası:', startData || startText);
-                    if (startData?.code === "daily_limit_reached") {
-                        document.getElementById('retryBtn').classList.remove('hidden');
-                    }
+                    tokenStatus.textContent = '❌ Token süresi dolmuş';
+                    tokenStatus.style.color = '#ff0000';
+                    tokenExpiry.textContent = 'Süre doldu';
                 }
-            } catch (e) {
-                log("Hata: " + e.message + " (API erişilemez ⛔ - 1gb.app'i indirip manuel dene!)", "text-red-400");
-                console.error('Reklam işlemi hatası:', e);
+            } else {
+                tokenStatus.textContent = '❌ Geçersiz token';
+                tokenStatus.style.color = '#ff0000';
+                tokenExpiry.textContent = '';
             }
-        }
-
-        // Giriş fonksiyonu
-        async function giris() {
-            try {
-                log('Başlatılıyor... 🚀', 'text-yellow-400');
-                const msisdn = document.getElementById('msisdn').value.trim();
-                const pin = document.getElementById('pin').value.trim();
-                if (!msisdn.startsWith("905") || msisdn.length !== 12) {
-                    log("Numara hatalı 📱 (905 ile başla, tam 12 hane)", "text-red-400");
-                    console.error('Hatalı numara:', msisdn);
-                    return;
-                }
-                if (!pin || !/^\d+$/.test(pin)) {
-                    log("PIN hatalı 🔐 (Sadece sayı, boş olamaz)", "text-red-400");
-                    console.error('Hatalı PIN:', pin);
-                    return;
-                }
-                toggleLoading(true);
-                log("Giriş deneniyor... ⚡", "text-yellow-400");
-                const url = "https://3uptzlakwi.execute-api.eu-west-1.amazonaws.com/api/auth/pin/verify";
-                const headers = {
-                    'User-Agent': "okhttp/4.12.0",
-                    'Accept-Encoding': "gzip",
-                    'Content-Type': "application/json"
-                };
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: headers,
-                    body: JSON.stringify({ msisdn: msisdn, osType: "ANDROID", pin: pin })
-                });
-                const { json: data, text, status } = await safeReadResponse(response);
-                if (response.ok && data?.token) {
-                    log("Giriş başarılı ✅", "text-green-400");
-                    const token = data.token;
-                    await odul(token);
-                    for (let i = 0; i < 4; i++) {
-                        log(`${i + 1}. istek ⚡`, "text-yellow-400");
-                        await gaci(token);
+        });
+        
+        // Card Validation and Multiple Format Support
+        function parseCardData(input) {
+            // Remove any spaces
+            input = input.replace(/\s/g, '');
+            
+            // Try different separators
+            const separators = ['|', ':', '/', ' ', ','];
+            
+            for (let sep of separators) {
+                const parts = input.split(sep);
+                if (parts.length === 4) {
+                    let [cardNumber, expMonth, expYear, cvc] = parts;
+                    
+                    // Validate card number (16 digits)
+                    if (!/^\d{16}$/.test(cardNumber)) continue;
+                    
+                    // Validate month (1-12)
+                    if (!/^\d{1,2}$/.test(expMonth) || parseInt(expMonth) < 1 || parseInt(expMonth) > 12) continue;
+                    
+                    // Validate year (2 or 4 digits)
+                    if (!/^\d{2,4}$/.test(expYear)) continue;
+                    
+                    // Convert 2-digit year to 4-digit
+                    if (expYear.length === 2) {
+                        expYear = '20' + expYear;
                     }
-                } else if (status === 400) {
-                    log(`Pin/Numara hatası 🔐 (Status: 400) - Detay: ${data?.message || text || 'Format sorunu? Önceki haftası puanı yüklenmiyor olabilir!' }`, "text-red-400");
-                    console.error('Giriş hatası detayı:', data || text);
+                    
+                    // Validate CVC (3 digits)
+                    if (!/^\d{3}$/.test(cvc)) continue;
+                    
+                    // Validate expiry date
+                    const currentYear = new Date().getFullYear();
+                    const currentMonth = new Date().getMonth() + 1;
+                    
+                    if (parseInt(expYear) < currentYear) continue;
+                    if (parseInt(expYear) === currentYear && parseInt(expMonth) < currentMonth) continue;
+                    
+                    return {
+                        cardNumber: cardNumber,
+                        expMonth: expMonth.padStart(2, '0'),
+                        expYear: expYear,
+                        cvc: cvc,
+                        valid: true
+                    };
+                }
+            }
+            
+            return { valid: false, error: 'Geçersiz kart formatı' };
+        }
+        
+        // Stats
+        let stats = {
+            total: 0,
+            approved: 0,
+            declined: 0
+        };
+        
+        function updateStats() {
+            document.getElementById('totalChecks').textContent = stats.total;
+            document.getElementById('approvedChecks').textContent = stats.approved;
+            document.getElementById('declinedChecks').textContent = stats.declined;
+            
+            const successRate = stats.total > 0 ? Math.round((stats.approved / stats.total) * 100) : 0;
+            document.getElementById('successRate').textContent = successRate + '%';
+        }
+        
+        // Card Checking Simulation
+        document.getElementById('checkCard').addEventListener('click', function() {
+            if (!currentToken) {
+                alert('Önce geçerli bir token girmelisiniz!');
+                return;
+            }
+            
+            const cardInput = document.getElementById('cardInput').value.trim();
+            if (!cardInput) {
+                alert('Lütfen kart bilgilerini girin!');
+                return;
+            }
+            
+            const cardData = parseCardData(cardInput);
+            if (!cardData.valid) {
+                alert(cardData.error);
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            
+            // Simulate API call with random result
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+                
+                // Random result (40% approved, 60% declined for demo)
+                const isApproved = Math.random() < 0.4;
+                
+                // Update stats
+                stats.total++;
+                if (isApproved) {
+                    stats.approved++;
                 } else {
-                    log(`Hata: ${data?.message || 'Bilinmeyen hata (API kapandı mı?)'} (Status: ${status}) - Detay: ${text || 'Erişim reddedildi'}`, "text-red-400");
-                    console.error('Giriş hatası:', data || text);
+                    stats.declined++;
                 }
-            } catch (e) {
-                log("Hata: " + e.message + " (API erişilemez ⛔ - Endpoint eski, @DearSiber'e yeni tool sor!)", "text-red-400");
-                console.error('Giriş hatası:', e);
-            } finally {
-                toggleLoading(false);
-            }
-        }
+                updateStats();
+                
+                // Show results section
+                document.getElementById('resultsSection').style.display = 'block';
+                
+                // Create result card
+                const resultCard = document.createElement('div');
+                resultCard.className = `result-card ${isApproved ? 'result-approved' : 'result-declined'}`;
+                
+                const cardNumber = cardData.cardNumber;
+                const maskedCard = cardNumber.substring(0, 6) + '******' + cardNumber.substring(12);
+                
+                resultCard.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h3 style="color: ${isApproved ? '#00ff41' : '#ff0000'};">${isApproved ? '✅ ONAYLANDI' : '❌ REDDEDİLDİ'}</h3>
+                        <span style="font-size: 0.8rem; color: #00ffff;">${new Date().toLocaleTimeString('tr-TR')}</span>
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <strong>Kart:</strong> ${maskedCard}<br>
+                        <strong>SKT:</strong> ${cardData.expMonth}/${cardData.expYear}<br>
+                        <strong>CVC:</strong> ***
+                    </div>
+                    <div style="font-size: 0.9rem; color: ${isApproved ? '#00ff41' : '#ff0000'};">
+                        ${isApproved ? 'Kart başarıyla onaylandı. Stripe Gateway işlemi tamamlandı.' : 'Kart reddedildi. Yetersiz bakiye veya geçersiz kart.'}
+                    </div>
+                `;
+                
+                document.getElementById('resultsContainer').prepend(resultCard);
+                
+                // Log the check
+                const logEntry = `${cardData.cardNumber}|${cardData.expMonth}|${cardData.expYear}|${cardData.cvc} - ${isApproved ? 'APPROVED' : 'DECLINED'} - ${new Date().toLocaleString('tr-TR')}`;
+                console.log('Kart kontrol log:', logEntry);
+                
+                // Clear input
+                document.getElementById('cardInput').value = '';
+                
+            }, 2000 + Math.random() * 2000); // Random delay between 2-4 seconds
+        });
+        
+        // Clear Results
+        document.getElementById('clearResults').addEventListener('click', function() {
+            document.getElementById('resultsContainer').innerHTML = '';
+            document.getElementById('resultsSection').style.display = 'none';
+        });
+        
+        // Update last update time
+        document.getElementById('lastUpdate').textContent = new Date().toLocaleString('tr-TR');
+        
+        // Auto-resize matrix on window resize
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
     </script>
 </body>
 </html>
