@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DearSiber | Kart Kontrol Sistemi</title>
+    <title>DearSiber | Kart Kontrol</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -35,17 +35,6 @@
                 radial-gradient(circle at 10% 20%, rgba(0, 255, 65, 0.05) 0%, transparent 20%),
                 radial-gradient(circle at 90% 80%, rgba(0, 212, 255, 0.05) 0%, transparent 20%);
             overflow-x: hidden;
-        }
-        
-        .matrix-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.1;
-            pointer-events: none;
         }
         
         .container {
@@ -252,15 +241,9 @@
         
         .main-content {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 30px;
             margin-bottom: 30px;
-        }
-        
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
         }
         
         .card {
@@ -342,6 +325,42 @@
             color: var(--warning);
         }
         
+        .control-method {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .method-option {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid var(--secondary);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .method-option:hover {
+            border-color: var(--primary);
+            background: rgba(0, 255, 65, 0.05);
+        }
+        
+        .method-option.active {
+            border-color: var(--primary);
+            background: rgba(0, 255, 65, 0.1);
+        }
+        
+        .method-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .method-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
         .file-upload-area {
             border: 2px dashed var(--secondary);
             border-radius: 5px;
@@ -351,9 +370,15 @@
             transition: all 0.3s ease;
             cursor: pointer;
             background: rgba(20, 20, 20, 0.5);
+            display: none;
         }
-
-         .file-upload-area:hover, .file-upload-area.dragover {
+        
+        .file-upload-area.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .file-upload-area:hover, .file-upload-area.dragover {
             border-color: var(--primary);
             background: rgba(0, 255, 65, 0.05);
         }
@@ -372,6 +397,26 @@
             display: none;
         }
         
+        .manual-input {
+            display: none;
+        }
+        
+        .manual-input.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid var(--primary);
+            border-radius: 3px;
+            resize: vertical;
+            color: var(--text);
+            font-family: 'Courier New', monospace;
+        }
+        
         .actions {
             display: flex;
             gap: 15px;
@@ -384,7 +429,12 @@
         }
         
         .results-card {
-            grid-column: 1 / -1;
+            display: none;
+        }
+        
+        .results-card.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
         }
         
         .stats {
@@ -393,8 +443,8 @@
             gap: 15px;
             margin-bottom: 25px;
         }
-        
-        .stat-item {
+
+           .stat-item {
             background: rgba(20, 20, 20, 0.8);
             padding: 20px;
             border-radius: 5px;
@@ -632,16 +682,34 @@
             background-color: var(--warning);
             box-shadow: 0 0 10px var(--warning);
         }
+        
+        @media (max-width: 768px) {
+            .user-info {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .user-stats {
+                width: 100%;
+                justify-content: space-around;
+            }
+            
+            .gateway-selector, .control-method {
+                flex-direction: column;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="matrix-bg" id="matrixBg"></div>
-    
     <div class="container">
         <header>
             <div class="logo">
                 <i class="fas fa-shield-alt"></i>
-                <h1>DearSiber | Kart Kontrol Sistemi</h1>
+                <h1>DearSiber | Kart Kontrol</h1>
             </div>
             <p class="subtitle">Güvenli ve hızlı kart doğrulama sistemi</p>
         </header>
@@ -649,7 +717,7 @@
         <div class="user-info" id="userInfo">
             <div class="user-stats">
                 <div class="user-stat">
-                    <div class="user-stat-value" id="userLimit">5</div>
+                    <div class="user-stat-value" id="userLimit">∞</div>
                     <div class="user-stat-label">Kalan Kontrol</div>
                 </div>
                 <div class="user-stat">
@@ -686,22 +754,18 @@
                 <button class="btn btn-danger" id="resetSystem">
                     <i class="fas fa-redo"></i> Sistemi Sıfırla
                 </button>
-                <button class="btn btn-primary" id="viewLogs">
-                    <i class="fas fa-file-alt"></i> Logları Görüntüle
-                </button>
             </div>
             <div class="terminal">
                 <div class="terminal-line"><span class="terminal-prompt">admin@dearsiber:~$</span> Sistem durumu: <span id="systemStatusTerminal" style="color: var(--success)">ÇALIŞIYOR</span></div>
                 <div class="terminal-line"><span class="terminal-prompt">admin@dearsiber:~$</span> PayPal Gateway: <span id="paypalStatusTerminal" style="color: var(--success)">AKTİF</span></div>
                 <div class="terminal-line"><span class="terminal-prompt">admin@dearsiber:~$</span> Stripe Gateway: <span id="stripeStatusTerminal" style="color: var(--warning)">BAKIM</span></div>
-                <div class="terminal-line"><span class="terminal-prompt">admin@dearsiber:~$</span> Güvenlik duvarı: <span style="color: var(--success)">AKTİF</span></div>
                 <div class="terminal-line"><span class="terminal-prompt">admin@dearsiber:~$</span> <span id="terminalCommand"></span><span class="blink">_</span></div>
             </div>
         </div>
         
         <div class="main-content">
             <div class="card">
-                <h2><i class="fas fa-file-import"></i> Dosya ile Kontrol</h2>
+                <h2><i class="fas fa-credit-card"></i> Kart Kontrol</h2>
                 
                 <div class="gateway-selector">
                     <div class="gateway-option active" data-gateway="paypal">
@@ -716,52 +780,41 @@
                     </div>
                 </div>
                 
-                <div class="file-upload-area" id="dropArea">
+                <div class="control-method">
+                    <div class="method-option active" data-method="file">
+                        <div class="method-icon"><i class="fas fa-file-upload"></i></div>
+                        <div class="method-name">Dosya Yükle</div>
+                        <div class="method-desc">TXT/CSV dosyası</div>
+                    </div>
+                    <div class="method-option" data-method="manual">
+                        <div class="method-icon"><i class="fas fa-keyboard"></i></div>
+                        <div class="method-name">Manuel Giriş</div>
+                        <div class="method-desc">Kartları yaz</div>
+                    </div>
+                </div>
+                
+                <div class="file-upload-area active" id="dropArea">
                     <i class="fas fa-file-code"></i>
                     <p class="file-upload-text">Dosya seçin veya sürükleyin (TXT/CSV)</p>
                     <p>Her satırda bir kart: <br><code style="color: var(--accent)">511660884419999118120291886</code></p>
                     <input type="file" id="fileInput" class="file-input" accept=".txt,.csv">
                 </div>
+                
+                <div class="manual-input" id="manualInputArea">
+                    <textarea id="manualInput" placeholder="Kart numaralarını buraya girin, her satırda bir kart olacak şekilde..." rows="6"></textarea>
+                </div>
+                
                 <div class="actions">
-                    <button class="btn btn-primary" id="checkFile">
-                        <i class="fas fa-search"></i> DOSYAYI KONTROL ET
-                    </button>
-                    <button class="btn btn-danger" id="clearFile">
-                        <i class="fas fa-eraser"></i> TEMİZLE
-                    </button>
-                </div>
-            </div>
-            
-               <div class="card">
-                <h2><i class="fas fa-keyboard"></i> Manuel Giriş</h2>
-                
-                <div class="gateway-selector">
-                    <div class="gateway-option active" data-gateway="paypal">
-                        <div class="gateway-icon"><i class="fab fa-paypal"></i></div>
-                        <div class="gateway-name">PayPal</div>
-                        <div class="gateway-status status-active">AKTİF</div>
-                    </div>
-                    <div class="gateway-option" data-gateway="stripe">
-                        <div class="gateway-icon"><i class="fab fa-stripe"></i></div>
-                        <div class="gateway-name">Stripe</div>
-                        <div class="gateway-status status-maintenance">BAKIM</div>
-                    </div>
-                </div>
-                
-                <div class="manual-input">
-                    <textarea id="manualInput" placeholder="Kart numaralarını buraya girin, her satırda bir kart olacak şekilde..." rows="6" style="width: 100%; padding: 12px; background: rgba(20, 20, 20, 0.8); border: 1px solid var(--primary); border-radius: 3px; resize: vertical; color: var(--text);"></textarea>
-                </div>
-                <div class="actions" style="margin-top: 15px;">
-                    <button class="btn btn-primary" id="checkManual">
+                    <button class="btn btn-primary" id="checkCards">
                         <i class="fas fa-search"></i> KARTLARI KONTROL ET
                     </button>
-                    <button class="btn btn-danger" id="clearManual">
+                    <button class="btn btn-danger" id="clearInput">
                         <i class="fas fa-eraser"></i> TEMİZLE
                     </button>
                 </div>
             </div>
             
-            <div class="card results-card">
+            <div class="card results-card" id="resultsCard">
                 <h2><i class="fas fa-chart-bar"></i> Kontrol Sonuçları</h2>
                 <div class="stats">
                     <div class="stat-item total">
@@ -777,8 +830,8 @@
                         <div class="stat-label">Reddedilen</div>
                     </div>
                 </div>
-                
-                <div class="results-actions">
+
+                   <div class="results-actions">
                     <button class="btn btn-success" id="downloadResults">
                         <i class="fas fa-download"></i> SONUÇLARI İNDİR
                     </button>
@@ -800,7 +853,6 @@
                             </tr>
                         </thead>
                         <tbody id="resultsBody">
-                            <!-- Results will be populated here -->
                         </tbody>
                     </table>
                 </div>
@@ -812,15 +864,11 @@
                 <div class="status-indicator status-online" id="systemStatusIndicator"></div>
                 <span>Sistem Durumu: <span id="systemStatusText">Çevrimiçi</span></span>
             </div>
-            <p>&copy; 2024 DearSiber Siber Güvenlik | Tüm hakları saklıdır</p>
+            <p>&copy; 2024 DearSiber | Tüm hakları saklıdır</p>
             <div class="footer-links">
                 <a href="#"><i class="fas fa-lock"></i> Gizlilik</a>
                 <a href="#"><i class="fas fa-gavel"></i> Şartlar</a>
                 <a href="#"><i class="fas fa-envelope"></i> İletişim</a>
-                <a href="#"><i class="fas fa-code"></i> API</a>
-            </div>
-            <div class="system-info">
-                Sistem güncelleme: <span id="updateTime">14.11.2024 08:46:47</span>
             </div>
         </footer>
     </div>
@@ -836,41 +884,37 @@
         const saveToken = document.getElementById('saveToken');
         const toggleMaintenance = document.getElementById('toggleMaintenance');
         const resetSystem = document.getElementById('resetSystem');
-        const viewLogs = document.getElementById('viewLogs');
         const fileInput = document.getElementById('fileInput');
         const dropArea = document.getElementById('dropArea');
-        const checkFile = document.getElementById('checkFile');
-        const clearFile = document.getElementById('clearFile');
+        const manualInputArea = document.getElementById('manualInputArea');
         const manualInput = document.getElementById('manualInput');
-        const checkManual = document.getElementById('checkManual');
-        const clearManual = document.getElementById('clearManual');
+        const checkCards = document.getElementById('checkCards');
+        const clearInput = document.getElementById('clearInput');
         const downloadResults = document.getElementById('downloadResults');
         const clearAll = document.getElementById('clearAll');
         const totalCount = document.getElementById('totalCount');
         const approvedCount = document.getElementById('approvedCount');
         const rejectedCount = document.getElementById('rejectedCount');
         const resultsBody = document.getElementById('resultsBody');
+        const resultsCard = document.getElementById('resultsCard');
         const notification = document.getElementById('notification');
-        const updateTime = document.getElementById('updateTime');
-        const userInfo = document.getElementById('userInfo');
         const userLimit = document.getElementById('userLimit');
         const userUsed = document.getElementById('userUsed');
         const userLevel = document.getElementById('userLevel');
         const terminalCommand = document.getElementById('terminalCommand');
-        const matrixBg = document.getElementById('matrixBg');
         const systemStatusIndicator = document.getElementById('systemStatusIndicator');
         const systemStatusText = document.getElementById('systemStatusText');
         const systemStatusTerminal = document.getElementById('systemStatusTerminal');
         const paypalStatusTerminal = document.getElementById('paypalStatusTerminal');
         const stripeStatusTerminal = document.getElementById('stripeStatusTerminal');
         const gatewayOptions = document.querySelectorAll('.gateway-option');
+        const methodOptions = document.querySelectorAll('.method-option');
         
         // State
         let cards = [];
         let isAdmin = false;
-        let userChecks = 5;
-        let usedChecks = 0;
         let selectedGateway = 'paypal';
+        let selectedMethod = 'file';
         let systemMaintenance = false;
         let stripeMaintenance = true;
         
@@ -880,15 +924,12 @@
         saveToken.addEventListener('click', saveAdminToken);
         toggleMaintenance.addEventListener('click', toggleSystemMaintenance);
         resetSystem.addEventListener('click', resetSystemData);
-        viewLogs.addEventListener('click', viewSystemLogs);
         dropArea.addEventListener('click', () => fileInput.click());
         dropArea.addEventListener('dragover', handleDragOver);
         dropArea.addEventListener('drop', handleDrop);
         fileInput.addEventListener('change', handleFileSelect);
-        checkFile.addEventListener('click', processFile);
-        clearFile.addEventListener('click', clearFileInput);
-        checkManual.addEventListener('click', processManualInput);
-        clearManual.addEventListener('click', clearManualInput);
+        checkCards.addEventListener('click', processCards);
+        clearInput.addEventListener('click', clearCurrentInput);
         downloadResults.addEventListener('click', downloadResultsAsCSV);
         clearAll.addEventListener('click', clearAllResults);
         
@@ -909,12 +950,30 @@
             });
         });
         
+        methodOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const method = option.getAttribute('data-method');
+                
+                methodOptions.forEach(opt => opt.classList.remove('active'));
+                option.classList.add('active');
+                selectedMethod = method;
+                
+                // Show/hide appropriate input area
+                if (method === 'file') {
+                    dropArea.classList.add('active');
+                    manualInputArea.classList.remove('active');
+                } else {
+                    dropArea.classList.remove('active');
+                    manualInputArea.classList.add('active');
+                }
+                
+                showNotification(`${method === 'file' ? 'Dosya yükleme' : 'Manuel giriş'} modu seçildi`, 'success');
+            });
+        });
+        
         // Initialize
-        updateSystemTime();
-        createMatrixBackground();
-        updateUserInfo();
-        simulateTerminal();
         updateSystemStatus();
+        simulateTerminal();
         
         // Functions
         function toggleAdminPanel() {
@@ -940,9 +999,7 @@
             
             if (adminToken.value.startsWith('DS_')) {
                 isAdmin = true;
-                userChecks = 9999;
-                updateUserInfo();
-                showNotification('Admin token doğrulandı! Sınırsız kontrole erişiminiz var.', 'success');
+                showNotification('Admin token doğrulandı!', 'success');
                 adminPanel.classList.remove('active');
                 adminToggle.innerHTML = '<i class="fas fa-user-secret"></i> Admin Modu';
                 adminToggle.style.borderColor = 'var(--success)';
@@ -970,18 +1027,10 @@
         function resetSystemData() {
             if (confirm('Tüm sistem verilerini sıfırlamak istediğinizden emin misiniz?')) {
                 cards = [];
-                usedChecks = 0;
                 updateResults();
-                updateUserInfo();
                 showNotification('Sistem verileri sıfırlandı!', 'success');
                 terminalCommand.textContent = 'sistem_sifirla --tamam';
             }
-        }
-        
-        function viewSystemLogs() {
-            showNotification('Log görüntüleme özelliği aktif edildi!', 'success');
-            terminalCommand.textContent = 'log_goruntule --tum';
-            // In a real implementation, this would fetch and display logs
         }
         
         function updateSystemStatus() {
@@ -1033,78 +1082,58 @@
             }
         }
         
-        function clearFileInput() {
-            fileInput.value = '';
-            dropArea.querySelector('.file-upload-text').innerHTML = 'Dosya seçin veya sürükleyin (TXT/CSV)';
-            showNotification('Dosya seçimi temizlendi', 'warning');
+        function clearCurrentInput() {
+            if (selectedMethod === 'file') {
+                fileInput.value = '';
+                dropArea.querySelector('.file-upload-text').innerHTML = 'Dosya seçin veya sürükleyin (TXT/CSV)';
+                showNotification('Dosya seçimi temizlendi', 'warning');
+            } else {
+                manualInput.value = '';
+                showNotification('Manuel giriş temizlendi', 'warning');
+            }
         }
         
-        function processFile() {
+        function processCards() {
             if (systemMaintenance && !isAdmin) {
                 showNotification('Sistem şu anda bakım modunda!', 'error');
                 return;
             }
             
-            if (!fileInput.files.length) {
-                showNotification('Lütfen önce bir dosya seçin!', 'error');
-                return;
+            let cardData = '';
+            
+            if (selectedMethod === 'file') {
+                if (!fileInput.files.length) {
+                    showNotification('Lütfen önce bir dosya seçin!', 'error');
+                    return;
+                }
+                
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    cardData = e.target.result;
+                    processCardData(cardData);
+                };
+                
+                reader.readAsText(file);
+            } else {
+                cardData = manualInput.value.trim();
+                if (!cardData) {
+                    showNotification('Lütfen kart numaralarını girin!', 'error');
+                    return;
+                }
+                
+                processCardData(cardData);
             }
-            
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                const content = e.target.result;
-                processCardData(content, 'file');
-            };
-            
-            reader.readAsText(file);
         }
         
-        function processManualInput() {
-            if (systemMaintenance && !isAdmin) {
-                showNotification('Sistem şu anda bakım modunda!', 'error');
-                return;
-            }
-            
-            const content = manualInput.value.trim();
-            if (!content) {
-                showNotification('Lütfen kart numaralarını girin!', 'error');
-                return;
-            }
-            
-            processCardData(content, 'manual');
-        }
-        
-        function clearManualInput() {
-            manualInput.value = '';
-            showNotification('Manuel giriş temizlendi', 'warning');
-        }
-        
-        function processCardData(data, source) {
-            // Check if user has remaining checks
-            if (!isAdmin && usedChecks >= userChecks) {
-                showNotification('Kontrol limitine ulaştınız! Admin olarak giriş yapın.', 'error');
-                return;
-            }
-            
+        function processCardData(data) {
             const lines = data.split('\n').filter(line => line.trim() !== '');
             const newCards = [];
             
-            // Check if processing would exceed limit
-            if (!isAdmin && (usedChecks + lines.length) > userChecks) {
-                showNotification(`İşlem, limitinizi aşıyor! Sadece ${userChecks - usedChecks} kart kontrol edebilirsiniz.`, 'error');
-                return;
-            }
-            
             // Show loading state
-            if (source === 'file') {
-                checkFile.innerHTML = '<div class="loading"></div> KONTROL EDİLİYOR...';
-                checkFile.disabled = true;
-            } else {
-                checkManual.innerHTML = '<div class="loading"></div> KONTROL EDİLİYOR...';
-                checkManual.disabled = true;
-            }
+            checkCards.innerHTML = '<div class="loading"></div> KONTROL EDİLİYOR...';
+            checkCards.disabled = true;
             
             // Process each card
             let processed = 0;
@@ -1124,7 +1153,8 @@
                     processed++;
                 } else {
                     // Real API call to PayPal Gateway
-                    checkCardWithPayPal(cardNumber).then(result => {
+                    setTimeout(() => {
+                        const result = checkCardWithPayPal(cardNumber);
                         newCards.push({
                             number: cardNumber,
                             gateway: selectedGateway,
@@ -1135,114 +1165,54 @@
                         if (processed === lines.length) {
                             // All cards processed
                             cards = [...cards, ...newCards];
-                            usedChecks += lines.length;
                             updateResults();
-                            updateUserInfo();
                             
-                            if (source === 'file') {
-                                checkFile.innerHTML = '<i class="fas fa-search"></i> DOSYAYI KONTROL ET';
-                                checkFile.disabled = false;
-                            } else {
-                                checkManual.innerHTML = '<i class="fas fa-search"></i> KARTLARI KONTROL ET';
-                                checkManual.disabled = false;
-                            }
+                            checkCards.innerHTML = '<i class="fas fa-search"></i> KARTLARI KONTROL ET';
+                            checkCards.disabled = false;
                             
                             showNotification(`${lines.length} kart kontrol edildi!`, 'success');
                         }
-                    }).catch(error => {
-                        console.error('API Error:', error);
-                        newCards.push({
-                            number: cardNumber,
-                            gateway: selectedGateway,
-                            type: 'Hata',
-                            bank: 'API Bağlantı Hatası',
-                            country: 'Bilinmiyor',
-                            status: 'Reddedildi'
-                        });
-                        
-                        processed++;
-                        if (processed === lines.length) {
-                            cards = [...cards, ...newCards];
-                    
-        usedChecks += lines.length;
-                            updateResults();
-                            updateUserInfo();
-                            
-                            if (source === 'file') {
-                                checkFile.innerHTML = '<i class="fas fa-search"></i> DOSYAYI KONTROL ET';
-                                checkFile.disabled = false;
-                            } else {
-                                checkManual.innerHTML = '<i class="fas fa-search"></i> KARTLARI KONTROL ET';
-                                checkManual.disabled = false;
-                            }
-                            
-                            showNotification('API bağlantı hatası! Bazı kartlar kontrol edilemedi.', 'error');
-                        }
-                    });
+                    }, index * 500);
                 }
             });
             
             if (lines.length === 0) {
-                if (source === 'file') {
-                    checkFile.innerHTML = '<i class="fas fa-search"></i> DOSYAYI KONTROL ET';
-                    checkFile.disabled = false;
-                } else {
-                    checkManual.innerHTML = '<i class="fas fa-search"></i> KARTLARI KONTROL ET';
-                    checkManual.disabled = false;
-                }
+                checkCards.innerHTML = '<i class="fas fa-search"></i> KARTLARI KONTROL ET';
+                checkCards.disabled = false;
             }
         }
         
-        async function checkCardWithPayPal(cardNumber) {
+        function checkCardWithPayPal(cardNumber) {
             // This would be the actual PHP PayPal API integration
             // For demonstration, we're using a simulation
             
             // Extract BIN (first 6 digits)
             const bin = cardNumber.substring(0, 6);
             
-            try {
-                // Simulate BIN lookup
-                const binResponse = await fetch(`https://lookup.binlist.net/${bin}`);
-                let binData = {};
-                
-                if (binResponse.ok) {
-                    binData = await binResponse.json();
-                }
-                
-                // Simulate PayPal API response
-                const isApproved = Math.random() > 0.5;
-                
-                return {
-                    type: binData.type || 'Visa',
-                    bank: binData.bank ? binData.bank.name : 'Bilinmiyor',
-                    country: binData.country ? binData.country.name : 'Bilinmiyor',
-                    status: isApproved ? 'Onaylandı' : 'Reddedildi'
-                };
-            } catch (error) {
-                console.error('PayPal API Error:', error);
-                
-                // Fallback to simulation if API fails
-                const brands = ['Visa', 'MasterCard', 'American Express', 'Discover'];
-                const banks = ['Akbank', 'Garanti BBVA', 'Yapı Kredi', 'İş Bankası', 'Ziraat Bankası', 'VakıfBank'];
-                const countries = ['Türkiye', 'ABD', 'Almanya', 'İngiltere', 'Fransa', 'İtalya'];
-                
-                const randomBrand = brands[Math.floor(Math.random() * brands.length)];
-                const randomBank = banks[Math.floor(Math.random() * banks.length)];
-                const randomCountry = countries[Math.floor(Math.random() * countries.length)];
-                
-                // 50% chance of approval for simulation
-                const isApproved = Math.random() > 0.5;
-                
-                return {
-                    type: randomBrand,
-                    bank: randomBank,
-                    country: randomCountry,
-                    status: isApproved ? 'Onaylandı' : 'Reddedildi'
-                };
-            }
+            // Simulate different results based on BIN
+            const brands = ['Visa', 'MasterCard', 'American Express', 'Discover'];
+            const banks = ['Akbank', 'Garanti BBVA', 'Yapı Kredi', 'İş Bankası', 'Ziraat Bankası', 'VakıfBank'];
+            const countries = ['Türkiye', 'ABD', 'Almanya', 'İngiltere', 'Fransa', 'İtalya'];
+            
+            const randomBrand = brands[Math.floor(Math.random() * brands.length)];
+            const randomBank = banks[Math.floor(Math.random() * banks.length)];
+            const randomCountry = countries[Math.floor(Math.random() * countries.length)];
+            
+            // 70% chance of approval, 30% chance of rejection
+            const isApproved = Math.random() > 0.3;
+            
+            return {
+                type: randomBrand,
+                bank: randomBank,
+                country: randomCountry,
+                status: isApproved ? 'Onaylandı' : 'Reddedildi'
+            };
         }
-        
+
         function updateResults() {
+            // Show results card
+            resultsCard.classList.add('active');
+            
             // Update counters
             totalCount.textContent = cards.length;
             const approved = cards.filter(card => card.status === 'Onaylandı').length;
@@ -1318,49 +1288,12 @@
             }, 3000);
         }
         
-        function updateSystemTime() {
-            const now = new Date();
-            updateTime.textContent = `${now.getDate().toString().padStart(2, '0')}.${(now.getMonth()+1).toString().padStart(2, '0')}.${now.getFullYear()} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
-            
-            // Update every minute
-            setTimeout(updateSystemTime, 60000);
-        }
-        
-        function updateUserInfo() {
-            userLimit.textContent = isAdmin ? 'Sınırsız' : (userChecks - usedChecks);
-            userUsed.textContent = usedChecks;
-            userLevel.textContent = isAdmin ? 'Admin' : (usedChecks > 20 ? 'Premium' : 'Üye');
-            
-            if (isAdmin) {
-                userInfo.style.borderColor = 'var(--accent)';
-            }
-        }
-        
-        function createMatrixBackground() {
-            const chars = "01010101010101010101010101010101";
-            let html = '';
-            
-            for (let i = 0; i < 100; i++) {
-                const text = chars.charAt(Math.floor(Math.random() * chars.length));
-                const size = Math.random() * 20 + 10;
-                const opacity = Math.random() * 0.5 + 0.1;
-                const left = Math.random() * 100;
-                const top = Math.random() * 100;
-                const animationDelay = Math.random() * 5;
-                
-                html += `<span style="position:absolute; left:${left}%; top:${top}%; font-size:${size}px; opacity:${opacity}; animation-delay:${animationDelay}s;">${text}</span>`;
-            }
-            
-            matrixBg.innerHTML = html;
-        }
-        
         function simulateTerminal() {
             const commands = [
                 'sistem_durumu --kontrol',
                 'guvenlik_tarama --tum',
                 'kart_api --durum',
-                'log_temizle --tum',
-                'kullanici_izni --kontrol'
+                'log_temizle --tum'
             ];
             
             let index = 0;
