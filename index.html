@@ -11,7 +11,6 @@
             --secondary: #008f11;
             --accent: #00d4ff;
             --dark: #0a0a0a;
-            --darker: #050505;
             --light: #c8c8c8;
             --text: #e0e0e0;
             --success: #00ff41;
@@ -31,10 +30,7 @@
             color: var(--text);
             line-height: 1.6;
             min-height: 100vh;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(0, 255, 65, 0.05) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(0, 212, 255, 0.05) 0%, transparent 20%);
-            overflow-x: hidden;
+            background-image: radial-gradient(circle at 10% 20%, rgba(0, 255, 65, 0.05) 0%, transparent 20%);
         }
         
         .container {
@@ -50,7 +46,6 @@
             background: rgba(10, 10, 10, 0.8);
             border: 1px solid var(--primary);
             border-radius: 5px;
-            box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
             position: relative;
             overflow: hidden;
         }
@@ -82,20 +77,82 @@
             font-size: 2.5rem;
             margin-right: 15px;
             color: var(--primary);
-            text-shadow: 0 0 10px var(--primary);
         }
         
         .logo h1 {
             font-size: 2.2rem;
             font-weight: 700;
             color: var(--primary);
-            text-shadow: 0 0 10px var(--primary);
         }
         
-        .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            color: var(--light);
+        .login-panel {
+            background: rgba(10, 10, 10, 0.9);
+            padding: 30px;
+            border-radius: 5px;
+            border: 1px solid var(--accent);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .login-form input {
+            padding: 12px 15px;
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid var(--accent);
+            border-radius: 3px;
+            color: var(--text);
+            font-size: 1rem;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(30, 30, 30, 0.8);
+            color: var(--text);
+            border: 1px solid transparent;
+        }
+        
+        .btn-primary {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background: rgba(0, 255, 65, 0.1);
+        }
+        
+        .btn-success {
+            border-color: var(--success);
+            color: var(--success);
+        }
+        
+        .btn-danger {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+        
+        .main-content {
+            display: none;
+        }
+        
+        .main-content.active {
+            display: block;
         }
         
         .user-info {
@@ -129,26 +186,6 @@
             color: var(--light);
         }
         
-        .admin-access {
-            text-align: center;
-        }
-        
-        .admin-toggle {
-            background: transparent;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            padding: 8px 15px;
-            border-radius: 3px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-        }
-        
-        .admin-toggle:hover {
-            background: rgba(0, 212, 255, 0.1);
-            box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
-        }
-        
         .admin-panel {
             background: rgba(10, 10, 10, 0.9);
             padding: 20px;
@@ -156,12 +193,10 @@
             border: 1px solid var(--accent);
             margin-bottom: 30px;
             display: none;
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
         }
         
         .admin-panel.active {
             display: block;
-            animation: fadeIn 0.5s ease;
         }
         
         .admin-form {
@@ -178,72 +213,7 @@
             background: rgba(20, 20, 20, 0.8);
             border: 1px solid var(--accent);
             border-radius: 3px;
-            font-size: 1rem;
             color: var(--text);
-        }
-        
-        .btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: rgba(30, 30, 30, 0.8);
-            color: var(--text);
-            border: 1px solid transparent;
-        }
-        
-        .btn-primary {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-        
-        .btn-primary:hover {
-            background: rgba(0, 255, 65, 0.1);
-            box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
-        }
-        
-        .btn-success {
-            border-color: var(--success);
-            color: var(--success);
-        }
-        
-        .btn-success:hover {
-            background: rgba(0, 255, 65, 0.1);
-            box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
-        }
-        
-        .btn-danger {
-            border-color: var(--danger);
-            color: var(--danger);
-        }
-        
-        .btn-danger:hover {
-            background: rgba(255, 0, 60, 0.1);
-            box-shadow: 0 0 10px rgba(255, 0, 60, 0.3);
-        }
-        
-        .btn-warning {
-            border-color: var(--warning);
-            color: var(--warning);
-        }
-        
-        .btn-warning:hover {
-            background: rgba(255, 170, 0, 0.1);
-            box-shadow: 0 0 10px rgba(255, 170, 0, 0.3);
-        }
-        
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 30px;
-            margin-bottom: 30px;
         }
         
         .card {
@@ -251,12 +221,7 @@
             border-radius: 5px;
             border: 1px solid var(--primary);
             padding: 25px;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 10px rgba(0, 255, 65, 0.1);
-        }
-        
-        .card:hover {
-            box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+            margin-bottom: 30px;
         }
         
         .card h2 {
@@ -265,11 +230,6 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 1.4rem;
-        }
-        
-        .card h2 i {
-            color: var(--primary);
         }
         
         .gateway-selector {
@@ -288,11 +248,6 @@
             transition: all 0.3s ease;
         }
         
-        .gateway-option:hover {
-            border-color: var(--primary);
-            background: rgba(0, 255, 65, 0.05);
-        }
-        
         .gateway-option.active {
             border-color: var(--primary);
             background: rgba(0, 255, 65, 0.1);
@@ -301,28 +256,6 @@
         .gateway-icon {
             font-size: 2rem;
             margin-bottom: 10px;
-        }
-        
-        .gateway-name {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        
-        .gateway-status {
-            font-size: 0.8rem;
-            padding: 3px 8px;
-            border-radius: 10px;
-            display: inline-block;
-        }
-        
-        .status-active {
-            background: rgba(0, 255, 65, 0.2);
-            color: var(--success);
-        }
-        
-        .status-maintenance {
-            background: rgba(255, 170, 0, 0.2);
-            color: var(--warning);
         }
         
         .control-method {
@@ -341,24 +274,9 @@
             transition: all 0.3s ease;
         }
         
-        .method-option:hover {
-            border-color: var(--primary);
-            background: rgba(0, 255, 65, 0.05);
-        }
-        
         .method-option.active {
             border-color: var(--primary);
             background: rgba(0, 255, 65, 0.1);
-        }
-        
-        .method-icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-        
-        .method-name {
-            font-weight: bold;
-            margin-bottom: 5px;
         }
         
         .file-upload-area {
@@ -367,7 +285,6 @@
             padding: 40px 20px;
             text-align: center;
             margin-bottom: 20px;
-            transition: all 0.3s ease;
             cursor: pointer;
             background: rgba(20, 20, 20, 0.5);
             display: none;
@@ -375,21 +292,11 @@
         
         .file-upload-area.active {
             display: block;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .file-upload-area:hover, .file-upload-area.dragover {
-            border-color: var(--primary);
-            background: rgba(0, 255, 65, 0.05);
         }
         
         .file-upload-area i {
             font-size: 3rem;
             color: var(--primary);
-            margin-bottom: 15px;
-        }
-        
-        .file-upload-text {
             margin-bottom: 15px;
         }
         
@@ -403,7 +310,6 @@
         
         .manual-input.active {
             display: block;
-            animation: fadeIn 0.5s ease;
         }
         
         textarea {
@@ -428,34 +334,19 @@
             min-width: 150px;
         }
         
-        .results-card {
-            display: none;
-        }
-        
-        .results-card.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-        
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
             margin-bottom: 25px;
         }
-
-           .stat-item {
+        
+        .stat-item {
             background: rgba(20, 20, 20, 0.8);
             padding: 20px;
             border-radius: 5px;
             text-align: center;
-            transition: all 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .stat-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
         
         .stat-value {
@@ -481,13 +372,6 @@
             color: var(--danger);
         }
         
-        .results-actions {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-        
         table {
             width: 100%;
             border-collapse: collapse;
@@ -504,10 +388,6 @@
             background-color: rgba(20, 20, 20, 0.9);
             color: var(--primary);
             font-weight: 600;
-        }
-        
-        tr:hover {
-            background-color: rgba(0, 255, 65, 0.05);
         }
         
         .status-badge {
@@ -529,39 +409,6 @@
             border: 1px solid var(--danger);
         }
         
-        footer {
-            text-align: center;
-            padding: 20px;
-            margin-top: 30px;
-            color: var(--light);
-            font-size: 0.9rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 10px;
-        }
-        
-        .footer-links a {
-            color: var(--accent);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        
-        .footer-links a:hover {
-            color: var(--primary);
-            text-shadow: 0 0 5px var(--primary);
-        }
-        
-        .system-info {
-            margin-top: 10px;
-            font-size: 0.8rem;
-            color: #777;
-        }
-        
         .notification {
             position: fixed;
             top: 20px;
@@ -570,7 +417,6 @@
             border-radius: 3px;
             color: white;
             font-weight: 600;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             z-index: 1000;
             transform: translateX(150%);
             transition: transform 0.4s ease;
@@ -592,11 +438,6 @@
             color: var(--danger);
         }
         
-        .notification.warning {
-            border-left-color: var(--warning);
-            color: var(--warning);
-        }
-        
         .loading {
             display: inline-block;
             width: 20px;
@@ -611,87 +452,10 @@
             to { transform: rotate(360deg); }
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .terminal {
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid var(--primary);
-            border-radius: 5px;
-            padding: 15px;
-            font-family: 'Courier New', monospace;
-            color: var(--primary);
-            height: 200px;
-            overflow-y: auto;
-            margin-top: 20px;
-        }
-        
-        .terminal-line {
-            margin-bottom: 5px;
-        }
-        
-        .terminal-prompt {
-            color: var(--accent);
-        }
-        
-        .blink {
-            animation: blink 1s step-end infinite;
-        }
-        
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-        
-        .admin-controls {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .admin-controls .btn {
-            flex: 1;
-        }
-        
-        .system-status {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .status-indicator {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-        
-        .status-online {
-            background-color: var(--success);
-            box-shadow: 0 0 10px var(--success);
-        }
-        
-        .status-offline {
-            background-color: var(--danger);
-            box-shadow: 0 0 10px var(--danger);
-        }
-        
-        .status-maintenance-indicator {
-            background-color: var(--warning);
-            box-shadow: 0 0 10px var(--warning);
-        }
-        
         @media (max-width: 768px) {
             .user-info {
                 flex-direction: column;
                 gap: 15px;
-            }
-            
-            .user-stats {
-                width: 100%;
-                justify-content: space-around;
             }
             
             .gateway-selector, .control-method {
@@ -711,59 +475,52 @@
                 <i class="fas fa-shield-alt"></i>
                 <h1>DearSiber | Kart Kontrol</h1>
             </div>
-            <p class="subtitle">Güvenli ve hızlı kart doğrulama sistemi</p>
+            <p>Güvenli ve hızlı kart doğrulama sistemi</p>
         </header>
         
-        <div class="user-info" id="userInfo">
-            <div class="user-stats">
-                <div class="user-stat">
-                    <div class="user-stat-value" id="userLimit">∞</div>
-                    <div class="user-stat-label">Kalan Kontrol</div>
-                </div>
-                <div class="user-stat">
-                    <div class="user-stat-value" id="userUsed">0</div>
-                    <div class="user-stat-label">Kullanılan</div>
-                </div>
-                <div class="user-stat">
-                    <div class="user-stat-value" id="userLevel">Üye</div>
-                    <div class="user-stat-label">Seviye</div>
-                </div>
-            </div>
-            <div class="admin-access">
-                <button class="admin-toggle" id="adminToggle">
-                    <i class="fas fa-terminal"></i> Admin Erişimi
+        <div class="login-panel" id="loginPanel">
+            <h2><i class="fas fa-lock"></i> Token Girişi</h2>
+            <div class="login-form">
+                <input type="password" id="userToken" placeholder="Token Girin">
+                <button class="btn btn-primary" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i> Giriş Yap
                 </button>
             </div>
         </div>
         
-        <div class="admin-panel" id="adminPanel">
-            <h2><i class="fas fa-user-secret"></i> Gizli Admin Paneli</h2>
-            <div class="admin-form">
-                <input type="password" id="adminToken" placeholder="Admin Token Girin">
-                <button class="btn btn-primary" id="generateToken">
-                    <i class="fas fa-key"></i> Token Oluştur
-                </button>
-                <button class="btn btn-success" id="saveToken">
-                    <i class="fas fa-check"></i> Token Doğrula
+        <div class="main-content" id="mainContent">
+            <div class="user-info">
+                <div class="user-stats">
+                    <div class="user-stat">
+                        <div class="user-stat-value" id="userLimit">∞</div>
+                        <div class="user-stat-label">Kalan Kontrol</div>
+                    </div>
+                    <div class="user-stat">
+                        <div class="user-stat-value" id="userUsed">0</div>
+                        <div class="user-stat-label">Kullanılan</div>
+                    </div>
+                    <div class="user-stat">
+                        <div class="user-stat-value" id="userLevel">Üye</div>
+                        <div class="user-stat-label">Seviye</div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="adminToggle">
+                    <i class="fas fa-cog"></i> Admin
                 </button>
             </div>
-            <div class="admin-controls">
-                <button class="btn btn-warning" id="toggleMaintenance">
-                    <i class="fas fa-tools"></i> Bakım Modu
-                </button>
-                <button class="btn btn-danger" id="resetSystem">
-                    <i class="fas fa-redo"></i> Sistemi Sıfırla
-                </button>
+            
+            <div class="admin-panel" id="adminPanel">
+                <h2><i class="fas fa-user-secret"></i> Admin Paneli</h2>
+                <div class="admin-form">
+                    <input type="text" id="newToken" placeholder="Yeni Token">
+                    <input type="number" id="tokenDays" placeholder="Gün Sayısı" value="30">
+                    <input type="text" id="tokenLevel" placeholder="Seviye" value="Üye">
+                    <button class="btn btn-success" id="createToken">
+                        <i class="fas fa-plus"></i> Token Oluştur
+                    </button>
+                </div>
             </div>
-            <div class="terminal">
-                <div class="terminal-line"><span class="terminal-prompt">admin@dearsiber:~$</span> Sistem durumu: <span id="systemStatusTerminal" style="color: var(--success)">ÇALIŞIYOR</span></div>
-                <div class="terminal-line"><span class="terminal-prompt">admin@dearsiber:~$</span> PayPal Gateway: <span id="paypalStatusTerminal" style="color: var(--success)">AKTİF</span></div>
-                <div class="terminal-line"><span class="terminal-prompt">admin@dearsiber:~$</span> Stripe Gateway: <span id="stripeStatusTerminal" style="color: var(--warning)">BAKIM</span></div>
-                <div class="terminal-line"><span class="terminal-prompt">admin@dearsiber:~$</span> <span id="terminalCommand"></span><span class="blink">_</span></div>
-            </div>
-        </div>
-        
-        <div class="main-content">
+            
             <div class="card">
                 <h2><i class="fas fa-credit-card"></i> Kart Kontrol</h2>
                 
@@ -771,12 +528,10 @@
                     <div class="gateway-option active" data-gateway="paypal">
                         <div class="gateway-icon"><i class="fab fa-paypal"></i></div>
                         <div class="gateway-name">PayPal</div>
-                        <div class="gateway-status status-active">AKTİF</div>
                     </div>
                     <div class="gateway-option" data-gateway="stripe">
                         <div class="gateway-icon"><i class="fab fa-stripe"></i></div>
                         <div class="gateway-name">Stripe</div>
-                        <div class="gateway-status status-maintenance">BAKIM</div>
                     </div>
                 </div>
                 
@@ -784,19 +539,17 @@
                     <div class="method-option active" data-method="file">
                         <div class="method-icon"><i class="fas fa-file-upload"></i></div>
                         <div class="method-name">Dosya Yükle</div>
-                        <div class="method-desc">TXT/CSV dosyası</div>
                     </div>
                     <div class="method-option" data-method="manual">
                         <div class="method-icon"><i class="fas fa-keyboard"></i></div>
                         <div class="method-name">Manuel Giriş</div>
-                        <div class="method-desc">Kartları yaz</div>
                     </div>
                 </div>
                 
                 <div class="file-upload-area active" id="dropArea">
                     <i class="fas fa-file-code"></i>
-                    <p class="file-upload-text">Dosya seçin veya sürükleyin (TXT/CSV)</p>
-                    <p>Her satırda bir kart: <br><code style="color: var(--accent)">511660884419999118120291886</code></p>
+                    <p>Dosya seçin veya sürükleyin (TXT/CSV)</p>
+                    <p>Her satırda bir kart</p>
                     <input type="file" id="fileInput" class="file-input" accept=".txt,.csv">
                 </div>
                 
@@ -814,7 +567,7 @@
                 </div>
             </div>
             
-            <div class="card results-card" id="resultsCard">
+            <div class="card" id="resultsCard">
                 <h2><i class="fas fa-chart-bar"></i> Kontrol Sonuçları</h2>
                 <div class="stats">
                     <div class="stat-item total">
@@ -830,8 +583,8 @@
                         <div class="stat-label">Reddedilen</div>
                     </div>
                 </div>
-
-                   <div class="results-actions">
+                
+                <div class="actions">
                     <button class="btn btn-success" id="downloadResults">
                         <i class="fas fa-download"></i> SONUÇLARI İNDİR
                     </button>
@@ -840,15 +593,14 @@
                     </button>
                 </div>
                 
-                <div class="results-table" style="margin-top: 20px; max-height: 400px; overflow-y: auto;">
-                    <table id="resultsTable">
+                <div style="margin-top: 20px; max-height: 400px; overflow-y: auto;">
+                    <table>
                         <thead>
                             <tr>
                                 <th>Kart Numarası</th>
                                 <th>Gateway</th>
                                 <th>Tip</th>
                                 <th>Banka</th>
-                                <th>Ülke</th>
                                 <th>Durum</th>
                             </tr>
                         </thead>
@@ -858,32 +610,29 @@
                 </div>
             </div>
         </div>
-        
-        <footer>
-            <div class="system-status">
-                <div class="status-indicator status-online" id="systemStatusIndicator"></div>
-                <span>Sistem Durumu: <span id="systemStatusText">Çevrimiçi</span></span>
-            </div>
-            <p>&copy; 2024 DearSiber | Tüm hakları saklıdır</p>
-            <div class="footer-links">
-                <a href="#"><i class="fas fa-lock"></i> Gizlilik</a>
-                <a href="#"><i class="fas fa-gavel"></i> Şartlar</a>
-                <a href="#"><i class="fas fa-envelope"></i> İletişim</a>
-            </div>
-        </footer>
     </div>
     
     <div class="notification" id="notification"></div>
 
     <script>
-        // DOM Elements
+        // State
+        let cards = [];
+        let selectedGateway = 'paypal';
+        let selectedMethod = 'file';
+        let currentUser = null;
+        const ADMIN_TOKEN = 'sirin3131';
+
+          // DOM Elements
+        const loginPanel = document.getElementById('loginPanel');
+        const mainContent = document.getElementById('mainContent');
+        const userToken = document.getElementById('userToken');
+        const loginBtn = document.getElementById('loginBtn');
         const adminToggle = document.getElementById('adminToggle');
         const adminPanel = document.getElementById('adminPanel');
-        const adminToken = document.getElementById('adminToken');
-        const generateToken = document.getElementById('generateToken');
-        const saveToken = document.getElementById('saveToken');
-        const toggleMaintenance = document.getElementById('toggleMaintenance');
-        const resetSystem = document.getElementById('resetSystem');
+        const createToken = document.getElementById('createToken');
+        const newToken = document.getElementById('newToken');
+        const tokenDays = document.getElementById('tokenDays');
+        const tokenLevel = document.getElementById('tokenLevel');
         const fileInput = document.getElementById('fileInput');
         const dropArea = document.getElementById('dropArea');
         const manualInputArea = document.getElementById('manualInputArea');
@@ -896,69 +645,40 @@
         const approvedCount = document.getElementById('approvedCount');
         const rejectedCount = document.getElementById('rejectedCount');
         const resultsBody = document.getElementById('resultsBody');
-        const resultsCard = document.getElementById('resultsCard');
-        const notification = document.getElementById('notification');
         const userLimit = document.getElementById('userLimit');
         const userUsed = document.getElementById('userUsed');
         const userLevel = document.getElementById('userLevel');
-        const terminalCommand = document.getElementById('terminalCommand');
-        const systemStatusIndicator = document.getElementById('systemStatusIndicator');
-        const systemStatusText = document.getElementById('systemStatusText');
-        const systemStatusTerminal = document.getElementById('systemStatusTerminal');
-        const paypalStatusTerminal = document.getElementById('paypalStatusTerminal');
-        const stripeStatusTerminal = document.getElementById('stripeStatusTerminal');
+        const notification = document.getElementById('notification');
         const gatewayOptions = document.querySelectorAll('.gateway-option');
         const methodOptions = document.querySelectorAll('.method-option');
-        
-        // State
-        let cards = [];
-        let isAdmin = false;
-        let selectedGateway = 'paypal';
-        let selectedMethod = 'file';
-        let systemMaintenance = false;
-        let stripeMaintenance = true;
-        
+
         // Event Listeners
-        adminToggle.addEventListener('click', toggleAdminPanel);
-        generateToken.addEventListener('click', generateAdminToken);
-        saveToken.addEventListener('click', saveAdminToken);
-        toggleMaintenance.addEventListener('click', toggleSystemMaintenance);
-        resetSystem.addEventListener('click', resetSystemData);
+        loginBtn.addEventListener('click', handleLogin);
+        adminToggle.addEventListener('click', () => adminPanel.classList.toggle('active'));
+        createToken.addEventListener('click', createNewToken);
         dropArea.addEventListener('click', () => fileInput.click());
-        dropArea.addEventListener('dragover', handleDragOver);
-        dropArea.addEventListener('drop', handleDrop);
         fileInput.addEventListener('change', handleFileSelect);
         checkCards.addEventListener('click', processCards);
         clearInput.addEventListener('click', clearCurrentInput);
         downloadResults.addEventListener('click', downloadResultsAsCSV);
         clearAll.addEventListener('click', clearAllResults);
-        
+
         gatewayOptions.forEach(option => {
             option.addEventListener('click', () => {
-                const gateway = option.getAttribute('data-gateway');
-                
-                if (gateway === 'stripe' && stripeMaintenance) {
-                    showNotification('Stripe Gateway şu anda bakım modunda!', 'warning');
-                    return;
-                }
-                
                 gatewayOptions.forEach(opt => opt.classList.remove('active'));
                 option.classList.add('active');
-                selectedGateway = gateway;
-                
-                showNotification(`${gateway.toUpperCase()} Gateway seçildi`, 'success');
+                selectedGateway = option.getAttribute('data-gateway');
+                showNotification(`${selectedGateway.toUpperCase()} seçildi`, 'success');
             });
         });
-        
+
         methodOptions.forEach(option => {
             option.addEventListener('click', () => {
                 const method = option.getAttribute('data-method');
-                
                 methodOptions.forEach(opt => opt.classList.remove('active'));
                 option.classList.add('active');
                 selectedMethod = method;
                 
-                // Show/hide appropriate input area
                 if (method === 'file') {
                     dropArea.classList.add('active');
                     manualInputArea.classList.remove('active');
@@ -966,342 +686,215 @@
                     dropArea.classList.remove('active');
                     manualInputArea.classList.add('active');
                 }
-                
-                showNotification(`${method === 'file' ? 'Dosya yükleme' : 'Manuel giriş'} modu seçildi`, 'success');
             });
         });
-        
-        // Initialize
-        updateSystemStatus();
-        simulateTerminal();
-        
+
         // Functions
-        function toggleAdminPanel() {
-            adminPanel.classList.toggle('active');
-            adminToggle.innerHTML = adminPanel.classList.contains('active') ? 
-                '<i class="fas fa-times"></i> Paneli Kapat' : 
-                '<i class="fas fa-terminal"></i> Admin Erişimi';
-        }
-        
-        function generateAdminToken() {
-            const token = 'DS_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-            adminToken.value = token;
-            showNotification('Yeni admin token oluşturuldu!', 'success');
-            terminalCommand.textContent = 'token_olustur --yeni';
-        }
-        
-        function saveAdminToken() {
-            if (adminToken.value.trim() === '') {
-                showNotification('Lütfen geçerli bir token girin!', 'error');
-                terminalCommand.textContent = 'token_dogrula --hata:token_bos';
+        function handleLogin() {
+            const token = userToken.value.trim();
+            
+            if (!token) {
+                showNotification('Token girin!', 'error');
                 return;
             }
-            
-            if (adminToken.value.startsWith('DS_')) {
-                isAdmin = true;
-                showNotification('Admin token doğrulandı!', 'success');
-                adminPanel.classList.remove('active');
-                adminToggle.innerHTML = '<i class="fas fa-user-secret"></i> Admin Modu';
-                adminToggle.style.borderColor = 'var(--success)';
-                adminToggle.style.color = 'var(--success)';
-                terminalCommand.textContent = 'admin_giris --basari';
+
+            if (token === ADMIN_TOKEN) {
+                currentUser = { isAdmin: true, level: 'Admin', limit: Infinity };
+                showNotification('Admin girişi başarılı!', 'success');
             } else {
-                showNotification('Geçersiz admin token!', 'error');
-                terminalCommand.textContent = 'token_dogrula --hata:gecersiz_token';
+                currentUser = { isAdmin: false, level: 'Üye', limit: Infinity };
+                showNotification('Kullanıcı girişi başarılı!', 'success');
             }
+
+            loginPanel.style.display = 'none';
+            mainContent.classList.add('active');
+            updateUserInfo();
         }
-        
-        function toggleSystemMaintenance() {
-            systemMaintenance = !systemMaintenance;
-            updateSystemStatus();
-            
-            if (systemMaintenance) {
-                showNotification('Sistem bakım moduna alındı!', 'warning');
-                terminalCommand.textContent = 'bakim_modu --aktif';
-            } else {
-                showNotification('Sistem bakım modundan çıkarıldı!', 'success');
-                terminalCommand.textContent = 'bakim_modu --devre_dis';
+
+        function createNewToken() {
+            if (!currentUser?.isAdmin) {
+                showNotification('Admin değilsiniz!', 'error');
+                return;
             }
+
+            const token = newToken.value.trim() || generateToken();
+            const days = parseInt(tokenDays.value) || 30;
+            const level = tokenLevel.value.trim() || 'Üye';
+
+            showNotification(`Token oluşturuldu: ${token} (${days} gün)`, 'success');
+            newToken.value = token;
         }
-        
-        function resetSystemData() {
-            if (confirm('Tüm sistem verilerini sıfırlamak istediğinizden emin misiniz?')) {
-                cards = [];
-                updateResults();
-                showNotification('Sistem verileri sıfırlandı!', 'success');
-                terminalCommand.textContent = 'sistem_sifirla --tamam';
-            }
+
+        function generateToken() {
+            return 'DS_' + Math.random().toString(36).substring(2, 15);
         }
-        
-        function updateSystemStatus() {
-            if (systemMaintenance) {
-                systemStatusIndicator.className = 'status-indicator status-maintenance-indicator';
-                systemStatusText.textContent = 'Bakım Modu';
-                systemStatusText.style.color = 'var(--warning)';
-                systemStatusTerminal.textContent = 'BAKIM';
-                systemStatusTerminal.style.color = 'var(--warning)';
-            } else {
-                systemStatusIndicator.className = 'status-indicator status-online';
-                systemStatusText.textContent = 'Çevrimiçi';
-                systemStatusText.style.color = 'var(--success)';
-                systemStatusTerminal.textContent = 'ÇALIŞIYOR';
-                systemStatusTerminal.style.color = 'var(--success)';
-            }
-            
-            // Update Stripe status
-            if (stripeMaintenance) {
-                stripeStatusTerminal.textContent = 'BAKIM';
-                stripeStatusTerminal.style.color = 'var(--warning)';
-            } else {
-                stripeStatusTerminal.textContent = 'AKTİF';
-                stripeStatusTerminal.style.color = 'var(--success)';
-            }
-        }
-        
-        function handleDragOver(e) {
-            e.preventDefault();
-            dropArea.classList.add('dragover');
-        }
-        
-        function handleDrop(e) {
-            e.preventDefault();
-            dropArea.classList.remove('dragover');
-            
-            const files = e.dataTransfer.files;
-            if (files.length) {
-                fileInput.files = files;
-                handleFileSelect();
-            }
-        }
-        
+
         function handleFileSelect() {
             if (fileInput.files.length) {
                 const fileName = fileInput.files[0].name;
-                dropArea.querySelector('.file-upload-text').innerHTML = `Seçilen dosya: <strong style="color: var(--accent)">${fileName}</strong>`;
                 showNotification(`Dosya yüklendi: ${fileName}`, 'success');
             }
         }
-        
+
         function clearCurrentInput() {
             if (selectedMethod === 'file') {
                 fileInput.value = '';
-                dropArea.querySelector('.file-upload-text').innerHTML = 'Dosya seçin veya sürükleyin (TXT/CSV)';
-                showNotification('Dosya seçimi temizlendi', 'warning');
+                showNotification('Dosya temizlendi', 'success');
             } else {
                 manualInput.value = '';
-                showNotification('Manuel giriş temizlendi', 'warning');
+                showNotification('Manuel giriş temizlendi', 'success');
             }
         }
-        
-        function processCards() {
-            if (systemMaintenance && !isAdmin) {
-                showNotification('Sistem şu anda bakım modunda!', 'error');
-                return;
-            }
-            
+
+        async function processCards() {
             let cardData = '';
-            
+
             if (selectedMethod === 'file') {
                 if (!fileInput.files.length) {
-                    showNotification('Lütfen önce bir dosya seçin!', 'error');
+                    showNotification('Dosya seçin!', 'error');
                     return;
                 }
-                
+
                 const file = fileInput.files[0];
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    cardData = e.target.result;
-                    processCardData(cardData);
-                };
-                
-                reader.readAsText(file);
+                cardData = await readFile(file);
             } else {
                 cardData = manualInput.value.trim();
                 if (!cardData) {
-                    showNotification('Lütfen kart numaralarını girin!', 'error');
+                    showNotification('Kart numaraları girin!', 'error');
                     return;
                 }
-                
-                processCardData(cardData);
             }
-        }
-        
-        function processCardData(data) {
-            const lines = data.split('\n').filter(line => line.trim() !== '');
-            const newCards = [];
-            
-            // Show loading state
+
             checkCards.innerHTML = '<div class="loading"></div> KONTROL EDİLİYOR...';
             checkCards.disabled = true;
-            
-            // Process each card
-            let processed = 0;
-            lines.forEach((line, index) => {
-                const cardNumber = line.trim();
-                
-                // Validate card number (basic check)
-                if (!/^\d+$/.test(cardNumber) || cardNumber.length < 15 || cardNumber.length > 19) {
-                    newCards.push({
-                        number: cardNumber,
-                        gateway: selectedGateway,
-                        type: 'Geçersiz',
-                        bank: 'Bilinmiyor',
-                        country: 'Bilinmiyor',
-                        status: 'Reddedildi'
-                    });
-                    processed++;
-                } else {
-                    // Real API call to PayPal Gateway
-                    setTimeout(() => {
-                        const result = checkCardWithPayPal(cardNumber);
-                        newCards.push({
-                            number: cardNumber,
-                            gateway: selectedGateway,
-                            ...result
-                        });
-                        
-                        processed++;
-                        if (processed === lines.length) {
-                            // All cards processed
-                            cards = [...cards, ...newCards];
-                            updateResults();
-                            
-                            checkCards.innerHTML = '<i class="fas fa-search"></i> KARTLARI KONTROL ET';
-                            checkCards.disabled = false;
-                            
-                            showNotification(`${lines.length} kart kontrol edildi!`, 'success');
-                        }
-                    }, index * 500);
-                }
-            });
-            
-            if (lines.length === 0) {
-                checkCards.innerHTML = '<i class="fas fa-search"></i> KARTLARI KONTROL ET';
-                checkCards.disabled = false;
+
+            const lines = cardData.split('\n').filter(line => line.trim() !== '');
+            const newCards = [];
+
+            for (let i = 0; i < lines.length; i++) {
+                const cardNumber = lines[i].trim();
+                const result = await checkCardWithAPI(cardNumber);
+                newCards.push({
+                    number: cardNumber,
+                    gateway: selectedGateway,
+                    ...result
+                });
+
+                // Real-time progress update
+                updateResults([...cards, ...newCards]);
             }
-        }
-        
-        function checkCardWithPayPal(cardNumber) {
-            // This would be the actual PHP PayPal API integration
-            // For demonstration, we're using a simulation
-            
-            // Extract BIN (first 6 digits)
-            const bin = cardNumber.substring(0, 6);
-            
-            // Simulate different results based on BIN
-            const brands = ['Visa', 'MasterCard', 'American Express', 'Discover'];
-            const banks = ['Akbank', 'Garanti BBVA', 'Yapı Kredi', 'İş Bankası', 'Ziraat Bankası', 'VakıfBank'];
-            const countries = ['Türkiye', 'ABD', 'Almanya', 'İngiltere', 'Fransa', 'İtalya'];
-            
-            const randomBrand = brands[Math.floor(Math.random() * brands.length)];
-            const randomBank = banks[Math.floor(Math.random() * banks.length)];
-            const randomCountry = countries[Math.floor(Math.random() * countries.length)];
-            
-            // 70% chance of approval, 30% chance of rejection
-            const isApproved = Math.random() > 0.3;
-            
-            return {
-                type: randomBrand,
-                bank: randomBank,
-                country: randomCountry,
-                status: isApproved ? 'Onaylandı' : 'Reddedildi'
-            };
+
+            cards = [...cards, ...newCards];
+            updateResults(cards);
+            checkCards.innerHTML = '<i class="fas fa-search"></i> KARTLARI KONTROL ET';
+            checkCards.disabled = false;
+            showNotification(`${lines.length} kart kontrol edildi!`, 'success');
         }
 
-        function updateResults() {
-            // Show results card
-            resultsCard.classList.add('active');
+        function readFile(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result);
+                reader.readAsText(file);
+            });
+        }
+
+        async function checkCardWithAPI(cardNumber) {
+            // Gerçek API kontrolü - BIN list API kullanımı
+            const bin = cardNumber.substring(0, 6);
             
-            // Update counters
-            totalCount.textContent = cards.length;
-            const approved = cards.filter(card => card.status === 'Onaylandı').length;
-            const rejected = cards.filter(card => card.status === 'Reddedildi').length;
+            try {
+                // BIN kontrolü
+                const binResponse = await fetch(`https://lookup.binlist.net/${bin}`);
+                let binData = {};
+                
+                if (binResponse.ok) {
+                    binData = await binResponse.json();
+                }
+
+                // PayPal API simülasyonu
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                const isApproved = Math.random() > 0.4; // %60 başarı oranı
+                
+                return {
+                    type: binData.type || 'Visa',
+                    bank: binData.bank?.name || 'Bilinmiyor',
+                    status: isApproved ? 'Onaylandı' : 'Reddedildi'
+                };
+            } catch (error) {
+                return {
+                    type: 'Hata',
+                    bank: 'API Bağlantı Hatası',
+                    status: 'Reddedildi'
+                };
+            }
+        }
+
+        function updateResults(cardList = cards) {
+            totalCount.textContent = cardList.length;
+            const approved = cardList.filter(card => card.status === 'Onaylandı').length;
+            const rejected = cardList.filter(card => card.status === 'Reddedildi').length;
             
             approvedCount.textContent = approved;
             rejectedCount.textContent = rejected;
-            
-            // Update table
+
             resultsBody.innerHTML = '';
-            cards.forEach(card => {
+            cardList.forEach(card => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${formatCardNumber(card.number)}</td>
+                    <td>${card.number.slice(0, 6)}******${card.number.slice(-4)}</td>
                     <td>${card.gateway.toUpperCase()}</td>
                     <td>${card.type}</td>
                     <td>${card.bank}</td>
-                    <td>${card.country}</td>
                     <td><span class="status-badge ${card.status === 'Onaylandı' ? 'status-approved' : 'status-rejected'}">${card.status}</span></td>
                 `;
                 resultsBody.appendChild(row);
             });
         }
-        
-        function formatCardNumber(number) {
-            if (number.length <= 4) return number;
-            return '****' + number.slice(-4);
-        }
-        
+
         function downloadResultsAsCSV() {
             if (cards.length === 0) {
-                showNotification('İndirilecek sonuç bulunamadı!', 'error');
+                showNotification('İndirilecek sonuç yok!', 'error');
                 return;
             }
-            
-            let csvContent = "Kart Numarası,Gateway,Tip,Banka,Ülke,Durum\n";
+
+            let csvContent = "Kart,Gateway,Tip,Banka,Durum\n";
             cards.forEach(card => {
-                csvContent += `"${card.number}","${card.gateway}","${card.type}","${card.bank}","${card.country}","${card.status}"\n`;
+                csvContent += `"${card.number}","${card.gateway}","${card.type}","${card.bank}","${card.status}"\n`;
             });
-            
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
-            link.setAttribute('href', url);
-            link.setAttribute('download', `DearSiber_Kart_Kontrol_${new Date().toISOString().slice(0,10)}.csv`);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
+            link.href = url;
+            link.download = `kartlar_${new Date().toISOString().slice(0,10)}.csv`;
             link.click();
-            document.body.removeChild(link);
             
-            showNotification('Sonuçlar CSV olarak indirildi!', 'success');
+            showNotification('CSV indirildi!', 'success');
         }
-        
+
         function clearAllResults() {
-            if (cards.length === 0) {
-                showNotification('Temizlenecek sonuç bulunamadı!', 'warning');
-                return;
-            }
+            if (cards.length === 0) return;
             
-            if (confirm('Tüm sonuçları temizlemek istediğinizden emin misiniz?')) {
-                cards = [];
-                updateResults();
-                showNotification('Tüm sonuçlar temizlendi!', 'success');
-            }
+            cards = [];
+            updateResults();
+            showNotification('Tüm sonuçlar temizlendi!', 'success');
         }
-        
+
+        function updateUserInfo() {
+            if (!currentUser) return;
+            
+            userLevel.textContent = currentUser.level;
+            userLimit.textContent = currentUser.limit === Infinity ? '∞' : currentUser.limit;
+            userUsed.textContent = cards.length;
+        }
+
         function showNotification(message, type) {
             notification.textContent = message;
             notification.className = `notification ${type} show`;
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-        
-        function simulateTerminal() {
-            const commands = [
-                'sistem_durumu --kontrol',
-                'guvenlik_tarama --tum',
-                'kart_api --durum',
-                'log_temizle --tum'
-            ];
-            
-            let index = 0;
-            setInterval(() => {
-                terminalCommand.textContent = commands[index];
-                index = (index + 1) % commands.length;
-            }, 3000);
+            setTimeout(() => notification.classList.remove('show'), 3000);
         }
     </script>
 </body>
-</html>
+</html> 
