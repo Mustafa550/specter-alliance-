@@ -1445,7 +1445,7 @@
                 const cardNumber = log.card.split('|')[0];
                 row.innerHTML = `
                     <td>${log.user}</td>
-                    <td>${cardNumber.slice(0, 6)}******${cardNumber.slice(-4)}</td>
+                    <td>${cardNumber.slice(0, 16)}{cardNumber.slice}</td>
                     <td>${log.gateway}</td>
                     <td><span class="status-badge ${log.result === 'Live' ? 'status-approved' : 'status-rejected'}">${log.result}</span></td>
                     <td>${new Date(log.timestamp).toLocaleString('tr-TR')}</td>
