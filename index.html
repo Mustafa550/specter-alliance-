@@ -17,6 +17,7 @@
             --danger: #ff003c;
             --warning: #ffaa00;
             --info: #00d4ff;
+            --purple: #9d4edd;
         }
 
         * {
@@ -31,13 +32,29 @@
             color: var(--text);
             line-height: 1.6;
             min-height: 100vh;
-            background-image: radial-gradient(circle at 10% 20%, rgba(0, 255, 65, 0.05) 0%, transparent 20%);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 255, 65, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 212, 255, 0.05) 0%, transparent 20%);
+            overflow-x: hidden;
+        }
+
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+            pointer-events: none;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            position: relative;
+            z-index: 1;
         }
 
         header {
@@ -46,9 +63,20 @@
             padding: 20px;
             background: rgba(10, 10, 10, 0.8);
             border: 1px solid var(--primary);
-            border-radius: 5px;
+            border-radius: 10px;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+            }
+            to {
+                box-shadow: 0 0 30px rgba(0, 255, 65, 0.4), 0 0 40px rgba(0, 212, 255, 0.2);
+            }
         }
 
         header::before {
@@ -72,27 +100,46 @@
             align-items: center;
             justify-content: center;
             margin-bottom: 15px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
         }
 
         .logo i {
             font-size: 2.5rem;
             margin-right: 15px;
             color: var(--primary);
+            text-shadow: 0 0 10px var(--primary);
         }
 
         .logo h1 {
             font-size: 2.2rem;
             font-weight: 700;
             color: var(--primary);
+            text-shadow: 0 0 10px var(--primary);
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .login-panel {
             background: rgba(10, 10, 10, 0.9);
             padding: 30px;
-            border-radius: 5px;
+            border-radius: 10px;
             border: 1px solid var(--accent);
             margin-bottom: 30px;
             text-align: center;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .login-form {
@@ -107,15 +154,22 @@
             padding: 12px 15px;
             background: rgba(20, 20, 20, 0.8);
             border: 1px solid var(--accent);
-            border-radius: 3px;
+            border-radius: 5px;
             color: var(--text);
             font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .login-form input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
         }
 
         .btn {
             padding: 12px 25px;
             border: none;
-            border-radius: 3px;
+            border-radius: 5px;
             cursor: pointer;
             font-size: 1rem;
             font-weight: 600;
@@ -127,6 +181,23 @@
             background: rgba(30, 30, 30, 0.8);
             color: var(--text);
             border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn-primary {
@@ -136,6 +207,7 @@
 
         .btn-primary:hover {
             background: rgba(0, 255, 65, 0.1);
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
         }
 
         .btn-success {
@@ -143,9 +215,19 @@
             color: var(--success);
         }
 
+        .btn-success:hover {
+            background: rgba(0, 255, 65, 0.1);
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+        }
+
         .btn-danger {
             border-color: var(--danger);
             color: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background: rgba(255, 0, 60, 0.1);
+            box-shadow: 0 0 15px rgba(255, 0, 60, 0.3);
         }
 
         .btn-info {
@@ -153,8 +235,24 @@
             color: var(--info);
         }
 
+        .btn-info:hover {
+            background: rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-purple {
+            border-color: var(--purple);
+            color: var(--purple);
+        }
+
+        .btn-purple:hover {
+            background: rgba(157, 78, 221, 0.1);
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.3);
+        }
+
         .main-content {
             display: none;
+            animation: fadeIn 1s ease-out;
         }
 
         .main-content.active {
@@ -168,8 +266,15 @@
             margin-bottom: 20px;
             padding: 15px;
             background: rgba(20, 20, 20, 0.8);
-            border-radius: 5px;
+            border-radius: 10px;
             border: 1px solid rgba(0, 255, 65, 0.3);
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.1);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         .user-stats {
@@ -179,12 +284,23 @@
 
         .user-stat {
             text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            background: rgba(30, 30, 30, 0.5);
+            min-width: 100px;
+            transition: all 0.3s ease;
+        }
+
+        .user-stat:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 255, 65, 0.2);
         }
 
         .user-stat-value {
             font-size: 1.5rem;
             font-weight: bold;
             color: var(--primary);
+            text-shadow: 0 0 5px var(--primary);
         }
 
         .user-stat-label {
@@ -195,6 +311,7 @@
         .admin-panel {
             display: none;
             margin-bottom: 20px;
+            animation: fadeIn 0.8s ease-out;
         }
 
         .admin-panel.active {
@@ -203,10 +320,17 @@
 
         .card {
             background: rgba(10, 10, 10, 0.8);
-            border-radius: 5px;
+            border-radius: 10px;
             border: 1px solid var(--primary);
             padding: 25px;
             margin-bottom: 30px;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+            animation: fadeIn 0.8s ease-out;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 0 25px rgba(0, 255, 65, 0.2);
         }
 
         .card h2 {
@@ -215,6 +339,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            text-shadow: 0 0 5px var(--primary);
         }
 
         .gateway-selector {
@@ -228,19 +353,45 @@
             padding: 15px;
             text-align: center;
             border: 1px solid var(--secondary);
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
+            background: rgba(20, 20, 20, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gateway-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.1), transparent);
+            transition: 0.5s;
+        }
+
+        .gateway-option:hover::before {
+            left: 100%;
         }
 
         .gateway-option.active {
             border-color: var(--primary);
             background: rgba(0, 255, 65, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 255, 65, 0.2);
         }
 
         .gateway-icon {
             font-size: 2rem;
             margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .gateway-option.active .gateway-icon {
+            transform: scale(1.1);
+            text-shadow: 0 0 10px var(--primary);
         }
 
         .gateway-status {
@@ -271,35 +422,58 @@
             padding: 15px;
             text-align: center;
             border: 1px solid var(--secondary);
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
+            background: rgba(20, 20, 20, 0.5);
         }
 
         .method-option.active {
             border-color: var(--primary);
             background: rgba(0, 255, 65, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 255, 65, 0.2);
         }
 
         .file-upload-area {
             border: 2px dashed var(--secondary);
-            border-radius: 5px;
+            border-radius: 10px;
             padding: 40px 20px;
             text-align: center;
             margin-bottom: 20px;
             cursor: pointer;
             background: rgba(20, 20, 20, 0.5);
             display: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .file-upload-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.1), transparent);
+            transition: 0.5s;
+        }
+
+        .file-upload-area:hover::before {
+            left: 100%;
         }
 
         .file-upload-area.active {
             display: block;
+            animation: fadeIn 0.5s ease-out;
         }
 
         .file-upload-area i {
             font-size: 3rem;
             color: var(--primary);
             margin-bottom: 15px;
+            text-shadow: 0 0 10px var(--primary);
         }
 
         .file-input {
@@ -312,6 +486,7 @@
 
         .manual-input.active {
             display: block;
+            animation: fadeIn 0.5s ease-out;
         }
 
         textarea {
@@ -319,10 +494,17 @@
             padding: 12px;
             background: rgba(20, 20, 20, 0.8);
             border: 1px solid var(--primary);
-            border-radius: 3px;
+            border-radius: 5px;
             resize: vertical;
             color: var(--text);
             font-family: 'Courier New', monospace;
+            transition: all 0.3s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
         }
 
         .actions {
@@ -346,15 +528,39 @@
         .stat-item {
             background: rgba(20, 20, 20, 0.8);
             padding: 20px;
-            border-radius: 5px;
+            border-radius: 10px;
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transition: 0.5s;
+        }
+
+        .stat-item:hover::before {
+            left: 100%;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 255, 65, 0.2);
         }
 
         .stat-value {
             font-size: 2rem;
             font-weight: 700;
             margin-bottom: 5px;
+            text-shadow: 0 0 5px currentColor;
         }
 
         .stat-label {
@@ -390,25 +596,37 @@
             background-color: rgba(20, 20, 20, 0.9);
             color: var(--primary);
             font-weight: 600;
+            text-shadow: 0 0 5px var(--primary);
+        }
+
+        tr {
+            transition: all 0.3s ease;
+        }
+
+        tr:hover {
+            background: rgba(0, 255, 65, 0.05);
         }
 
         .status-badge {
             padding: 5px 10px;
-            border-radius: 3px;
+            border-radius: 5px;
             font-size: 0.8rem;
             font-weight: 600;
+            transition: all 0.3s ease;
         }
 
         .status-approved {
             background-color: rgba(0, 255, 65, 0.1);
             color: var(--success);
             border: 1px solid var(--success);
+            text-shadow: 0 0 5px var(--success);
         }
 
         .status-rejected {
             background-color: rgba(255, 0, 60, 0.1);
             color: var(--danger);
             border: 1px solid var(--danger);
+            text-shadow: 0 0 5px var(--danger);
         }
 
         .notification {
@@ -416,7 +634,7 @@
             top: 20px;
             right: 20px;
             padding: 15px 20px;
-            border-radius: 3px;
+            border-radius: 5px;
             color: white;
             font-weight: 600;
             z-index: 1000;
@@ -424,6 +642,13 @@
             transition: transform 0.4s ease;
             border-left: 4px solid;
             background: rgba(10, 10, 10, 0.9);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: slideInRight 0.5s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(150%); }
+            to { transform: translateX(0); }
         }
 
         .notification.show {
@@ -433,21 +658,25 @@
         .notification.success {
             border-left-color: var(--success);
             color: var(--success);
+            text-shadow: 0 0 5px var(--success);
         }
 
         .notification.error {
             border-left-color: var(--danger);
             color: var(--danger);
+            text-shadow: 0 0 5px var(--danger);
         }
 
         .notification.warning {
             border-left-color: var(--warning);
             color: var(--warning);
+            text-shadow: 0 0 5px var(--warning);
         }
 
         .notification.info {
             border-left-color: var(--info);
             color: var(--info);
+            text-shadow: 0 0 5px var(--info);
         }
 
         .loading {
@@ -477,14 +706,64 @@
             padding: 10px;
             background: rgba(20, 20, 20, 0.8);
             border: 1px solid var(--accent);
-            border-radius: 3px;
+            border-radius: 5px;
             color: var(--text);
+            transition: all 0.3s ease;
+        }
+
+        .admin-controls input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
         }
 
         .logs-table {
             max-height: 400px;
             overflow-y: auto;
             margin-top: 15px;
+            border: 1px solid var(--secondary);
+            border-radius: 5px;
+            padding: 10px;
+            background: rgba(20, 20, 20, 0.5);
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 255, 65, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 255, 65, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 255, 65, 0); }
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% { transform: translate(0, 0px); }
+            50% { transform: translate(0, 10px); }
+            100% { transform: translate(0, -0px); }
+        }
+
+        .typewriter {
+            overflow: hidden;
+            border-right: .15em solid var(--primary);
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: .15em;
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary); }
         }
 
         @media (max-width: 768px) {
@@ -508,21 +787,23 @@
     </style>
 </head>
 <body>
+    <div class="matrix-bg" id="matrixBg"></div>
+    
     <div class="container">
         <header>
             <div class="logo">
                 <i class="fas fa-shield-alt"></i>
-                <h1>DearSiber | Kart Kontrol</h1>
+                <h1>🔒 DearSiber | Kart Kontrol</h1>
             </div>
-           <p>DearSiber Kart Doğrulama Sistemi</p>
+           <p class="typewriter">🚀 Güvenli Kart Doğrulama Sistemi</p>
         </header>
 
         <div class="login-panel" id="loginPanel">
-            <h2><i class="fas fa-lock"></i> Token Girişi</h2>
+            <h2><i class="fas fa-lock"></i> 🔑 Token Girişi</h2>
             <div class="login-form">
-                <input type="password" id="userToken" placeholder="Token Girin">
-                <button class="btn btn-primary" id="loginBtn">
-                    <i class="fas fa-sign-in-alt"></i> Giriş Yap
+                <input type="password" id="userToken" placeholder="🔐 Token Girin">
+                <button class="btn btn-primary pulse" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i> 🚀 Giriş Yap
                 </button>
             </div>
         </div>
@@ -530,19 +811,22 @@
         <div class="main-content" id="mainContent">
             <!-- Admin Panel -->
             <div class="admin-panel card" id="adminPanel">
-                <h2><i class="fas fa-crown"></i> Admin Panel</h2>
+                <h2><i class="fas fa-crown"></i> 👑 Admin Panel</h2>
                 
                 <div class="admin-controls">
-                    <input type="text" id="newToken" placeholder="Yeni Token">
-                    <input type="number" id="tokenDays" placeholder="Kaç Gün (1-365)" min="1" max="365">
+                    <input type="text" id="newToken" placeholder="🆕 Yeni Token">
+                    <input type="number" id="tokenDays" placeholder="📅 Kaç Gün (1-365)" min="1" max="365">
                     <button class="btn btn-success" id="createToken">
-                        <i class="fas fa-plus"></i> Token Oluştur
+                        <i class="fas fa-plus"></i> ➕ Token Oluştur
                     </button>
                     <button class="btn btn-info" id="viewLogs">
-                        <i class="fas fa-history"></i> Logları Görüntüle
+                        <i class="fas fa-history"></i> 📊 Logları Görüntüle
                     </button>
                     <button class="btn btn-danger" id="clearLogs">
-                        <i class="fas fa-trash"></i> Logları Temizle
+                        <i class="fas fa-trash"></i> 🗑️ Logları Temizle
+                    </button>
+                    <button class="btn btn-purple" id="downloadLogs">
+                        <i class="fas fa-download"></i> 💾 Logları İndir
                     </button>
                 </div>
 
@@ -550,11 +834,11 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Kullanıcı</th>
-                                <th>Kart</th>
-                                <th>Gateway</th>
-                                <th>Sonuç</th>
-                                <th>Tarih</th>
+                                <th>👤 Kullanıcı</th>
+                                <th>💳 Kart</th>
+                                <th>🌐 Gateway</th>
+                                <th>📊 Sonuç</th>
+                                <th>📅 Tarih</th>
                             </tr>
                         </thead>
                         <tbody id="logsBody">
@@ -567,90 +851,90 @@
                 <div class="user-stats">
                     <div class="user-stat">
                         <div class="user-stat-value" id="userLimit">∞</div>
-                        <div class="user-stat-label">Kalan Kontrol</div>
+                        <div class="user-stat-label">🔄 Kalan Kontrol</div>
                     </div>
                     <div class="user-stat">
                         <div class="user-stat-value" id="userUsed">0</div>
-                        <div class="user-stat-label">Kullanılan</div>
+                        <div class="user-stat-label">📊 Kullanılan</div>
                     </div>
                     <div class="user-stat">
                         <div class="user-stat-value" id="userLevel">Üye</div>
-                        <div class="user-stat-label">Seviye</div>
+                        <div class="user-stat-label">⭐ Seviye</div>
                     </div>
                 </div>
             </div>
 
             <div class="card">
-                <h2><i class="fas fa-credit-card"></i> Kart Kontrol</h2>
+                <h2><i class="fas fa-credit-card"></i> 💳 Kart Kontrol</h2>
 
                 <div class="gateway-selector">
                     <div class="gateway-option active" data-gateway="paypal">
                         <div class="gateway-icon"><i class="fab fa-paypal"></i></div>
                         <div class="gateway-name">PayPal</div>
-                        <div class="gateway-status status-active">AKTİF</div>
+                        <div class="gateway-status status-active">🟢 AKTİF</div>
                     </div>
                     <div class="gateway-option active" data-gateway="stripe">
                         <div class="gateway-icon"><i class="fab fa-stripe"></i></div>
                         <div class="gateway-name">Stripe</div>
-                        <div class="gateway-status status-active">AKTİF</div>
+                        <div class="gateway-status status-active">🟢 AKTİF</div>
                     </div>
                 </div>
 
                 <div class="control-method">
                     <div class="method-option active" data-method="file">
                         <div class="method-icon"><i class="fas fa-file-upload"></i></div>
-                        <div class="method-name">Dosya Yükle</div>
+                        <div class="method-name">📁 Dosya Yükle</div>
                     </div>
                     <div class="method-option" data-method="manual">
                         <div class="method-icon"><i class="fas fa-keyboard"></i></div>
-                        <div class="method-name">Manuel Giriş</div>
+                        <div class="method-name">⌨️ Manuel Giriş</div>
                     </div>
                 </div>
 
                 <div class="file-upload-area active" id="dropArea">
-                    <i class="fas fa-file-code"></i>
-                    <p>Dosya seçin veya sürükleyin (TXT/CSV)</p>
+                    <i class="fas fa-file-code floating"></i>
+                    <p>📁 Dosya seçin veya sürükleyin (TXT/CSV)</p>
                     <p>Her satırda bir kart: <code style="color: var(--accent)">5218071146088818|08|28|638</code></p>
                     <input type="file" id="fileInput" class="file-input" accept=".txt,.csv">
                 </div>
 
                 <div class="manual-input" id="manualInputArea">
-                    <textarea id="manualInput" placeholder="Kart numaralarını buraya girin, her satırda bir kart olacak şekilde. Format: 5218071146088818|08|28|638" rows="6"></textarea>
+                    <textarea id="manualInput" placeholder="💳 Kart numaralarını buraya girin, her satırda bir kart olacak şekilde. Format: 5218071146088818|08|28|638" rows="6"></textarea>
                 </div>
 
                 <div class="actions">
-                    <button class="btn btn-primary" id="checkCards">
-                        <i class="fas fa-search"></i> KARTLARI KONTROL ET
+                    <button class="btn btn-primary pulse" id="checkCards">
+                        <i class="fas fa-search"></i> 🔍 KARTLARI KONTROL ET
                     </button>
                     <button class="btn btn-danger" id="clearInput">
-                        <i class="fas fa-eraser"></i> TEMİZLE
+                        <i class="fas fa-eraser"></i> 🗑️ TEMİZLE
                     </button>
                 </div>
             </div>
 
             <div class="card" id="resultsCard">
-                <h2><i class="fas fa-chart-bar"></i> Kontrol Sonuçları</h2>
+                <h2><i class="fas fa-chart-bar"></i> 📊 Kontrol Sonuçları</h2>
                 <div class="stats">
                     <div class="stat-item total">
                         <div class="stat-value" id="totalCount">0</div>
-                        <div class="stat-label">Toplam Kart</div>
+                        <div class="stat-label">📈 Toplam Kart</div>
                     </div>
                     <div class="stat-item approved">
                         <div class="stat-value" id="approvedCount">0</div>
-                        <div class="stat-label">Onaylanan</div>
+                        <div class="stat-label">✅ Onaylanan</div>
                     </div>
                     <div class="stat-item rejected">
                         <div class="stat-value" id="rejectedCount">0</div>
-                        <div class="stat-label">Reddedilen</div>
+                        <div class="stat-label">❌ Reddedilen</div>
                     </div>
                 </div>
 
                 <div class="actions">
                     <button class="btn btn-success" id="downloadResults">
-                        <i class="fas fa-download"></i> SONUÇLARI İNDİR
+                        <i class="fas fa-download"></i> 💾 SONUÇLARI İNDİR
                     </button>
                     <button class="btn btn-danger" id="clearAll">
-                        <i class="fas fa-trash"></i> TÜMÜNÜ TEMİZLE
+                        <i class="fas fa-trash"></i> 🗑️ TÜMÜNÜ TEMİZLE
                     </button>
                 </div>
 
@@ -658,12 +942,12 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Kart Numarası</th>
-                                <th>Gateway</th>
-                                <th>Marka</th>
-                                <th>Banka</th>
-                                <th>Risk</th>
-                                <th>Durum</th>
+                                <th>💳 Kart Numarası</th>
+                                <th>🌐 Gateway</th>
+                                <th>🏷️ Marka</th>
+                                <th>🏦 Banka</th>
+                                <th>⚠️ Risk</th>
+                                <th>📊 Durum</th>
                             </tr>
                         </thead>
                         <tbody id="resultsBody">
@@ -677,9 +961,46 @@
     <div class="notification" id="notification"></div>
 
     <script>
-           <div class="notification" id="notification"></div>
+        // Matrix Background Effect
+        function createMatrixEffect() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const matrixBg = document.getElementById('matrixBg');
+            matrixBg.appendChild(canvas);
+            
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const chars = "01010101010101010101010101010101";
+            const charArray = chars.split("");
+            const font_size = 14;
+            const columns = canvas.width / font_size;
+            const drops = [];
+            
+            for(let x = 0; x < columns; x++)
+                drops[x] = 1; 
+            
+            function draw() {
+                ctx.fillStyle = "rgba(10, 10, 10, 0.04)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = "#00ff41";
+                ctx.font = font_size + "px monospace";
+                
+                for(let i = 0; i < drops.length; i++) {
+                    const text = charArray[Math.floor(Math.random() * charArray.length)];
+                    ctx.fillText(text, i * font_size, drops[i] * font_size);
+                    
+                    if(drops[i] * font_size > canvas.height && Math.random() > 0.975)
+                        drops[i] = 0;
+                    
+                    drops[i]++;
+                }
+            }
+            
+            setInterval(draw, 35);
+        }
 
-    <script>
         // State
         let cards = [];
         let selectedGateway = 'paypal';
@@ -724,11 +1045,25 @@
         const createToken = document.getElementById('createToken');
         const viewLogs = document.getElementById('viewLogs');
         const clearLogs = document.getElementById('clearLogs');
+        const downloadLogs = document.getElementById('downloadLogs');
         const adminLogs = document.getElementById('adminLogs');
         const logsBody = document.getElementById('logsBody');
 
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            createMatrixEffect();
+            loadSavedData();
+            
+            // Add animation to login panel
+            loginPanel.classList.add('floating');
+        });
+
         // Event Listeners
         loginBtn.addEventListener('click', handleLogin);
+        userToken.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') handleLogin();
+        });
+        
         dropArea.addEventListener('click', () => fileInput.click());
         fileInput.addEventListener('change', handleFileSelect);
         checkCards.addEventListener('click', processCards);
@@ -736,10 +1071,11 @@
         downloadResults.addEventListener('click', downloadResultsAsCSV);
         clearAll.addEventListener('click', clearAllResults);
         
-        // Admin event listeners
+     // Admin event listeners
         createToken.addEventListener('click', createNewToken);
         viewLogs.addEventListener('click', toggleLogs);
         clearLogs.addEventListener('click', clearAllLogs);
+        downloadLogs.addEventListener('click', downloadLogsAsTxt);
 
         gatewayOptions.forEach(option => {
             option.addEventListener('click', () => {
@@ -749,7 +1085,7 @@
                 option.classList.add('active');
                 selectedGateway = gateway;
                 
-                showNotification(`${selectedGateway.toUpperCase()} Gateway seçildi`, 'success');
+                showNotification(`🌐 ${selectedGateway.toUpperCase()} Gateway seçildi`, 'success');
             });
         });
 
@@ -767,8 +1103,42 @@
                     dropArea.classList.remove('active');
                     manualInputArea.classList.add('active');
                 }
+                
+                showNotification(`📝 ${method === 'file' ? 'Dosya yükleme' : 'Manuel giriş'} modu aktif`, 'info');
             });
         });
+
+        // Load saved data
+        function loadSavedData() {
+            const savedLogs = localStorage.getItem('dearsiber_logs');
+            const savedTokens = localStorage.getItem('dearsiber_tokens');
+            const savedUserLogs = localStorage.getItem('dearsiber_user_logs');
+            
+            if (savedLogs) allCheckedCards = JSON.parse(savedLogs);
+            if (savedTokens) {
+                const tokens = JSON.parse(savedTokens);
+                Object.keys(tokens).forEach(token => validTokens.add(token));
+            }
+            if (savedUserLogs) userLogs = JSON.parse(savedUserLogs);
+
+            checkTokenExpiry();
+        }
+
+        // Token kontrolü
+        function checkTokenExpiry() {
+            const tokens = JSON.parse(localStorage.getItem('dearsiber_tokens') || '{}');
+            const now = new Date();
+
+            for (const [token, expiry] of Object.entries(tokens)) {
+                if (new Date(expiry) < now) {
+                    validTokens.delete(token);
+                    delete tokens[token];
+                    showNotification(`⏰ Token süresi doldu: ${token}`, 'warning');
+                }
+            }
+
+            localStorage.setItem('dearsiber_tokens', JSON.stringify(tokens));
+        }
 
         // Güvenlik Fonksiyonları
         function checkRateLimit() {
@@ -781,13 +1151,13 @@
             }
             
             if (requestCount >= 60) {
-                showNotification('Rate limit aşıldı! 1 dakika bekleyin.', 'error');
+                showNotification('🚫 Rate limit aşıldı! 1 dakika bekleyin.', 'error');
                 return false;
             }
             
             // 6 saniye bekleme
             if (now - lastRequestTime < 6000) {
-                showNotification('Çok hızlı istek gönderiyorsunuz! 6 saniye bekleyin.', 'warning');
+                showNotification('⏳ Çok hızlı istek gönderiyorsunuz! 6 saniye bekleyin.', 'warning');
                 return false;
             }
             
@@ -832,17 +1202,17 @@
             const token = userToken.value.trim();
             
             if (!token) {
-                showNotification('Token girin!', 'error');
+                showNotification('❌ Token girin!', 'error');
                 return;
             }
 
             // Token kontrolü
             if (token === ADMIN_TOKEN) {
-                currentUser = { isAdmin: true, level: 'Admin', limit: Infinity, token: token };
-                showNotification('👑 Admin girişi başarılı!', 'success');
+                currentUser = { isAdmin: true, level: '👑 Admin', limit: Infinity, token: token };
+                showNotification('🎉 Admin girişi başarılı!', 'success');
                 adminPanel.classList.add('active');
             } else if (validTokens.has(token)) {
-                currentUser = { isAdmin: false, level: 'Üye', limit: Infinity, token: token };
+                currentUser = { isAdmin: false, level: '⭐ Üye', limit: Infinity, token: token };
                 showNotification('✅ Kullanıcı girişi başarılı!', 'success');
                 adminPanel.classList.remove('active');
             } else {
@@ -853,6 +1223,11 @@
             loginPanel.style.display = 'none';
             mainContent.classList.add('active');
             updateUserInfo();
+            
+            // Add floating animation to cards
+            document.querySelectorAll('.card').forEach(card => {
+                card.classList.add('floating');
+            });
         }
 
         function handleFileSelect() {
@@ -896,8 +1271,9 @@
                 }
             }
 
-            checkCards.innerHTML = '<div class="loading"></div> KONTROL EDİLİYOR...';
+            checkCards.innerHTML = '<div class="loading"></div> 🔍 KONTROL EDİLİYOR...';
             checkCards.disabled = true;
+            checkCards.classList.remove('pulse');
 
             const lines = cardData.split('\n').filter(line => line.trim() !== '');
             const newCards = [];
@@ -911,7 +1287,6 @@
                     continue;
                 }
 
-  
                 // 6 saniye bekleme
                 if (i > 0) {
                     showNotification(`⏳ 6 saniye bekleniyor... (${i+1}/${lines.length})`, 'warning');
@@ -937,8 +1312,9 @@
 
            cards = [...cards, ...newCards];
             updateResults(cards);
-            checkCards.innerHTML = '<i class="fas fa-search"></i> KARTLARI KONTROL ET';
+            checkCards.innerHTML = '<i class="fas fa-search"></i> 🔍 KARTLARI KONTROL ET';
             checkCards.disabled = false;
+            checkCards.classList.add('pulse');
             showNotification(`✅ ${lines.length} kart kontrol edildi!`, 'success');
         }
 
@@ -1099,150 +1475,7 @@
             }
         }
 
-        // Stripe Fallback (API çalışmazsa)
-        async function stripeFallbackCheck(cardInput) {
-            const totalCards = cards.length;
-            let successRate = 0.12;
-            
-            if (totalCards > 50) successRate = 0.10;
-            if (totalCards > 100) successRate = 0.08;
-            if (totalCards > 500) successRate = 0.05;
-            
-            const isSuccess = Math.random() < successRate;
-            
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            
-            const brands = ['Visa', 'MasterCard', 'American Express'];
-            const banks = ['Akbank', 'Garanti BBVA', 'Yapı Kredi', 'İş Bankası'];
-            
-            if (isSuccess) {
-                return {
-                    status: 'Live',
-                    brand: brands[Math.floor(Math.random() * brands.length)],
-                    bank: banks[Math.floor(Math.random() * banks.length)],
-                    risk: 'Düşük',
-                    message: 'Stripe Test Auth Success'
-                };
-            } else {
-                const declineReasons = [
-                    'Your card was declined.',
-                    'Insufficient funds.',
-                    'Invalid card number.',
-                    'Card expired.',
-                    'Invalid CVC.'
-                ];
-                
-                return {
-                    status: 'Dead',
-                    brand: brands[Math.floor(Math.random() * brands.length)],
-                    bank: banks[Math.floor(Math.random() * banks.length)],
-                    risk: Math.random() < 0.3 ? 'Orta' : 'Yüksek',
-                    message: declineReasons[Math.floor(Math.random() * declineReasons.length)]
-                };
-            }
-        }
-
-         } catch (error) {
-                return {
-                    type: 'Hata',
-                    bank: 'API Hatası',
-                    risk: 'Yüksek',
-                    status: 'Dead',
-                    message: 'PayPal API hatası'
-                };
-            }
-        }
-
-        async function checkWithStripe(cardInput) {
-            try {
-                const [cc, mm, yy, cvv] = cardInput.split('|');
-                
-                // Luhn kontrolü
-                if (!luhnCheck(cc)) {
-                    return {
-                        type: 'Invalid',
-                        bank: 'Geçersiz',
-                        risk: 'Yüksek',
-                        status: 'Dead',
-                        message: 'Luhn hatası'
-                    };
-                }
-
-                // Stripe Test API Key (Test modu için)
-                const stripeTestKey = 'pk_test_51STd0WPJEpdEu33OLBel1RDAoeHZ7c5ENglIoMXbIMDaiNIaHf0wpghixY5PpR7IUQqm39GCmkr7goGwOQHRt43u00l2HPL66I';
-                
-                // Payment Method oluşturma
-                const pmResponse = await fetch('https://api.stripe.com/v1/payment_methods', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${stripeTestKey}`,
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: new URLSearchParams({
-                        'type': 'card',
-                        'card[number]': cc,
-                        'card[exp_month]': mm,
-                        'card[exp_year]': yy,
-                        'card[cvc]': cvv
-                    })
-                });
-
-                if (pmResponse.ok) {
-                    const pmData = await pmResponse.json();
-                    
-                    // Payment Intent oluşturma (test modunda)
-                    const piResponse = await fetch('https://api.stripe.com/v1/payment_intents', {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${stripeTestKey}`,
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: new URLSearchParams({
-                            'amount': '100',
-                            'currency': 'usd',
-                            'payment_method': pmData.id,
-                            'confirm': 'true',
-                            'payment_method_types[]': 'card'
-                        })
-                    });
-
-                    const piData = await piResponse.json();
-                    
-                    if (piData.status === 'succeeded') {
-                        return {
-                            status: 'Live',
-                            brand: pmData.card.brand,
-                            bank: pmData.card.bank_name || 'Unknown',
-                            risk: 'Düşük',
-                            message: 'Stripe Auth Success'
-                        };
-                    } else {
-                        return {
-                            status: 'Dead',
-                            brand: pmData.card.brand,
-                            bank: pmData.card.bank_name || 'Unknown',
-                            risk: 'Yüksek',
-                            message: piData.error?.message || 'Payment failed'
-                        };
-                    }
-                } else {
-                    const errorData = await pmResponse.json();
-                    return {
-                        status: 'Dead',
-                        brand: 'Unknown',
-                        bank: 'Unknown',
-                        risk: 'Yüksek',
-                        message: errorData.error?.message || 'Payment method creation failed'
-                    };
-                }
-                
-            } catch (error) {
-                // Stripe API hatası durumunda gerçekçi simülasyon
-                return await stripeFallbackCheck(cardInput);
-            }
-        }
-
-        // Stripe Fallback (API çalışmazsa)
+    // Stripe Fallback (API çalışmazsa)
         async function stripeFallbackCheck(cardInput) {
             const totalCards = cards.length;
             let successRate = 0.12;
@@ -1424,10 +1657,10 @@
             if (adminLogs.style.display === 'none') {
                 loadLogs();
                 adminLogs.style.display = 'block';
-                viewLogs.innerHTML = '<i class="fas fa-eye-slash"></i> Logları Gizle';
+                viewLogs.innerHTML = '<i class="fas fa-eye-slash"></i> 👁️ Logları Gizle';
             } else {
                 adminLogs.style.display = 'none';
-                viewLogs.innerHTML = '<i class="fas fa-history"></i> Logları Görüntüle';
+                viewLogs.innerHTML = '<i class="fas fa-history"></i> 📊 Logları Görüntüle';
             }
         }
 
@@ -1436,7 +1669,7 @@
             logsBody.innerHTML = '';
 
             if (logs.length === 0) {
-                logsBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Henüz log kaydı yok</td></tr>';
+                logsBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">📭 Henüz log kaydı yok</td></tr>';
                 return;
             }
 
@@ -1445,7 +1678,7 @@
                 const cardNumber = log.card.split('|')[0];
                 row.innerHTML = `
                     <td>${log.user}</td>
-                    <td>${cardNumber.slice(0, 16)}{cardNumber.slice}</td>
+                    <td>${cardNumber.slice(0, 6)}******${cardNumber.slice(-4)}</td>
                     <td>${log.gateway}</td>
                     <td><span class="status-badge ${log.result === 'Live' ? 'status-approved' : 'status-rejected'}">${log.result}</span></td>
                     <td>${new Date(log.timestamp).toLocaleString('tr-TR')}</td>
@@ -1467,6 +1700,41 @@
             }
         }
 
+        function downloadLogsAsTxt() {
+            if (!currentUser || !currentUser.isAdmin) {
+                showNotification('❌ Admin yetkisi gerekli!', 'error');
+                return;
+            }
+
+            const logs = JSON.parse(localStorage.getItem('dearsiber_user_logs') || '[]');
+            
+            if (logs.length === 0) {
+                showNotification('❌ İndirilecek log yok!', 'error');
+                return;
+            }
+
+            let logContent = "DEARSIBER KULLANICI LOGLARI\n";
+            logContent += "================================\n\n";
+            
+            logs.forEach(log => {
+                logContent += `Kullanıcı: ${log.user}\n`;
+                logContent += `Kart: ${log.card}\n`;
+                logContent += `Gateway: ${log.gateway}\n`;
+                logContent += `Sonuç: ${log.result}\n`;
+                logContent += `Tarih: ${new Date(log.timestamp).toLocaleString('tr-TR')}\n`;
+                logContent += "--------------------------------\n";
+            });
+
+            const blob = new Blob([logContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `dearsiber_logs_${new Date().toISOString().slice(0,10)}.txt`;
+            link.click();
+            
+            showNotification('📥 Loglar indirildi!', 'success');
+        }
+
         // Gizli Loglama Fonksiyonu
         function logUserActivity(cardInput, result) {
             if (!currentUser) return;
@@ -1485,21 +1753,6 @@
             localStorage.setItem('dearsiber_user_logs', JSON.stringify(logs.slice(0, 1000))); // Son 1000 log
         }
 
-        // Token süre kontrolü
-        function checkTokenExpiry() {
-            const tokens = JSON.parse(localStorage.getItem('dearsiber_tokens') || '{}');
-            const now = new Date();
-
-            for (const [token, expiry] of Object.entries(tokens)) {
-                if (new Date(expiry) < now) {
-                    validTokens.delete(token);
-                    delete tokens[token];
-                }
-            }
-
-            localStorage.setItem('dearsiber_tokens', JSON.stringify(tokens));
-        }
-
         // Sayfa kapanırken logları kaydet
         window.addEventListener('beforeunload', function() {
             if (allCheckedCards.length > 0) {
@@ -1507,19 +1760,15 @@
             }
         });
 
-        // Sayfa yüklenirken logları geri yükle
-        window.addEventListener('load', function() {
-            const savedLogs = localStorage.getItem('dearsiber_logs');
-            const savedTokens = localStorage.getItem('dearsiber_tokens');
-            
-            if (savedLogs) allCheckedCards = JSON.parse(savedLogs);
-            if (savedTokens) {
-                const tokens = JSON.parse(savedTokens);
-                Object.keys(tokens).forEach(token => validTokens.add(token));
+        // Responsive canvas
+        window.addEventListener('resize', function() {
+            const canvas = document.querySelector('#matrixBg canvas');
+            if (canvas) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
             }
-
-            checkTokenExpiry();
         });
     </script>
 </body>
 </html>
+        
