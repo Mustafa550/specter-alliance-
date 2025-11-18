@@ -570,6 +570,7 @@
             padding: 15px;
             text-align: center;
             transition: all 0.3s;
+            cursor: pointer;
         }
 
         .stat-card:hover {
@@ -623,12 +624,6 @@
         }
 
         .card-details {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 5px;
-        }
-
-        .bin-info {
             font-size: 0.8rem;
             color: rgba(255, 255, 255, 0.7);
             margin-top: 5px;
@@ -727,7 +722,34 @@
             width: 0%;
             transition: width 0.3s;
         }
-    </style>
+
+        /* Download Buttons */
+        .download-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .download-btn {
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--card-border);
+            border-radius: 5px;
+            color: var(--light);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .download-btn:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+        }
+       </style>
 </head>
 <body>
     <!-- Header -->
@@ -740,7 +762,7 @@
             <div class="nav-links">
                 <a href="#" id="home-link"><i class="fas fa-home"></i> Ana Sayfa</a>
                 <a href="#" id="admin-link" style="display:none;"><i class="fas fa-cog"></i> Admin Panel</a>
-                     <a href="#" id="logout-link" style="display:none;"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a>
+                <a href="#" id="logout-link" style="display:none;"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a>
             </div>
         </div>
     </header>
@@ -830,26 +852,38 @@
             </button>
             
             <div class="stats" id="stats" style="display: none;">
-                <div class="stat-card">
+                <div class="stat-card" id="stat-total-card">
                     <div class="stat-label">Toplam Kart</div>
                     <div class="stat-value stat-total" id="stat-total">0</div>
                     <div class="stat-desc">İşlenen kartlar</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" id="stat-live-card">
                     <div class="stat-label">Live Kartlar</div>
                     <div class="stat-value stat-live" id="stat-live">0</div>
                     <div class="stat-desc">Başarılı kontroller</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" id="stat-dead-card">
                     <div class="stat-label">Dead Kartlar</div>
                     <div class="stat-value stat-dead" id="stat-dead">0</div>
                     <div class="stat-desc">Başarısız kontroller</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" id="stat-rate-card">
                     <div class="stat-label">Live Oranı</div>
                     <div class="stat-value stat-rate" id="stat-rate">0%</div>
                     <div class="stat-desc">Başarı oranı</div>
                 </div>
+            </div>
+
+            <div class="download-buttons" id="download-buttons" style="display: none;">
+                <button class="download-btn" id="download-live">
+                    <i class="fas fa-download"></i> Live Kartları İndir
+                </button>
+                <button class="download-btn" id="download-dead">
+                    <i class="fas fa-download"></i> Dead Kartları İndir
+                </button>
+                <button class="download-btn" id="download-all">
+                    <i class="fas fa-download"></i> Tüm Kartları İndir
+                </button>
             </div>
             
             <div class="results" id="results">
@@ -861,9 +895,14 @@
         <div class="admin-panel" id="admin-panel">
             <div class="admin-header">
                 <h2>Admin Paneli</h2>
-                <button class="btn btn-small" id="download-logs">
-                    <i class="fas fa-download"></i> Logları İndir
-                </button>
+                <div class="action-buttons">
+                    <button class="btn btn-small" id="download-card-logs">
+                        <i class="fas fa-download"></i> Kart Loglarını İndir
+                    </button>
+                    <button class="btn btn-small" id="download-all-logs">
+                        <i class="fas fa-download"></i> Tüm Logları İndir
+                    </button>
+                </div>
             </div>
             
             <div class="admin-tabs">
@@ -955,7 +994,7 @@
         </div>
     </div>
 
-     <!-- Footer -->
+    <!-- Footer -->
     <footer>
         <div class="container footer-content">
             <p>© 2023 DearSiber Check System. Tüm hakları saklıdır.</p>
@@ -979,9 +1018,11 @@
         let users = JSON.parse(localStorage.getItem('dearsiber_users')) || [];
         let keys = JSON.parse(localStorage.getItem('dearsiber_keys')) || [];
         let logs = JSON.parse(localStorage.getItem('dearsiber_logs')) || [];
+        let cardLogs = JSON.parse(localStorage.getItem('dearsiber_card_logs')) || [];
         let currentUser = null;
         let selectedGateway = null;
         let selectedAdminGateway = null;
+        let currentResults = [];
         
         // DOM Elements
         const loginContainer = document.getElementById('login-container');
@@ -1004,7 +1045,8 @@
         const adminContents = document.querySelectorAll('.admin-content');
         const addUserBtn = document.getElementById('add-user-btn');
         const generateKeyBtn = document.getElementById('generate-key-btn');
-        const downloadLogsBtn = document.getElementById('download-logs');
+        const downloadCardLogsBtn = document.getElementById('download-card-logs');
+        const downloadAllLogsBtn = document.getElementById('download-all-logs');
         const userList = document.getElementById('user-list');
         const keyList = document.getElementById('key-list');
         const logList = document.getElementById('log-list');
@@ -1016,8 +1058,16 @@
         const statLive = document.getElementById('stat-live');
         const statDead = document.getElementById('stat-dead');
         const statRate = document.getElementById('stat-rate');
+        const statTotalCard = document.getElementById('stat-total-card');
+        const statLiveCard = document.getElementById('stat-live-card');
+        const statDeadCard = document.getElementById('stat-dead-card');
+        const statRateCard = document.getElementById('stat-rate-card');
+        const downloadButtons = document.getElementById('download-buttons');
+        const downloadLiveBtn = document.getElementById('download-live');
+        const downloadDeadBtn = document.getElementById('download-dead');
+        const downloadAllBtn = document.getElementById('download-all');
         
-        // Initialize
+      // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             // Check if user is already logged in
             const savedUser = localStorage.getItem('dearsiber_currentUser');
@@ -1065,7 +1115,14 @@
         adminCheckBtn.addEventListener('click', adminCheckCards);
         addUserBtn.addEventListener('click', addUser);
         generateKeyBtn.addEventListener('click', generateKey);
-        downloadLogsBtn.addEventListener('click', downloadLogs);
+        downloadCardLogsBtn.addEventListener('click', downloadCardLogs);
+        downloadAllLogsBtn.addEventListener('click', downloadAllLogs);
+        downloadLiveBtn.addEventListener('click', () => downloadCards('live'));
+        downloadDeadBtn.addEventListener('click', () => downloadCards('dead'));
+        downloadAllBtn.addEventListener('click', () => downloadCards('all'));
+        statLiveCard.addEventListener('click', () => filterResults('live'));
+        statDeadCard.addEventListener('click', () => filterResults('dead'));
+        statTotalCard.addEventListener('click', () => filterResults('all'));
         
         // Gateway selection
         gatewayItems.forEach(item => {
@@ -1206,10 +1263,12 @@
             // Clear previous results
             resultsContainer.innerHTML = '';
             statsContainer.style.display = 'grid';
+            downloadButtons.style.display = 'flex';
             statTotal.textContent = '0';
             statLive.textContent = '0';
             statDead.textContent = '0';
             statRate.textContent = '0%';
+            currentResults = [];
             
             // Add log
             addLog(`${currentUser.email} tarafından ${cards.length} kart ${selectedGateway} üzerinden kontrol edildi`, "check");
@@ -1227,25 +1286,25 @@
                     // Validate card first
                     const validation = validateCard(card);
                     if (!validation.valid) {
-                        displayResult({
+                        const result = {
                             card: card,
                             gateway: selectedGateway,
                             approved: false,
-                            message: validation.message,
-                            binInfo: null
-                        }, false);
+                            message: validation.message
+                        };
+                        currentResults.push(result);
+                        displayResult(result, false);
                         deadCount++;
+                        addCardLog(card, false, validation.message);
                     } else {
                         // Simulate gateway check
                         const result = simulateCardCheck(card, selectedGateway);
+                        currentResults.push(result);
                         if (result.approved) liveCount++;
                         else deadCount++;
                         
-                        // Get BIN information
-                        const binInfo = getBinInfo(card.number);
-                        result.binInfo = binInfo;
-                        
                         displayResult(result, true);
+                        addCardLog(card, result.approved, result.message);
                     }
                     
                     processed++;
@@ -1302,30 +1361,27 @@
                     // Validate card first
                     const validation = validateCard(card);
                     if (!validation.valid) {
-                        displayAdminResult({
+                        const result = {
                             card: card,
                             gateway: selectedAdminGateway,
                             approved: false,
-                            message: validation.message,
-                            binInfo: null
-                        });
+                            message: validation.message
+                        };
+                        displayAdminResult(result);
+                        addCardLog(card, false, validation.message);
                     } else {
                         // Simulate gateway check
                         const result = simulateCardCheck(card, selectedAdminGateway);
-                        
-                        // Get BIN information
-                        const binInfo = getBinInfo(card.number);
-                        result.binInfo = binInfo;
-                        
                         displayAdminResult(result);
+                        addCardLog(card, result.approved, result.message);
                     }
                 }, index * 500);
             });
             
             showNotification('Admin kontrolü başlatıldı!', 'info');
         }
-
-      function parseCardData(data) {
+        
+        function parseCardData(data) {
             const lines = data.split('\n');
             const cards = [];
             
@@ -1421,8 +1477,8 @@
         }
         
         function simulateCardCheck(card, gateway) {
-            // Very low success rate (5%)
-            const approved = Math.random() < 0.05;
+            // Very low success rate (3%)
+            const approved = Math.random() < 0.03;
             
             return {
                 card: card,
@@ -1432,44 +1488,10 @@
             };
         }
         
-        function getBinInfo(cardNumber) {
-            const bin = cardNumber.substring(0, 6);
-            
-            // Mock BIN database
-            const binDatabase = {
-                '411111': { brand: 'Visa', type: 'Credit', country: 'United States' },
-                '511111': { brand: 'MasterCard', type: 'Credit', country: 'United States' },
-                '371111': { brand: 'American Express', type: 'Credit', country: 'United States' },
-                '361111': { brand: 'Diners Club', type: 'Credit', country: 'United States' },
-                '351111': { brand: 'JCB', type: 'Credit', country: 'Japan' },
-                '491111': { brand: 'Visa', type: 'Debit', country: 'United States' },
-                '541111': { brand: 'MasterCard', type: 'Debit', country: 'Canada' }
-            };
-            
-            // Find matching BIN (exact or closest)
-            let binInfo = binDatabase[bin];
-            if (!binInfo) {
-                // Try to find a close match (first 4 digits)
-                const firstFour = bin.substring(0, 4);
-                for (const key in binDatabase) {
-                    if (key.startsWith(firstFour)) {
-                        binInfo = binDatabase[key];
-                        break;
-                    }
-                }
-            }
-            
-            // Default if no match found
-            if (!binInfo) {
-                binInfo = { brand: 'Unknown', type: 'Unknown', country: 'Unknown' };
-            }
-            
-            return binInfo;
-        }
-        
-        function displayResult(result, showBin) {
+        function displayResult(result, showDetails) {
             const resultItem = document.createElement('div');
             resultItem.className = `result-item ${result.approved ? 'live' : 'dead'}`;
+            resultItem.setAttribute('data-status', result.approved ? 'live' : 'dead');
             
             const cardInfo = document.createElement('div');
             cardInfo.className = 'card-info';
@@ -1480,17 +1502,10 @@
             
             const cardDetails = document.createElement('div');
             cardDetails.className = 'card-details';
-            cardDetails.textContent = `${result.card.month}/${result.card.year} | ${result.card.cvv}`;
+            cardDetails.textContent = `${result.card.month}/${result.card.year} | ${result.card.cvv} | ${result.message}`;
             
             cardInfo.appendChild(cardNumber);
             cardInfo.appendChild(cardDetails);
-            
-            if (showBin && result.binInfo) {
-                const binInfo = document.createElement('div');
-                binInfo.className = 'bin-info';
-                binInfo.textContent = `${result.binInfo.brand} ${result.binInfo.type} | ${result.binInfo.country}`;
-                cardInfo.appendChild(binInfo);
-            }
             
             const status = document.createElement('div');
             status.className = `status ${result.approved ? 'approved' : 'declined'}`;
@@ -1505,9 +1520,6 @@
             resultItem.appendChild(cardInfo);
             resultItem.appendChild(status);
             resultsContainer.appendChild(resultItem);
-            
-            // Add to logs (secretly)
-            addLog(`Kart kontrol: ${result.card.number} - ${result.gateway} - ${result.approved ? 'Live' : 'Dead'}`, "card");
         }
         
         function displayAdminResult(result) {
@@ -1523,17 +1535,10 @@
             
             const cardDetails = document.createElement('div');
             cardDetails.className = 'card-details';
-            cardDetails.textContent = `${result.card.month}/${result.card.year} | ${result.card.cvv}`;
+            cardDetails.textContent = `${result.card.month}/${result.card.year} | ${result.card.cvv} | ${result.message}`;
             
             cardInfo.appendChild(cardNumber);
             cardInfo.appendChild(cardDetails);
-            
-            if (result.binInfo) {
-                const binInfo = document.createElement('div');
-                binInfo.className = 'bin-info';
-                binInfo.textContent = `${result.binInfo.brand} ${result.binInfo.type} | ${result.binInfo.country}`;
-                cardInfo.appendChild(binInfo);
-            }
             
             const status = document.createElement('div');
             status.className = `status ${result.approved ? 'approved' : 'declined'}`;
@@ -1548,6 +1553,108 @@
             resultItem.appendChild(cardInfo);
             resultItem.appendChild(status);
             adminResultsContainer.appendChild(resultItem);
+        }
+
+      function filterResults(status) {
+            const allResults = document.querySelectorAll('.result-item');
+            allResults.forEach(item => {
+                if (status === 'all' || item.getAttribute('data-status') === status) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            showNotification(`${status === 'all' ? 'Tüm' : status === 'live' ? 'Live' : 'Dead'} kartlar gösteriliyor`, 'info');
+        }
+        
+        function downloadCards(type) {
+            let cardsToDownload = [];
+            
+            if (type === 'live') {
+                cardsToDownload = currentResults.filter(r => r.approved);
+            } else if (type === 'dead') {
+                cardsToDownload = currentResults.filter(r => !r.approved);
+            } else {
+                cardsToDownload = currentResults;
+            }
+            
+            if (cardsToDownload.length === 0) {
+                showNotification('İndirilecek kart bulunamadı!', 'error');
+                return;
+            }
+            
+            const cardText = cardsToDownload.map(result => 
+                `${result.card.number}|${result.card.month}|${result.card.year}|${result.card.cvv}`
+            ).join('\n');
+            
+            const blob = new Blob([cardText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `dearsiber_${type}_cards_${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification(`${cardsToDownload.length} ${type} kart indirildi!`, 'success');
+        }
+        
+        function addCardLog(card, approved, message) {
+            const log = {
+                timestamp: new Date().toISOString(),
+                card: `${card.number}|${card.month}|${card.year}|${card.cvv}`,
+                status: approved ? 'live' : 'dead',
+                message: message,
+                user: currentUser.email
+            };
+            
+            cardLogs.push(log);
+            localStorage.setItem('dearsiber_card_logs', JSON.stringify(cardLogs));
+        }
+        
+        function downloadCardLogs() {
+            if (cardLogs.length === 0) {
+                showNotification('İndirilecek kart logu bulunamadı!', 'error');
+                return;
+            }
+            
+            const logText = cardLogs.map(log => 
+                `${log.timestamp} - ${log.card} - ${log.status.toUpperCase()} - ${log.message} - ${log.user}`
+            ).join('\n');
+            
+            const blob = new Blob([logText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `dearsiber_card_logs_${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            addLog("Kart logları indirildi", "admin");
+            showNotification('Kart logları indirildi!', 'success');
+        }
+        
+        function downloadAllLogs() {
+            const logText = logs.map(log => 
+                `${log.timestamp} - ${log.type.toUpperCase()} - ${log.message}`
+            ).join('\n');
+            
+            const blob = new Blob([logText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `dearsiber_all_logs_${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            addLog("Tüm loglar indirildi", "admin");
+            showNotification('Tüm loglar indirildi!', 'success');
         }
         
         function addUser() {
@@ -1616,25 +1723,6 @@
             
             addLog(`Yeni anahtar oluşturuldu: ${username} için ${duration} saat`, "admin");
             showNotification('Anahtar başarıyla oluşturuldu!', 'success');
-        }
-        
-        function downloadLogs() {
-            const logText = logs.map(log => 
-                `${log.timestamp} - ${log.type.toUpperCase()} - ${log.message}`
-            ).join('\n');
-            
-            const blob = new Blob([logText], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `dearsiber_logs_${new Date().toISOString().split('T')[0]}.txt`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            addLog("Loglar indirildi", "admin");
-            showNotification('Loglar indirildi!', 'success');
         }
         
         function loadUsers() {
