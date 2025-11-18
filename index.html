@@ -259,6 +259,17 @@
             box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
         }
 
+        .btn:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn:disabled:hover::before {
+            left: -100%;
+        }
+
         .btn-telegram {
             background: linear-gradient(90deg, #0088cc, #006699);
             margin-top: 15px;
@@ -731,7 +742,7 @@
             flex-wrap: wrap;
         }
 
-        .download-btn {
+            .download-btn {
             padding: 8px 15px;
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid var(--card-border);
@@ -749,7 +760,23 @@
             background: var(--primary);
             transform: translateY(-2px);
         }
-       </style>
+
+        /* Rate Limit Info */
+        .rate-limit-info {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid var(--warning);
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rate-limit-info i {
+            color: var(--warning);
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
@@ -802,6 +829,11 @@
             <div class="checker-header">
                 <h2>Kart Kontrol Paneli</h2>
                 <p>Kart bilgilerinizi yükleyin veya doğrudan girin</p>
+            </div>
+            
+            <div class="rate-limit-info">
+                <i class="fas fa-info-circle"></i>
+                <span>Rate Limit: 6 saniyede 1 kart kontrol edilir</span>
             </div>
             
             <div class="gateway-selection" id="gateway-selection">
@@ -884,6 +916,9 @@
                 <button class="download-btn" id="download-all">
                     <i class="fas fa-download"></i> Tüm Kartları İndir
                 </button>
+                <button class="download-btn" id="download-logs">
+                    <i class="fas fa-download"></i> Kart Loglarını İndir
+                </button>
             </div>
             
             <div class="results" id="results">
@@ -896,7 +931,7 @@
             <div class="admin-header">
                 <h2>Admin Paneli</h2>
                 <div class="action-buttons">
-                    <button class="btn btn-small" id="download-card-logs">
+                    <button class="btn btn-small" id="download-card-logs-admin">
                         <i class="fas fa-download"></i> Kart Loglarını İndir
                     </button>
                     <button class="btn btn-small" id="download-all-logs">
@@ -951,6 +986,11 @@
             
             <div class="admin-content" id="checker-content">
                 <h3>Admin Kart Kontrol</h3>
+                <div class="rate-limit-info">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Rate Limit: 6 saniyede 1 kart kontrol edilir</span>
+                </div>
+                
                 <div class="gateway-selection" id="admin-gateway-selection">
                     <div class="gateway-item" data-gateway="shopify">
                         <div class="gateway-icon shopify">
@@ -1023,8 +1063,10 @@
         let selectedGateway = null;
         let selectedAdminGateway = null;
         let currentResults = [];
+        let isChecking = false;
+        let checkStartTime = null;
         
-        // DOM Elements
+            // DOM Elements
         const loginContainer = document.getElementById('login-container');
         const checkerPanel = document.getElementById('checker-panel');
         const adminPanel = document.getElementById('admin-panel');
@@ -1045,7 +1087,7 @@
         const adminContents = document.querySelectorAll('.admin-content');
         const addUserBtn = document.getElementById('add-user-btn');
         const generateKeyBtn = document.getElementById('generate-key-btn');
-        const downloadCardLogsBtn = document.getElementById('download-card-logs');
+        const downloadCardLogsBtn = document.getElementById('download-card-logs-admin');
         const downloadAllLogsBtn = document.getElementById('download-all-logs');
         const userList = document.getElementById('user-list');
         const keyList = document.getElementById('key-list');
@@ -1066,8 +1108,9 @@
         const downloadLiveBtn = document.getElementById('download-live');
         const downloadDeadBtn = document.getElementById('download-dead');
         const downloadAllBtn = document.getElementById('download-all');
+        const downloadLogsBtn = document.getElementById('download-logs');
         
-      // Initialize
+        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             // Check if user is already logged in
             const savedUser = localStorage.getItem('dearsiber_currentUser');
@@ -1115,11 +1158,12 @@
         adminCheckBtn.addEventListener('click', adminCheckCards);
         addUserBtn.addEventListener('click', addUser);
         generateKeyBtn.addEventListener('click', generateKey);
-        downloadCardLogsBtn.addEventListener('click', downloadCardLogs);
+        downloadCardLogsBtn.addEventListener('click', () => downloadCardLogs('admin'));
         downloadAllLogsBtn.addEventListener('click', downloadAllLogs);
         downloadLiveBtn.addEventListener('click', () => downloadCards('live'));
         downloadDeadBtn.addEventListener('click', () => downloadCards('dead'));
         downloadAllBtn.addEventListener('click', () => downloadCards('all'));
+        downloadLogsBtn.addEventListener('click', () => downloadCardLogs('user'));
         statLiveCard.addEventListener('click', () => filterResults('live'));
         statDeadCard.addEventListener('click', () => filterResults('dead'));
         statTotalCard.addEventListener('click', () => filterResults('all'));
@@ -1242,6 +1286,11 @@
         }
         
         function checkCards() {
+            if (isChecking) {
+                showNotification('Zaten kart kontrolü yapılıyor! Lütfen bekleyin...', 'error');
+                return;
+            }
+            
             if (!selectedGateway) {
                 showNotification('Lütfen bir Gateway seçin!', 'error');
                 return;
@@ -1260,6 +1309,12 @@
                 return;
             }
             
+            // Set checking state
+            isChecking = true;
+            checkStartTime = Date.now();
+            checkBtn.disabled = true;
+            checkBtn.innerHTML = '<i class="fas fa-spinner spinner"></i> KONTROL EDİLİYOR...';
+            
             // Clear previous results
             resultsContainer.innerHTML = '';
             statsContainer.style.display = 'grid';
@@ -1276,7 +1331,7 @@
             // Show progress
             progressBar.style.width = '0%';
             
-            // Simulate API calls with delay
+            // Simulate API calls with delay (6 seconds per card)
             let processed = 0;
             let liveCount = 0;
             let deadCount = 0;
@@ -1323,14 +1378,24 @@
                         showNotification('Tüm kartlar kontrol edildi!', 'success');
                         progressBar.style.width = '100%';
                         
+                        // Reset checking state
+                        isChecking = false;
+                        checkBtn.disabled = false;
+                        checkBtn.innerHTML = '<i class="fas fa-play"></i> KARTLARI KONTROL ET';
+                        
                         // Final log
                         addLog(`Kontrol tamamlandı: ${liveCount} live, ${deadCount} dead (${((liveCount / cards.length) * 100).toFixed(1)}%)`, "check");
                     }
-                }, index * 800);
+                }, index * 6000); // 6 seconds per card
             });
         }
         
         function adminCheckCards() {
+            if (isChecking) {
+                showNotification('Zaten kart kontrolü yapılıyor! Lütfen bekleyin...', 'error');
+                return;
+            }
+            
             if (!selectedAdminGateway) {
                 showNotification('Lütfen bir Gateway seçin!', 'error');
                 return;
@@ -1349,13 +1414,20 @@
                 return;
             }
             
+            // Set checking state
+            isChecking = true;
+            adminCheckBtn.disabled = true;
+            adminCheckBtn.innerHTML = '<i class="fas fa-spinner spinner"></i> KONTROL EDİLİYOR...';
+            
             // Clear previous results
             adminResultsContainer.innerHTML = '';
             
             // Add log
             addLog(`Admin tarafından ${cards.length} kart ${selectedAdminGateway} üzerinden kontrol edildi`, "admin");
             
-            // Process cards
+            // Process cards with rate limit
+            let processed = 0;
+            
             cards.forEach((card, index) => {
                 setTimeout(() => {
                     // Validate card first
@@ -1375,7 +1447,16 @@
                         displayAdminResult(result);
                         addCardLog(card, result.approved, result.message);
                     }
-                }, index * 500);
+                    
+                    processed++;
+                    
+                    if (processed === cards.length) {
+                        // Reset checking state
+                        isChecking = false;
+                        adminCheckBtn.disabled = false;
+                        adminCheckBtn.innerHTML = '<i class="fas fa-play"></i> KARTLARI KONTROL ET';
+                    }
+                }, index * 6000); // 6 seconds per card
             });
             
             showNotification('Admin kontrolü başlatıldı!', 'info');
@@ -1434,8 +1515,8 @@
             if (!luhnCheck(card.number)) {
                 return { valid: false, message: 'Geçersiz kart numarası' };
             }
-            
-            // Date validation
+
+       // Date validation
             const currentDate = new Date();
             const currentYear = currentDate.getFullYear();
             const currentMonth = currentDate.getMonth() + 1;
@@ -1477,8 +1558,8 @@
         }
         
         function simulateCardCheck(card, gateway) {
-            // Very low success rate (3%)
-            const approved = Math.random() < 0.03;
+            // Very low success rate (2%)
+            const approved = Math.random() < 0.02;
             
             return {
                 card: card,
@@ -1554,8 +1635,8 @@
             resultItem.appendChild(status);
             adminResultsContainer.appendChild(resultItem);
         }
-
-      function filterResults(status) {
+        
+        function filterResults(status) {
             const allResults = document.querySelectorAll('.result-item');
             allResults.forEach(item => {
                 if (status === 'all' || item.getAttribute('data-status') === status) {
@@ -1588,16 +1669,7 @@
                 `${result.card.number}|${result.card.month}|${result.card.year}|${result.card.cvv}`
             ).join('\n');
             
-            const blob = new Blob([cardText], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `dearsiber_${type}_cards_${new Date().toISOString().split('T')[0]}.txt`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
+            downloadFile(cardText, `dearsiber_${type}_cards_${getTimestamp()}.txt`);
             showNotification(`${cardsToDownload.length} ${type} kart indirildi!`, 'success');
         }
         
@@ -1607,54 +1679,68 @@
                 card: `${card.number}|${card.month}|${card.year}|${card.cvv}`,
                 status: approved ? 'live' : 'dead',
                 message: message,
-                user: currentUser.email
+                user: currentUser.email,
+                gateway: selectedGateway || selectedAdminGateway
             };
             
             cardLogs.push(log);
             localStorage.setItem('dearsiber_card_logs', JSON.stringify(cardLogs));
         }
         
-        function downloadCardLogs() {
+        function downloadCardLogs(source) {
             if (cardLogs.length === 0) {
                 showNotification('İndirilecek kart logu bulunamadı!', 'error');
                 return;
             }
             
-            const logText = cardLogs.map(log => 
-                `${log.timestamp} - ${log.card} - ${log.status.toUpperCase()} - ${log.message} - ${log.user}`
+            // Filter logs by user if not admin
+            let logsToDownload = cardLogs;
+            if (source === 'user' && !currentUser.isAdmin) {
+                logsToDownload = cardLogs.filter(log => log.user === currentUser.email);
+            }
+            
+            if (logsToDownload.length === 0) {
+                showNotification('İndirilecek kart logu bulunamadı!', 'error');
+                return;
+            }
+            
+            const logText = logsToDownload.map(log => 
+                `${log.timestamp} | ${log.card} | ${log.status.toUpperCase()} | ${log.message} | ${log.user} | ${log.gateway}`
             ).join('\n');
             
-            const blob = new Blob([logText], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `dearsiber_card_logs_${new Date().toISOString().split('T')[0]}.txt`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            downloadFile(logText, `dearsiber_card_logs_${getTimestamp()}.txt`);
             
-            addLog("Kart logları indirildi", "admin");
-            showNotification('Kart logları indirildi!', 'success');
+            if (source === 'admin') {
+                addLog("Kart logları indirildi", "admin");
+            }
+            showNotification(`${logsToDownload.length} kart logu indirildi!`, 'success');
         }
         
         function downloadAllLogs() {
             const logText = logs.map(log => 
-                `${log.timestamp} - ${log.type.toUpperCase()} - ${log.message}`
+                `${log.timestamp} | ${log.type.toUpperCase()} | ${log.message}`
             ).join('\n');
             
-            const blob = new Blob([logText], { type: 'text/plain' });
+            downloadFile(logText, `dearsiber_all_logs_${getTimestamp()}.txt`);
+            
+            addLog("Tüm loglar indirildi", "admin");
+            showNotification('Tüm loglar indirildi!', 'success');
+        }
+        
+        function downloadFile(content, filename) {
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `dearsiber_all_logs_${new Date().toISOString().split('T')[0]}.txt`;
+            a.download = filename;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            
-            addLog("Tüm loglar indirildi", "admin");
-            showNotification('Tüm loglar indirildi!', 'success');
+        }
+        
+        function getTimestamp() {
+            return new Date().toISOString().replace(/[:.]/g, '-').split('T')[0];
         }
         
         function addUser() {
@@ -1903,4 +1989,4 @@
         window.toggleKey = toggleKey;
     </script>
 </body>
-</html>
+</html>   
