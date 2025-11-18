@@ -16,8 +16,13 @@
             --success: #2ed573;
             --warning: #ffa502;
             --danger: #ff4757;
+            --info: #3742fa;
             --card-bg: rgba(255, 255, 255, 0.05);
             --card-border: rgba(255, 255, 255, 0.1);
+            --shopify: #96bf48;
+            --stripe: #635bff;
+            --paypal: #003087;
+            --exxen: #e50914;
         }
 
         * {
@@ -72,6 +77,7 @@
         .logo i {
             color: var(--primary);
             font-size: 1.8rem;
+            animation: pulse 2s infinite;
         }
 
         .nav-links {
@@ -83,14 +89,18 @@
             color: var(--light);
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.3s;
+            transition: all 0.3s;
             display: flex;
             align-items: center;
             gap: 5px;
+            padding: 8px 15px;
+            border-radius: 8px;
         }
 
         .nav-links a:hover {
             color: var(--primary);
+            background: rgba(138, 43, 226, 0.1);
+            transform: translateY(-2px);
         }
 
         /* Main Content */
@@ -115,6 +125,23 @@
             backdrop-filter: blur(10px);
             transform: translateY(0);
             transition: transform 0.5s, box-shadow 0.5s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.7s;
+        }
+
+        .login-container:hover::before {
+            left: 100%;
         }
 
         .login-container:hover {
@@ -133,6 +160,7 @@
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: textGlow 2s ease-in-out infinite alternate;
         }
 
         .login-header p {
@@ -166,6 +194,7 @@
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.3);
+            transform: scale(1.02);
         }
 
         .checkbox-group {
@@ -177,6 +206,7 @@
             background: rgba(255, 71, 87, 0.1);
             border-radius: 8px;
             border-left: 3px solid var(--danger);
+            animation: shake 0.5s ease-in-out;
         }
 
         .checkbox-group input {
@@ -204,6 +234,23 @@
             transition: all 0.3s;
             text-align: center;
             text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn:hover {
@@ -247,12 +294,17 @@
         .social-links a {
             color: var(--light);
             font-size: 1.2rem;
-            transition: color 0.3s, transform 0.3s;
+            transition: all 0.3s;
+            padding: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .social-links a:hover {
             color: var(--primary);
-            transform: translateY(-3px);
+            transform: translateY(-3px) scale(1.1);
+            background: rgba(138, 43, 226, 0.2);
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
         }
 
         /* Animations */
@@ -275,6 +327,22 @@
             animation: pulse 2s infinite;
         }
 
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 5px rgba(138, 43, 226, 0.5); }
+            100% { text-shadow: 0 0 15px rgba(138, 43, 226, 0.8), 0 0 25px rgba(138, 43, 226, 0.6); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .header-content {
@@ -292,7 +360,7 @@
         }
 
         /* Admin Panel Styles */
-        .admin-panel {
+        .admin-panel, .checker-panel {
             display: none;
             background: var(--card-bg);
             border-radius: 15px;
@@ -301,9 +369,19 @@
             border: 1px solid var(--card-border);
             margin-top: 30px;
             backdrop-filter: blur(10px);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: panelAppear 0.5s forwards;
         }
 
-        .admin-header {
+        @keyframes panelAppear {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .admin-header, .checker-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -316,6 +394,7 @@
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .admin-tab {
@@ -328,6 +407,8 @@
 
         .admin-tab.active {
             background: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
         }
 
         .admin-content {
@@ -336,6 +417,12 @@
 
         .admin-content.active {
             display: block;
+            animation: contentFade 0.3s ease-in;
+        }
+
+        @keyframes contentFade {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .user-list, .key-list, .log-list {
@@ -352,6 +439,12 @@
             align-items: center;
             padding: 10px;
             border-bottom: 1px solid var(--card-border);
+            transition: all 0.3s;
+        }
+
+        .user-item:hover, .key-item:hover, .log-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(5px);
         }
 
         .user-item:last-child, .key-item:last-child, .log-item:last-child {
@@ -367,6 +460,11 @@
             padding: 5px 10px;
             font-size: 0.8rem;
             border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .btn-small:hover {
+            transform: scale(1.05);
         }
 
         .btn-success {
@@ -381,31 +479,50 @@
             background: var(--warning);
         }
 
-        /* Checker Panel Styles */
-        .checker-panel {
-            display: none;
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--card-border);
-            margin-top: 30px;
-            backdrop-filter: blur(10px);
+        .btn-info {
+            background: var(--info);
         }
 
-        .checker-header {
+        /* Gateway Selection */
+        .gateway-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .gateway-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
             text-align: center;
-            margin-bottom: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
         }
 
-        .checker-header h2 {
-            font-size: 1.8rem;
+        .gateway-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .gateway-item.selected {
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .gateway-icon {
+            font-size: 2rem;
             margin-bottom: 10px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
+        .shopify { color: var(--shopify); }
+        .stripe { color: var(--stripe); }
+        .paypal { color: var(--paypal); }
+        .exxen { color: var(--exxen); }
+
+        /* File Upload */
         .file-upload {
             border: 2px dashed var(--card-border);
             border-radius: 10px;
@@ -414,26 +531,62 @@
             margin-bottom: 20px;
             transition: all 0.3s;
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
 
         .file-upload:hover {
             border-color: var(--primary);
             background: rgba(138, 43, 226, 0.05);
+            transform: translateY(-2px);
         }
 
         .file-upload i {
             font-size: 3rem;
             color: var(--primary);
             margin-bottom: 15px;
+            animation: float 3s ease-in-out infinite;
         }
 
         .file-input {
             display: none;
         }
 
+        /* Results */
         .results {
             margin-top: 30px;
         }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .stat-live { color: var(--success); }
+        .stat-dead { color: var(--danger); }
+        .stat-total { color: var(--primary); }
+        .stat-rate { color: var(--warning); }
 
         .result-item {
             display: flex;
@@ -444,10 +597,41 @@
             border-radius: 8px;
             margin-bottom: 10px;
             transition: all 0.3s;
+            border-left: 4px solid transparent;
         }
 
         .result-item:hover {
             background: rgba(0, 0, 0, 0.3);
+            transform: translateX(5px);
+        }
+
+        .result-item.live {
+            border-left-color: var(--success);
+        }
+
+        .result-item.dead {
+            border-left-color: var(--danger);
+        }
+
+        .card-info {
+            flex: 1;
+        }
+
+        .card-number {
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .card-details {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 5px;
+        }
+
+        .bin-info {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 5px;
         }
 
         .status {
@@ -455,6 +639,7 @@
             border-radius: 5px;
             font-size: 0.8rem;
             font-weight: 600;
+            margin-left: 10px;
         }
 
         .status.approved {
@@ -466,6 +651,19 @@
             background: rgba(255, 71, 87, 0.2);
             color: var(--danger);
         }
+
+        .gateway-badge {
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+
+        .badge-shopify { background: var(--shopify); }
+        .badge-stripe { background: var(--stripe); }
+        .badge-paypal { background: var(--paypal); }
+        .badge-exxen { background: var(--exxen); }
 
         /* Notification */
         .notification {
@@ -480,6 +678,9 @@
             transform: translateX(150%);
             transition: transform 0.5s;
             z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .notification.show {
@@ -488,6 +689,43 @@
 
         .notification.error {
             background: var(--danger);
+        }
+
+        .notification.warning {
+            background: var(--warning);
+        }
+
+        .notification.info {
+            background: var(--info);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s;
         }
     </style>
 </head>
@@ -502,7 +740,7 @@
             <div class="nav-links">
                 <a href="#" id="home-link"><i class="fas fa-home"></i> Ana Sayfa</a>
                 <a href="#" id="admin-link" style="display:none;"><i class="fas fa-cog"></i> Admin Panel</a>
-                <a href="#" id="logout-link" style="display:none;"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a>
+                     <a href="#" id="logout-link" style="display:none;"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a>
             </div>
         </div>
     </header>
@@ -544,6 +782,33 @@
                 <p>Kart bilgilerinizi yükleyin veya doğrudan girin</p>
             </div>
             
+            <div class="gateway-selection" id="gateway-selection">
+                <div class="gateway-item" data-gateway="shopify">
+                    <div class="gateway-icon shopify">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="gateway-name">Shopify</div>
+                </div>
+                <div class="gateway-item" data-gateway="stripe">
+                    <div class="gateway-icon stripe">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <div class="gateway-name">Stripe</div>
+                </div>
+                <div class="gateway-item" data-gateway="paypal">
+                    <div class="gateway-icon paypal">
+                        <i class="fab fa-paypal"></i>
+                    </div>
+                    <div class="gateway-name">PayPal</div>
+                </div>
+                <div class="gateway-item" data-gateway="exxen">
+                    <div class="gateway-icon exxen">
+                        <i class="fas fa-tv"></i>
+                    </div>
+                    <div class="gateway-name">Exxen</div>
+                </div>
+            </div>
+            
             <div class="file-upload" id="file-upload">
                 <i class="fas fa-cloud-upload-alt"></i>
                 <h3>Dosya Yükleyin</h3>
@@ -556,7 +821,36 @@
                 <textarea id="card-input" class="form-control" rows="5" placeholder="29193749201977|11|28|293&#10;29193749201977|11|2028|293&#10;29193749201977:11:28:293&#10;29193749201977 11 28 293&#10;29193749201977-05-28-293&#10;29193749201977|5|28|293"></textarea>
             </div>
             
-            <button class="btn" id="check-btn">KARTLARI KONTROL ET</button>
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            
+            <button class="btn" id="check-btn">
+                <i class="fas fa-play"></i> KARTLARI KONTROL ET
+            </button>
+            
+            <div class="stats" id="stats" style="display: none;">
+                <div class="stat-card">
+                    <div class="stat-label">Toplam Kart</div>
+                    <div class="stat-value stat-total" id="stat-total">0</div>
+                    <div class="stat-desc">İşlenen kartlar</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Live Kartlar</div>
+                    <div class="stat-value stat-live" id="stat-live">0</div>
+                    <div class="stat-desc">Başarılı kontroller</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Dead Kartlar</div>
+                    <div class="stat-value stat-dead" id="stat-dead">0</div>
+                    <div class="stat-desc">Başarısız kontroller</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Live Oranı</div>
+                    <div class="stat-value stat-rate" id="stat-rate">0%</div>
+                    <div class="stat-desc">Başarı oranı</div>
+                </div>
+            </div>
             
             <div class="results" id="results">
                 <!-- Results will be displayed here -->
@@ -576,6 +870,7 @@
                 <div class="admin-tab active" data-tab="users">Kullanıcılar</div>
                 <div class="admin-tab" data-tab="keys">Anahtarlar</div>
                 <div class="admin-tab" data-tab="logs">Loglar</div>
+                <div class="admin-tab" data-tab="checker">Kart Kontrol</div>
             </div>
             
             <div class="admin-content active" id="users-content">
@@ -614,15 +909,58 @@
                     <!-- Logs will be listed here -->
                 </div>
             </div>
+            
+            <div class="admin-content" id="checker-content">
+                <h3>Admin Kart Kontrol</h3>
+                <div class="gateway-selection" id="admin-gateway-selection">
+                    <div class="gateway-item" data-gateway="shopify">
+                        <div class="gateway-icon shopify">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="gateway-name">Shopify</div>
+                    </div>
+                    <div class="gateway-item" data-gateway="stripe">
+                        <div class="gateway-icon stripe">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <div class="gateway-name">Stripe</div>
+                    </div>
+                    <div class="gateway-item" data-gateway="paypal">
+                        <div class="gateway-icon paypal">
+                            <i class="fab fa-paypal"></i>
+                        </div>
+                        <div class="gateway-name">PayPal</div>
+                    </div>
+                    <div class="gateway-item" data-gateway="exxen">
+                        <div class="gateway-icon exxen">
+                            <i class="fas fa-tv"></i>
+                        </div>
+                        <div class="gateway-name">Exxen</div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="admin-card-input">Kart bilgilerini girin:</label>
+                    <textarea id="admin-card-input" class="form-control" rows="5" placeholder="Kart bilgilerini buraya girin..."></textarea>
+                </div>
+                
+                <button class="btn" id="admin-check-btn">
+                    <i class="fas fa-play"></i> KARTLARI KONTROL ET
+                </button>
+                
+                <div class="results" id="admin-results">
+                    <!-- Admin results will be displayed here -->
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Footer -->
+     <!-- Footer -->
     <footer>
         <div class="container footer-content">
             <p>© 2023 DearSiber Check System. Tüm hakları saklıdır.</p>
             <div class="social-links">
-                <a href="#"><i class="fab fa-telegram"></i></a>
+                <a href="https://t.me/DearSiber" target="_blank"><i class="fab fa-telegram"></i></a>
                 <a href="#"><i class="fab fa-twitter"></i></a>
                 <a href="#"><i class="fab fa-github"></i></a>
             </div>
@@ -642,6 +980,8 @@
         let keys = JSON.parse(localStorage.getItem('dearsiber_keys')) || [];
         let logs = JSON.parse(localStorage.getItem('dearsiber_logs')) || [];
         let currentUser = null;
+        let selectedGateway = null;
+        let selectedAdminGateway = null;
         
         // DOM Elements
         const loginContainer = document.getElementById('login-container');
@@ -654,9 +994,11 @@
         const fileUpload = document.getElementById('file-upload');
         const fileInput = document.getElementById('file-input');
         const checkBtn = document.getElementById('check-btn');
+        const adminCheckBtn = document.getElementById('admin-check-btn');
         const resultsContainer = document.getElementById('results');
-        const cardInput = 
-document.getElementById('card-input');
+        const adminResultsContainer = document.getElementById('admin-results');
+        const cardInput = document.getElementById('card-input');
+        const adminCardInput = document.getElementById('admin-card-input');
         const notification = document.getElementById('notification');
         const adminTabs = document.querySelectorAll('.admin-tab');
         const adminContents = document.querySelectorAll('.admin-content');
@@ -666,6 +1008,14 @@ document.getElementById('card-input');
         const userList = document.getElementById('user-list');
         const keyList = document.getElementById('key-list');
         const logList = document.getElementById('log-list');
+        const gatewayItems = document.querySelectorAll('.gateway-item');
+        const adminGatewayItems = document.querySelectorAll('#admin-gateway-selection .gateway-item');
+        const progressBar = document.getElementById('progress-bar');
+        const statsContainer = document.getElementById('stats');
+        const statTotal = document.getElementById('stat-total');
+        const statLive = document.getElementById('stat-live');
+        const statDead = document.getElementById('stat-dead');
+        const statRate = document.getElementById('stat-rate');
         
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
@@ -712,9 +1062,27 @@ document.getElementById('card-input');
         });
         fileInput.addEventListener('change', handleFileUpload);
         checkBtn.addEventListener('click', checkCards);
+        adminCheckBtn.addEventListener('click', adminCheckCards);
         addUserBtn.addEventListener('click', addUser);
         generateKeyBtn.addEventListener('click', generateKey);
         downloadLogsBtn.addEventListener('click', downloadLogs);
+        
+        // Gateway selection
+        gatewayItems.forEach(item => {
+            item.addEventListener('click', function() {
+                gatewayItems.forEach(i => i.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedGateway = this.getAttribute('data-gateway');
+            });
+        });
+        
+        adminGatewayItems.forEach(item => {
+            item.addEventListener('click', function() {
+                adminGatewayItems.forEach(i => i.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedAdminGateway = this.getAttribute('data-gateway');
+            });
+        });
         
         // Admin tabs
         adminTabs.forEach(tab => {
@@ -753,7 +1121,7 @@ document.getElementById('card-input');
                 adminLink.style.display = 'block';
                 logoutLink.style.display = 'block';
                 addLog("Admin giriş yaptı", "admin");
-                showNotification('Admin olarak giriş yapıldı!');
+                showNotification('Admin olarak giriş yapıldı!', 'success');
                 return;
             }
             
@@ -772,7 +1140,7 @@ document.getElementById('card-input');
                 showCheckerPanel();
                 logoutLink.style.display = 'block';
                 addLog(`Kullanıcı giriş yaptı: ${username}`, "user");
-                showNotification('Başarıyla giriş yapıldı!');
+                showNotification('Başarıyla giriş yapıldı!', 'success');
             } else {
                 showNotification('Kullanıcı adı veya şifre hatalı!', 'error');
             }
@@ -789,7 +1157,7 @@ document.getElementById('card-input');
             document.getElementById('username').value = '';
             document.getElementById('password').value = '';
             addLog("Çıkış yapıldı", "system");
-            showNotification('Çıkış yapıldı!');
+            showNotification('Çıkış yapıldı!', 'info');
         }
         
         function showCheckerPanel() {
@@ -811,12 +1179,17 @@ document.getElementById('card-input');
             const reader = new FileReader();
             reader.onload = function(e) {
                 cardInput.value = e.target.result;
-                showNotification('Dosya başarıyla yüklendi!');
+                showNotification('Dosya başarıyla yüklendi!', 'success');
             };
             reader.readAsText(file);
         }
         
         function checkCards() {
+            if (!selectedGateway) {
+                showNotification('Lütfen bir Gateway seçin!', 'error');
+                return;
+            }
+            
             const cardData = cardInput.value.trim();
             if (!cardData) {
                 showNotification('Lütfen kart bilgilerini girin veya dosya yükleyin!', 'error');
@@ -832,29 +1205,127 @@ document.getElementById('card-input');
             
             // Clear previous results
             resultsContainer.innerHTML = '';
-            
-            // Simulate checking process
-            showNotification(`${cards.length} kart kontrol ediliyor...`);
+            statsContainer.style.display = 'grid';
+            statTotal.textContent = '0';
+            statLive.textContent = '0';
+            statDead.textContent = '0';
+            statRate.textContent = '0%';
             
             // Add log
-            addLog(`${currentUser.email} tarafından ${cards.length} kart kontrol edildi`, "check");
+            addLog(`${currentUser.email} tarafından ${cards.length} kart ${selectedGateway} üzerinden kontrol edildi`, "check");
+            
+            // Show progress
+            progressBar.style.width = '0%';
             
             // Simulate API calls with delay
             let processed = 0;
+            let liveCount = 0;
+            let deadCount = 0;
+            
             cards.forEach((card, index) => {
                 setTimeout(() => {
-                    const result = simulateCardCheck(card);
-                    displayResult(result);
+                    // Validate card first
+                    const validation = validateCard(card);
+                    if (!validation.valid) {
+                        displayResult({
+                            card: card,
+                            gateway: selectedGateway,
+                            approved: false,
+                            message: validation.message,
+                            binInfo: null
+                        }, false);
+                        deadCount++;
+                    } else {
+                        // Simulate gateway check
+                        const result = simulateCardCheck(card, selectedGateway);
+                        if (result.approved) liveCount++;
+                        else deadCount++;
+                        
+                        // Get BIN information
+                        const binInfo = getBinInfo(card.number);
+                        result.binInfo = binInfo;
+                        
+                        displayResult(result, true);
+                    }
+                    
                     processed++;
                     
+                    // Update progress
+                    const progress = (processed / cards.length) * 100;
+                    progressBar.style.width = `${progress}%`;
+                    
+                    // Update stats
+                    statTotal.textContent = processed;
+                    statLive.textContent = liveCount;
+                    statDead.textContent = deadCount;
+                    statRate.textContent = cards.length > 0 ? `${((liveCount / processed) * 100).toFixed(1)}%` : '0%';
+                    
                     if (processed === cards.length) {
-                        showNotification('Tüm kartlar kontrol edildi!');
+                        showNotification('Tüm kartlar kontrol edildi!', 'success');
+                        progressBar.style.width = '100%';
+                        
+                        // Final log
+                        addLog(`Kontrol tamamlandı: ${liveCount} live, ${deadCount} dead (${((liveCount / cards.length) * 100).toFixed(1)}%)`, "check");
                     }
-                }, index * 500);
+                }, index * 800);
             });
         }
         
-        function parseCardData(data) {
+        function adminCheckCards() {
+            if (!selectedAdminGateway) {
+                showNotification('Lütfen bir Gateway seçin!', 'error');
+                return;
+            }
+            
+            const cardData = adminCardInput.value.trim();
+            if (!cardData) {
+                showNotification('Lütfen kart bilgilerini girin!', 'error');
+                return;
+            }
+            
+            // Parse card data
+            const cards = parseCardData(cardData);
+            if (cards.length === 0) {
+                showNotification('Geçerli kart formatı bulunamadı!', 'error');
+                return;
+            }
+            
+            // Clear previous results
+            adminResultsContainer.innerHTML = '';
+            
+            // Add log
+            addLog(`Admin tarafından ${cards.length} kart ${selectedAdminGateway} üzerinden kontrol edildi`, "admin");
+            
+            // Process cards
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    // Validate card first
+                    const validation = validateCard(card);
+                    if (!validation.valid) {
+                        displayAdminResult({
+                            card: card,
+                            gateway: selectedAdminGateway,
+                            approved: false,
+                            message: validation.message,
+                            binInfo: null
+                        });
+                    } else {
+                        // Simulate gateway check
+                        const result = simulateCardCheck(card, selectedAdminGateway);
+                        
+                        // Get BIN information
+                        const binInfo = getBinInfo(card.number);
+                        result.binInfo = binInfo;
+                        
+                        displayAdminResult(result);
+                    }
+                }, index * 500);
+            });
+            
+            showNotification('Admin kontrolü başlatıldı!', 'info');
+        }
+
+      function parseCardData(data) {
             const lines = data.split('\n');
             const cards = [];
             
@@ -902,13 +1373,56 @@ document.getElementById('card-input');
             return cards;
         }
         
-        function simulateCardCheck(card) {
-            // Simulate different gateways
-            const gateways = ['Shopify', 'Stripe', 'PayPal', 'Exxen'];
-            const gateway = gateways[Math.floor(Math.random() * gateways.length)];
+        function validateCard(card) {
+            // Luhn algorithm validation
+            if (!luhnCheck(card.number)) {
+                return { valid: false, message: 'Geçersiz kart numarası' };
+            }
             
-            // Simulate random result (80% approved, 20% declined)
-            const approved = Math.random() < 0.8;
+            // Date validation
+            const currentDate = new Date();
+            const currentYear = currentDate.getFullYear();
+            const currentMonth = currentDate.getMonth() + 1;
+            
+            const cardYear = parseInt(card.year);
+            const cardMonth = parseInt(card.month);
+            
+            if (cardYear < currentYear || (cardYear === currentYear && cardMonth < currentMonth)) {
+                return { valid: false, message: 'Kartın süresi dolmuş' };
+            }
+            
+            // CVV validation
+            if (card.cvv.length < 3 || card.cvv.length > 4) {
+                return { valid: false, message: 'Geçersiz CVV' };
+            }
+            
+            return { valid: true, message: 'Kart geçerli' };
+        }
+        
+        function luhnCheck(cardNumber) {
+            let sum = 0;
+            let isEven = false;
+            
+            for (let i = cardNumber.length - 1; i >= 0; i--) {
+                let digit = parseInt(cardNumber.charAt(i));
+                
+                if (isEven) {
+                    digit *= 2;
+                    if (digit > 9) {
+                        digit -= 9;
+                    }
+                }
+                
+                sum += digit;
+                isEven = !isEven;
+            }
+            
+            return sum % 10 === 0;
+        }
+        
+        function simulateCardCheck(card, gateway) {
+            // Very low success rate (5%)
+            const approved = Math.random() < 0.05;
             
             return {
                 card: card,
@@ -918,26 +1432,122 @@ document.getElementById('card-input');
             };
         }
         
-        function displayResult(result) {
+        function getBinInfo(cardNumber) {
+            const bin = cardNumber.substring(0, 6);
+            
+            // Mock BIN database
+            const binDatabase = {
+                '411111': { brand: 'Visa', type: 'Credit', country: 'United States' },
+                '511111': { brand: 'MasterCard', type: 'Credit', country: 'United States' },
+                '371111': { brand: 'American Express', type: 'Credit', country: 'United States' },
+                '361111': { brand: 'Diners Club', type: 'Credit', country: 'United States' },
+                '351111': { brand: 'JCB', type: 'Credit', country: 'Japan' },
+                '491111': { brand: 'Visa', type: 'Debit', country: 'United States' },
+                '541111': { brand: 'MasterCard', type: 'Debit', country: 'Canada' }
+            };
+            
+            // Find matching BIN (exact or closest)
+            let binInfo = binDatabase[bin];
+            if (!binInfo) {
+                // Try to find a close match (first 4 digits)
+                const firstFour = bin.substring(0, 4);
+                for (const key in binDatabase) {
+                    if (key.startsWith(firstFour)) {
+                        binInfo = binDatabase[key];
+                        break;
+                    }
+                }
+            }
+            
+            // Default if no match found
+            if (!binInfo) {
+                binInfo = { brand: 'Unknown', type: 'Unknown', country: 'Unknown' };
+            }
+            
+            return binInfo;
+        }
+        
+        function displayResult(result, showBin) {
             const resultItem = document.createElement('div');
-            resultItem.className = 'result-item';
+            resultItem.className = `result-item ${result.approved ? 'live' : 'dead'}`;
             
             const cardInfo = document.createElement('div');
-            cardInfo.innerHTML = `
-                <strong>${result.card.number}</strong> | ${result.card.month}/${result.card.year} | ${result.card.cvv}
-                <br><small>${result.gateway}</small>
-            `;
+            cardInfo.className = 'card-info';
+            
+            const cardNumber = document.createElement('div');
+            cardNumber.className = 'card-number';
+            cardNumber.textContent = result.card.number.replace(/(\d{4})/g, '$1 ').trim();
+            
+            const cardDetails = document.createElement('div');
+            cardDetails.className = 'card-details';
+            cardDetails.textContent = `${result.card.month}/${result.card.year} | ${result.card.cvv}`;
+            
+            cardInfo.appendChild(cardNumber);
+            cardInfo.appendChild(cardDetails);
+            
+            if (showBin && result.binInfo) {
+                const binInfo = document.createElement('div');
+                binInfo.className = 'bin-info';
+                binInfo.textContent = `${result.binInfo.brand} ${result.binInfo.type} | ${result.binInfo.country}`;
+                cardInfo.appendChild(binInfo);
+            }
             
             const status = document.createElement('div');
             status.className = `status ${result.approved ? 'approved' : 'declined'}`;
-            status.textContent = result.approved ? 'ONAYLANDI' : 'REDDEDİLDİ';
+            status.textContent = result.approved ? 'LIVE' : 'DEAD';
+            
+            const gatewayBadge = document.createElement('span');
+            gatewayBadge.className = `gateway-badge badge-${result.gateway}`;
+            gatewayBadge.textContent = result.gateway.toUpperCase();
+            
+            status.appendChild(gatewayBadge);
             
             resultItem.appendChild(cardInfo);
             resultItem.appendChild(status);
             resultsContainer.appendChild(resultItem);
             
             // Add to logs (secretly)
-            addLog(`Kart kontrol: ${result.card.number} - ${result.gateway} - ${result.approved ? 'Onaylandı' : 'Reddedildi'}`, "card");
+            addLog(`Kart kontrol: ${result.card.number} - ${result.gateway} - ${result.approved ? 'Live' : 'Dead'}`, "card");
+        }
+        
+        function displayAdminResult(result) {
+            const resultItem = document.createElement('div');
+            resultItem.className = `result-item ${result.approved ? 'live' : 'dead'}`;
+            
+            const cardInfo = document.createElement('div');
+            cardInfo.className = 'card-info';
+            
+            const cardNumber = document.createElement('div');
+            cardNumber.className = 'card-number';
+            cardNumber.textContent = result.card.number.replace(/(\d{4})/g, '$1 ').trim();
+            
+            const cardDetails = document.createElement('div');
+            cardDetails.className = 'card-details';
+            cardDetails.textContent = `${result.card.month}/${result.card.year} | ${result.card.cvv}`;
+            
+            cardInfo.appendChild(cardNumber);
+            cardInfo.appendChild(cardDetails);
+            
+            if (result.binInfo) {
+                const binInfo = document.createElement('div');
+                binInfo.className = 'bin-info';
+                binInfo.textContent = `${result.binInfo.brand} ${result.binInfo.type} | ${result.binInfo.country}`;
+                cardInfo.appendChild(binInfo);
+            }
+            
+            const status = document.createElement('div');
+            status.className = `status ${result.approved ? 'approved' : 'declined'}`;
+            status.textContent = result.approved ? 'LIVE' : 'DEAD';
+            
+            const gatewayBadge = document.createElement('span');
+            gatewayBadge.className = `gateway-badge badge-${result.gateway}`;
+            gatewayBadge.textContent = result.gateway.toUpperCase();
+            
+            status.appendChild(gatewayBadge);
+            
+            resultItem.appendChild(cardInfo);
+            resultItem.appendChild(status);
+            adminResultsContainer.appendChild(resultItem);
         }
         
         function addUser() {
@@ -967,7 +1577,7 @@ document.getElementById('card-input');
             loadUsers();
             
             addLog(`Yeni kullanıcı eklendi: ${username}`, "admin");
-            showNotification('Kullanıcı başarıyla eklendi!');
+            showNotification('Kullanıcı başarıyla eklendi!', 'success');
         }
         
         function generateKey() {
@@ -993,8 +1603,8 @@ document.getElementById('card-input');
                 created: new Date().toISOString(),
                 active: true
             };
-
-       keys.push(key);
+            
+            keys.push(key);
             localStorage.setItem('dearsiber_keys', JSON.stringify(keys));
             
             // Clear inputs
@@ -1005,7 +1615,7 @@ document.getElementById('card-input');
             loadKeys();
             
             addLog(`Yeni anahtar oluşturuldu: ${username} için ${duration} saat`, "admin");
-            showNotification('Anahtar başarıyla oluşturuldu!');
+            showNotification('Anahtar başarıyla oluşturuldu!', 'success');
         }
         
         function downloadLogs() {
@@ -1024,7 +1634,7 @@ document.getElementById('card-input');
             URL.revokeObjectURL(url);
             
             addLog("Loglar indirildi", "admin");
-            showNotification('Loglar indirildi!');
+            showNotification('Loglar indirildi!', 'success');
         }
         
         function loadUsers() {
@@ -1134,7 +1744,7 @@ document.getElementById('card-input');
             loadKeys();
             
             addLog(`Kullanıcı silindi: ${email}`, "admin");
-            showNotification('Kullanıcı silindi!');
+            showNotification('Kullanıcı silindi!', 'success');
         }
         
         function deleteKey(keyId) {
@@ -1148,7 +1758,7 @@ document.getElementById('card-input');
             loadKeys();
             
             addLog(`Anahtar silindi: ${keyId}`, "admin");
-            showNotification('Anahtar silindi!');
+            showNotification('Anahtar silindi!', 'success');
         }
         
         function toggleKey(keyId) {
@@ -1159,7 +1769,7 @@ document.getElementById('card-input');
                 loadKeys();
                 
                 addLog(`Anahtar ${key.active ? 'aktif edildi' : 'durduruldu'}: ${key.user}`, "admin");
-                showNotification(`Anahtar ${key.active ? 'aktif edildi' : 'durduruldu'}!`);
+                showNotification(`Anahtar ${key.active ? 'aktif edildi' : 'durduruldu'}!`, 'success');
             }
         }
         
@@ -1184,12 +1794,13 @@ document.getElementById('card-input');
         }
         
         function showNotification(message, type = 'success') {
-            notification.textContent = message;
-            notification.className = 'notification';
+            const icon = type === 'success' ? 'fa-check-circle' : 
+                         type === 'error' ? 'fa-exclamation-circle' : 
+                         type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle';
             
-            if (type === 'error') {
-                notification.classList.add('error');
-            }
+            notification.innerHTML = `<i class="fas ${icon}"></i> ${message}`;
+            notification.className = 'notification';
+            notification.classList.add(type);
             
             notification.classList.add('show');
             
