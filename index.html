@@ -65,14 +65,13 @@
 
         .loading-content {
             text-align: center;
-            animation: float 3s ease-in-out infinite;
         }
 
         .loading-logo {
             font-size: 4rem;
             color: var(--primary);
             margin-bottom: 20px;
-            animation: pulse 2s infinite, rotate 3s linear infinite;
+            animation: pulse 2s infinite;
         }
 
         .loading-text {
@@ -81,12 +80,6 @@
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: textGlow 2s ease-in-out infinite alternate;
-        }
-
-        .loading-subtext {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 1rem;
         }
 
         .loading-progress {
@@ -107,7 +100,18 @@
             animation: progressLoad 2s ease-in-out;
         }
 
-        /* Header Styles */
+        @keyframes progressLoad {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Header */
         header {
             background: rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(10px);
@@ -131,13 +135,11 @@
             font-size: 1.5rem;
             font-weight: 700;
             color: var(--light);
-            text-decoration: none;
         }
 
         .logo i {
             color: var(--primary);
             font-size: 1.8rem;
-            animation: pulse 2s infinite;
         }
 
         .nav-links {
@@ -160,7 +162,6 @@
         .nav-links a:hover {
             color: var(--primary);
             background: rgba(138, 43, 226, 0.1);
-            transform: translateY(-2px);
         }
 
         /* Main Content */
@@ -172,7 +173,7 @@
             padding: 40px 0;
         }
 
-        /* Admin Login Modal */
+        /* Admin Login */
         .admin-modal {
             display: none;
             position: fixed;
@@ -181,7 +182,6 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
             z-index: 1000;
             justify-content: center;
             align-items: center;
@@ -195,17 +195,6 @@
             border: 1px solid var(--card-border);
             max-width: 400px;
             width: 90%;
-            backdrop-filter: blur(10px);
-            transform: scale(0.9);
-            opacity: 0;
-            animation: modalAppear 0.3s forwards;
-        }
-
-        @keyframes modalAppear {
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
         }
 
         .admin-login-header {
@@ -229,7 +218,6 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 500;
-            color: rgba(255, 255, 255, 0.9);
         }
 
         .form-control {
@@ -240,14 +228,11 @@
             border-radius: 8px;
             color: var(--light);
             font-size: 1rem;
-            transition: all 0.3s;
         }
 
         .form-control:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.3);
-            transform: scale(1.02);
         }
 
         .btn {
@@ -263,62 +248,23 @@
             cursor: pointer;
             transition: all 0.3s;
             text-align: center;
-            text-decoration: none;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .btn:hover::before {
-            left: 100%;
         }
 
         .btn:hover {
             background: linear-gradient(90deg, var(--primary-dark), var(--primary));
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
         }
 
         .btn:disabled {
             background: rgba(255, 255, 255, 0.1);
             cursor: not-allowed;
             transform: none;
-            box-shadow: none;
-        }
-
-        .btn:disabled:hover::before {
-            left: -100%;
-        }
-
-        .btn-telegram {
-            background: linear-gradient(90deg, #0088cc, #006699);
-            margin-top: 15px;
-        }
-
-        .btn-telegram:hover {
-            background: linear-gradient(90deg, #006699, #0088cc);
-            box-shadow: 0 5px 15px rgba(0, 136, 204, 0.4);
         }
 
         .btn-small {
             padding: 8px 15px;
             font-size: 0.9rem;
             border-radius: 6px;
-            transition: all 0.3s;
-        }
-
-        .btn-small:hover {
-            transform: scale(1.05);
         }
 
         .btn-success {
@@ -327,10 +273,6 @@
 
         .btn-danger {
             background: var(--danger);
-        }
-
-        .btn-warning {
-            background: var(--warning);
         }
 
         .btn-info {
@@ -346,86 +288,7 @@
             margin-top: auto;
         }
 
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 10px;
-        }
-
-        .social-links a {
-            color: var(--light);
-            font-size: 1.2rem;
-            transition: all 0.3s;
-            padding: 10px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .social-links a:hover {
-            color: var(--primary);
-            transform: translateY(-3px) scale(1.1);
-            background: rgba(138, 43, 226, 0.2);
-            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
-        }
-
-        /* Animations */
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes textGlow {
-            0% { text-shadow: 0 0 5px rgba(138, 43, 226, 0.5); }
-            100% { text-shadow: 0 0 15px rgba(138, 43, 226, 0.8), 0 0 25px rgba(138, 43, 226, 0.6); }
-        }
-
-        @keyframes progressLoad {
-            0% { width: 0%; }
-            100% { width: 100%; }
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes bounce {
-            0%, 20%, 53%, 80%, 100% { transform: translate3d(0,0,0); }
-            40%, 43% { transform: translate3d(0,-15px,0); }
-            70% { transform: translate3d(0,-7px,0); }
-            90% { transform: translate3d(0,-2px,0); }
-        }
-
-        @keyframes flash {
-            0%, 50%, 100% { opacity: 1; }
-            25%, 75% { opacity: 0.3; }
-        }
-
-        /* Checker Panel Styles */
+        /* Panels */
         .checker-panel, .admin-panel {
             display: none;
             background: var(--card-bg);
@@ -434,17 +297,6 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             border: 1px solid var(--card-border);
             margin-top: 30px;
-            backdrop-filter: blur(10px);
-            transform: translateY(20px);
-            opacity: 0;
-            animation: panelAppear 0.5s forwards;
-        }
-
-        @keyframes panelAppear {
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
         }
 
         .checker-header, .admin-header {
@@ -454,90 +306,6 @@
             margin-bottom: 25px;
             padding-bottom: 15px;
             border-bottom: 1px solid var(--card-border);
-        }
-
-        .admin-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .admin-tab {
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .admin-tab::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s;
-        }
-
-        .admin-tab:hover::before {
-            left: 100%;
-        }
-
-        .admin-tab.active {
-            background: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
-            animation: bounce 0.5s ease;
-        }
-
-        .admin-content {
-            display: none;
-        }
-
-        .admin-content.active {
-            display: block;
-            animation: contentFade 0.3s ease-in;
-        }
-
-        @keyframes contentFade {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .user-list, .key-list, .log-list, .stats-list {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            padding: 15px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .user-item, .key-item, .log-item, .stat-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid var(--card-border);
-            transition: all 0.3s;
-        }
-
-        .user-item:hover, .key-item:hover, .log-item:hover, .stat-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-            transform: translateX(5px);
-        }
-
-        .user-item:last-child, .key-item:last-child, .log-item:last-child, .stat-item:last-child {
-            border-bottom: none;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 10px;
         }
 
         /* Gateway Selection */
@@ -556,35 +324,14 @@
             cursor: pointer;
             transition: all 0.3s;
             border: 2px solid transparent;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .gateway-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s;
-        }
-
-        .gateway-item:hover::before {
-            left: 100%;
         }
 
         .gateway-item:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
         }
 
         .gateway-item.selected {
             border-color: var(--primary);
-            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
-            transform: translateY(-5px);
-            animation: pulse 1s infinite;
         }
 
         .gateway-icon {
@@ -604,38 +351,13 @@
             padding: 30px;
             text-align: center;
             margin-bottom: 20px;
-            transition: all 0.3s;
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .file-upload::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-            transition: left 0.7s;
-        }
-
-        .file-upload:hover::before {
-            left: 100%;
-        }
-
-        .file-upload:hover {
-            border-color: var(--primary);
-            background: rgba(138, 43, 226, 0.05);
-            transform: translateY(-2px);
         }
 
         .file-upload i {
             font-size: 3rem;
             color: var(--primary);
             margin-bottom: 15px;
-            animation: float 3s ease-in-out infinite;
         }
 
         .file-input {
@@ -659,30 +381,11 @@
             border-radius: 10px;
             padding: 15px;
             text-align: center;
-            transition: all 0.3s;
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s;
-        }
-
-        .stat-card:hover::before {
-            left: 100%;
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
         }
 
         .stat-value {
@@ -704,35 +407,11 @@
             background: rgba(0, 0, 0, 0.2);
             border-radius: 8px;
             margin-bottom: 10px;
-            transition: all 0.3s;
             border-left: 4px solid transparent;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .result-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-            transition: left 0.5s;
-        }
-
-        .result-item:hover::before {
-            left: 100%;
-        }
-
-              .result-item:hover {
-            background: rgba(0, 0, 0, 0.3);
-            transform: translateX(5px);
         }
 
         .result-item.live {
             border-left-color: var(--success);
-            animation: flash 1s ease;
         }
 
         .result-item.dead {
@@ -745,13 +424,6 @@
 
         .card-number {
             font-weight: 600;
-            letter-spacing: 1px;
-        }
-
-        .card-details {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 5px;
         }
 
         .status {
@@ -759,32 +431,17 @@
             border-radius: 5px;
             font-size: 0.8rem;
             font-weight: 600;
-            margin-left: 10px;
         }
 
         .status.approved {
             background: rgba(46, 213, 115, 0.2);
             color: var(--success);
-            animation: pulse 1s infinite;
         }
 
         .status.declined {
             background: rgba(255, 71, 87, 0.2);
             color: var(--danger);
         }
-
-        .gateway-badge {
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            margin-left: 5px;
-        }
-
-        .badge-shopify { background: var(--shopify); }
-        .badge-stripe { background: var(--stripe); }
-        .badge-paypal { background: var(--paypal); }
-        .badge-exxen { background: var(--exxen); }
 
         /* Notification */
         .notification {
@@ -795,13 +452,9 @@
             background: var(--success);
             color: white;
             border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             transform: translateX(150%);
             transition: transform 0.5s;
             z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
         .notification.show {
@@ -810,25 +463,6 @@
 
         .notification.error {
             background: var(--danger);
-        }
-
-        .notification.warning {
-            background: var(--warning);
-        }
-
-        .notification.info {
-            background: var(--info);
-        }
-
-        /* Loading Spinner */
-        .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
         }
 
         /* Progress Bar */
@@ -864,37 +498,66 @@
             border-radius: 5px;
             color: var(--light);
             cursor: pointer;
-            transition: all 0.3s;
             font-size: 0.8rem;
             display: flex;
             align-items: center;
             gap: 5px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .download-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s;
-        }
-
-        .download-btn:hover::before {
-            left: 100%;
         }
 
         .download-btn:hover {
             background: var(--primary);
-            transform: translateY(-2px);
         }
 
-        /* Rate Limit Info */
-        .rate-limit-info {
+        /* Admin Tabs */
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .admin-tab {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .admin-tab.active {
+            background: var(--primary);
+        }
+
+        .admin-content {
+            display: none;
+        }
+
+        .admin-content.active {
+            display: block;
+        }
+
+        .user-list, .log-list {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .user-item, .log-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Info Boxes */
+        .info-box {
             background: rgba(255, 193, 7, 0.1);
             border: 1px solid var(--warning);
             border-radius: 8px;
@@ -905,45 +568,12 @@
             gap: 10px;
         }
 
-        .rate-limit-info i {
-            color: var(--warning);
-        }
-
-        /* Session Timer */
-        .session-timer {
-            background: rgba(46, 213, 115, 0.1);
-            border: 1px solid var(--success);
-            border-radius: 8px;
-            padding: 10px 15px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .session-timer i {
-            color: var(--success);
-        }
-
-        /* Card Preview */
         .card-preview {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
             padding: 15px;
             margin-bottom: 15px;
             border-left: 4px solid var(--primary);
-        }
-
-        .card-preview-header {
-            display: flex;
-            justify-content: between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .card-preview-title {
-            font-weight: 600;
-            color: var(--primary);
         }
 
         .card-preview-content {
@@ -954,34 +584,6 @@
             overflow-x: auto;
         }
 
-        /* System Stats */
-        .system-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .system-stat-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-            transition: all 0.3s;
-        }
-
-        .system-stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .system-stat-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin: 10px 0;
-            color: var(--primary);
-        }
-
         /* Responsive */
         @media (max-width: 768px) {
             .header-content {
@@ -989,23 +591,11 @@
                 gap: 15px;
             }
             
-            .nav-links {
-                gap: 15px;
-            }
-            
-            .checker-panel, .admin-panel {
-                padding: 20px;
-            }
-            
             .stats {
                 grid-template-columns: repeat(2, 1fr);
             }
             
             .gateway-selection {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .system-stats {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
@@ -1019,7 +609,6 @@
                 <i class="fas fa-shield-alt"></i>
             </div>
             <div class="loading-text">DearSiber Check System</div>
-            <div class="loading-subtext">Sistem hazırlanıyor...</div>
             <div class="loading-progress">
                 <div class="loading-progress-bar"></div>
             </div>
@@ -1030,42 +619,35 @@
     <div class="admin-modal" id="admin-modal">
         <div class="admin-login-container">
             <div class="admin-login-header">
-                <h2>🔐 Admin Girişi</h2>
+                <h2>Admin Girişi</h2>
                 <p>Yönetici paneline erişmek için giriş yapın</p>
             </div>
             
             <div class="form-group">
-                <label for="admin-username">👤 Kullanıcı Adı</label>
-                <input type="text" id="admin-username" class="form-control" placeholder="Admin kullanıcı adı">
+                <label for="admin-username">Kullanıcı Adı</label>
+                <input type="text" id="admin-username" class="form-control">
             </div>
             
             <div class="form-group">
-                <label for="admin-password">🔒 Şifre</label>
-                <input type="password" id="admin-password" class="form-control" placeholder="Admin şifresi">
+                <label for="admin-password">Şifre</label>
+                <input type="password" id="admin-password" class="form-control">
             </div>
             
-            <button class="btn" id="admin-login-btn">
-                <i class="fas fa-sign-in-alt"></i> GİRİŞ YAP
-            </button>
-            <button class="btn btn-telegram" id="close-admin-modal">
-                <i class="fas fa-times"></i> İPTAL
-            </button>
+            <button class="btn" id="admin-login-btn">GİRİŞ YAP</button>
+            <button class="btn" id="close-admin-modal" style="margin-top: 10px; background: rgba(255,255,255,0.1);">İPTAL</button>
         </div>
     </div>
 
     <!-- Header -->
     <header>
         <div class="container header-content">
-            <a href="#" class="logo">
+            <div class="logo">
                 <i class="fas fa-shield-alt"></i>
                 <span>DearSiber Check System</span>
-            </a>
+            </div>
             <div class="nav-links">
-                <a href="#" id="home-link"><i class="fas fa-home"></i> Ana Sayfa</a>
-                <a href="#" id="admin-link"><i class="fas fa-cog"></i> Admin Panel</a>
-                <a href="https://t.me/DearSiber" target="_blank" class="btn-telegram btn-small">
-                    <i class="fab fa-telegram"></i> Destek
-                </a>
+                <a href="#" id="home-link">Ana Sayfa</a>
+                <a href="#" id="admin-link">Admin Panel</a>
             </div>
         </div>
     </header>
@@ -1075,24 +657,15 @@
         <!-- Checker Panel -->
         <div class="checker-panel" id="checker-panel">
             <div class="checker-header">
-                <h2>💳 Kart Kontrol Paneli</h2>
-                <div>
-                    <div class="session-timer">
-                        <i class="fas fa-clock"></i>
-                        <span id="session-timer">⏱️ Oturum Süresi: 00:00:00</span>
-                    </div>
-                </div>
+                <h2>Kart Kontrol Paneli</h2>
             </div>
             
-            <div class="rate-limit-info">
+            <div class="info-box">
                 <i class="fas fa-info-circle"></i>
-                <span>⚡ Rate Limit: <span id="current-rate-limit">6</span> saniyede 1 kart | 🎯 Live Oranı: <span id="current-live-rate">1</span>%</span>
+                <span>Her kart kontrolü 6 saniye sürmektedir</span>
             </div>
 
             <div class="card-preview">
-                <div class="card-preview-header">
-                    <div class="card-preview-title">📋 Desteklenen Formatlar</div>
-                </div>
                 <div class="card-preview-content">
                     4916931023123456|12|2025|123<br>
                     4916931023123456|12|25|123<br>
@@ -1131,196 +704,68 @@
             
             <div class="file-upload" id="file-upload">
                 <i class="fas fa-cloud-upload-alt"></i>
-                <h3>📁 Dosya Yükleyin</h3>
-                <p>Desteklenen formatlar: .txt | Maksimum: <span id="max-cards-display">1000</span> kart</p>
+                <h3>Dosya Yükleyin</h3>
+                <p>Desteklenen formatlar: .txt</p>
                 <input type="file" id="file-input" class="file-input" accept=".txt">
             </div>
             
             <div class="form-group">
-                <label for="card-input">📝 Veya kart bilgilerini buraya girin:</label>
-                <textarea id="card-input" class="form-control" rows="5" placeholder="4916931023123456|12|2025|123&#10;5412751234567890|03|2026|456&#10;371449635398431|09|2024|789"></textarea>
+                <label for="card-input">Veya kart bilgilerini buraya girin:</label>
+                <textarea id="card-input" class="form-control" rows="5" placeholder="4916931023123456|12|2025|123&#10;5412751234567890|03|2026|456"></textarea>
             </div>
             
-            <div class="progress-container">
+          <div class="progress-container">
                 <div class="progress-bar" id="progress-bar"></div>
             </div>
             
-            <button class="btn" id="check-btn">
-                <i class="fas fa-play"></i> 🚀 KARTLARI KONTROL ET
-            </button>
+            <button class="btn" id="check-btn">KARTLARI KONTROL ET</button>
             
             <div class="stats" id="stats" style="display: none;">
                 <div class="stat-card" id="stat-total-card">
-                    <div class="stat-label">📊 Toplam Kart</div>
+                    <div class="stat-label">Toplam Kart</div>
                     <div class="stat-value stat-total" id="stat-total">0</div>
-                    <div class="stat-desc">İşlenen kartlar</div>
                 </div>
                 <div class="stat-card" id="stat-live-card">
-                    <div class="stat-label">✅ Live Kartlar</div>
+                    <div class="stat-label">Live Kartlar</div>
                     <div class="stat-value stat-live" id="stat-live">0</div>
-                    <div class="stat-desc">Başarılı kontroller</div>
                 </div>
                 <div class="stat-card" id="stat-dead-card">
-                    <div class="stat-label">❌ Dead Kartlar</div>
+                    <div class="stat-label">Dead Kartlar</div>
                     <div class="stat-value stat-dead" id="stat-dead">0</div>
-                    <div class="stat-desc">Başarısız kontroller</div>
                 </div>
                 <div class="stat-card" id="stat-rate-card">
-                    <div class="stat-label">🎯 Live Oranı</div>
+                    <div class="stat-label">Live Oranı</div>
                     <div class="stat-value stat-rate" id="stat-rate">0%</div>
-                    <div class="stat-desc">Başarı oranı</div>
                 </div>
             </div>
 
             <div class="download-buttons" id="download-buttons" style="display: none;">
-                <button class="download-btn" id="download-live">
-                    <i class="fas fa-download"></i> ✅ Live Kartları İndir
-                </button>
-                <button class="download-btn" id="download-dead">
-                    <i class="fas fa-download"></i> ❌ Dead Kartları İndir
-                </button>
-                <button class="download-btn" id="download-all">
-                    <i class="fas fa-download"></i> 📦 Tüm Kartları İndir
-                </button>
-                <button class="download-btn" id="download-logs">
-                    <i class="fas fa-download"></i> 📋 Kart Loglarını İndir
-                </button>
+                <button class="download-btn" id="download-live">Live Kartları İndir</button>
+                <button class="download-btn" id="download-dead">Dead Kartları İndir</button>
+                <button class="download-btn" id="download-all">Tüm Kartları İndir</button>
             </div>
             
-            <div class="results" id="results">
-                <!-- Results will be displayed here -->
-            </div>
+            <div class="results" id="results"></div>
         </div>
 
-       <!-- Admin Panel -->
+        <!-- Admin Panel -->
         <div class="admin-panel" id="admin-panel">
             <div class="admin-header">
-                <h2>⚙️ Admin Paneli</h2>
+                <h2>Admin Paneli</h2>
                 <div class="action-buttons">
-                    <button class="btn btn-small btn-info" id="refresh-admin">
-                        <i class="fas fa-sync-alt"></i> Yenile
-                    </button>
-                    <button class="btn btn-small" id="download-card-logs-admin">
-                        <i class="fas fa-download"></i> Kart Logları
-                    </button>
-                    <button class="btn btn-small" id="download-all-logs">
-                        <i class="fas fa-download"></i> Tüm Loglar
-                    </button>
-                    <button class="btn btn-small btn-danger" id="admin-logout-btn">
-                        <i class="fas fa-sign-out-alt"></i> Çıkış
-                    </button>
+                    <button class="btn btn-small btn-danger" id="admin-logout-btn">Çıkış</button>
                 </div>
             </div>
             
             <div class="admin-tabs">
-                <div class="admin-tab active" data-tab="dashboard">📊 Dashboard</div>
-                <div class="admin-tab" data-tab="users">👥 Kullanıcılar</div>
-                <div class="admin-tab" data-tab="keys">🔑 Anahtarlar</div>
-                <div class="admin-tab" data-tab="checker">💳 Kart Kontrol</div>
-                <div class="admin-tab" data-tab="settings">⚙️ Ayarlar</div>
-                <div class="admin-tab" data-tab="logs">📋 Loglar</div>
-                <div class="admin-tab" data-tab="statistics">📈 İstatistikler</div>
-            </div>
-            
-            <!-- Dashboard Content -->
-            <div class="admin-content active" id="dashboard-content">
-                <h3>📊 Sistem Dashboard</h3>
-                <div class="system-stats">
-                    <div class="system-stat-card">
-                        <div class="system-stat-label">👥 Toplam Kullanıcı</div>
-                        <div class="system-stat-value" id="total-users">0</div>
-                        <div class="stat-desc">Kayıtlı kullanıcı sayısı</div>
-                    </div>
-                    <div class="system-stat-card">
-                        <div class="system-stat-label">🔑 Aktif Anahtarlar</div>
-                        <div class="system-stat-value" id="active-keys">0</div>
-                        <div class="stat-desc">Aktif anahtar sayısı</div>
-                    </div>
-                    <div class="system-stat-card">
-                        <div class="system-stat-label">💳 Kontrol Edilen Kartlar</div>
-                        <div class="system-stat-value" id="total-cards-checked">0</div>
-                        <div class="stat-desc">Toplam kontrol edilen kart</div>
-                    </div>
-                    <div class="system-stat-card">
-                        <div class="system-stat-label">✅ Live Kartlar</div>
-                        <div class="system-stat-value" id="total-live-cards">0</div>
-                        <div class="stat-desc">Toplam live kart</div>
-                    </div>
-                </div>
-
-                <div class="card-preview">
-                    <div class="card-preview-header">
-                        <div class="card-preview-title">🚀 Hızlı İşlemler</div>
-                    </div>
-                    <div class="download-buttons">
-                        <button class="download-btn" id="clear-logs">
-                            <i class="fas fa-trash"></i> Logları Temizle
-                        </button>
-                        <button class="download-btn" id="export-data">
-                            <i class="fas fa-file-export"></i> Verileri Dışa Aktar
-                        </button>
-                        <button class="download-btn" id="backup-system">
-                            <i class="fas fa-database"></i> Sistem Yedeği Al
-                        </button>
-                        <button class="download-btn" id="system-info">
-                            <i class="fas fa-info-circle"></i> Sistem Bilgisi
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Users Content -->
-            <div class="admin-content" id="users-content">
-                <h3>👥 Kullanıcı Yönetimi</h3>
-                <div class="form-group">
-                    <input type="text" id="new-username" class="form-control" placeholder="Yeni Kullanıcı Adı">
-                </div>
-                <div class="form-group">
-                    <input type="password" id="new-password" class="form-control" placeholder="Yeni Şifre">
-                </div>
-                <button class="btn" id="add-user-btn">
-                    <i class="fas fa-user-plus"></i> Kullanıcı Ekle
-                </button>
-                
-                <div class="user-list" id="user-list">
-                    <!-- Users will be listed here -->
-                </div>
-            </div>
-            
-            <!-- Keys Content -->
-            <div class="admin-content" id="keys-content">
-                <h3>🔑 Anahtar Yönetimi</h3>
-                <div class="form-group">
-                    <select id="key-username" class="form-control">
-                        <option value="">Kullanıcı Seçin</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <select id="key-duration" class="form-control">
-                        <option value="1">1 Saat</option>
-                        <option value="6">6 Saat</option>
-                        <option value="12">12 Saat</option>
-                        <option value="24">24 Saat</option>
-                        <option value="168">7 Gün</option>
-                        <option value="720">30 Gün</option>
-                    </select>
-                </div>
-                <button class="btn" id="generate-key-btn">
-                    <i class="fas fa-key"></i> Anahtar Oluştur
-                </button>
-                
-                <div class="key-list" id="key-list">
-                    <!-- Keys will be listed here -->
-                </div>
+                <div class="admin-tab active" data-tab="checker">Kart Kontrol</div>
+                <div class="admin-tab" data-tab="logs">Sistem Logları</div>
+                <div class="admin-tab" data-tab="settings">Ayarlar</div>
             </div>
             
             <!-- Checker Content -->
-            <div class="admin-content" id="checker-content">
-                <h3>💳 Admin Kart Kontrol</h3>
-                <div class="rate-limit-info">
-                    <i class="fas fa-info-circle"></i>
-                    <span>⚡ Rate Limit: <span id="admin-rate-limit">6</span> saniyede 1 kart | 🎯 Live Oranı: <span id="admin-live-rate">1</span>%</span>
-                </div>
+            <div class="admin-content active" id="checker-content">
+                <h3>Admin Kart Kontrol</h3>
                 
                 <div class="gateway-selection" id="admin-gateway-selection">
                     <div class="gateway-item" data-gateway="shopify">
@@ -1350,115 +795,41 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="admin-card-input">📝 Kart bilgilerini girin:</label>
+                    <label for="admin-card-input">Kart bilgilerini girin:</label>
                     <textarea id="admin-card-input" class="form-control" rows="5" placeholder="Kart bilgilerini buraya girin..."></textarea>
                 </div>
                 
-                <button class="btn" id="admin-check-btn">
-                    <i class="fas fa-play"></i> 🚀 KARTLARI KONTROL ET
-                </button>
+                <button class="btn" id="admin-check-btn">KARTLARI KONTROL ET</button>
                 
-                <div class="results" id="admin-results">
-                    <!-- Admin results will be displayed here -->
-                </div>
-            </div>
-
-            <!-- Settings Content -->
-            <div class="admin-content" id="settings-content">
-                <h3>⚙️ Sistem Ayarları</h3>
-                <div class="form-group">
-                    <label for="live-rate">🎯 Live Oranı (%)</label>
-                    <input type="number" id="live-rate" class="form-control" value="1" min="0.1" max="10" step="0.1">
-                </div>
-                <div class="form-group">
-                    <label for="rate-limit">⚡ Rate Limit (saniye)</label>
-                    <input type="number" id="rate-limit" class="form-control" value="6" min="1" max="60">
-                </div>
-                <div class="form-group">
-                    <label for="max-cards">📊 Maksimum Kart Sayısı</label>
-                    <input type="number" id="max-cards" class="form-control" value="1000" min="10" max="10000">
-                </div>
-                <div class="form-group">
-                    <label for="auto-save">💾 Otomatik Kaydet</label>
-                    <select id="auto-save" class="form-control">
-                        <option value="true">Açık</option>
-                        <option value="false">Kapalı</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="theme">🎨 Tema</label>
-                    <select id="theme" class="form-control">
-                        <option value="dark">Koyu</option>
-                        <option value="light">Açık</option>
-                        <option value="auto">Otomatik</option>
-                    </select>
-                </div>
-                <button class="btn" id="save-settings-btn">
-                    <i class="fas fa-save"></i> Ayarları Kaydet
-                </button>
-                <button class="btn btn-danger" id="reset-settings-btn">
-                    <i class="fas fa-undo"></i> Varsayılana Sıfırla
-                </button>
+                <div class="results" id="admin-results"></div>
             </div>
 
             <!-- Logs Content -->
             <div class="admin-content" id="logs-content">
-                <h3>📋 Sistem Logları</h3>
-                <div class="download-buttons">
-                    <button class="download-btn" id="clear-all-logs">
-                        <i class="fas fa-trash"></i> Tüm Logları Temizle
-                    </button>
-                    <button class="download-btn" id="filter-logs">
-                        <i class="fas fa-filter"></i> Logları Filtrele
-                    </button>
-                </div>
-                <div class="log-list" id="log-list">
-                    <!-- Logs will be listed here -->
-                </div>
+                <h3>Sistem Logları</h3>
+                <div class="log-list" id="log-list"></div>
             </div>
 
-            <!-- Statistics Content -->
-            <div class="admin-content" id="statistics-content">
-                <h3>📈 Sistem İstatistikleri</h3>
-                <div class="system-stats">
-                    <div class="system-stat-card">
-                        <div class="system-stat-label">📅 Bugünkü Kontroller</div>
-                        <div class="system-stat-value" id="today-checks">0</div>
-                        <div class="stat-desc">Bugün kontrol edilen kart</div>
-                    </div>
-                    <div class="system-stat-card">
-                        <div class="system-stat-label">📈 Haftalık Live Oranı</div>
-                        <div class="system-stat-value" id="weekly-live-rate">0%</div>
-                        <div class="stat-desc">Bu haftaki live oranı</div>
-                    </div>
-                    <div class="system-stat-card">
-                        <div class="system-stat-label">👤 En Aktif Kullanıcı</div>
-                        <div class="system-stat-value" id="most-active-user">-</div>
-                        <div class="stat-desc">En çok kontrol yapan</div>
-                    </div>
-                    <div class="system-stat-card">
-                        <div class="system-stat-label">🕒 Ortalama Süre</div>
-                        <div class="system-stat-value" id="avg-check-time">0s</div>
-                        <div class="stat-desc">Kart başına ortalama süre</div>
-                    </div>
+            <!-- Settings Content -->
+            <div class="admin-content" id="settings-content">
+                <h3>Sistem Ayarları</h3>
+                <div class="form-group">
+                    <label for="rate-limit">Kart Başına Bekleme Süresi (saniye)</label>
+                    <input type="number" id="rate-limit" class="form-control" value="6" min="1" max="60">
                 </div>
-                
-                <div class="stats-list" id="stats-list">
-                    <!-- Statistics will be listed here -->
+                <div class="form-group">
+                    <label for="max-cards">Maksimum Kart Sayısı</label>
+                    <input type="number" id="max-cards" class="form-control" value="1000" min="10" max="10000">
                 </div>
+                <button class="btn" id="save-settings-btn">Ayarları Kaydet</button>
             </div>
         </div>
     </div>
 
     <!-- Footer -->
     <footer>
-        <div class="container footer-content">
-            <p>© 2023 DearSiber Check System. Tüm hakları saklıdır.</p>
-            <div class="social-links">
-                <a href="https://t.me/DearSiber" target="_blank"><i class="fab fa-telegram"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-github"></i></a>
-            </div>
+        <div class="container">
+            <p>© 2023 DearSiber Check System</p>
         </div>
     </footer>
 
@@ -1466,42 +837,26 @@
     <div class="notification" id="notification"></div>
 
     <script>
-        // Admin credentials - Gizli
-        const ADMIN_CREDENTIALS = {
-            username: "sirin31",
-            password: "sirin3131"
-        };
-        
-        // System settings
+        // Admin bilgileri gizli
+        const ADMIN_USERNAME = "sirin31";
+        const ADMIN_PASSWORD = "sirin3131";
+
+        // Sistem ayarları
         let systemSettings = JSON.parse(localStorage.getItem('dearsiber_settings')) || {
-            liveRate: 1,
             rateLimit: 6,
-            maxCards: 1000,
-            autoSave: true,
-            theme: 'dark'
+            maxCards: 1000
         };
-        
-        // Users storage
-        let users = JSON.parse(localStorage.getItem('dearsiber_users')) || [];
-        let keys = JSON.parse(localStorage.getItem('dearsiber_keys')) || [];
+
+        // Veri depolama
         let logs = JSON.parse(localStorage.getItem('dearsiber_logs')) || [];
         let cardLogs = JSON.parse(localStorage.getItem('dearsiber_card_logs')) || [];
-        let statistics = JSON.parse(localStorage.getItem('dearsiber_stats')) || {
-            totalCardsChecked: 0,
-            totalLiveCards: 0,
-            todayChecks: 0,
-            weeklyStats: {}
-        };
         
-        let currentUser = null;
         let selectedGateway = null;
         let selectedAdminGateway = null;
         let currentResults = [];
         let isChecking = false;
-        let sessionTimer = null;
-        let sessionStartTime = null;
         let isAdmin = false;
-        
+
         // DOM Elements
         const loadingScreen = document.getElementById('loading-screen');
         const adminModal = document.getElementById('admin-modal');
@@ -1512,7 +867,6 @@
         const adminLink = document.getElementById('admin-link');
         const homeLink = document.getElementById('home-link');
         const adminLogoutBtn = document.getElementById('admin-logout-btn');
-        const refreshAdminBtn = document.getElementById('refresh-admin');
         const checkerPanel = document.getElementById('checker-panel');
         const adminPanel = document.getElementById('admin-panel');
         const fileUpload = document.getElementById('file-upload');
@@ -1526,93 +880,41 @@
         const notification = document.getElementById('notification');
         const adminTabs = document.querySelectorAll('.admin-tab');
         const adminContents = document.querySelectorAll('.admin-content');
-        const addUserBtn = document.getElementById('add-user-btn');
-        const generateKeyBtn = document.getElementById('generate-key-btn');
-        const downloadCardLogsBtn = document.getElementById('download-card-logs-admin');
-        const downloadAllLogsBtn = document.getElementById('download-all-logs');
-        const userList = document.getElementById('user-list');
-        const keyList = document.getElementById('key-list');
-        const logList = document.getElementById('log-list');
-        const statsList = document.getElementById('stats-list');
-        const gatewayItems = document.querySelectorAll('.gateway-item');
-        const adminGatewayItems = document.querySelectorAll('#admin-gateway-selection .gateway-item');
         const progressBar = document.getElementById('progress-bar');
         const statsContainer = document.getElementById('stats');
         const statTotal = document.getElementById('stat-total');
         const statLive = document.getElementById('stat-live');
         const statDead = document.getElementById('stat-dead');
         const statRate = document.getElementById('stat-rate');
-        const statTotalCard = document.getElementById('stat-total-card');
-        const statLiveCard = document.getElementById('stat-live-card');
-        const statDeadCard = document.getElementById('stat-dead-card');
-        const statRateCard = document.getElementById('stat-rate-card');
         const downloadButtons = document.getElementById('download-buttons');
         const downloadLiveBtn = document.getElementById('download-live');
         const downloadDeadBtn = document.getElementById('download-dead');
         const downloadAllBtn = document.getElementById('download-all');
-        const downloadLogsBtn = document.getElementById('download-logs');
-        const sessionTimerElement = document.getElementById('session-timer');
-        const keyUsernameSelect = document.getElementById('key-username');
-        const keyDurationSelect = document.getElementById('key-duration');
-        const liveRateInput = document.getElementById('live-rate');
+        const logList = document.getElementById('log-list');
         const rateLimitInput = document.getElementById('rate-limit');
         const maxCardsInput = document.getElementById('max-cards');
-        const autoSaveSelect = document.getElementById('auto-save');
-        const themeSelect = document.getElementById('theme');
         const saveSettingsBtn = document.getElementById('save-settings-btn');
-        const resetSettingsBtn = document.getElementById('reset-settings-btn');
-        const clearLogsBtn = document.getElementById('clear-logs');
-        const exportDataBtn = document.getElementById('export-data');
-        const backupSystemBtn = document.getElementById('backup-system');
-        const systemInfoBtn = document.getElementById('system-info');
-        const clearAllLogsBtn = document.getElementById('clear-all-logs');
-        const filterLogsBtn = document.getElementById('filter-logs');
-        
-            // Statistics elements
-        const totalUsersElement = document.getElementById('total-users');
-        const activeKeysElement = document.getElementById('active-keys');
-        const totalCardsCheckedElement = document.getElementById('total-cards-checked');
-        const totalLiveCardsElement = document.getElementById('total-live-cards');
-        const todayChecksElement = document.getElementById('today-checks');
-        const weeklyLiveRateElement = document.getElementById('weekly-live-rate');
-        const mostActiveUserElement = document.getElementById('most-active-user');
-        const avgCheckTimeElement = document.getElementById('avg-check-time');
-        const currentRateLimitElement = document.getElementById('current-rate-limit');
-        const currentLiveRateElement = document.getElementById('current-live-rate');
-        const adminRateLimitElement = document.getElementById('admin-rate-limit');
-        const adminLiveRateElement = document.getElementById('admin-live-rate');
-        const maxCardsDisplayElement = document.getElementById('max-cards-display');
-        
-        // Initialize
+        const gatewayItems = document.querySelectorAll('.gateway-item');
+        const adminGatewayItems = document.querySelectorAll('#admin-gateway-selection .gateway-item');
+
+        // Sayfa yüklendiğinde
         document.addEventListener('DOMContentLoaded', function() {
-            // Simulate loading
             setTimeout(() => {
                 loadingScreen.style.opacity = '0';
                 setTimeout(() => {
                     loadingScreen.style.display = 'none';
                     showCheckerPanel();
-                    startSessionTimer();
-                    updateDisplaySettings();
                 }, 500);
             }, 2000);
-            
-            // Load settings
+
             loadSettings();
-            
-            // Load data
-            loadUsers();
-            loadKeys();
             loadLogs();
-            loadStatistics();
-            updateUserSelect();
-            updateDashboard();
             
-            // Add sample logs if empty
             if (logs.length === 0) {
-                addLog("🚀 Sistem başlatıldı", "system");
+                addLog("Sistem başlatıldı", "system");
             }
         });
-        
+
         // Event Listeners
         adminLink.addEventListener('click', function(e) {
             e.preventDefault();
@@ -1627,35 +929,20 @@
         adminLoginBtn.addEventListener('click', handleAdminLogin);
         closeAdminModal.addEventListener('click', closeAdminModalFunc);
         adminLogoutBtn.addEventListener('click', handleAdminLogout);
-        refreshAdminBtn.addEventListener('click', refreshAdmin);
         
         fileUpload.addEventListener('click', function() {
             fileInput.click();
         });
+        
         fileInput.addEventListener('change', handleFileUpload);
         checkBtn.addEventListener('click', checkCards);
         adminCheckBtn.addEventListener('click', adminCheckCards);
-        addUserBtn.addEventListener('click', addUser);
-        generateKeyBtn.addEventListener('click', generateKey);
-        downloadCardLogsBtn.addEventListener('click', () => downloadCardLogs('admin'));
-        downloadAllLogsBtn.addEventListener('click', downloadAllLogs);
         downloadLiveBtn.addEventListener('click', () => downloadCards('live'));
         downloadDeadBtn.addEventListener('click', () => downloadCards('dead'));
         downloadAllBtn.addEventListener('click', () => downloadCards('all'));
-        downloadLogsBtn.addEventListener('click', () => downloadCardLogs('user'));
-        statLiveCard.addEventListener('click', () => filterResults('live'));
-        statDeadCard.addEventListener('click', () => filterResults('dead'));
-        statTotalCard.addEventListener('click', () => filterResults('all'));
         saveSettingsBtn.addEventListener('click', saveSettings);
-        resetSettingsBtn.addEventListener('click', resetSettings);
-        clearLogsBtn.addEventListener('click', clearLogs);
-        exportDataBtn.addEventListener('click', exportData);
-        backupSystemBtn.addEventListener('click', backupSystem);
-        systemInfoBtn.addEventListener('click', showSystemInfo);
-        clearAllLogsBtn.addEventListener('click', clearAllLogs);
-        filterLogsBtn.addEventListener('click', filterLogs);
-        
-        // Gateway selection
+
+             // Gateway seçimi
         gatewayItems.forEach(item => {
             item.addEventListener('click', function() {
                 gatewayItems.forEach(i => i.classList.remove('selected'));
@@ -1671,303 +958,76 @@
                 selectedAdminGateway = this.getAttribute('data-gateway');
             });
         });
-        
-        // Admin tabs
+
+        // Admin tabları
         adminTabs.forEach(tab => {
             tab.addEventListener('click', function() {
                 const tabId = this.getAttribute('data-tab');
                 
-                // Update active tab
                 adminTabs.forEach(t => t.classList.remove('active'));
                 this.classList.add('active');
                 
-                // Show corresponding content
                 adminContents.forEach(content => {
                     content.classList.remove('active');
                     if (content.id === `${tabId}-content`) {
                         content.classList.add('active');
                     }
                 });
-                
-                // Update specific tab content
-                if (tabId === 'dashboard') {
-                    updateDashboard();
-                } else if (tabId === 'statistics') {
-                    updateStatistics();
-                }
             });
         });
-        
-        // Functions
+
+        // Fonksiyonlar
         function showAdminModal() {
             adminModal.style.display = 'flex';
             adminUsername.value = '';
             adminPassword.value = '';
-            adminUsername.placeholder = 'Kullanıcı adınızı girin';
-            adminPassword.placeholder = 'Şifrenizi girin';
         }
-        
+
         function closeAdminModalFunc() {
             adminModal.style.display = 'none';
         }
-        
+
         function handleAdminLogin() {
             const username = adminUsername.value;
             const password = adminPassword.value;
             
-            if (!username || !password) {
-                showNotification('❌ Lütfen kullanıcı adı ve şifre girin!', 'error');
-                return;
-            }
-            
-            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+            if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
                 isAdmin = true;
                 adminModal.style.display = 'none';
                 showAdminPanel();
-                showNotification('🎉 Admin paneline hoş geldiniz!', 'success');
-                addLog("🔓 Admin giriş yaptı", "admin");
+                showNotification('Admin paneline hoş geldiniz!', 'success');
+                addLog("Admin giriş yaptı", "admin");
             } else {
-                showNotification('❌ Kullanıcı adı veya şifre hatalı!', 'error');
-                adminUsername.style.animation = 'shake 0.5s';
-                adminPassword.style.animation = 'shake 0.5s';
-                setTimeout(() => {
-                    adminUsername.style.animation = '';
-                    adminPassword.style.animation = '';
-                }, 500);
+                showNotification('Kullanıcı adı veya şifre hatalı!', 'error');
             }
         }
-        
+
         function handleAdminLogout() {
             isAdmin = false;
             showCheckerPanel();
-            showNotification('👋 Admin panelinden çıkış yapıldı!', 'info');
-            addLog("🔒 Admin çıkış yaptı", "admin");
+            showNotification('Admin panelinden çıkış yapıldı!', 'info');
+            addLog("Admin çıkış yaptı", "admin");
         }
-        
-        function refreshAdmin() {
-            updateDashboard();
-            loadUsers();
-            loadKeys();
-            loadLogs();
-            showNotification('🔄 Admin paneli yenilendi!', 'success');
-        }
-        
-        function updateDisplaySettings() {
-            currentRateLimitElement.textContent = systemSettings.rateLimit;
-            currentLiveRateElement.textContent = systemSettings.liveRate;
-            adminRateLimitElement.textContent = systemSettings.rateLimit;
-            adminLiveRateElement.textContent = systemSettings.liveRate;
-            maxCardsDisplayElement.textContent = systemSettings.maxCards;
-        }
-        
+
         function loadSettings() {
-            liveRateInput.value = systemSettings.liveRate;
             rateLimitInput.value = systemSettings.rateLimit;
             maxCardsInput.value = systemSettings.maxCards;
-            autoSaveSelect.value = systemSettings.autoSave;
-            themeSelect.value = systemSettings.theme;
         }
-        
+
         function saveSettings() {
-            systemSettings.liveRate = parseFloat(liveRateInput.value);
             systemSettings.rateLimit = parseInt(rateLimitInput.value);
             systemSettings.maxCards = parseInt(maxCardsInput.value);
-            systemSettings.autoSave = autoSaveSelect.value === 'true';
-            systemSettings.theme = themeSelect.value;
             
             localStorage.setItem('dearsiber_settings', JSON.stringify(systemSettings));
-            updateDisplaySettings();
-            showNotification('✅ Ayarlar başarıyla kaydedildi!', 'success');
-            addLog("⚙️ Sistem ayarları güncellendi", "admin");
+            showNotification('Ayarlar kaydedildi!', 'success');
+            addLog("Sistem ayarları güncellendi", "admin");
         }
-        
-        function resetSettings() {
-            systemSettings = {
-                liveRate: 1,
-                rateLimit: 6,
-                maxCards: 1000,
-                autoSave: true,
-                theme: 'dark'
-            };
-            localStorage.setItem('dearsiber_settings', JSON.stringify(systemSettings));
-            loadSettings();
-            updateDisplaySettings();
-            showNotification('🔄 Ayarlar varsayılana sıfırlandı!', 'success');
-            addLog("🔄 Sistem ayarları sıfırlandı", "admin");
-        }
-        
-        function clearLogs() {
-            if (confirm('❓ Kart loglarını temizlemek istediğinizden emin misiniz?')) {
-                cardLogs = [];
-                localStorage.setItem('dearsiber_card_logs', JSON.stringify(cardLogs));
-                showNotification('🗑️ Kart logları temizlendi!', 'success');
-                addLog("🗑️ Kart logları temizlendi", "admin");
-            }
-        }
-        
-          function clearAllLogs() {
-            if (confirm('❓ Tüm logları temizlemek istediğinizden emin misiniz?')) {
-                logs = [];
-                cardLogs = [];
-                localStorage.setItem('dearsiber_logs', JSON.stringify(logs));
-                localStorage.setItem('dearsiber_card_logs', JSON.stringify(cardLogs));
-                loadLogs();
-                showNotification('🗑️ Tüm loglar temizlendi!', 'success');
-                addLog("🗑️ Tüm loglar temizlendi", "admin");
-            }
-        }
-        
-        function exportData() {
-            const data = {
-                users: users,
-                keys: keys,
-                logs: logs,
-                cardLogs: cardLogs,
-                statistics: statistics,
-                settings: systemSettings
-            };
-            
-            downloadFile(JSON.stringify(data, null, 2), `dearsiber_export_${getTimestamp()}.json`);
-            showNotification('📤 Veriler dışa aktarıldı!', 'success');
-            addLog("📤 Sistem verileri dışa aktarıldı", "admin");
-        }
-        
-        function backupSystem() {
-            const backup = {
-                timestamp: new Date().toISOString(),
-                data: {
-                    users: users,
-                    keys: keys,
-                    logs: logs,
-                    cardLogs: cardLogs,
-                    statistics: statistics,
-                    settings: systemSettings
-                }
-            };
-            
-            localStorage.setItem('dearsiber_backup', JSON.stringify(backup));
-            showNotification('💾 Sistem yedeği alındı!', 'success');
-            addLog("💾 Sistem yedeği alındı", "admin");
-        }
-        
-        function showSystemInfo() {
-            const info = `
-DearSiber Check System v2.0
----------------------------
-Kullanıcı Sayısı: ${users.length}
-Aktif Anahtarlar: ${keys.filter(k => isKeyActive(k)).length}
-Toplam Log: ${logs.length}
-Kart Logları: ${cardLogs.length}
-Toplam Kontrol: ${statistics.totalCardsChecked}
-Live Kartlar: ${statistics.totalLiveCards}
-            `.trim();
-            
-            alert('ℹ️ Sistem Bilgisi:\n\n' + info);
-        }
-        
-        function filterLogs() {
-            const type = prompt('🔍 Filtreleme türü girin (system, admin, user, check, card):');
-            if (type) {
-                const filteredLogs = logs.filter(log => log.type === type);
-                if (filteredLogs.length === 0) {
-                    showNotification('❌ Bu türde log bulunamadı!', 'error');
-                    return;
-                }
-                
-                const logText = filteredLogs.map(log => 
-                    `${log.timestamp} | ${log.type.toUpperCase()} | ${log.message}`
-                ).join('\n');
-                
-                downloadFile(logText, `dearsiber_logs_${type}_${getTimestamp()}.txt`);
-                showNotification(`✅ ${filteredLogs.length} ${type} logu filtrelendi!`, 'success');
-            }
-        }
-        
-        function updateDashboard() {
-            totalUsersElement.textContent = users.length;
-            activeKeysElement.textContent = keys.filter(k => isKeyActive(k)).length;
-            totalCardsCheckedElement.textContent = statistics.totalCardsChecked;
-            totalLiveCardsElement.textContent = statistics.totalLiveCards;
-        }
-        
-        function updateStatistics() {
-            todayChecksElement.textContent = statistics.todayChecks;
-            
-            // Calculate weekly live rate
-            const weeklyLive = Object.values(statistics.weeklyStats).reduce((sum, day) => sum + (day.live || 0), 0);
-            const weeklyTotal = Object.values(statistics.weeklyStats).reduce((sum, day) => sum + (day.total || 0), 0);
-            const weeklyRate = weeklyTotal > 0 ? ((weeklyLive / weeklyTotal) * 100).toFixed(1) : 0;
-            weeklyLiveRateElement.textContent = `${weeklyRate}%`;
-            
-            // Find most active user
-            const userStats = {};
-            cardLogs.forEach(log => {
-                userStats[log.user] = (userStats[log.user] || 0) + 1;
-            });
-            
-            const mostActive = Object.entries(userStats).sort((a, b) => b[1] - a[1])[0];
-            mostActiveUserElement.textContent = mostActive ? `${mostActive[0]} (${mostActive[1]})` : '-';
-            
-            // Calculate average check time (simulated)
-            avgCheckTimeElement.textContent = `${systemSettings.rateLimit}s`;
-            
-            // Update stats list
-            updateStatsList();
-        }
-        
-        function updateStatsList() {
-            statsList.innerHTML = '';
-            
-            const stats = [
-                { label: '📅 Bugünkü Kontroller', value: statistics.todayChecks },
-                { label: '📈 Toplam Live Oranı', value: statistics.totalCardsChecked > 0 ? `${((statistics.totalLiveCards / statistics.totalCardsChecked) * 100).toFixed(1)}%` : '0%' },
-                { label: '👥 Toplam Kullanıcı', value: users.length },
-                { label: '🔑 Aktif Anahtar', value: keys.filter(k => isKeyActive(k)).length },
-                { label: '📊 Toplam Log', value: logs.length },
-                { label: '💳 Kart Logları', value: cardLogs.length }
-            ];
-            
-            stats.forEach(stat => {
-                const statItem = document.createElement('div');
-                statItem.className = 'stat-item';
-                statItem.innerHTML = `
-                    <div>${stat.label}</div>
-                    <div><strong>${stat.value}</strong></div>
-                `;
-                statsList.appendChild(statItem);
-            });
-        }
-        
-        function loadStatistics() {
-            // Reset today's checks if it's a new day
-            const today = new Date().toDateString();
-            const lastReset = localStorage.getItem('dearsiber_lastReset');
-            
-            if (lastReset !== today) {
-                statistics.todayChecks = 0;
-                localStorage.setItem('dearsiber_lastReset', today);
-                localStorage.setItem('dearsiber_stats', JSON.stringify(statistics));
-            }
-        }
-        
-        function startSessionTimer() {
-            sessionStartTime = Date.now();
-            sessionTimer = setInterval(() => {
-                const elapsed = Date.now() - sessionStartTime;
-                const hours = Math.floor(elapsed / 3600000);
-                const minutes = Math.floor((elapsed % 3600000) / 60000);
-                const seconds = Math.floor((elapsed % 60000) / 1000);
-                
-                sessionTimerElement.textContent = 
-                    `⏱️ Oturum Süresi: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            }, 1000);
-        }
-        
+
         function showCheckerPanel() {
             checkerPanel.style.display = 'block';
             adminPanel.style.display = 'none';
         }
-        
+
         function showAdminPanel() {
             if (!isAdmin) {
                 showAdminModal();
@@ -1975,12 +1035,397 @@ Live Kartlar: ${statistics.totalLiveCards}
             }
             checkerPanel.style.display = 'none';
             adminPanel.style.display = 'block';
-            updateDashboard();
         }
-        
-        // ... (Diğer fonksiyonlar önceki sürümle aynı şekilde devam eder)
-        // Kalan fonksiyonlar önceki sürümle tamamen aynı olduğu için burada tekrar yazılmamıştır
 
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                cardInput.value = e.target.result;
+                showNotification('Dosya yüklendi!', 'success');
+            };
+            reader.readAsText(file);
+        }
+
+        function checkCards() {
+            if (isChecking) {
+                showNotification('Zaten kontrol yapılıyor!', 'error');
+                return;
+            }
+            
+            if (!selectedGateway) {
+                showNotification('Gateway seçin!', 'error');
+                return;
+            }
+            
+            const cardData = cardInput.value.trim();
+            if (!cardData) {
+                showNotification('Kart bilgilerini girin!', 'error');
+                return;
+            }
+            
+            const cards = parseCardData(cardData);
+            if (cards.length === 0) {
+                showNotification('Geçerli kart formatı bulunamadı!', 'error');
+                return;
+            }
+            
+            if (cards.length > systemSettings.maxCards) {
+                showNotification(`Maksimum ${systemSettings.maxCards} kart kontrol edebilirsiniz!`, 'error');
+                return;
+            }
+            
+            isChecking = true;
+            checkBtn.disabled = true;
+            checkBtn.textContent = 'KONTROL EDİLİYOR...';
+            
+            resultsContainer.innerHTML = '';
+            statsContainer.style.display = 'grid';
+            downloadButtons.style.display = 'flex';
+            statTotal.textContent = '0';
+            statLive.textContent = '0';
+            statDead.textContent = '0';
+            statRate.textContent = '0%';
+            currentResults = [];
+            
+            addLog(`${cards.length} kart kontrol edildi`, "check");
+            
+            progressBar.style.width = '0%';
+            
+            let processed = 0;
+            let liveCount = 0;
+            let deadCount = 0;
+            
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    const validation = validateCard(card);
+                    if (!validation.valid) {
+                        const result = {
+                            card: card,
+                            gateway: selectedGateway,
+                            approved: false,
+                            message: validation.message
+                        };
+                        currentResults.push(result);
+                        displayResult(result, resultsContainer);
+                        deadCount++;
+                    } else {
+                        const result = simulateCardCheck(card, selectedGateway);
+                        currentResults.push(result);
+                        if (result.approved) liveCount++;
+                        else deadCount++;
+                        
+                        displayResult(result, resultsContainer);
+                    }
+                    
+                    processed++;
+                    
+                    const progress = (processed / cards.length) * 100;
+                    progressBar.style.width = `${progress}%`;
+                    
+                    statTotal.textContent = processed;
+                    statLive.textContent = liveCount;
+                    statDead.textContent = deadCount;
+                    statRate.textContent = cards.length > 0 ? `${((liveCount / processed) * 100).toFixed(1)}%` : '0%';
+                    
+                    if (processed === cards.length) {
+                        showNotification('Kontrol tamamlandı!', 'success');
+                        progressBar.style.width = '100%';
+                        
+                        isChecking = false;
+                        checkBtn.disabled = false;
+                        checkBtn.textContent = 'KARTLARI KONTROL ET';
+                        
+                        addLog(`Kontrol tamamlandı: ${liveCount} live, ${deadCount} dead`, "check");
+                    }
+                }, index * systemSettings.rateLimit * 1000);
+            });
+        }
+
+        function adminCheckCards() {
+            if (isChecking) {
+                showNotification('Zaten kontrol yapılıyor!', 'error');
+                return;
+            }
+            
+            if (!selectedAdminGateway) {
+                showNotification('Gateway seçin!', 'error');
+                return;
+            }
+            
+            const cardData = adminCardInput.value.trim();
+            if (!cardData) {
+                showNotification('Kart bilgilerini girin!', 'error');
+                return;
+            }
+            
+            const cards = parseCardData(cardData);
+            if (cards.length === 0) {
+                showNotification('Geçerli kart formatı bulunamadı!', 'error');
+                return;
+            }
+            
+            isChecking = true;
+            adminCheckBtn.disabled = true;
+            adminCheckBtn.textContent = 'KONTROL EDİLİYOR...';
+            
+            adminResultsContainer.innerHTML = '';
+            
+            addLog(`Admin ${cards.length} kart kontrol etti`, "admin");
+            
+            let processed = 0;
+            
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    const validation = validateCard(card);
+                    if (!validation.valid) {
+                        const result = {
+                            card: card,
+                            gateway: selectedAdminGateway,
+                            approved: false,
+                            message: validation.message
+                        };
+                        displayResult(result, adminResultsContainer);
+                    } else {
+                        const result = simulateCardCheck(card, selectedAdminGateway);
+                        displayResult(result, adminResultsContainer);
+                    }
+                    
+                    processed++;
+                    
+                    if (processed === cards.length) {
+                        isChecking = false;
+                        adminCheckBtn.disabled = false;
+                        adminCheckBtn.textContent = 'KARTLARI KONTROL ET';
+                    }
+                }, index * systemSettings.rateLimit * 1000);
+            });
+            
+            showNotification('Admin kontrolü başlatıldı!', 'info');
+        }
+
+        function parseCardData(data) {
+            const lines = data.split('\n');
+            const cards = [];
+            
+            lines.forEach(line => {
+                line = line.trim();
+                if (!line) return;
+                
+                let parts;
+                if (line.includes('|')) {
+                    parts = line.split('|');
+                } else if (line.includes(':')) {
+                    parts = line.split(':');
+                } else if (line.includes(' ')) {
+                    parts = line.split(' ');
+                } else if (line.includes('-')) {
+                    parts = line.split('-');
+                } else {
+                    return;
+                }
+                
+                if (parts.length < 4) return;
+                
+                const cardNumber = parts[0].replace(/\s/g, '');
+                let month = parts[1];
+                let year = parts[2];
+                const cvv = parts[3];
+                
+                if (cardNumber.length < 15 || cardNumber.length > 16) return;
+                
+                if (year.length === 2) {
+                    year = '20' + year;
+                }
+                
+                cards.push({
+                    number: cardNumber,
+                    month: month.padStart(2, '0'),
+                    year: year,
+                    cvv: cvv
+                });
+            });
+            
+            return cards;
+        }
+
+        function validateCard(card) {
+            if (!luhnCheck(card.number)) {
+                return { valid: false, message: 'Geçersiz kart numarası' };
+            }
+            
+            const currentDate = new Date();
+            const currentYear = currentDate.getFullYear();
+            const currentMonth = currentDate.getMonth() + 1;
+            
+            const cardYear = parseInt(card.year);
+            const cardMonth = parseInt(card.month);
+            
+            if (cardYear < currentYear || (cardYear === currentYear && cardMonth < currentMonth)) {
+                return { valid: false, message: 'Kartın süresi dolmuş' };
+            }
+            
+            if (card.cvv.length < 3 || card.cvv.length > 4) {
+                return { valid: false, message: 'Geçersiz CVV' };
+            }
+            
+            return { valid: true, message: 'Kart geçerli' };
+        }
+
+        function luhnCheck(cardNumber) {
+            let sum = 0;
+            let isEven = false;
+            
+            for (let i = cardNumber.length - 1; i >= 0; i--) {
+                let digit = parseInt(cardNumber.charAt(i));
+                
+                if (isEven) {
+                    digit *= 2;
+                    if (digit > 9) {
+                        digit -= 9;
+                    }
+                }
+                
+                sum += digit;
+                isEven = !isEven;
+            }
+            
+            return sum % 10 === 0;
+        }
+
+        function simulateCardCheck(card, gateway) {
+            const approved = Math.random() < 0.01; // %1 live oranı
+            
+            return {
+                card: card,
+                gateway: gateway,
+                approved: approved,
+                message: approved ? 'Ödeme başarılı' : 'Ödeme reddedildi'
+            };
+        }
+
+        function displayResult(result, container) {
+            const resultItem = document.createElement('div');
+            resultItem.className = `result-item ${result.approved ? 'live' : 'dead'}`;
+            
+            const cardInfo = document.createElement('div');
+            cardInfo.className = 'card-info';
+            
+            const cardNumber = document.createElement('div');
+            cardNumber.className = 'card-number';
+            cardNumber.textContent = result.card.number.replace(/(\d{4})/g, '$1 ').trim();
+            
+            const cardDetails = document.createElement('div');
+            cardDetails.className = 'card-details';
+            cardDetails.textContent = `${result.card.month}/${result.card.year} | ${result.card.cvv} | ${result.message}`;
+            
+            cardInfo.appendChild(cardNumber);
+            cardInfo.appendChild(cardDetails);
+            
+            const status = document.createElement('div');
+            status.className = `status ${result.approved ? 'approved' : 'declined'}`;
+            status.textContent = result.approved ? 'LIVE' : 'DEAD';
+            
+            resultItem.appendChild(cardInfo);
+            resultItem.appendChild(status);
+            container.appendChild(resultItem);
+        }
+
+        function downloadCards(type) {
+            let cardsToDownload = [];
+            
+            if (type === 'live') {
+                cardsToDownload = currentResults.filter(r => r.approved);
+            } else if (type === 'dead') {
+                cardsToDownload = currentResults.filter(r => !r.approved);
+            } else {
+                cardsToDownload = currentResults;
+            }
+            
+            if (cardsToDownload.length === 0) {
+                showNotification('İndirilecek kart bulunamadı!', 'error');
+                return;
+            }
+            
+            const cardText = cardsToDownload.map(result => 
+                `${result.card.number}|${result.card.month}|${result.card.year}|${result.card.cvv}`
+            ).join('\n');
+            
+            downloadFile(cardText, `kartlar_${type}_${new Date().toISOString().split('T')[0]}.txt`);
+            showNotification(`${cardsToDownload.length} kart indirildi!`, 'success');
+        }
+
+        function downloadFile(content, filename) {
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function addLog(message, type) {
+            const log = {
+                timestamp: new Date().toISOString(),
+                message: message,
+                type: type
+            };
+            
+            logs.push(log);
+            localStorage.setItem('dearsiber_logs', JSON.stringify(logs));
+            
+            if (adminPanel.style.display === 'block') {
+                loadLogs();
+            }
+        }
+
+        function loadLogs() {
+            logList.innerHTML = '';
+            
+            if (logs.length === 0) {
+                logList.innerHTML = '<div class="log-item">Henüz log bulunmamaktadır</div>';
+                return;
+            }
+            
+            const reversedLogs = [...logs].reverse();
+            
+            reversedLogs.forEach(log => {
+                const logItem = document.createElement('div');
+                logItem.className = 'log-item';
+                
+                const date = new Date(log.timestamp);
+                
+                logItem.innerHTML = `
+                    <div>
+                        <strong>${log.type.toUpperCase()}</strong>
+                        <div>${date.toLocaleString('tr-TR')}</div>
+                    </div>
+                    <div>${log.message}</div>
+                `;
+                
+                logList.appendChild(logItem);
+            });
+        }
+
+        function showNotification(message, type = 'success') {
+            notification.textContent = message;
+            notification.className = 'notification';
+            
+            if (type === 'error') {
+                notification.classList.add('error');
+            }
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
     </script>
 </body>
 </html>
