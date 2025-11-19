@@ -742,7 +742,7 @@
             flex-wrap: wrap;
         }
 
-            .download-btn {
+        .download-btn {
             padding: 8px 15px;
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid var(--card-border);
@@ -775,6 +775,51 @@
 
         .rate-limit-info i {
             color: var(--warning);
+        }
+
+        /* Session Timer */
+        .session-timer {
+            background: rgba(46, 213, 115, 0.1);
+            border: 1px solid var(--success);
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .session-timer i {
+            color: var(--success);
+        }
+
+        /* Card Preview */
+        .card-preview {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .card-preview-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .card-preview-title {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .card-preview-content {
+            font-family: monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
         }
     </style>
 </head>
@@ -810,7 +855,7 @@
             
             <div class="form-group">
                 <label for="username">Kullanıcı Adı</label>
-                <input type="text" id="username" class="form-control" placeholder="1saatlikkey">
+                <input type="text" id="username" class="form-control" placeholder="Kullanıcı adınızı girin">
             </div>
             
             <div class="form-group">
@@ -828,12 +873,30 @@
         <div class="checker-panel" id="checker-panel">
             <div class="checker-header">
                 <h2>Kart Kontrol Paneli</h2>
-                <p>Kart bilgilerinizi yükleyin veya doğrudan girin</p>
+                <div>
+                    <div class="session-timer">
+                        <i class="fas fa-clock"></i>
+                        <span id="session-timer">Oturum Süresi: 00:00:00</span>
+                    </div>
+                </div>
             </div>
             
             <div class="rate-limit-info">
                 <i class="fas fa-info-circle"></i>
-                <span>Rate Limit: 6 saniyede 1 kart kontrol edilir</span>
+                <span>Rate Limit: 6 saniyede 1 kart kontrol edilir | Live Oranı: %1</span>
+            </div>
+
+            <div class="card-preview">
+                <div class="card-preview-header">
+                    <div class="card-preview-title">Desteklenen Formatlar</div>
+                </div>
+                <div class="card-preview-content">
+                    4916931023123456|12|2025|123<br>
+                    4916931023123456|12|25|123<br>
+                    4916931023123456:12:2025:123<br>
+                    4916931023123456 12 2025 123<br>
+                    4916931023123456-12-2025-123
+                </div>
             </div>
             
             <div class="gateway-selection" id="gateway-selection">
@@ -866,13 +929,13 @@
             <div class="file-upload" id="file-upload">
                 <i class="fas fa-cloud-upload-alt"></i>
                 <h3>Dosya Yükleyin</h3>
-                <p>Desteklenen formatlar: .txt</p>
+                <p>Desteklenen formatlar: .txt | Maksimum: 1000 kart</p>
                 <input type="file" id="file-input" class="file-input" accept=".txt">
             </div>
             
             <div class="form-group">
                 <label for="card-input">Veya kart bilgilerini buraya girin:</label>
-                <textarea id="card-input" class="form-control" rows="5" placeholder="29193749201977|11|28|293&#10;29193749201977|11|2028|293&#10;29193749201977:11:28:293&#10;29193749201977 11 28 293&#10;29193749201977-05-28-293&#10;29193749201977|5|28|293"></textarea>
+                <textarea id="card-input" class="form-control" rows="5" placeholder="4916931023123456|12|2025|123&#10;5412751234567890|03|2026|456&#10;371449635398431|09|2024|789"></textarea>
             </div>
             
             <div class="progress-container">
@@ -906,7 +969,7 @@
                 </div>
             </div>
 
-            <div class="download-buttons" id="download-buttons" style="display: none;">
+      <div class="download-buttons" id="download-buttons" style="display: none;">
                 <button class="download-btn" id="download-live">
                     <i class="fas fa-download"></i> Live Kartları İndir
                 </button>
@@ -945,6 +1008,7 @@
                 <div class="admin-tab" data-tab="keys">Anahtarlar</div>
                 <div class="admin-tab" data-tab="logs">Loglar</div>
                 <div class="admin-tab" data-tab="checker">Kart Kontrol</div>
+                <div class="admin-tab" data-tab="settings">Ayarlar</div>
             </div>
             
             <div class="admin-content active" id="users-content">
@@ -965,10 +1029,19 @@
             <div class="admin-content" id="keys-content">
                 <h3>Anahtar Yönetimi</h3>
                 <div class="form-group">
-                    <input type="text" id="key-username" class="form-control" placeholder="Kullanıcı Adı">
+                    <select id="key-username" class="form-control">
+                        <option value="">Kullanıcı Seçin</option>
+                    </select>
                 </div>
                 <div class="form-group">
-                    <input type="text" id="key-duration" class="form-control" placeholder="Süre (saat)">
+                    <select id="key-duration" class="form-control">
+                        <option value="1">1 Saat</option>
+                        <option value="6">6 Saat</option>
+                        <option value="12">12 Saat</option>
+                        <option value="24">24 Saat</option>
+                        <option value="168">7 Gün</option>
+                        <option value="720">30 Gün</option>
+                    </select>
                 </div>
                 <button class="btn" id="generate-key-btn">Anahtar Oluştur</button>
                 
@@ -988,7 +1061,7 @@
                 <h3>Admin Kart Kontrol</h3>
                 <div class="rate-limit-info">
                     <i class="fas fa-info-circle"></i>
-                    <span>Rate Limit: 6 saniyede 1 kart kontrol edilir</span>
+                    <span>Rate Limit: 6 saniyede 1 kart kontrol edilir | Live Oranı: %1</span>
                 </div>
                 
                 <div class="gateway-selection" id="admin-gateway-selection">
@@ -1031,6 +1104,23 @@
                     <!-- Admin results will be displayed here -->
                 </div>
             </div>
+
+            <div class="admin-content" id="settings-content">
+                <h3>Sistem Ayarları</h3>
+                <div class="form-group">
+                    <label for="live-rate">Live Oranı (%)</label>
+                    <input type="number" id="live-rate" class="form-control" value="1" min="0.1" max="10" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label for="rate-limit">Rate Limit (saniye)</label>
+                    <input type="number" id="rate-limit" class="form-control" value="6" min="1" max="60">
+                </div>
+                <div class="form-group">
+                    <label for="max-cards">Maksimum Kart Sayısı</label>
+                    <input type="number" id="max-cards" class="form-control" value="1000" min="10" max="10000">
+                </div>
+                <button class="btn" id="save-settings-btn">Ayarları Kaydet</button>
+            </div>
         </div>
     </div>
 
@@ -1054,6 +1144,13 @@
         const ADMIN_EMAIL = "sirin31";
         const ADMIN_PASSWORD = "sirin3131";
         
+        // System settings
+        let systemSettings = JSON.parse(localStorage.getItem('dearsiber_settings')) || {
+            liveRate: 1,
+            rateLimit: 6,
+            maxCards: 1000
+        };
+        
         // Users storage
         let users = JSON.parse(localStorage.getItem('dearsiber_users')) || [];
         let keys = JSON.parse(localStorage.getItem('dearsiber_keys')) || [];
@@ -1064,9 +1161,10 @@
         let selectedAdminGateway = null;
         let currentResults = [];
         let isChecking = false;
-        let checkStartTime = null;
+        let sessionTimer = null;
+        let sessionStartTime = null;
         
-            // DOM Elements
+        // DOM Elements
         const loginContainer = document.getElementById('login-container');
         const checkerPanel = document.getElementById('checker-panel');
         const adminPanel = document.getElementById('admin-panel');
@@ -1109,14 +1207,25 @@
         const downloadDeadBtn = document.getElementById('download-dead');
         const downloadAllBtn = document.getElementById('download-all');
         const downloadLogsBtn = document.getElementById('download-logs');
+        const sessionTimerElement = document.getElementById('session-timer');
+        const keyUsernameSelect = document.getElementById('key-username');
+        const keyDurationSelect = document.getElementById('key-duration');
+        const liveRateInput = document.getElementById('live-rate');
+        const rateLimitInput = document.getElementById('rate-limit');
+        const maxCardsInput = document.getElementById('max-cards');
+        const saveSettingsBtn = document.getElementById('save-settings-btn');
         
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
+            // Load settings
+            loadSettings();
+            
             // Check if user is already logged in
             const savedUser = localStorage.getItem('dearsiber_currentUser');
             if (savedUser) {
                 currentUser = JSON.parse(savedUser);
                 showCheckerPanel();
+                startSessionTimer();
                 if (currentUser.email === ADMIN_EMAIL) {
                     adminLink.style.display = 'block';
                 }
@@ -1127,6 +1236,7 @@
             loadUsers();
             loadKeys();
             loadLogs();
+            updateUserSelect();
             
             // Add sample logs if empty
             if (logs.length === 0) {
@@ -1167,6 +1277,7 @@
         statLiveCard.addEventListener('click', () => filterResults('live'));
         statDeadCard.addEventListener('click', () => filterResults('dead'));
         statTotalCard.addEventListener('click', () => filterResults('all'));
+        saveSettingsBtn.addEventListener('click', saveSettings);
         
         // Gateway selection
         gatewayItems.forEach(item => {
@@ -1205,6 +1316,42 @@
         });
         
         // Functions
+        function loadSettings() {
+            liveRateInput.value = systemSettings.liveRate;
+            rateLimitInput.value = systemSettings.rateLimit;
+            maxCardsInput.value = systemSettings.maxCards;
+        }
+        
+        function saveSettings() {
+            systemSettings.liveRate = parseFloat(liveRateInput.value);
+            systemSettings.rateLimit = parseInt(rateLimitInput.value);
+            systemSettings.maxCards = parseInt(maxCardsInput.value);
+            
+            localStorage.setItem('dearsiber_settings', JSON.stringify(systemSettings));
+            showNotification('Ayarlar başarıyla kaydedildi!', 'success');
+            addLog("Sistem ayarları güncellendi", "admin");
+        }
+        
+        function startSessionTimer() {
+            sessionStartTime = Date.now();
+            sessionTimer = setInterval(() => {
+                const elapsed = Date.now() - sessionStartTime;
+                const hours = Math.floor(elapsed / 3600000);
+                const minutes = Math.floor((elapsed % 3600000) / 60000);
+                const seconds = Math.floor((elapsed % 60000) / 1000);
+                
+                sessionTimerElement.textContent = 
+                    `Oturum Süresi: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+        
+        function stopSessionTimer() {
+            if (sessionTimer) {
+                clearInterval(sessionTimer);
+                sessionTimer = null;
+            }
+        }
+        
         function handleLogin() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
@@ -1219,6 +1366,7 @@
                 currentUser = { email: ADMIN_EMAIL, isAdmin: true };
                 localStorage.setItem('dearsiber_currentUser', JSON.stringify(currentUser));
                 showCheckerPanel();
+                startSessionTimer();
                 adminLink.style.display = 'block';
                 logoutLink.style.display = 'block';
                 addLog("Admin giriş yaptı", "admin");
@@ -1230,7 +1378,7 @@
             const user = users.find(u => u.email === username && u.password === password);
             if (user) {
                 // Check if user has active key
-                const activeKey = keys.find(k => k.user === username && k.active);
+                const activeKey = keys.find(k => k.user === username && isKeyActive(k));
                 if (!activeKey) {
                     showNotification('Aktif anahtarınız bulunmamaktadır!', 'error');
                     return;
@@ -1239,6 +1387,7 @@
                 currentUser = { email: username, isAdmin: false };
                 localStorage.setItem('dearsiber_currentUser', JSON.stringify(currentUser));
                 showCheckerPanel();
+                startSessionTimer();
                 logoutLink.style.display = 'block';
                 addLog(`Kullanıcı giriş yaptı: ${username}`, "user");
                 showNotification('Başarıyla giriş yapıldı!', 'success');
@@ -1247,7 +1396,16 @@
             }
         }
         
+        function isKeyActive(key) {
+            if (!key.active) return false;
+            
+            const created = new Date(key.created);
+            const expires = new Date(created.getTime() + key.duration * 60 * 60 * 1000);
+            return new Date() <= expires;
+        }
+        
         function handleLogout() {
+            stopSessionTimer();
             currentUser = null;
             localStorage.removeItem('dearsiber_currentUser');
             loginContainer.style.display = 'block';
@@ -1276,6 +1434,12 @@
         function handleFileUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
+            
+            // Check file size (max 1MB)
+            if (file.size > 1024 * 1024) {
+                showNotification('Dosya boyutu 1MB\'dan küçük olmalıdır!', 'error');
+                return;
+            }
             
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -1309,9 +1473,14 @@
                 return;
             }
             
+            // Check card limit
+            if (cards.length > systemSettings.maxCards) {
+                showNotification(`Maksimum ${systemSettings.maxCards} kart kontrol edebilirsiniz!`, 'error');
+                return;
+            }
+            
             // Set checking state
             isChecking = true;
-            checkStartTime = Date.now();
             checkBtn.disabled = true;
             checkBtn.innerHTML = '<i class="fas fa-spinner spinner"></i> KONTROL EDİLİYOR...';
             
@@ -1331,7 +1500,7 @@
             // Show progress
             progressBar.style.width = '0%';
             
-            // Simulate API calls with delay (6 seconds per card)
+            // Simulate API calls with delay
             let processed = 0;
             let liveCount = 0;
             let deadCount = 0;
@@ -1383,10 +1552,10 @@
                         checkBtn.disabled = false;
                         checkBtn.innerHTML = '<i class="fas fa-play"></i> KARTLARI KONTROL ET';
                         
-                        // Final log
+                           // Final log
                         addLog(`Kontrol tamamlandı: ${liveCount} live, ${deadCount} dead (${((liveCount / cards.length) * 100).toFixed(1)}%)`, "check");
                     }
-                }, index * 6000); // 6 seconds per card
+                }, index * systemSettings.rateLimit * 1000);
             });
         }
         
@@ -1456,7 +1625,7 @@
                         adminCheckBtn.disabled = false;
                         adminCheckBtn.innerHTML = '<i class="fas fa-play"></i> KARTLARI KONTROL ET';
                     }
-                }, index * 6000); // 6 seconds per card
+                }, index * systemSettings.rateLimit * 1000);
             });
             
             showNotification('Admin kontrolü başlatıldı!', 'info');
@@ -1515,8 +1684,8 @@
             if (!luhnCheck(card.number)) {
                 return { valid: false, message: 'Geçersiz kart numarası' };
             }
-
-       // Date validation
+            
+            // Date validation
             const currentDate = new Date();
             const currentYear = currentDate.getFullYear();
             const currentMonth = currentDate.getMonth() + 1;
@@ -1558,8 +1727,8 @@
         }
         
         function simulateCardCheck(card, gateway) {
-            // Very low success rate (2%)
-            const approved = Math.random() < 0.02;
+            // Very low success rate (1%)
+            const approved = Math.random() < (systemSettings.liveRate / 100);
             
             return {
                 card: card,
@@ -1743,6 +1912,18 @@
             return new Date().toISOString().replace(/[:.]/g, '-').split('T')[0];
         }
         
+        function updateUserSelect() {
+            keyUsernameSelect.innerHTML = '<option value="">Kullanıcı Seçin</option>';
+            users.forEach(user => {
+                if (user.email !== ADMIN_EMAIL) {
+                    const option = document.createElement('option');
+                    option.value = user.email;
+                    option.textContent = user.email;
+                    keyUsernameSelect.appendChild(option);
+                }
+            });
+        }
+        
         function addUser() {
             const username = document.getElementById('new-username').value;
             const password = document.getElementById('new-password').value;
@@ -1752,7 +1933,7 @@
                 return;
             }
             
-            // Check if user already exists
+           // Check if user already exists
             if (users.find(u => u.email === username)) {
                 showNotification('Bu kullanıcı adı zaten mevcut!', 'error');
                 return;
@@ -1766,25 +1947,20 @@
             document.getElementById('new-username').value = '';
             document.getElementById('new-password').value = '';
             
-            // Update user list
+            // Update user list and select
             loadUsers();
+            updateUserSelect();
             
             addLog(`Yeni kullanıcı eklendi: ${username}`, "admin");
             showNotification('Kullanıcı başarıyla eklendi!', 'success');
         }
         
         function generateKey() {
-            const username = document.getElementById('key-username').value;
-            const duration = document.getElementById('key-duration').value;
+            const username = keyUsernameSelect.value;
+            const duration = parseInt(keyDurationSelect.value);
             
-            if (!username || !duration) {
-                showNotification('Lütfen kullanıcı adı ve süre girin!', 'error');
-                return;
-            }
-            
-            // Check if user exists
-            if (!users.find(u => u.email === username)) {
-                showNotification('Kullanıcı bulunamadı!', 'error');
+            if (!username) {
+                showNotification('Lütfen bir kullanıcı seçin!', 'error');
                 return;
             }
             
@@ -1792,7 +1968,7 @@
             const key = {
                 id: generateId(),
                 user: username,
-                duration: parseInt(duration),
+                duration: duration,
                 created: new Date().toISOString(),
                 active: true
             };
@@ -1800,9 +1976,8 @@
             keys.push(key);
             localStorage.setItem('dearsiber_keys', JSON.stringify(keys));
             
-            // Clear inputs
-            document.getElementById('key-username').value = '';
-            document.getElementById('key-duration').value = '';
+            // Clear selection
+            keyUsernameSelect.value = '';
             
             // Update key list
             loadKeys();
@@ -1820,11 +1995,16 @@
             }
             
             users.forEach(user => {
+                if (user.email === ADMIN_EMAIL) return;
+                
                 const userItem = document.createElement('div');
                 userItem.className = 'user-item';
                 
                 userItem.innerHTML = `
-                    <div>${user.email}</div>
+                    <div>
+                        <strong>${user.email}</strong>
+                        <div class="card-details">Oluşturulma: ${new Date().toLocaleDateString('tr-TR')}</div>
+                    </div>
                     <div class="action-buttons">
                         <button class="btn btn-small btn-danger" onclick="deleteUser('${user.email}')">
                             <i class="fas fa-trash"></i> Sil
@@ -1851,7 +2031,7 @@
                 const created = new Date(key.created);
                 const expires = new Date(created.getTime() + key.duration * 60 * 60 * 1000);
                 const now = new Date();
-                const expired = now > expires;
+                const expired = !isKeyActive(key);
                 
                 keyItem.innerHTML = `
                     <div>
@@ -1916,6 +2096,7 @@
             
             loadUsers();
             loadKeys();
+            updateUserSelect();
             
             addLog(`Kullanıcı silindi: ${email}`, "admin");
             showNotification('Kullanıcı silindi!', 'success');
@@ -1989,4 +2170,4 @@
         window.toggleKey = toggleKey;
     </script>
 </body>
-</html>   
+</html>
