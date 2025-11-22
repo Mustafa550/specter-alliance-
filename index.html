@@ -13,13 +13,10 @@
             --danger: #ff4444;
             --warning: #ffaa00;
             --info: #00ffff;
-            --light: #0a0a0a;
+            --matrix: #00ff00;
             --dark: #000000;
-            --bg: #001100;
             --card: #002200;
             --shadow: 0 0 20px rgba(0,255,100,0.3);
-            --gradient: linear-gradient(135deg, #00ff88, #00cc66);
-            --matrix: #00ff00;
         }
 
         * {
@@ -30,7 +27,7 @@
         }
 
         body {
-            background: var(--bg);
+            background: #001100;
             color: var(--matrix);
             min-height: 100vh;
             overflow-x: hidden;
@@ -44,9 +41,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
-                linear-gradient(90deg, transparent 79px, rgba(0,255,0,0.03) 81px),
-                linear-gradient(rgba(0,255,0,0.03) 79px, transparent 81px);
+            background: linear-gradient(90deg, transparent 79px, rgba(0,255,0,0.03) 81px),
+                        linear-gradient(rgba(0,255,0,0.03) 79px, transparent 81px);
             background-size: 81px 81px;
             pointer-events: none;
             z-index: -1;
@@ -63,7 +59,6 @@
             opacity: 0.1;
         }
 
-        /* Loading Screen */
         .loading-screen {
             position: fixed;
             top: 0;
@@ -89,14 +84,7 @@
         .loading-text {
             font-size: 1.5rem;
             margin-bottom: 10px;
-            text-align: center;
             animation: pulse 2s infinite;
-        }
-
-        .loading-subtext {
-            opacity: 0.8;
-            text-align: center;
-            font-size: 0.9rem;
         }
 
         .loader {
@@ -107,7 +95,6 @@
             border-top-color: var(--matrix);
             animation: spin 1s ease-in-out infinite;
             margin-top: 20px;
-            box-shadow: 0 0 10px var(--matrix);
         }
 
         @keyframes glitch {
@@ -127,7 +114,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Main Container */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -135,7 +121,6 @@
             display: none;
         }
 
-        /* Header */
         .header {
             background: rgba(0, 30, 0, 0.8);
             color: var(--matrix);
@@ -174,17 +159,9 @@
         h1 {
             font-size: 2.2rem;
             margin-bottom: 10px;
-            font-weight: 700;
             text-shadow: 0 0 10px var(--matrix);
         }
 
-        .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            margin-bottom: 5px;
-        }
-
-        /* Login Section */
         .login-section {
             background: var(--card);
             padding: 30px;
@@ -215,10 +192,8 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            text-shadow: 0 0 10px var(--matrix);
         }
 
-        /* Dashboard */
         .dashboard {
             display: none;
             animation: fadeIn 1s ease;
@@ -229,7 +204,6 @@
             to { opacity: 1; }
         }
 
-        /* Stats Grid */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -268,26 +242,17 @@
         .stat-icon {
             font-size: 2rem;
             margin-bottom: 10px;
-            text-shadow: 0 0 10px var(--matrix);
         }
 
         .stat-number {
             font-size: 1.8rem;
             font-weight: 700;
             margin-bottom: 5px;
-            background: var(--gradient);
+            background: linear-gradient(135deg, #00ff88, #00cc66);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 10px var(--matrix);
         }
 
-        .stat-text {
-            color: var(--matrix);
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        /* Action Grid */
         .action-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -302,7 +267,6 @@
             box-shadow: var(--shadow);
             transition: all 0.3s ease;
             border: 1px solid var(--matrix);
-            position: relative;
         }
 
         .action-card:hover {
@@ -317,10 +281,8 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            text-shadow: 0 0 10px var(--matrix);
         }
 
-        /* Form Elements */
         .form-group {
             margin-bottom: 15px;
             text-align: left;
@@ -331,7 +293,6 @@
             margin-bottom: 6px;
             font-weight: 600;
             color: var(--matrix);
-            font-size: 0.9rem;
         }
 
         input, select, textarea {
@@ -350,14 +311,8 @@
             outline: none;
             border-color: var(--success);
             box-shadow: 0 0 10px rgba(0,255,0,0.5);
-            background: rgba(0, 30, 0, 0.8);
         }
 
-        input::placeholder {
-            color: rgba(0,255,0,0.5);
-        }
-
-        /* Buttons */
         .btn {
             padding: 12px 20px;
             border: 1px solid var(--matrix);
@@ -373,8 +328,6 @@
             width: 100%;
             background: rgba(0, 30, 0, 0.8);
             color: var(--matrix);
-            text-transform: uppercase;
-            letter-spacing: 1px;
             position: relative;
             overflow: hidden;
         }
@@ -430,13 +383,6 @@
             width: auto;
         }
 
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* Bot List */
         .bot-list {
             display: grid;
             gap: 12px;
@@ -506,12 +452,6 @@
             border: 1px solid var(--danger);
         }
 
-        .status-error {
-            background: rgba(255,170,0,0.2);
-            color: var(--warning);
-            border: 1px solid var(--warning);
-        }
-
         .bot-details {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -533,7 +473,6 @@
             flex-wrap: wrap;
         }
 
-        /* Admin Panel */
         .admin-panel {
             background: var(--card);
             padding: 20px;
@@ -545,43 +484,6 @@
             border: 1px solid var(--matrix);
         }
 
-        .key-list {
-            margin-top: 15px;
-        }
-
-        .key-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px;
-            background: rgba(0, 20, 0, 0.8);
-            border-radius: 8px;
-            margin-bottom: 8px;
-            animation: slideInLeft 0.5s ease;
-            border: 1px solid rgba(0,255,0,0.3);
-        }
-
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .key-info {
-            flex: 1;
-        }
-
-        .key-actions {
-            display: flex;
-            gap: 6px;
-        }
-
-        /* File Upload */
         .file-upload {
             border: 2px dashed rgba(0,255,0,0.5);
             border-radius: 8px;
@@ -597,12 +499,6 @@
             background: rgba(0,255,100,0.1);
         }
 
-        .file-upload.dragover {
-            border-color: var(--success);
-            background: rgba(0,255,0,0.2);
-        }
-
-        /* Notification */
         .notification {
             position: fixed;
             top: 20px;
@@ -619,7 +515,6 @@
             gap: 8px;
             max-width: 350px;
             border: 1px solid;
-            font-size: 0.9rem;
         }
 
         .notification.success {
@@ -632,12 +527,6 @@
             border-color: var(--danger);
         }
 
-        .notification.warning {
-            background: var(--warning);
-            border-color: var(--warning);
-        }
-
-        /* Log Console */
         .log-console {
             background: rgba(0, 10, 0, 0.9);
             color: var(--matrix);
@@ -668,69 +557,28 @@
             color: var(--success);
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
             }
-
             .header {
                 padding: 20px 15px;
-                border-radius: 12px;
             }
-
-            .logo {
-                font-size: 2.5rem;
-            }
-
-            h1 {
-                font-size: 1.8rem;
-            }
-
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-
             .action-grid {
                 grid-template-columns: 1fr;
             }
-
             .bot-header {
                 flex-direction: column;
                 align-items: flex-start;
             }
-
             .bot-actions {
                 width: 100%;
             }
-
             .bot-actions .btn {
                 flex: 1;
-            }
-
-            .key-item {
-                flex-direction: column;
-                gap: 8px;
-                text-align: center;
-            }
-
-            .key-actions {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .login-section, .action-card {
-                padding: 20px 15px;
-            }
-
-            .btn {
-                padding: 10px 15px;
             }
         }
     </style>
@@ -741,7 +589,6 @@
     <div class="loading-screen" id="loadingScreen">
         <div class="loading-logo">⚡</div>
         <div class="loading-text">SYSTEM BOOTING...</div>
-        <div class="loading-subtext">TELEGRAM BOT MANAGER v2.0</div>
         <div class="loader"></div>
     </div>
 
@@ -750,14 +597,13 @@
             <div class="logo">⚡</div>
             <h1>DEARSIBER VDS</h1>
             <p class="subtitle">TELEGRAM BOT MANAGEMENT SYSTEM</p>
-            <p class="subtitle">24/7 ACTIVE BOT HOSTING</p>
         </header>
 
         <section class="login-section" id="loginSection">
             <h2 class="section-title">🔐 SYSTEM ACCESS</h2>
             <div class="form-group">
                 <label for="accessKey">🔑 ACCESS KEY</label>
-                       <input type="password" id="accessKey" placeholder="ENTER ADMIN KEY..." required>
+                <input type="password" id="accessKey" placeholder="ENTER ADMIN KEY..." required>
             </div>
             <button class="btn btn-primary" onclick="login()">
                 <i class="fas fa-terminal"></i> ACCESS SYSTEM
@@ -828,7 +674,7 @@
                         </button>
                     </div>
                     
-                    <div style="margin-top: 15px;">
+                                <div style="margin-top: 15px;">
                         <h4 style="margin-bottom: 8px;">📊 SYSTEM LOGS</h4>
                         <div class="log-console" id="logConsole">
                             <div class="log-entry log-success">[SYSTEM] READY</div>
@@ -857,7 +703,6 @@
                                 <option value="1">1 DAY</option>
                                 <option value="7">7 DAYS</option>
                                 <option value="30" selected>30 DAYS</option>
-                                <option value="90">90 DAYS</option>
                             </select>
                         </div>
                         <button class="btn btn-warning" onclick="generateKey()">
@@ -874,27 +719,15 @@
                             <button class="btn btn-primary" onclick="exportBots()">
                                 <i class="fas fa-download"></i> EXPORT BOTS
                             </button>
-                            <button class="btn btn-danger" onclick="cleanExpiredBots()">
-                                <i class="fas fa-trash"></i> CLEAN EXPIRED
-                            </button>
                         </div>
                     </div>
-                </div>
-
-                <div class="key-list" id="keyListContainer">
-                    <h3 style="margin: 15px 0 10px 0; display: flex; align-items: center; gap: 8px;">
-                        <i class="fas fa-key"></i> ACTIVE KEYS
-                    </h3>
                 </div>
             </div>
         </section>
     </div>
 
     <script>
-        // Telegram API
         const TELEGRAM_API = 'https://api.telegram.org/bot';
-
-        // System Variables
         let currentUser = null;
         let bots = [];
         let systemUptime = 0;
@@ -954,12 +787,11 @@
                 checkKeyExpirations();
             }, 1000);
 
-            loadDemoBots();
+            loadBots();
             loadUserKeys();
             addLog('SYSTEM INITIALIZED', 'success');
         });
 
-        // File Upload Setup
         function setupFileUpload() {
             const fileUpload = document.getElementById('fileUpload');
             fileUpload.addEventListener('dragover', function(e) {
@@ -977,11 +809,10 @@
             });
         }
 
-        // File Selection
         function handleFileSelect(files) {
             if (files.length > 0) {
                 selectedFile = files[0];
-                document.getElementById('fileName').textContent = `✅ ${selectedFile.name} (${formatFileSize(selectedFile.size)})`;
+                document.getElementById('fileName').textContent = `✅ ${selectedFile.name}`;
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     selectedFile.content = e.target.result;
@@ -990,16 +821,6 @@
             }
         }
 
-        // File Size Format
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0B';
-            const k = 1024;
-            const sizes = ['B', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + sizes[i];
-        }
-
-        // Add Log
         function addLog(message, type = 'info') {
             const console = document.getElementById('logConsole');
             const logEntry = document.createElement('div');
@@ -1009,7 +830,6 @@
             console.scrollTop = console.scrollHeight;
         }
 
-        // Telegram API Call
         async function callTelegramAPI(token, method, params = {}) {
             try {
                 const url = `${TELEGRAM_API}${token}/${method}`;
@@ -1025,7 +845,6 @@
             }
         }
 
-        // Validate Bot
         async function validateBot(token) {
             addLog(`VALIDATING BOT TOKEN...`, 'info');
             const result = await callTelegramAPI(token, 'getMe');
@@ -1038,10 +857,10 @@
             }
         }
 
-        // Setup Webhook
         async function setupWebhook(token) {
-            const webhookUrl = `https://api.telegram.org/bot${token}/setWebhook?url=https://dearsiber.com/webhook`;
-            const result = await callTelegramAPI(token, 'setWebhook', { url: webhookUrl });
+            const result = await callTelegramAPI(token, 'setWebhook', { 
+                url: `https://dearsiber.com/webhook/${token}` 
+            });
             if (result.success) {
                 addLog(`WEBHOOK SETUP COMPLETE`, 'success');
                 return true;
@@ -1051,17 +870,6 @@
             }
         }
 
-        // Send Message
-        async function sendTelegramMessage(token, chatId, message) {
-            const result = await callTelegramAPI(token, 'sendMessage', {
-                chat_id: chatId,
-                text: message,
-                parse_mode: 'HTML'
-            });
-            return result.success;
-        }
-
-        // Bot Polling Simulation
         function startBotPolling(botId, token) {
             addLog(`STARTING BOT POLLING: ${botId}`, 'success');
             activeIntervals[botId] = setInterval(async () => {
@@ -1069,16 +877,10 @@
                 if (bot && bot.status === 'active') {
                     bot.lastActive = new Date().toISOString();
                     bot.messageCount = (bot.messageCount || 0) + 1;
-                    if (Math.random() < 0.1) {
-                        const users = ['user1', 'user2', 'user3'];
-                        const user = users[Math.floor(Math.random() * users.length)];
-                        addLog(`BOT ${botId} MSG FROM ${user}`, 'info');
-                    }
                 }
             }, 5000);
         }
 
-        // Stop Bot Polling
         function stopBotPolling(botId) {
             if (activeIntervals[botId]) {
                 clearInterval(activeIntervals[botId]);
@@ -1087,23 +889,19 @@
             }
         }
 
-        // Load User Keys
         function loadUserKeys() {
             const savedKeys = localStorage.getItem('userKeys');
             if (savedKeys) userKeys = JSON.parse(savedKeys);
         }
 
-        // Save User Keys
         function saveUserKeys() {
             localStorage.setItem('userKeys', JSON.stringify(userKeys));
         }
 
-        // Save Bots
         function saveBots() {
             localStorage.setItem('telegramBots', JSON.stringify(bots));
         }
 
-          // Load Bots
         function loadBots() {
             const savedBots = localStorage.getItem('telegramBots');
             if (savedBots) {
@@ -1114,7 +912,6 @@
             }
         }
 
-        // Login Function
         function login() {
             const key = document.getElementById('accessKey').value.trim();
             if (!key) {
@@ -1126,13 +923,11 @@
                 currentUser = { id: 'admin', isAdmin: true, name: 'ADMIN', key: key };
                 showDashboard();
                 showNotification('ADMIN ACCESS GRANTED', 'success');
-                loadBots();
                 addLog('ADMIN LOGIN SUCCESS', 'success');
             } else if (isValidUserKey(key)) {
                 currentUser = { id: 'user_' + key, isAdmin: false, name: 'USER', key: key };
                 showDashboard();
                 showNotification('USER ACCESS GRANTED', 'success');
-                loadBots();
                 addLog(`USER LOGIN: ${key.substring(0,8)}...`, 'success');
             } else {
                 showNotification('INVALID ACCESS KEY', 'error');
@@ -1140,8 +935,7 @@
             }
         }
 
-        // Validate User Key
-        function isValidUserKey(key) {
+          function isValidUserKey(key) {
             if (!key.startsWith('USER_')) return false;
             if (userKeys[key]) {
                 const expiry = userKeys[key].expires;
@@ -1155,7 +949,6 @@
             return false;
         }
 
-        // Check Key Expirations
         function checkKeyExpirations() {
             const now = new Date();
             for (const [key, keyData] of Object.entries(userKeys)) {
@@ -1172,35 +965,16 @@
             saveUserKeys();
         }
 
-        // Show Dashboard
         function showDashboard() {
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('dashboard').style.display = 'block';
             if (currentUser.isAdmin) {
                 document.getElementById('adminPanel').style.display = 'block';
-                loadAdminKeys();
             }
             updateBotList();
             updateStats();
         }
 
-        // Logout
-        function logout() {
-            currentUser = null;
-            document.getElementById('dashboard').style.display = 'none';
-            document.getElementById('loginSection').style.display = 'block';
-            document.getElementById('accessKey').value = '';
-            showNotification('LOGGED OUT', 'success');
-            addLog('USER LOGGED OUT', 'info');
-        }
-
-        // Load Demo Bots
-        function loadDemoBots() {
-            const saved = localStorage.getItem('telegramBots');
-            bots = saved ? JSON.parse(saved) : [];
-        }
-
-        // Add Bot
         async function addBot() {
             const token = document.getElementById('botToken').value.trim();
             const name = document.getElementById('botName').value.trim();
@@ -1233,11 +1007,9 @@
                 token: token,
                 status: 'active',
                 created_at: new Date().toISOString(),
-                users: 0,
                 owner: currentUser.key,
                 code: selectedFile.content,
                 fileName: selectedFile.name,
-                lastActive: new Date().toISOString(),
                 username: validation.bot.username,
                 messageCount: 0
             };
@@ -1259,7 +1031,6 @@
             updateStats();
         }
 
-        // Stop Bot
         async function stopBot(botId) {
             const bot = bots.find(b => b.id === botId);
             if (bot) {
@@ -1274,7 +1045,6 @@
             }
         }
 
-        // Start Bot
         async function startBot(botId) {
             const bot = bots.find(b => b.id === botId);
             if (bot) {
@@ -1295,7 +1065,6 @@
             }
         }
 
-        // Delete Bot
         async function deleteBot(botId) {
             if (confirm('DELETE BOT?')) {
                 const bot = bots.find(b => b.id === botId);
@@ -1309,7 +1078,6 @@
             }
         }
 
-        // Start All Bots
         async function startAllBots() {
             let started = 0;
             for (const bot of bots) {
@@ -1322,7 +1090,6 @@
             addLog(`BATCH START: ${started} BOTS`, 'success');
         }
 
-        // Stop All Bots
         async function stopAllBots() {
             let stopped = 0;
             for (const bot of bots) {
@@ -1335,7 +1102,6 @@
             addLog(`BATCH STOP: ${stopped} BOTS`, 'warning');
         }
 
-        // Refresh Dashboard
         function refreshDashboard() {
             updateBotList();
             updateStats();
@@ -1343,29 +1109,6 @@
             addLog('DASHBOARD REFRESHED', 'info');
         }
 
-        // Clean Expired Bots
-        function cleanExpiredBots() {
-            const now = new Date();
-            let cleanedCount = 0;
-            bots = bots.filter(bot => {
-                if (bot.owner && bot.owner !== 'DJF27DJF') {
-                    const keyData = userKeys[bot.owner];
-                    if (keyData && now > new Date(keyData.expires)) {
-                        stopBotPolling(bot.id);
-                        cleanedCount++;
-                        return false;
-                    }
-                }
-                return true;
-            });
-            saveBots();
-            showNotification(`${cleanedCount} BOTS CLEANED`, 'success');
-            addLog(`CLEANUP: ${cleanedCount} BOTS REMOVED`, 'info');
-            updateBotList();
-            updateStats();
-        }
-
-        // Generate Key
         function generateKey() {
             const keyName = document.getElementById('newKeyName').value.trim();
             const expiryDays = parseInt(document.getElementById('keyExpiryDays').value);
@@ -1387,110 +1130,15 @@
             userKeys[newKey] = {
                 name: keyName,
                 created: new Date().toISOString(),
-                expires: expiryDate.toISOString(),
-                createdBy: currentUser.id
+                expires: expiryDate.toISOString()
             };
             saveUserKeys();
-
-            const keyList = document.getElementById('keyListContainer');
-            const keyItem = document.createElement('div');
-            keyItem.className = 'key-item';
-            keyItem.innerHTML = `
-                <div class="key-info">
-                    <strong>${keyName}</strong>
-                    <div style="color: var(--matrix); opacity: 0.8; font-size: 0.8rem; margin-top: 4px;">
-                        🔑 ${newKey} | ⏰ ${expiryDate.toLocaleDateString('tr-TR')}
-                    </div>
-                </div>
-                <div class="key-actions">
-                    <button class="btn btn-success btn-sm" onclick="copyKey('${newKey}')">
-                        <i class="fas fa-copy"></i> COPY
-                    </button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteKey('${newKey}', this)">
-                        <i class="fas fa-trash"></i> DELETE
-                    </button>
-                </div>
-            `;
-            keyList.appendChild(keyItem);
 
             showNotification('KEY GENERATED: ' + newKey, 'success');
             addLog(`KEY CREATED: ${keyName}`, 'success');
             document.getElementById('newKeyName').value = '';
         }
 
-        // Load Admin Keys
-        function loadAdminKeys() {
-            const keyList = document.getElementById('keyListContainer');
-            keyList.innerHTML = `
-                <h3 style="margin: 15px 0 10px 0; display: flex; align-items: center; gap: 8px;">
-                    <i class="fas fa-key"></i> ACTIVE KEYS
-                </h3>
-                <div class="key-item">
-                    <div class="key-info">
-                        <strong>ADMIN KEY</strong>
-                        <div style="color: var(--matrix); opacity: 0.8; font-size: 0.8rem; margin-top: 4px;">
-                            🔑 DJF27DJF | ⏰ PERMANENT
-                        </div>
-                    </div>
-                    <div class="key-actions">
-                        <button class="btn btn-success btn-sm" onclick="copyKey('DJF27DJF')">
-                            <i class="fas fa-copy"></i> COPY
-                        </button>
-                    </div>
-                </div>
-            `;
-
-            for (const [key, keyData] of Object.entries(userKeys)) {
-                const keyItem = document.createElement('div');
-                keyItem.className = 'key-item';
-                keyItem.innerHTML = `
-                    <div class="key-info">
-                        <strong>${keyData.name}</strong>
-                        <div style="color: var(--matrix); opacity: 0.8; font-size: 0.8rem; margin-top: 4px;">
-                            🔑 ${key} | ⏰ ${new Date(keyData.expires).toLocaleDateString('tr-TR')}
-                        </div>
-                    </div>
-                    <div class="key-actions">
-                        <button class="btn btn-success btn-sm" onclick="copyKey('${key}')">
-                            <i class="fas fa-copy"></i> COPY
-                        </button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteKey('${key}', this)">
-                            <i class="fas fa-trash"></i> DELETE
-                        </button>
-                    </div>
-                `;
-                keyList.appendChild(keyItem);
-            }
-        }
-
-        // Copy Key
-        function copyKey(key) {
-            navigator.clipboard.writeText(key).then(() => {
-                showNotification('KEY COPIED', 'success');
-            });
-        }
-
-        // Delete Key
-        function deleteKey(key, button) {
-            if (confirm('DELETE KEY AND ALL ASSOCIATED BOTS?')) {
-                const userBots = bots.filter(bot => bot.owner === key);
-                userBots.forEach(bot => {
-                    stopBot(bot.id);
-                    deleteBot(bot.id);
-                });
-                delete userKeys[key];
-                saveUserKeys();
-                const keyItem = button.closest('.key-item');
-                keyItem.style.animation = 'slideInLeft 0.5s ease reverse';
-                setTimeout(() => {
-                    keyItem.remove();
-                    showNotification('KEY AND BOTS DELETED', 'success');
-                    addLog(`KEY DELETED: ${key.substring(0, 8)}...`, 'warning');
-                }, 500);
-            }
-        }
-
-        // Show System Info
         function showSystemInfo() {
             const activeKeys = Object.keys(userKeys).length;
             const totalUsers = [...new Set(bots.map(bot => bot.owner))].length;
@@ -1499,15 +1147,12 @@
             alert(`⚡ SYSTEM INFO\n\n` +
                   `TOTAL BOTS: ${bots.length}\n` +
                   `ACTIVE BOTS: ${bots.filter(b => b.status === 'active').length}\n` +
-                  `INACTIVE BOTS: ${bots.filter(b => b.status !== 'active').length}\n` +
                   `TOTAL USERS: ${totalUsers}\n` +
                   `ACTIVE KEYS: ${activeKeys}\n` +
                   `TOTAL MESSAGES: ${totalMessages}\n` +
-                  `UPTIME: ${formatUptime(systemUptime)}\n` +
-                  `STORAGE: ${(JSON.stringify(localStorage).length / 1024).toFixed(2)} KB`);
+                  `UPTIME: ${formatUptime(systemUptime)}`);
         }
 
-       // Export Bots
         function exportBots() {
             const userBots = bots.filter(bot => 
                 currentUser.isAdmin || bot.owner === currentUser.key
@@ -1517,15 +1162,7 @@
                 exportDate: new Date().toISOString(),
                 user: currentUser.name,
                 totalBots: userBots.length,
-                bots: userBots.map(bot => ({
-                    id: bot.id,
-                    name: bot.name,
-                    username: bot.username,
-                    status: bot.status,
-                    created_at: bot.created_at,
-                    messageCount: bot.messageCount,
-                    fileName: bot.fileName
-                }))
+                bots: userBots
             };
 
             const botData = JSON.stringify(exportData, null, 2);
@@ -1540,7 +1177,6 @@
             addLog('BOTS EXPORTED', 'success');
         }
 
-        // Update Bot List
         function updateBotList() {
             const container = document.getElementById('botListContainer');
             let html = '<h2 class="section-title"><i class="fas fa-list"></i> BOT LIST</h2>';
@@ -1557,26 +1193,20 @@
                 `;
             } else {
                 userBots.forEach(bot => {
-                    const isExpired = bot.owner && bot.owner !== 'DJF27DJF' && 
-                                    userKeys[bot.owner] && 
-                                    new Date() > new Date(userKeys[bot.owner].expires);
-
                     let statusClass = 'status-inactive';
                     if (bot.status === 'active') statusClass = 'status-active';
                     if (bot.status === 'error') statusClass = 'status-error';
 
                     html += `
-                        <div class="bot-card" style="${isExpired ? 'opacity: 0.6; border-left-color: var(--danger);' : ''}">
+                        <div class="bot-card">
                             <div class="bot-header">
                                 <div class="bot-name">
                                     <i class="fas fa-robot"></i>
                                     ${bot.name}
                                     ${bot.username ? ` (@${bot.username})` : ''}
-                                    ${isExpired ? ' ⏰' : ''}
                                 </div>
                                 <span class="bot-status ${statusClass}">
                                     ${bot.status === 'active' ? '🟢 ACTIVE' : bot.status === 'error' ? '⚠️ ERROR' : '🔴 INACTIVE'}
-                                    ${isExpired ? ' (EXPIRED)' : ''}
                                 </span>
                             </div>
                             <div class="bot-details">
@@ -1589,21 +1219,12 @@
                                 <div class="bot-detail">
                                     <strong>📨 MESSAGES:</strong> ${bot.messageCount || 0}
                                 </div>
-                                ${bot.fileName ? `
-                                <div class="bot-detail">
-                                    <strong>📁 FILE:</strong> ${bot.fileName}
-                                </div>
-                                ` : ''}
                             </div>
                             <div class="bot-actions">
                                 <button class="btn ${bot.status === 'active' ? 'btn-warning' : 'btn-success'} btn-sm" 
-                                        onclick="${bot.status === 'active' ? 'stopBot' : 'startBot'}(${bot.id})" 
-                                        ${isExpired ? 'disabled' : ''}>
+                                        onclick="${bot.status === 'active' ? 'stopBot' : 'startBot'}(${bot.id})">
                                     <i class="fas ${bot.status === 'active' ? 'fa-pause' : 'fa-play'}"></i>
                                     ${bot.status === 'active' ? 'STOP' : 'START'}
-                                </button>
-                                <button class="btn btn-info btn-sm" onclick="showBotInfo(${bot.id})">
-                                    <i class="fas fa-info"></i> INFO
                                 </button>
                                 <button class="btn btn-danger btn-sm" onclick="deleteBot(${bot.id})">
                                     <i class="fas fa-trash"></i> DELETE
@@ -1617,29 +1238,6 @@
             container.innerHTML = html;
         }
 
-        // Show Bot Info
-        function showBotInfo(botId) {
-            const bot = bots.find(b => b.id === botId);
-            if (bot) {
-                const keyInfo = bot.owner && userKeys[bot.owner] ? 
-                    `KEY: ${bot.owner}\nEXPIRY: ${new Date(userKeys[bot.owner].expires).toLocaleDateString('tr-TR')}` : 
-                    'KEY: ADMIN';
-
-                alert(`🤖 BOT INFO\n\n` +
-                      `NAME: ${bot.name}\n` +
-                      `ID: ${bot.id}\n` +
-                      `USERNAME: ${bot.username || 'NONE'}\n` +
-                      `STATUS: ${bot.status === 'active' ? 'ACTIVE 🟢' : bot.status === 'error' ? 'ERROR ⚠️' : 'INACTIVE 🔴'}\n` +
-                      `MESSAGES: ${bot.messageCount || 0}\n` +
-                      `CREATED: ${new Date(bot.created_at).toLocaleString('tr-TR')}\n` +
-                      `LAST ACTIVE: ${new Date(bot.lastActive).toLocaleString('tr-TR')}\n` +
-                      `FILE: ${bot.fileName || 'NONE'}\n` +
-                      `${keyInfo}\n` +
-                      `TOKEN: ${bot.token.substring(0, 15)}...`);
-            }
-        }
-
-        // Update Stats
         function updateStats() {
             const userBots = currentUser.isAdmin ? bots : bots.filter(bot => bot.owner === currentUser.key);
             document.getElementById('totalBots').textContent = userBots.length;
@@ -1647,12 +1245,10 @@
             document.getElementById('inactiveBots').textContent = userBots.filter(b => b.status !== 'active').length;
         }
 
-        // Update Uptime Display
         function updateUptimeDisplay() {
             document.getElementById('uptime').textContent = formatUptime(systemUptime);
         }
 
-        // Format Uptime
         function formatUptime(seconds) {
             const hours = Math.floor(seconds / 3600);
             const minutes = Math.floor((seconds % 3600) / 60);
@@ -1662,13 +1258,12 @@
             return `${secs}s`;
         }
 
-        // Show Notification
         function showNotification(message, type) {
             const existing = document.querySelectorAll('.notification');
             existing.forEach(notif => notif.remove());
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
-            notification.innerHTML = `<i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'times' : 'exclamation'}"></i> ${message}`;
+            notification.innerHTML = `<i class="fas fa-${type === 'success' ? 'check' : 'times'}"></i> ${message}`;
             document.body.appendChild(notification);
             setTimeout(() => {
                 notification.style.animation = 'slideInRight 0.5s ease reverse';
