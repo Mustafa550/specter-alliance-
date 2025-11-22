@@ -31,32 +31,6 @@
             color: var(--matrix);
             min-height: 100vh;
             overflow-x: hidden;
-            position: relative;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent 79px, rgba(0,255,0,0.03) 81px),
-                        linear-gradient(rgba(0,255,0,0.03) 79px, transparent 81px);
-            background-size: 81px 81px;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .matrix-rain {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            opacity: 0.1;
         }
 
         .loading-screen {
@@ -77,14 +51,12 @@
         .loading-logo {
             font-size: 4rem;
             margin-bottom: 20px;
-            animation: glitch 2s infinite;
-            text-shadow: 0 0 10px var(--matrix);
+            animation: pulse 2s infinite;
         }
 
         .loading-text {
             font-size: 1.5rem;
             margin-bottom: 10px;
-            animation: pulse 2s infinite;
         }
 
         .loader {
@@ -95,14 +67,6 @@
             border-top-color: var(--matrix);
             animation: spin 1s ease-in-out infinite;
             margin-top: 20px;
-        }
-
-        @keyframes glitch {
-            0%, 100% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
         }
 
         @keyframes pulse {
@@ -118,7 +82,6 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            display: none;
         }
 
         .header {
@@ -130,36 +93,16 @@
             margin-bottom: 30px;
             box-shadow: var(--shadow);
             border: 1px solid var(--matrix);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0,255,0,0.2), transparent);
-            animation: shine 3s infinite;
-        }
-
-        @keyframes shine {
-            0% { left: -100%; }
-            100% { left: 100%; }
         }
 
         .logo {
             font-size: 3rem;
             margin-bottom: 15px;
-            text-shadow: 0 0 15px var(--matrix);
         }
 
         h1 {
             font-size: 2.2rem;
             margin-bottom: 10px;
-            text-shadow: 0 0 10px var(--matrix);
         }
 
         .login-section {
@@ -170,18 +113,6 @@
             margin-bottom: 30px;
             text-align: center;
             border: 1px solid var(--matrix);
-            animation: slideInUp 0.8s ease;
-        }
-
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .section-title {
@@ -196,12 +127,6 @@
 
         .dashboard {
             display: none;
-            animation: fadeIn 1s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
 
         .stats-grid {
@@ -217,26 +142,7 @@
             border-radius: 12px;
             box-shadow: var(--shadow);
             text-align: center;
-            transition: all 0.3s ease;
             border: 1px solid var(--matrix);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 30px rgba(0,255,100,0.5);
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--matrix);
-            animation: pulse 2s infinite;
         }
 
         .stat-icon {
@@ -248,9 +154,6 @@
             font-size: 1.8rem;
             font-weight: 700;
             margin-bottom: 5px;
-            background: linear-gradient(135deg, #00ff88, #00cc66);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
         .action-grid {
@@ -265,13 +168,7 @@
             padding: 25px;
             border-radius: 12px;
             box-shadow: var(--shadow);
-            transition: all 0.3s ease;
             border: 1px solid var(--matrix);
-        }
-
-        .action-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 25px rgba(0,255,100,0.4);
         }
 
         .card-title {
@@ -295,22 +192,19 @@
             color: var(--matrix);
         }
 
-        input, select, textarea {
+        input, select {
             width: 100%;
             padding: 12px;
             border: 1px solid var(--matrix);
             border-radius: 8px;
             font-size: 0.9rem;
-            transition: all 0.3s ease;
             background: rgba(0, 20, 0, 0.8);
             color: var(--matrix);
-            font-family: 'Courier New', monospace;
         }
 
-        input:focus, select:focus, textarea:focus {
+        input:focus, select:focus {
             outline: none;
             border-color: var(--success);
-            box-shadow: 0 0 10px rgba(0,255,0,0.5);
         }
 
         .btn {
@@ -320,7 +214,6 @@
             font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -328,28 +221,6 @@
             width: 100%;
             background: rgba(0, 30, 0, 0.8);
             color: var(--matrix);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0,255,0,0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
-        .btn-primary {
-            background: linear-gradient(45deg, rgba(0,255,100,0.2), rgba(0,200,80,0.3));
-            border-color: var(--primary);
         }
 
         .btn-success {
@@ -362,19 +233,9 @@
             border-color: var(--warning);
         }
 
-        .btn-danger {
-            background: linear-gradient(45deg, rgba(255,68,68,0.2), rgba(200,50,50,0.3));
-            border-color: var(--danger);
-        }
-
         .btn-info {
             background: linear-gradient(45deg, rgba(0,255,255,0.2), rgba(0,200,200,0.3));
             border-color: var(--info);
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,255,100,0.3);
         }
 
         .btn-sm {
@@ -393,26 +254,7 @@
             padding: 18px;
             border-radius: 12px;
             box-shadow: var(--shadow);
-            border-left: 3px solid var(--primary);
-            transition: all 0.3s ease;
             border: 1px solid var(--matrix);
-            animation: slideInRight 0.5s ease;
-        }
-
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .bot-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 0 20px rgba(0,255,100,0.3);
         }
 
         .bot-header {
@@ -420,8 +262,6 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 12px;
-            flex-wrap: wrap;
-            gap: 8px;
         }
 
         .bot-name {
@@ -464,13 +304,11 @@
             padding: 8px;
             border-radius: 6px;
             font-size: 0.8rem;
-            border: 1px solid rgba(0,255,0,0.3);
         }
 
         .bot-actions {
             display: flex;
             gap: 8px;
-            flex-wrap: wrap;
         }
 
         .admin-panel {
@@ -479,9 +317,8 @@
             border-radius: 12px;
             box-shadow: var(--shadow);
             margin-top: 25px;
-            border-top: 3px solid var(--warning);
-            display: none;
             border: 1px solid var(--matrix);
+            display: none;
         }
 
         .file-upload {
@@ -490,13 +327,7 @@
             padding: 15px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
             background: rgba(0, 20, 0, 0.8);
-        }
-
-        .file-upload:hover {
-            border-color: var(--primary);
-            background: rgba(0,255,100,0.1);
         }
 
         .notification {
@@ -509,22 +340,17 @@
             font-weight: 600;
             box-shadow: var(--shadow);
             z-index: 1000;
-            animation: slideInRight 0.5s ease;
             display: flex;
             align-items: center;
             gap: 8px;
-            max-width: 350px;
-            border: 1px solid;
         }
 
         .notification.success {
             background: var(--success);
-            border-color: var(--success);
         }
 
         .notification.error {
             background: var(--danger);
-            border-color: var(--danger);
         }
 
         .log-console {
@@ -532,7 +358,6 @@
             color: var(--matrix);
             padding: 12px;
             border-radius: 8px;
-            font-family: 'Courier New', monospace;
             font-size: 0.8rem;
             max-height: 150px;
             overflow-y: auto;
@@ -546,53 +371,16 @@
             border-left: 2px solid var(--primary);
             font-size: 0.75rem;
         }
-
-        .log-error {
-            border-left-color: var(--danger);
-            color: var(--danger);
-        }
-
-        .log-success {
-            border-left-color: var(--success);
-            color: var(--success);
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-            .header {
-                padding: 20px 15px;
-            }
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .action-grid {
-                grid-template-columns: 1fr;
-            }
-            .bot-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .bot-actions {
-                width: 100%;
-            }
-            .bot-actions .btn {
-                flex: 1;
-            }
-        }
     </style>
 </head>
 <body>
-    <div class="matrix-rain" id="matrixRain"></div>
-
     <div class="loading-screen" id="loadingScreen">
         <div class="loading-logo">⚡</div>
         <div class="loading-text">SYSTEM BOOTING...</div>
         <div class="loader"></div>
     </div>
 
-    <div class="container" id="mainContainer">
+    <div class="container">
         <header class="header">
             <div class="logo">⚡</div>
             <h1>DEARSIBER VDS</h1>
@@ -605,7 +393,7 @@
                 <label for="accessKey">🔑 ACCESS KEY</label>
                 <input type="password" id="accessKey" placeholder="ENTER ADMIN KEY..." required>
             </div>
-            <button class="btn btn-primary" onclick="login()">
+            <button class="btn btn-success" onclick="login()">
                 <i class="fas fa-terminal"></i> ACCESS SYSTEM
             </button>
         </section>
@@ -627,11 +415,6 @@
                     <div class="stat-number" id="inactiveBots">0</div>
                     <div class="stat-text">INACTIVE BOTS</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-icon">⏱️</div>
-                    <div class="stat-number" id="uptime">0s</div>
-                    <div class="stat-text">UPTIME</div>
-                </div>
             </div>
 
             <div class="action-grid">
@@ -644,16 +427,6 @@
                     <div class="form-group">
                         <label for="botName">📝 BOT NAME</label>
                         <input type="text" id="botName" placeholder="BOT_NAME..." required>
-                    </div>
-                    <div class="form-group">
-                        <label for="botCode">📁 BOT CODE FILE</label>
-                        <div class="file-upload" id="fileUpload" onclick="document.getElementById('codeFile').click()">
-                            <i class="fas fa-upload"></i>
-                            <div>SELECT OR DRAG CODE FILE</div>
-                            <small>.py, .js, .txt</small>
-                            <input type="file" id="codeFile" accept=".py,.js,.txt" style="display: none;" onchange="handleFileSelect(this.files)">
-                        </div>
-                        <div id="fileName" style="margin-top: 8px; font-size: 0.8rem; color: var(--success);"></div>
                     </div>
                     <button class="btn btn-success" onclick="addBot()">
                         <i class="fas fa-play"></i> START BOT
@@ -669,15 +442,12 @@
                         <button class="btn btn-warning" onclick="stopAllBots()">
                             <i class="fas fa-stop"></i> STOP ALL
                         </button>
-                        <button class="btn btn-primary" onclick="refreshDashboard()">
-                            <i class="fas fa-sync"></i> REFRESH
-                        </button>
                     </div>
                     
-                                <div style="margin-top: 15px;">
+                    <div style="margin-top: 15px;">
                         <h4 style="margin-bottom: 8px;">📊 SYSTEM LOGS</h4>
                         <div class="log-console" id="logConsole">
-                            <div class="log-entry log-success">[SYSTEM] READY</div>
+                            <div class="log-entry">[SYSTEM] READY</div>
                         </div>
                     </div>
                 </div>
@@ -697,29 +467,9 @@
                             <label for="newKeyName">🏷️ KEY NAME</label>
                             <input type="text" id="newKeyName" placeholder="KEY_NAME...">
                         </div>
-                        <div class="form-group">
-                            <label for="keyExpiryDays">⏰ EXPIRY DAYS</label>
-                            <select id="keyExpiryDays">
-                                <option value="1">1 DAY</option>
-                                <option value="7">7 DAYS</option>
-                                <option value="30" selected>30 DAYS</option>
-                            </select>
-                        </div>
                         <button class="btn btn-warning" onclick="generateKey()">
                             <i class="fas fa-key"></i> GENERATE KEY
                         </button>
-                    </div>
-
-                    <div class="action-card">
-                        <h3 class="card-title"><i class="fas fa-cogs"></i> SYSTEM CONTROL</h3>
-                        <div style="display: grid; gap: 8px;">
-                            <button class="btn btn-info" onclick="showSystemInfo()">
-                                <i class="fas fa-info"></i> SYSTEM INFO
-                            </button>
-                            <button class="btn btn-primary" onclick="exportBots()">
-                                <i class="fas fa-download"></i> EXPORT BOTS
-                            </button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -727,166 +477,37 @@
     </div>
 
     <script>
-        const TELEGRAM_API = 'https://api.telegram.org/bot';
+        // Sistem değişkenleri
         let currentUser = null;
         let bots = [];
-        let systemUptime = 0;
         let adminKeys = ['DJF27DJF'];
         let userKeys = {};
-        let selectedFile = null;
-        let activeIntervals = {};
 
-        // Matrix Rain Effect
-        function createMatrixRain() {
-            const canvas = document.getElementById('matrixRain');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            const chars = '01';
-            const charSize = 14;
-            const columns = canvas.width / charSize;
-            const drops = Array(Math.floor(columns)).fill(1);
-
-            function draw() {
-                ctx.fillStyle = 'rgba(0, 20, 0, 0.05)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#0f0';
-                ctx.font = charSize + 'px monospace';
-
-                drops.forEach((y, i) => {
-                    const text = chars[Math.floor(Math.random() * chars.length)];
-                    const x = i * charSize;
-                    ctx.fillText(text, x, y * charSize);
-                    if (y * charSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                    drops[i]++;
-                });
-            }
-
-            setInterval(draw, 33);
-        }
-
-        // Page Load
+        // Sayfa yüklendiğinde
         document.addEventListener('DOMContentLoaded', function() {
-            createMatrixRain();
-            
+            // Loading ekranını 2 saniye sonra kapat
             setTimeout(() => {
                 document.getElementById('loadingScreen').style.display = 'none';
-                document.getElementById('mainContainer').style.display = 'block';
-                
-                document.getElementById('accessKey').addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') login();
-                });
+                document.getElementById('loginSection').style.display = 'block';
+            }, 2000);
 
-                setupFileUpload();
-            }, 3000);
-
-            setInterval(() => {
-                systemUptime++;
-                updateUptimeDisplay();
-                checkKeyExpirations();
-            }, 1000);
+            // Enter tuşu ile giriş
+            document.getElementById('accessKey').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') login();
+            });
 
             loadBots();
             loadUserKeys();
-            addLog('SYSTEM INITIALIZED', 'success');
+            addLog('SYSTEM READY');
         });
 
-        function setupFileUpload() {
-            const fileUpload = document.getElementById('fileUpload');
-            fileUpload.addEventListener('dragover', function(e) {
-                e.preventDefault();
-                this.classList.add('dragover');
-            });
-            fileUpload.addEventListener('dragleave', function(e) {
-                e.preventDefault();
-                this.classList.remove('dragover');
-            });
-            fileUpload.addEventListener('drop', function(e) {
-                e.preventDefault();
-                this.classList.remove('dragover');
-                handleFileSelect(e.dataTransfer.files);
-            });
-        }
-
-        function handleFileSelect(files) {
-            if (files.length > 0) {
-                selectedFile = files[0];
-                document.getElementById('fileName').textContent = `✅ ${selectedFile.name}`;
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    selectedFile.content = e.target.result;
-                };
-                reader.readAsText(selectedFile);
-            }
-        }
-
-        function addLog(message, type = 'info') {
+        function addLog(message) {
             const console = document.getElementById('logConsole');
             const logEntry = document.createElement('div');
-            logEntry.className = `log-entry log-${type}`;
+            logEntry.className = 'log-entry';
             logEntry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
             console.appendChild(logEntry);
             console.scrollTop = console.scrollHeight;
-        }
-
-        async function callTelegramAPI(token, method, params = {}) {
-            try {
-                const url = `${TELEGRAM_API}${token}/${method}`;
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(params)
-                });
-                const data = await response.json();
-                return { success: data.ok, data: data };
-            } catch (error) {
-                return { success: false, error: error.message };
-            }
-        }
-
-        async function validateBot(token) {
-            addLog(`VALIDATING BOT TOKEN...`, 'info');
-            const result = await callTelegramAPI(token, 'getMe');
-            if (result.success) {
-                addLog(`BOT VALIDATED: @${result.data.result.username}`, 'success');
-                return { success: true, bot: result.data.result };
-            } else {
-                addLog(`BOT VALIDATION FAILED`, 'error');
-                return { success: false, error: result.error };
-            }
-        }
-
-        async function setupWebhook(token) {
-            const result = await callTelegramAPI(token, 'setWebhook', { 
-                url: `https://dearsiber.com/webhook/${token}` 
-            });
-            if (result.success) {
-                addLog(`WEBHOOK SETUP COMPLETE`, 'success');
-                return true;
-            } else {
-                addLog(`WEBHOOK SETUP FAILED`, 'error');
-                return false;
-            }
-        }
-
-        function startBotPolling(botId, token) {
-            addLog(`STARTING BOT POLLING: ${botId}`, 'success');
-            activeIntervals[botId] = setInterval(async () => {
-                const bot = bots.find(b => b.id === botId);
-                if (bot && bot.status === 'active') {
-                    bot.lastActive = new Date().toISOString();
-                    bot.messageCount = (bot.messageCount || 0) + 1;
-                }
-            }, 5000);
-        }
-
-        function stopBotPolling(botId) {
-            if (activeIntervals[botId]) {
-                clearInterval(activeIntervals[botId]);
-                delete activeIntervals[botId];
-                addLog(`STOPPED BOT POLLING: ${botId}`, 'warning');
-            }
         }
 
         function loadUserKeys() {
@@ -904,16 +525,12 @@
 
         function loadBots() {
             const savedBots = localStorage.getItem('telegramBots');
-            if (savedBots) {
-                bots = JSON.parse(savedBots);
-                bots.forEach(bot => {
-                    if (bot.status === 'active') startBotPolling(bot.id, bot.token);
-                });
-            }
+            if (savedBots) bots = JSON.parse(savedBots);
         }
 
         function login() {
             const key = document.getElementById('accessKey').value.trim();
+            
             if (!key) {
                 showNotification('ACCESS KEY REQUIRED', 'error');
                 return;
@@ -923,19 +540,19 @@
                 currentUser = { id: 'admin', isAdmin: true, name: 'ADMIN', key: key };
                 showDashboard();
                 showNotification('ADMIN ACCESS GRANTED', 'success');
-                addLog('ADMIN LOGIN SUCCESS', 'success');
+                addLog('ADMIN LOGIN SUCCESS');
             } else if (isValidUserKey(key)) {
                 currentUser = { id: 'user_' + key, isAdmin: false, name: 'USER', key: key };
                 showDashboard();
                 showNotification('USER ACCESS GRANTED', 'success');
-                addLog(`USER LOGIN: ${key.substring(0,8)}...`, 'success');
+                addLog(`USER LOGIN: ${key.substring(0,8)}...`);
             } else {
                 showNotification('INVALID ACCESS KEY', 'error');
-                addLog('UNAUTHORIZED ACCESS ATTEMPT', 'error');
+                addLog('UNAUTHORIZED ACCESS ATTEMPT');
             }
         }
 
-          function isValidUserKey(key) {
+        function isValidUserKey(key) {
             if (!key.startsWith('USER_')) return false;
             if (userKeys[key]) {
                 const expiry = userKeys[key].expires;
@@ -947,22 +564,6 @@
                 return true;
             }
             return false;
-        }
-
-        function checkKeyExpirations() {
-            const now = new Date();
-            for (const [key, keyData] of Object.entries(userKeys)) {
-                if (now > new Date(keyData.expires)) {
-                    const userBots = bots.filter(bot => bot.owner === key);
-                    userBots.forEach(bot => {
-                        stopBot(bot.id);
-                        deleteBot(bot.id);
-                    });
-                    delete userKeys[key];
-                    addLog(`KEY EXPIRED: ${key.substring(0,8)}...`, 'warning');
-                }
-            }
-            saveUserKeys();
         }
 
         function showDashboard() {
@@ -984,63 +585,59 @@
                 return;
             }
 
-            if (!selectedFile) {
-                showNotification('CODE FILE REQUIRED', 'error');
-                return;
-            }
-
             if (!token.match(/^\d+:[A-Za-z0-9_-]+$/)) {
                 showNotification('INVALID TOKEN FORMAT', 'error');
                 return;
             }
 
-            addLog(`ADDING BOT: ${name}`, 'info');
-            const validation = await validateBot(token);
-            if (!validation.success) {
-                showNotification('BOT VALIDATION FAILED', 'error');
-                return;
+            addLog(`ADDING BOT: ${name}`);
+
+            // Telegram API ile bot doğrulama
+            try {
+                const response = await fetch(`https://api.telegram.org/bot${token}/getMe`);
+                const data = await response.json();
+                
+                if (data.ok) {
+                    const newBot = {
+                        id: Date.now(),
+                        name: name,
+                        token: token,
+                        status: 'active',
+                        created_at: new Date().toISOString(),
+                        owner: currentUser.key,
+                        username: data.result.username,
+                        messageCount: 0
+                    };
+
+                    bots.push(newBot);
+                    saveBots();
+                    
+                    showNotification('BOT ADDED SUCCESSFULLY', 'success');
+                    addLog(`BOT ADDED: @${data.result.username}`);
+                    
+                    document.getElementById('botToken').value = '';
+                    document.getElementById('botName').value = '';
+                    
+                    updateBotList();
+                    updateStats();
+                } else {
+                    showNotification('BOT VALIDATION FAILED', 'error');
+                    addLog('BOT VALIDATION FAILED');
+                }
+            } catch (error) {
+                showNotification('NETWORK ERROR', 'error');
+                addLog('NETWORK ERROR');
             }
-
-            const newBot = {
-                id: Date.now(),
-                name: name,
-                token: token,
-                status: 'active',
-                created_at: new Date().toISOString(),
-                owner: currentUser.key,
-                code: selectedFile.content,
-                fileName: selectedFile.name,
-                username: validation.bot.username,
-                messageCount: 0
-            };
-
-            bots.push(newBot);
-            saveBots();
-            startBotPolling(newBot.id, token);
-            setupWebhook(token);
-            
-            showNotification('BOT ADDED SUCCESSFULLY', 'success');
-            addLog(`BOT ADDED: @${validation.bot.username}`, 'success');
-            
-            document.getElementById('botToken').value = '';
-            document.getElementById('botName').value = '';
-            document.getElementById('fileName').textContent = '';
-            selectedFile = null;
-            
-            updateBotList();
-            updateStats();
         }
 
         async function stopBot(botId) {
             const bot = bots.find(b => b.id === botId);
             if (bot) {
                 bot.status = 'inactive';
-                bot.lastActive = new Date().toISOString();
-                stopBotPolling(botId);
                 saveBots();
                 showNotification('BOT STOPPED', 'success');
-                addLog(`BOT STOPPED: ${bot.name}`, 'warning');
-                updateBotList();
+                addLog(`BOT STOPPED: ${bot.name}`);
+               updateBotList();
                 updateStats();
             }
         }
@@ -1048,31 +645,34 @@
         async function startBot(botId) {
             const bot = bots.find(b => b.id === botId);
             if (bot) {
-                const validation = await validateBot(bot.token);
-                if (!validation.success) {
-                    showNotification('BOT START FAILED', 'error');
-                    bot.status = 'error';
-                    return;
+                // Botu tekrar doğrula
+                try {
+                    const response = await fetch(`https://api.telegram.org/bot${bot.token}/getMe`);
+                    const data = await response.json();
+                    
+                    if (data.ok) {
+                        bot.status = 'active';
+                        saveBots();
+                        showNotification('BOT STARTED', 'success');
+                        addLog(`BOT STARTED: ${bot.name}`);
+                        updateBotList();
+                        updateStats();
+                    } else {
+                        showNotification('BOT START FAILED', 'error');
+                    }
+                } catch (error) {
+                    showNotification('NETWORK ERROR', 'error');
                 }
-                bot.status = 'active';
-                bot.lastActive = new Date().toISOString();
-                startBotPolling(botId, bot.token);
-                saveBots();
-                showNotification('BOT STARTED', 'success');
-                addLog(`BOT STARTED: ${bot.name}`, 'success');
-                updateBotList();
-                updateStats();
             }
         }
 
         async function deleteBot(botId) {
             if (confirm('DELETE BOT?')) {
                 const bot = bots.find(b => b.id === botId);
-                stopBotPolling(botId);
                 bots = bots.filter(b => b.id !== botId);
                 saveBots();
                 showNotification('BOT DELETED', 'success');
-                addLog(`BOT DELETED: ${bot?.name || botId}`, 'warning');
+                addLog(`BOT DELETED: ${bot?.name || botId}`);
                 updateBotList();
                 updateStats();
             }
@@ -1087,7 +687,7 @@
                 }
             }
             showNotification(`${started} BOTS STARTED`, 'success');
-            addLog(`BATCH START: ${started} BOTS`, 'success');
+            addLog(`BATCH START: ${started} BOTS`);
         }
 
         async function stopAllBots() {
@@ -1099,19 +699,11 @@
                 }
             }
             showNotification(`${stopped} BOTS STOPPED`, 'warning');
-            addLog(`BATCH STOP: ${stopped} BOTS`, 'warning');
-        }
-
-        function refreshDashboard() {
-            updateBotList();
-            updateStats();
-            showNotification('DASHBOARD REFRESHED', 'success');
-            addLog('DASHBOARD REFRESHED', 'info');
+            addLog(`BATCH STOP: ${stopped} BOTS`);
         }
 
         function generateKey() {
             const keyName = document.getElementById('newKeyName').value.trim();
-            const expiryDays = parseInt(document.getElementById('keyExpiryDays').value);
 
             if (!keyName) {
                 showNotification('KEY NAME REQUIRED', 'error');
@@ -1125,7 +717,7 @@
 
             const newKey = 'USER_' + Math.random().toString(36).substr(2, 12).toUpperCase();
             const expiryDate = new Date();
-            expiryDate.setDate(expiryDate.getDate() + expiryDays);
+            expiryDate.setDate(expiryDate.getDate() + 30);
 
             userKeys[newKey] = {
                 name: keyName,
@@ -1135,46 +727,8 @@
             saveUserKeys();
 
             showNotification('KEY GENERATED: ' + newKey, 'success');
-            addLog(`KEY CREATED: ${keyName}`, 'success');
+            addLog(`KEY CREATED: ${keyName}`);
             document.getElementById('newKeyName').value = '';
-        }
-
-        function showSystemInfo() {
-            const activeKeys = Object.keys(userKeys).length;
-            const totalUsers = [...new Set(bots.map(bot => bot.owner))].length;
-            const totalMessages = bots.reduce((sum, bot) => sum + (bot.messageCount || 0), 0);
-            
-            alert(`⚡ SYSTEM INFO\n\n` +
-                  `TOTAL BOTS: ${bots.length}\n` +
-                  `ACTIVE BOTS: ${bots.filter(b => b.status === 'active').length}\n` +
-                  `TOTAL USERS: ${totalUsers}\n` +
-                  `ACTIVE KEYS: ${activeKeys}\n` +
-                  `TOTAL MESSAGES: ${totalMessages}\n` +
-                  `UPTIME: ${formatUptime(systemUptime)}`);
-        }
-
-        function exportBots() {
-            const userBots = bots.filter(bot => 
-                currentUser.isAdmin || bot.owner === currentUser.key
-            );
-            
-            const exportData = {
-                exportDate: new Date().toISOString(),
-                user: currentUser.name,
-                totalBots: userBots.length,
-                bots: userBots
-            };
-
-            const botData = JSON.stringify(exportData, null, 2);
-            const blob = new Blob([botData], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `bots_${new Date().toISOString().split('T')[0]}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-            showNotification('BOTS EXPORTED', 'success');
-            addLog('BOTS EXPORTED', 'success');
         }
 
         function updateBotList() {
@@ -1193,10 +747,6 @@
                 `;
             } else {
                 userBots.forEach(bot => {
-                    let statusClass = 'status-inactive';
-                    if (bot.status === 'active') statusClass = 'status-active';
-                    if (bot.status === 'error') statusClass = 'status-error';
-
                     html += `
                         <div class="bot-card">
                             <div class="bot-header">
@@ -1205,8 +755,8 @@
                                     ${bot.name}
                                     ${bot.username ? ` (@${bot.username})` : ''}
                                 </div>
-                                <span class="bot-status ${statusClass}">
-                                    ${bot.status === 'active' ? '🟢 ACTIVE' : bot.status === 'error' ? '⚠️ ERROR' : '🔴 INACTIVE'}
+                                <span class="bot-status ${bot.status === 'active' ? 'status-active' : 'status-inactive'}">
+                                    ${bot.status === 'active' ? '🟢 ACTIVE' : '🔴 INACTIVE'}
                                 </span>
                             </div>
                             <div class="bot-details">
@@ -1216,9 +766,6 @@
                                 <div class="bot-detail">
                                     <strong>📅 CREATED:</strong> ${new Date(bot.created_at).toLocaleDateString('tr-TR')}
                                 </div>
-                                <div class="bot-detail">
-                                    <strong>📨 MESSAGES:</strong> ${bot.messageCount || 0}
-                                </div>
                             </div>
                             <div class="bot-actions">
                                 <button class="btn ${bot.status === 'active' ? 'btn-warning' : 'btn-success'} btn-sm" 
@@ -1226,7 +773,7 @@
                                     <i class="fas ${bot.status === 'active' ? 'fa-pause' : 'fa-play'}"></i>
                                     ${bot.status === 'active' ? 'STOP' : 'START'}
                                 </button>
-                                <button class="btn btn-danger btn-sm" onclick="deleteBot(${bot.id})">
+                                <button class="btn btn-warning btn-sm" onclick="deleteBot(${bot.id})">
                                     <i class="fas fa-trash"></i> DELETE
                                 </button>
                             </div>
@@ -1245,30 +792,12 @@
             document.getElementById('inactiveBots').textContent = userBots.filter(b => b.status !== 'active').length;
         }
 
-        function updateUptimeDisplay() {
-            document.getElementById('uptime').textContent = formatUptime(systemUptime);
-        }
-
-        function formatUptime(seconds) {
-            const hours = Math.floor(seconds / 3600);
-            const minutes = Math.floor((seconds % 3600) / 60);
-            const secs = seconds % 60;
-            if (hours > 0) return `${hours}h ${minutes}m ${secs}s`;
-            if (minutes > 0) return `${minutes}m ${secs}s`;
-            return `${secs}s`;
-        }
-
         function showNotification(message, type) {
-            const existing = document.querySelectorAll('.notification');
-            existing.forEach(notif => notif.remove());
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
             notification.innerHTML = `<i class="fas fa-${type === 'success' ? 'check' : 'times'}"></i> ${message}`;
             document.body.appendChild(notification);
-            setTimeout(() => {
-                notification.style.animation = 'slideInRight 0.5s ease reverse';
-                setTimeout(() => notification.remove(), 500);
-            }, 3000);
+            setTimeout(() => notification.remove(), 3000);
         }
     </script>
 </body>
