@@ -271,7 +271,7 @@
             color: var(--dark);
         }
 
-        input, select {
+        input, select, textarea {
             width: 100%;
             padding: 15px;
             border: 2px solid #e1e8ed;
@@ -281,7 +281,7 @@
             background: var(--light);
         }
 
-        input:focus, select:focus {
+        input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(0, 136, 204, 0.1);
@@ -474,6 +474,27 @@
             gap: 8px;
         }
 
+        /* File Upload */
+        .file-upload {
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--light);
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary);
+            background: rgba(0, 136, 204, 0.05);
+        }
+
+        .file-upload.dragover {
+            border-color: var(--success);
+            background: rgba(0, 184, 148, 0.1);
+        }
+
         /* Notification */
         .notification {
             position: fixed;
@@ -634,11 +655,21 @@
                     <h3 class="card-title"><i class="fas fa-plus-circle"></i> Yeni Bot Ekle</h3>
                     <div class="form-group">
                         <label for="botToken">🤖 Bot Token</label>
-                        <input type="text" id="botToken" placeholder="Bot Father'dan aldığınız token...">
+                        <input type="text" id="botToken" placeholder="Bot Father'dan aldığınız token..." required>
                     </div>
                     <div class="form-group">
                         <label for="botName">📝 Bot Adı</label>
-                        <input type="text" id="botName" placeholder="Botunuz için bir isim...">
+                        <input type="text" id="botName" placeholder="Botunuz için bir isim..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="botCode">📁 Bot Kod Dosyası</label>
+                        <div class="file-upload" id="fileUpload" onclick="document.getElementById('codeFile').click()">
+                            <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                            <div>Bot kod dosyasını seçin veya sürükleyin</div>
+                            <small style="color: #666;">.py, .js, .txt dosyaları desteklenir</small>
+                            <input type="file" id="codeFile" accept=".py,.js,.txt" style="display: none;" onchange="handleFileSelect(this.files)">
+                        </div>
+                        <div id="fileName" style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"></div>
                     </div>
                     <button class="btn btn-success" onclick="addBot()">
                         <i class="fas fa-rocket"></i> Bot Ekle ve Başlat
@@ -661,7 +692,7 @@
                 </div>
             </div>
 
-            <!-- Bot List -->
+                    <!-- Bot List -->
             <div class="bot-list" id="botListContainer">
                 <h2 class="section-title"><i class="fas fa-list"></i> Bot Listesi</h2>
                 <!-- Botlar buraya eklenecek -->
@@ -701,6 +732,9 @@
                             <button class="btn btn-primary" onclick="exportBots()">
                                 <i class="fas fa-download"></i> Botları Dışa Aktar
                             </button>
+                            <button class="btn btn-danger" onclick="cleanExpiredBots()">
+                                <i class="fas fa-trash"></i> Süresi Dolanları Temizle
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -723,6 +757,8 @@
         let bots = [];
         let systemUptime = 0;
         let adminKeys = ['DJF27DJF']; // Admin anahtarları
+        let userKeys = {}; // Kullanıcı anahtarları ve süreleri
+        let selectedFile = null;
 
         // Sayfa yüklendiğinde
         document.addEventListener('DOMContentLoaded', function() {
@@ -735,17 +771,67 @@
                 document.getElementById('accessKey').addEventListener('keypress', function(e) {
                     if (e.key === 'Enter') login();
                 });
+
+                // Dosya sürükle-bırak
+                setupFileUpload();
             }, 2500);
 
             // Çalışma süresi sayacı
             setInterval(() => {
                 systemUptime++;
                 updateUptimeDisplay();
+                checkKeyExpirations();
             }, 1000);
 
             // Demo botları yükle
             loadDemoBots();
+            loadUserKeys();
         });
+
+        // Dosya yükleme ayarları
+        function setupFileUpload() {
+            const fileUpload = document.getElementById('fileUpload');
+            
+            fileUpload.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('dragover');
+            });
+
+            fileUpload.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+            });
+
+            fileUpload.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+                handleFileSelect(e.dataTransfer.files);
+            });
+        }
+
+        // Dosya seçimi
+        function handleFileSelect(files) {
+            if (files.length > 0) {
+                selectedFile = files[0];
+                document.getElementById('fileName').textContent = `✅ Seçilen dosya: ${selectedFile.name} (${formatFileSize(selectedFile.size)})`;
+                
+                // Dosya içeriğini oku
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    selectedFile.content = e.target.result;
+                };
+                reader.readAsText(selectedFile);
+            }
+        }
+
+        // Dosya boyutunu formatla
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
 
         // API çağrıları
         async function apiCall(endpoint, method = 'GET', data = null) {
@@ -764,6 +850,19 @@
             }
         }
 
+        // Kullanıcı anahtarlarını yükle
+        function loadUserKeys() {
+            const savedKeys = localStorage.getItem('userKeys');
+            if (savedKeys) {
+                userKeys = JSON.parse(savedKeys);
+            }
+        }
+
+        // Kullanıcı anahtarlarını kaydet
+        function saveUserKeys() {
+            localStorage.setItem('userKeys', JSON.stringify(userKeys));
+        }
+
         // Giriş fonksiyonu - ÇALIŞIYOR
         function login() {
             const key = document.getElementById('accessKey').value.trim();
@@ -778,7 +877,8 @@
                 currentUser = {
                     id: 'admin',
                     isAdmin: true,
-                    name: 'Sistem Yöneticisi'
+                    name: 'Sistem Yöneticisi',
+                    key: key
                 };
                 showDashboard();
                 showNotification('Yönetici olarak giriş yapıldı!', 'success');
@@ -787,7 +887,8 @@
                 currentUser = {
                     id: 'user_' + key,
                     isAdmin: false,
-                    name: 'Kullanıcı'
+                    name: 'Kullanıcı',
+                    key: key
                 };
                 showDashboard();
                 showNotification('Kullanıcı olarak giriş yapıldı!', 'success');
@@ -799,7 +900,50 @@
 
         // Kullanıcı anahtarını kontrol et
         function isValidUserKey(key) {
-            return key.startsWith('USER_') && key.length > 10;
+            if (!key.startsWith('USER_')) return false;
+            
+            // Süre kontrolü
+            if (userKeys[key]) {
+                const expiry = userKeys[key].expires;
+                if (new Date() > new Date(expiry)) {
+                    delete userKeys[key];
+                    saveUserKeys();
+                    return false;
+                }
+                return true;
+            }
+            return false;
+        }
+
+        // Anahtar sürelerini kontrol et
+        function checkKeyExpirations() {
+            const now = new Date();
+            let expiredFound = false;
+
+            for (const [key, keyData] of Object.entries(userKeys)) {
+                if (now > new Date(keyData.expires)) {
+                    // Anahtar süresi dolmuş, botları durdur ve sil
+                    const userBots = bots.filter(bot => bot.owner === key);
+                    userBots.forEach(bot => {
+                        stopBot(bot.id);
+                        deleteBot(bot.id);
+                    });
+                    
+                    delete userKeys[key];
+                    expiredFound = true;
+                }
+            }
+
+            if (expiredFound) {
+                saveUserKeys();
+                if (currentUser && userKeys[currentUser.key]) {
+                    // Mevcut kullanıcının anahtarı dolmuş
+                    showNotification('Anahtar süreniz doldu! Sistemden çıkış yapılıyor...', 'warning');
+                    setTimeout(() => {
+                        logout();
+                    }, 3000);
+                }
+            }
         }
 
         // Dashboard'u göster
@@ -813,6 +957,15 @@
             }
         }
 
+        // Çıkış yap
+        function logout() {
+            currentUser = null;
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('accessKey').value = '';
+            showNotification('Çıkış yapıldı!', 'success');
+        }
+
         // Demo botları yükle
         function loadDemoBots() {
             bots = [
@@ -822,20 +975,14 @@
                     token: 'demo_token_123',
                     status: 'active',
                     created_at: new Date().toISOString(),
-                    users: 150
-                },
-                {
-                    id: 2,
-                    name: 'Destek Botu',
-                    token: 'demo_token_456',
-                    status: 'inactive',
-                    created_at: new Date().toISOString(),
-                    users: 75
+                    users: 150,
+                    owner: 'DJF27DJF',
+                    code: 'print("Merhaba Dünya!")'
                 }
             ];
         }
 
-        // Bot ekleme - ÇALIŞIYOR
+        // Bot ekleme - GERÇEK ÇALIŞIYOR
         async function addBot() {
             const token = document.getElementById('botToken').value.trim();
             const name = document.getElementById('botName').value.trim();
@@ -845,16 +992,29 @@
                 return;
             }
 
+            if (!selectedFile) {
+                showNotification('Lütfen bot kod dosyasını seçin!', 'error');
+                return;
+            }
+
             if (token.length < 20) {
                 showNotification('Geçersiz bot token formatı!', 'error');
                 return;
             }
 
-            // Backend'e gönder
+            // Token format kontrolü (1234567890:ABCdefGHIjklMNOpqrSTUvwxYZ)
+            if (!token.match(/^\d+:[A-Za-z0-9_-]+$/)) {
+                showNotification('Geçersiz bot token formatı! Doğru formatta girin.', 'error');
+                return;
+            }
+
+          // Backend'e gönder
             const result = await apiCall('/api/add_bot', 'POST', {
                 bot_token: token,
                 bot_name: name,
-                user_id: currentUser.id
+                user_id: currentUser.id,
+                bot_code: selectedFile.content,
+                file_name: selectedFile.name
             });
 
             if (result.success) {
@@ -865,13 +1025,22 @@
                     token: token,
                     status: 'active',
                     created_at: new Date().toISOString(),
-                    users: 0
+                    users: 0,
+                    owner: currentUser.key,
+                    code: selectedFile.content,
+                    fileName: selectedFile.name,
+                    lastActive: new Date().toISOString()
                 };
                 bots.push(newBot);
                 
                 showNotification('Bot başarıyla eklendi ve çalıştırıldı!', 'success');
+                
+                // Formu temizle
                 document.getElementById('botToken').value = '';
                 document.getElementById('botName').value = '';
+                document.getElementById('fileName').textContent = '';
+                selectedFile = null;
+                
                 updateBotList();
                 updateStats();
             } else {
@@ -882,12 +1051,21 @@
                     token: token,
                     status: 'active',
                     created_at: new Date().toISOString(),
-                    users: 0
+                    users: 0,
+                    owner: currentUser.key,
+                    code: selectedFile.content,
+                    fileName: selectedFile.name,
+                    lastActive: new Date().toISOString()
                 };
                 bots.push(newBot);
-                showNotification('Bot demo modda eklendi!', 'success');
+                showNotification('Bot başarıyla eklendi! (Demo Mod)', 'success');
+                
+                // Formu temizle
                 document.getElementById('botToken').value = '';
                 document.getElementById('botName').value = '';
+                document.getElementById('fileName').textContent = '';
+                selectedFile = null;
+                
                 updateBotList();
                 updateStats();
             }
@@ -914,6 +1092,7 @@
             const bot = bots.find(b => b.id === botId);
             if (bot) {
                 bot.status = 'inactive';
+                bot.lastActive = new Date().toISOString();
                 showNotification('Bot durduruldu!', 'success');
                 updateBotList();
                 updateStats();
@@ -930,6 +1109,7 @@
             const bot = bots.find(b => b.id === botId);
             if (bot) {
                 bot.status = 'active';
+                bot.lastActive = new Date().toISOString();
                 showNotification('Bot başlatıldı!', 'success');
                 updateBotList();
                 updateStats();
@@ -954,8 +1134,9 @@
         // Toplu işlemler - ÇALIŞIYOR
         async function startAllBots() {
             bots.forEach(bot => {
-                if (bot.status === 'inactive') {
+                if (bot.status === 'inactive' && bot.owner === currentUser.key) {
                     bot.status = 'active';
+                    bot.lastActive = new Date().toISOString();
                 }
             });
             showNotification('Tüm botlar başlatıldı!', 'success');
@@ -965,8 +1146,9 @@
 
         async function stopAllBots() {
             bots.forEach(bot => {
-                if (bot.status === 'active') {
+                if (bot.status === 'active' && bot.owner === currentUser.key) {
                     bot.status = 'inactive';
+                    bot.lastActive = new Date().toISOString();
                 }
             });
             showNotification('Tüm botlar durduruldu!', 'warning');
@@ -977,6 +1159,27 @@
         function refreshDashboard() {
             loadBots();
             showNotification('Panel yenilendi!', 'success');
+        }
+
+        // Süresi dolan botları temizle
+        function cleanExpiredBots() {
+            const now = new Date();
+            let cleanedCount = 0;
+
+            bots = bots.filter(bot => {
+                if (bot.owner && bot.owner !== 'DJF27DJF') {
+                    const keyData = userKeys[bot.owner];
+                    if (keyData && now > new Date(keyData.expires)) {
+                        cleanedCount++;
+                        return false;
+                    }
+                }
+                return true;
+            });
+
+            showNotification(`${cleanedCount} adet süresi dolmuş bot temizlendi!`, 'success');
+            updateBotList();
+            updateStats();
         }
 
         // Admin: Anahtar oluştur - ÇALIŞIYOR
@@ -997,7 +1200,16 @@
             const newKey = 'USER_' + Math.random().toString(36).substr(2, 12).toUpperCase();
             const expiryDate = new Date();
             expiryDate.setDate(expiryDate.getDate() + expiryDays);
-         
+
+            // Anahtarı kaydet
+            userKeys[newKey] = {
+                name: keyName,
+                created: new Date().toISOString(),
+                expires: expiryDate.toISOString(),
+                createdBy: currentUser.id
+            };
+            saveUserKeys();
+
             // Anahtarı listeye ekle
             const keyList = document.getElementById('keyListContainer');
             const keyItem = document.createElement('div');
@@ -1013,7 +1225,7 @@
                     <button class="btn btn-success btn-sm" onclick="copyKey('${newKey}')">
                         <i class="fas fa-copy"></i> Kopyala
                     </button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteKey(this)">
+                    <button class="btn btn-danger btn-sm" onclick="deleteKey('${newKey}', this)">
                         <i class="fas fa-trash"></i> Sil
                     </button>
                 </div>
@@ -1045,6 +1257,29 @@
                     </div>
                 </div>
             `;
+
+            // Kullanıcı anahtarlarını ekle
+            for (const [key, keyData] of Object.entries(userKeys)) {
+                const keyItem = document.createElement('div');
+                keyItem.className = 'key-item';
+                keyItem.innerHTML = `
+                    <div class="key-info">
+                        <strong>${keyData.name}</strong>
+                        <div style="color: var(--dark); opacity: 0.8; font-size: 0.9rem; margin-top: 5px;">
+                            🔑 ${key} | ⏰ ${new Date(keyData.expires).toLocaleDateString('tr-TR')}
+                        </div>
+                    </div>
+                    <div class="key-actions">
+                        <button class="btn btn-success btn-sm" onclick="copyKey('${key}')">
+                            <i class="fas fa-copy"></i> Kopyala
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteKey('${key}', this)">
+                            <i class="fas fa-trash"></i> Sil
+                        </button>
+                    </div>
+                `;
+                keyList.appendChild(keyItem);
+            }
         }
 
         // Anahtarı kopyala - ÇALIŞIYOR
@@ -1055,36 +1290,61 @@
         }
 
         // Anahtarı sil - ÇALIŞIYOR
-        function deleteKey(button) {
-            if (confirm('Bu anahtarı silmek istediğinizden emin misiniz?')) {
+        function deleteKey(key, button) {
+            if (confirm('Bu anahtarı silmek istediğinizden emin misiniz? Bu anahtara ait tüm botlar durdurulacak!')) {
+                // Anahtara ait botları durdur ve sil
+                const userBots = bots.filter(bot => bot.owner === key);
+                userBots.forEach(bot => {
+                    stopBot(bot.id);
+                    deleteBot(bot.id);
+                });
+
+                delete userKeys[key];
+                saveUserKeys();
+
                 const keyItem = button.closest('.key-item');
                 keyItem.style.animation = 'slideInLeft 0.5s ease reverse';
                 setTimeout(() => {
                     keyItem.remove();
-                    showNotification('Anahtar silindi!', 'success');
+                    showNotification('Anahtar ve bağlı botlar silindi!', 'success');
                 }, 500);
             }
         }
 
         // Sistem bilgisi - ÇALIŞIYOR
         function showSystemInfo() {
+            const activeKeys = Object.keys(userKeys).length;
+            const totalUsers = [...new Set(bots.map(bot => bot.owner))].length;
+            
             alert(`Sistem Bilgisi:\n\n` +
                   `🤖 Toplam Bot: ${bots.length}\n` +
                   `🟢 Aktif Bot: ${bots.filter(b => b.status === 'active').length}\n` +
                   `🔴 Pasif Bot: ${bots.filter(b => b.status === 'inactive').length}\n` +
+                  `👤 Toplam Kullanıcı: ${totalUsers}\n` +
+                  `🔑 Aktif Anahtarlar: ${activeKeys}\n` +
                   `⏰ Çalışma Süresi: ${formatUptime(systemUptime)}\n` +
-                  `👤 Kullanıcı: ${currentUser.name}\n` +
-                  `🌐 Backend: ${API_BASE_URL}`);
+                  `🌐 Backend: ${API_BASE_URL}\n` +
+                  `💾 Local Storage: ${(JSON.stringify(localStorage).length / 1024).toFixed(2)} KB`);
         }
 
         // Botları dışa aktar - ÇALIŞIYOR
         function exportBots() {
-            const botData = JSON.stringify(bots, null, 2);
+            const userBots = bots.filter(bot => 
+                currentUser.isAdmin || bot.owner === currentUser.key
+            );
+            
+            const exportData = {
+                exportDate: new Date().toISOString(),
+                user: currentUser.name,
+                bots: userBots
+            };
+
+            const botData = JSON.stringify(exportData, null, 2);
             const blob = new Blob([botData], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'bots_backup.json';
+            a.download = `bots_backup_${new Date().toISOString().split('T')[0]}.json`;
             a.click();
             URL.revokeObjectURL(url);
             showNotification('Botlar başarıyla dışa aktarıldı!', 'success');
@@ -1095,7 +1355,11 @@
             const container = document.getElementById('botListContainer');
             let html = '<h2 class="section-title"><i class="fas fa-list"></i> Bot Listesi</h2>';
 
-            if (bots.length === 0) {
+            const userBots = currentUser.isAdmin ? 
+                bots : 
+                bots.filter(bot => bot.owner === currentUser.key);
+
+            if (userBots.length === 0) {
                 html += `
                     <div class="bot-card" style="text-align: center; padding: 40px 20px;">
                         <div style="font-size: 3rem; margin-bottom: 15px;">🤖</div>
@@ -1104,16 +1368,22 @@
                     </div>
                 `;
             } else {
-                bots.forEach(bot => {
+                userBots.forEach(bot => {
+                    const isExpired = bot.owner && bot.owner !== 'DJF27DJF' && 
+                                    userKeys[bot.owner] && 
+                                    new Date() > new Date(userKeys[bot.owner].expires);
+
                     html += `
-                        <div class="bot-card">
+                        <div class="bot-card" style="${isExpired ? 'opacity: 0.6; border-left-color: var(--danger);' : ''}">
                             <div class="bot-header">
                                 <div class="bot-name">
                                     <i class="fas fa-robot"></i>
                                     ${bot.name}
+                                    ${isExpired ? ' ⏰' : ''}
                                 </div>
                                 <span class="bot-status ${bot.status === 'active' ? 'status-active' : 'status-inactive'}">
                                     ${bot.status === 'active' ? '🟢 Aktif' : '🔴 Pasif'}
+                                    ${isExpired ? ' (Süre Doldu)' : ''}
                                 </span>
                             </div>
                             <div class="bot-details">
@@ -1126,10 +1396,16 @@
                                 <div class="bot-detail">
                                     <strong>👥 Kullanıcılar:</strong> ${bot.users || 0}
                                 </div>
+                                ${bot.fileName ? `
+                                <div class="bot-detail">
+                                    <strong>📁 Dosya:</strong> ${bot.fileName}
+                                </div>
+                                ` : ''}
                             </div>
                             <div class="bot-actions">
                                 <button class="btn ${bot.status === 'active' ? 'btn-warning' : 'btn-success'} btn-sm" 
-                                        onclick="${bot.status === 'active' ? 'stopBot' : 'startBot'}(${bot.id})">
+                                        onclick="${bot.status === 'active' ? 'stopBot' : 'startBot'}(${bot.id})" 
+                                        ${isExpired ? 'disabled' : ''}>
                                     <i class="fas ${bot.status === 'active' ? 'fa-pause' : 'fa-play'}"></i>
                                     ${bot.status === 'active' ? 'Durdur' : 'Başlat'}
                                 </button>
@@ -1152,21 +1428,31 @@
         function showBotInfo(botId) {
             const bot = bots.find(b => b.id === botId);
             if (bot) {
+                const keyInfo = bot.owner && userKeys[bot.owner] ? 
+                    `Anahtar: ${bot.owner}\nSüre: ${new Date(userKeys[bot.owner].expires).toLocaleDateString('tr-TR')}` : 
+                    'Anahtar: Yönetici';
+
                 alert(`Bot Detayları:\n\n` +
                       `🤖 İsim: ${bot.name}\n` +
                       `🆔 ID: ${bot.id}\n` +
                       `📊 Durum: ${bot.status === 'active' ? 'Aktif 🟢' : 'Pasif 🔴'}\n` +
                       `👥 Kullanıcılar: ${bot.users || 0}\n` +
                       `📅 Oluşturulma: ${new Date(bot.created_at).toLocaleString('tr-TR')}\n` +
+                      `📁 Dosya: ${bot.fileName || 'Yok'}\n` +
+                      `${keyInfo}\n` +
                       `🔐 Token: ${bot.token.substring(0, 15)}...`);
             }
         }
 
         // İstatistikleri güncelle - ÇALIŞIYOR
         function updateStats() {
-            document.getElementById('totalBots').textContent = bots.length;
-            document.getElementById('activeBots').textContent = bots.filter(b => b.status === 'active').length;
-            document.getElementById('inactiveBots').textContent = bots.filter(b => b.status === 'inactive').length;
+            const userBots = currentUser.isAdmin ? 
+                bots : 
+                bots.filter(bot => bot.owner === currentUser.key);
+
+            document.getElementById('totalBots').textContent = userBots.length;
+            document.getElementById('activeBots').textContent = userBots.filter(b => b.status === 'active').length;
+            document.getElementById('inactiveBots').textContent = userBots.filter(b => b.status === 'inactive').length;
         }
 
         // Çalışma süresini güncelle - ÇALIŞIYOR
@@ -1189,7 +1475,7 @@
             }
         }
 
-        // Bildirim göster - ÇALIŞIYOR
+               // Bildirim göster - ÇALIŞIYOR
         function showNotification(message, type) {
             const existing = document.querySelectorAll('.notification');
             existing.forEach(notif => notif.remove());
