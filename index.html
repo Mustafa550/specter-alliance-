@@ -3,26 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DearSiber Check System</title>
+    <title>🚀 Telegram Bot Cloud - 7/24 Aktif</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* ÖNCEKİ CSS KODUNUN TAMAMI BURAYA GELECEK */
+        /* Yukarıdaki tüm CSS stilini buraya kopyala */
         :root {
-            --primary: #8a2be2;
-            --primary-dark: #6a1cb0;
-            --secondary: #ff4757;
-            --dark: #1a1a2e;
-            --darker: #0f0f1a;
-            --light: #f8f9fa;
-            --success: #2ed573;
-            --warning: #ffa502;
-            --danger: #ff4757;
-            --info: #3742fa;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --card-border: rgba(255, 255, 255, 0.1);
-            --shopify: #96bf48;
-            --stripe: #635bff;
-            --paypal: #003087;
-            --exxen: #e50914;
+            --primary: #3498db;
+            --secondary: #2980b9;
+            --accent: #e74c3c;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --info: #1abc9c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --text: #34495e;
+            --bg: #f8f9fa;
+            --card: #ffffff;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
         * {
@@ -33,1399 +32,470 @@
         }
 
         body {
-            background: linear-gradient(135deg, var(--darker), var(--dark));
-            color: var(--light);
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Loading Screen */
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--darker), var(--dark));
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease-out;
-        }
-
-        .loading-content {
+        .header {
+            background: var(--gradient);
+            color: white;
+            padding: 40px 20px;
             text-align: center;
-        }
-
-        .loading-logo {
-            font-size: 4rem;
-            color: var(--primary);
-            margin-bottom: 20px;
-            animation: pulse 2s infinite;
-        }
-
-        .loading-text {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .loading-progress {
-            width: 200px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-            margin-top: 20px;
+            border-radius: 0 0 30px 30px;
+            box-shadow: var(--shadow);
+            position: relative;
             overflow: hidden;
         }
 
-        .loading-progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            border-radius: 2px;
-            width: 0%;
-            transition: width 0.3s;
-            animation: progressLoad 2s ease-in-out;
-        }
-
-        @keyframes progressLoad {
-            0% { width: 0%; }
-            100% { width: 100%; }
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        /* Header */
-        header {
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            padding: 15px 0;
-            border-bottom: 1px solid var(--card-border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--light);
-        }
-
-        .logo i {
-            color: var(--primary);
-            font-size: 1.8rem;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 20px;
-        }
-
-        .nav-links a {
-            color: var(--light);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            padding: 8px 15px;
-            border-radius: 8px;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary);
-            background: rgba(138, 43, 226, 0.1);
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 40px 0;
-        }
-
-        /* Admin Login */
-        .admin-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .admin-login-container {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--card-border);
-            max-width: 400px;
-            width: 90%;
-        }
-
-        .admin-login-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .admin-login-header h2 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--card-border);
-            border-radius: 8px;
-            color: var(--light);
-            font-size: 1rem;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-        }
-
-        .btn:hover {
-            background: linear-gradient(90deg, var(--primary-dark), var(--primary));
-            transform: translateY(-2px);
-        }
-
-        .btn:disabled {
-            background: rgba(255, 255, 255, 0.1);
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .btn-small {
-            padding: 8px 15px;
-            font-size: 0.9rem;
-            border-radius: 6px;
-        }
-
-        .btn-success {
-            background: var(--success);
-        }
-
-        .btn-danger {
-            background: var(--danger);
-        }
-
-        .btn-info {
-            background: var(--info);
-        }
-
-        /* Footer */
-        footer {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 20px 0;
-            text-align: center;
-            border-top: 1px solid var(--card-border);
-            margin-top: auto;
-        }
-
-        /* Panels */
-        .checker-panel, .admin-panel {
-            display: none;
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--card-border);
-            margin-top: 30px;
-        }
-
-        .checker-header, .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--card-border);
-        }
-
-        /* Gateway Selection */
-        .gateway-selection {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .gateway-item {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-        }
-
-        .gateway-item:hover {
-            transform: translateY(-2px);
-        }
-
-        .gateway-item.selected {
-            border-color: var(--primary);
-        }
-
-        .gateway-icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        .shopify { color: var(--shopify); }
-        .stripe { color: var(--stripe); }
-        .paypal { color: var(--paypal); }
-        .exxen { color: var(--exxen); }
-
-        /* File Upload */
-        .file-upload {
-            border: 2px dashed var(--card-border);
-            border-radius: 10px;
-            padding: 30px;
-            text-align: center;
-            margin-bottom: 20px;
-            cursor: pointer;
-        }
-
-        .file-upload i {
-            font-size: 3rem;
-            color: var(--primary);
-            margin-bottom: 15px;
-        }
-
-        .file-input {
-            display: none;
-        }
-
-        /* Results */
-        .results {
-            margin-top: 30px;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .stat-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-2px);
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            margin: 10px 0;
-        }
-
-        .stat-live { color: var(--success); }
-        .stat-dead { color: var(--danger); }
-        .stat-total { color: var(--primary); }
-        .stat-rate { color: var(--warning); }
-
-        .result-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 15px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-            margin-bottom: 10px;
-            border-left: 4px solid transparent;
-        }
-
-        .result-item.live {
-            border-left-color: var(--success);
-        }
-
-        .result-item.dead {
-            border-left-color: var(--danger);
-        }
-
-        .card-info {
-            flex: 1;
-        }
-
-        .card-number {
-            font-weight: 600;
-        }
-
-        .status {
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .status.approved {
-            background: rgba(46, 213, 115, 0.2);
-            color: var(--success);
-        }
-
-        .status.declined {
-            background: rgba(255, 71, 87, 0.2);
-            color: var(--danger);
-        }
-
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            background: var(--success);
-            color: white;
-            border-radius: 8px;
-            transform: translateX(150%);
-            transition: transform 0.5s;
-            z-index: 1000;
-        }
-
-        .notification.show {
-            transform: translateX(0);
-        }
-
-        .notification.error {
-            background: var(--danger);
-        }
-
-        /* Progress Bar */
-        .progress-container {
-            width: 100%;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            margin: 15px 0;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            border-radius: 4px;
-            width: 0%;
-            transition: width 0.3s;
-        }
-
-        /* Download Buttons */
-        .download-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-
-        .download-btn {
-            padding: 8px 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--card-border);
-            border-radius: 5px;
-            color: var(--light);
-            cursor: pointer;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .download-btn:hover {
-            background: var(--primary);
-        }
-
-        /* Admin Tabs */
-        .admin-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .admin-tab {
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .admin-tab.active {
-            background: var(--primary);
-        }
-
-        .admin-content {
-            display: none;
-        }
-
-        .admin-content.active {
-            display: block;
-        }
-
-        .user-list, .log-list {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            padding: 15px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .user-item, .log-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid var(--card-border);
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        /* Info Boxes */
-        .info-box {
-            background: rgba(255, 193, 7, 0.1);
-            border: 1px solid var(--warning);
-            border-radius: 8px;
-            padding: 10px 15px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .card-preview {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-left: 4px solid var(--primary);
-        }
-
-        .card-preview-content {
-            font-family: monospace;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 10px;
-            border-radius: 5px;
-            overflow-x: auto;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .gateway-selection {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+        /* ... TÜM DİĞER CSS KODLARI ... */
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loading-screen" id="loading-screen">
-        <div class="loading-content">
-            <div class="loading-logo">
-                <i class="fas fa-shield-alt"></i>
-            </div>
-            <div class="loading-text">DearSiber Check System</div>
-            <div class="loading-progress">
-                <div class="loading-progress-bar"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Admin Login Modal -->
-    <div class="admin-modal" id="admin-modal">
-        <div class="admin-login-container">
-            <div class="admin-login-header">
-                <h2>Admin Girişi</h2>
-                <p>Yönetici paneline erişmek için giriş yapın</p>
-            </div>
-            
-            <div class="form-group">
-                <label for="admin-username">Kullanıcı Adı</label>
-                <input type="text" id="admin-username" class="form-control">
-            </div>
-            
-            <div class="form-group">
-                <label for="admin-password">Şifre</label>
-                <input type="password" id="admin-password" class="form-control">
-            </div>
-            
-            <button class="btn" id="admin-login-btn">GİRİŞ YAP</button>
-            <button class="btn" id="close-admin-modal" style="margin-top: 10px; background: rgba(255,255,255,0.1);">İPTAL</button>
-        </div>
-    </div>
-
-    <!-- Header -->
-    <header>
-        <div class="container header-content">
-            <div class="logo">
-                <i class="fas fa-shield-alt"></i>
-                <span>DearSiber Check System</span>
-            </div>
-            <div class="nav-links">
-                <a href="#" id="home-link">Ana Sayfa</a>
-                <a href="#" id="admin-link">Admin Panel</a>
-            </div>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo">🤖</div>
+        <h1>Telegram Bot Cloud</h1>
+        <p class="subtitle">🚀 Gerçek Botlar | 7/24 Aktif | Ücretsiz Cloud</p>
+        <div style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">
+            ⚡ Backend: Render.com | 🌐 Frontend: GitHub Pages
         </div>
     </header>
 
-    <!-- Main Content -->
-    <div class="container main-content">
-        <!-- Checker Panel -->
-        <div class="checker-panel" id="checker-panel">
-            <div class="checker-header">
-                <h2>Kart Kontrol Paneli</h2>
-            </div>
-            
-            <div class="info-box">
-                <i class="fas fa-info-circle"></i>
-                <span>Her kart kontrolü 6 saniye sürmektedir</span>
-            </div>
-
-            <div class="card-preview">
-                <div class="card-preview-content">
-                    4916931023123456|12|2025|123<br>
-                    4916931023123456|12|25|123<br>
-                    4916931023123456:12:2025:123<br>
-                    4916931023123456 12 2025 123<br>
-                    4916931023123456-12-2025-123
-                </div>
-            </div>
-            
-            <div class="gateway-selection" id="gateway-selection">
-                <div class="gateway-item" data-gateway="shopify">
-                    <div class="gateway-icon shopify">
-                        <i class="fas fa-shopping-cart"></i>
-                    </div>
-                    <div class="gateway-name">Shopify</div>
-                </div>
-                <div class="gateway-item" data-gateway="stripe">
-                    <div class="gateway-icon stripe">
-                        <i class="fas fa-credit-card"></i>
-                    </div>
-                    <div class="gateway-name">Stripe</div>
-                </div>
-                <div class="gateway-item" data-gateway="paypal">
-                    <div class="gateway-icon paypal">
-                        <i class="fab fa-paypal"></i>
-                    </div>
-                    <div class="gateway-name">PayPal</div>
-                </div>
-                <div class="gateway-item" data-gateway="exxen">
-                    <div class="gateway-icon exxen">
-                        <i class="fas fa-tv"></i>
-                    </div>
-                    <div class="gateway-name">Exxen</div>
-                </div>
-            </div>
-            
-            <div class="file-upload" id="file-upload">
-                <i class="fas fa-cloud-upload-alt"></i>
-                <h3>Dosya Yükleyin</h3>
-                <p>Desteklenen formatlar: .txt</p>
-                <input type="file" id="file-input" class="file-input" accept=".txt">
-            </div>
-            
+    <div class="container">
+        <!-- LOGIN SECTION -->
+        <section id="loginSection" class="login-section">
+            <h2 style="margin-bottom: 25px;">🔐 Sisteme Giriş Yapın</h2>
             <div class="form-group">
-                <label for="card-input">Veya kart bilgilerini buraya girin:</label>
-                <textarea id="card-input" class="form-control" rows="5" placeholder="4916931023123456|12|2025|123&#10;5412751234567890|03|2026|456"></textarea>
+                <label for="accessKey"><i class="fas fa-key"></i> Erişim Anahtarınız</label>
+                <input type="password" id="accessKey" placeholder="🔑 Anahtarınızı girin..." required>
             </div>
-            
-          <div class="progress-container">
-                <div class="progress-bar" id="progress-bar"></div>
+            <button class="btn btn-primary pulse" onclick="login()">
+                <i class="fas fa-sign-in-alt"></i> Giriş Yap
+            </button>
+            <div style="margin-top: 20px; padding: 15px; background: rgba(52, 152, 219, 0.1); border-radius: 10px;">
+                <strong>👑 Admin Anahtarı:</strong> <code>DJF27DJF</code><br>
+                <strong>👤 Demo Kullanıcı:</strong> <code>USER123</code>
             </div>
-            
-            <button class="btn" id="check-btn">KARTLARI KONTROL ET</button>
-            
-            <div class="stats" id="stats" style="display: none;">
-                <div class="stat-card" id="stat-total-card">
-                    <div class="stat-label">Toplam Kart</div>
-                    <div class="stat-value stat-total" id="stat-total">0</div>
+        </section>
+
+        <!-- DASHBOARD -->
+        <section id="dashboard" class="dashboard">
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card floating">
+                    <div class="stat-icon">🤖</div>
+                    <div class="stat-number" id="totalBots">0</div>
+                    <div class="stat-text">Toplam Bot</div>
                 </div>
-                <div class="stat-card" id="stat-live-card">
-                    <div class="stat-label">Live Kartlar</div>
-                    <div class="stat-value stat-live" id="stat-live">0</div>
+                <div class="stat-card floating" style="animation-delay: 0.2s;">
+                    <div class="stat-icon">🟢</div>
+                    <div class="stat-number" id="activeBots">0</div>
+                    <div class="stat-text">Aktif Bot</div>
                 </div>
-                <div class="stat-card" id="stat-dead-card">
-                    <div class="stat-label">Dead Kartlar</div>
-                    <div class="stat-value stat-dead" id="stat-dead">0</div>
+                <div class="stat-card floating" style="animation-delay: 0.4s;">
+                    <div class="stat-icon">🔴</div>
+                    <div class="stat-number" id="inactiveBots">0</div>
+                    <div class="stat-text">Pasif Bot</div>
                 </div>
-                <div class="stat-card" id="stat-rate-card">
-                    <div class="stat-label">Live Oranı</div>
-                    <div class="stat-value stat-rate" id="stat-rate">0%</div>
+                <div class="stat-card floating" style="animation-delay: 0.6s;">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-number" id="uptime">0s</div>
+                    <div class="stat-text">Çalışma Süresi</div>
                 </div>
             </div>
 
-            <div class="download-buttons" id="download-buttons" style="display: none;">
-                <button class="download-btn" id="download-live">Live Kartları İndir</button>
-                <button class="download-btn" id="download-dead">Dead Kartları İndir</button>
-                <button class="download-btn" id="download-all">Tüm Kartları İndir</button>
-            </div>
-            
-            <div class="results" id="results"></div>
-        </div>
+            <!-- Action Grid -->
+            <div class="action-grid">
+                <div class="action-card">
+                    <h3 class="card-title"><i class="fas fa-plus-circle"></i> Yeni Bot Ekle</h3>
+                    <div class="form-group">
+                        <label for="botToken"><i class="fas fa-robot"></i> Bot Token</label>
+                        <input type="text" id="botToken" placeholder="🤖 Bot Father tokeninizi girin...">
+                    </div>
+                    <div class="form-group">
+                        <label for="botName"><i class="fas fa-signature"></i> Bot Adı</label>
+                        <input type="text" id="botName" placeholder="💡 Botunuz için bir isim...">
+                    </div>
+                    <button class="btn btn-success" onclick="addBot()">
+                        <i class="fas fa-rocket"></i> Bot Ekle ve Başlat
+                    </button>
+                </div>
 
-        <!-- Admin Panel -->
-        <div class="admin-panel" id="admin-panel">
-            <div class="admin-header">
-                <h2>Admin Paneli</h2>
-                <div class="action-buttons">
-                    <button class="btn btn-small btn-danger" id="admin-logout-btn">Çıkış</button>
-                </div>
-            </div>
-            
-            <div class="admin-tabs">
-                <div class="admin-tab active" data-tab="checker">Kart Kontrol</div>
-                <div class="admin-tab" data-tab="logs">Sistem Logları</div>
-                <div class="admin-tab" data-tab="settings">Ayarlar</div>
-            </div>
-            
-            <!-- Checker Content -->
-            <div class="admin-content active" id="checker-content">
-                <h3>Admin Kart Kontrol</h3>
-                
-                <div class="gateway-selection" id="admin-gateway-selection">
-                    <div class="gateway-item" data-gateway="shopify">
-                        <div class="gateway-icon shopify">
-                            <i class="fas fa-shopping-cart"></i>
-                        </div>
-                        <div class="gateway-name">Shopify</div>
-                    </div>
-                    <div class="gateway-item" data-gateway="stripe">
-                        <div class="gateway-icon stripe">
-                            <i class="fas fa-credit-card"></i>
-                        </div>
-                        <div class="gateway-name">Stripe</div>
-                    </div>
-                    <div class="gateway-item" data-gateway="paypal">
-                        <div class="gateway-icon paypal">
-                            <i class="fab fa-paypal"></i>
-                        </div>
-                        <div class="gateway-name">PayPal</div>
-                    </div>
-                    <div class="gateway-item" data-gateway="exxen">
-                        <div class="gateway-icon exxen">
-                            <i class="fas fa-tv"></i>
-                        </div>
-                        <div class="gateway-name">Exxen</div>
+                <div class="action-card">
+                    <h3 class="card-title"><i class="fas fa-bolt"></i> Hızlı İşlemler</h3>
+                    <div style="display: grid; gap: 12px;">
+                        <button class="btn btn-info" onclick="startAllBots()">
+                            <i class="fas fa-play"></i> Tümünü Başlat
+                        </button>
+                        <button class="btn btn-warning" onclick="stopAllBots()">
+                            <i class="fas fa-stop"></i> Tümünü Durdur
+                        </button>
+                        <button class="btn btn-primary" onclick="refreshDashboard()">
+                            <i class="fas fa-sync-alt"></i> Yenile
+                        </button>
                     </div>
                 </div>
-                
-                <div class="form-group">
-                    <label for="admin-card-input">Kart bilgilerini girin:</label>
-                    <textarea id="admin-card-input" class="form-control" rows="5" placeholder="Kart bilgilerini buraya girin..."></textarea>
-                </div>
-                
-                <button class="btn" id="admin-check-btn">KARTLARI KONTROL ET</button>
-                
-                <div class="results" id="admin-results"></div>
             </div>
 
-            <!-- Logs Content -->
-            <div class="admin-content" id="logs-content">
-                <h3>Sistem Logları</h3>
-                <div class="log-list" id="log-list"></div>
+            <!-- Bot List -->
+            <div class="bot-list" id="botListContainer">
+                <h2 style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-list"></i> Bot Listesi
+                </h2>
+                <!-- Botlar buraya dinamik olarak eklenecek -->
             </div>
 
-            <!-- Settings Content -->
-            <div class="admin-content" id="settings-content">
-                <h3>Sistem Ayarları</h3>
-                <div class="form-group">
-                    <label for="rate-limit">Kart Başına Bekleme Süresi (saniye)</label>
-                    <input type="number" id="rate-limit" class="form-control" value="6" min="1" max="60">
+            <!-- Admin Panel -->
+            <div id="adminPanel" class="admin-panel">
+                <h2 class="card-title"><i class="fas fa-user-shield"></i> Admin Yönetim Paneli</h2>
+                
+                <div class="action-grid">
+                    <div class="action-card">
+                        <h3 class="card-title"><i class="fas fa-key"></i> Yeni Anahtar Oluştur</h3>
+                        <div class="form-group">
+                            <label for="newKeyName">Anahtar İsmi</label>
+                            <input type="text" id="newKeyName" placeholder="🏷️ Anahtar için isim...">
+                        </div>
+                        <div class="form-group">
+                            <label for="keyExpiryDays">Geçerlilik Süresi (Gün)</label>
+                            <select id="keyExpiryDays">
+                                <option value="7">7 Gün</option>
+                                <option value="30" selected>30 Gün</option>
+                                <option value="90">90 Gün</option>
+                                <option value="365">1 Yıl</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-warning" onclick="generateKey()">
+                            <i class="fas fa-key"></i> Anahtar Oluştur
+                        </button>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="max-cards">Maksimum Kart Sayısı</label>
-                    <input type="number" id="max-cards" class="form-control" value="1000" min="10" max="10000">
+
+                <div class="key-list" id="keyListContainer">
+                    <h3 style="margin: 25px 0 15px 0; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-key"></i> Aktif Anahtarlar
+                    </h3>
                 </div>
-                <button class="btn" id="save-settings-btn">Ayarları Kaydet</button>
             </div>
-        </div>
+        </section>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>© 2023 DearSiber Check System</p>
-        </div>
-    </footer>
-
-    <!-- Notification -->
-    <div class="notification" id="notification"></div>
-
     <script>
-        // Admin bilgileri gizli
-        const ADMIN_USERNAME = "sirin31";
-        const ADMIN_PASSWORD = "sirin3131";
+        // BACKEND API URL - Render.com'da çalışacak
+        const API_BASE_URL = 'https://your-app-name.onrender.com'; // BUNA DİKKAT!
 
-        // Sistem ayarları
-        let systemSettings = JSON.parse(localStorage.getItem('dearsiber_settings')) || {
-            rateLimit: 6,
-            maxCards: 1000
-        };
+        let currentUser = null;
+        let bots = [];
+        let systemUptime = 0;
 
-        // Veri depolama
-        let logs = JSON.parse(localStorage.getItem('dearsiber_logs')) || [];
-        let cardLogs = JSON.parse(localStorage.getItem('dearsiber_card_logs')) || [];
-        
-        let selectedGateway = null;
-        let selectedAdminGateway = null;
-        let currentResults = [];
-        let isChecking = false;
-        let isAdmin = false;
-
-        // DOM Elements
-        const loadingScreen = document.getElementById('loading-screen');
-        const adminModal = document.getElementById('admin-modal');
-        const adminLoginBtn = document.getElementById('admin-login-btn');
-        const closeAdminModal = document.getElementById('close-admin-modal');
-        const adminUsername = document.getElementById('admin-username');
-        const adminPassword = document.getElementById('admin-password');
-        const adminLink = document.getElementById('admin-link');
-        const homeLink = document.getElementById('home-link');
-        const adminLogoutBtn = document.getElementById('admin-logout-btn');
-        const checkerPanel = document.getElementById('checker-panel');
-        const adminPanel = document.getElementById('admin-panel');
-        const fileUpload = document.getElementById('file-upload');
-        const fileInput = document.getElementById('file-input');
-        const checkBtn = document.getElementById('check-btn');
-        const adminCheckBtn = document.getElementById('admin-check-btn');
-        const resultsContainer = document.getElementById('results');
-        const adminResultsContainer = document.getElementById('admin-results');
-        const cardInput = document.getElementById('card-input');
-        const adminCardInput = document.getElementById('admin-card-input');
-        const notification = document.getElementById('notification');
-        const adminTabs = document.querySelectorAll('.admin-tab');
-        const adminContents = document.querySelectorAll('.admin-content');
-        const progressBar = document.getElementById('progress-bar');
-        const statsContainer = document.getElementById('stats');
-        const statTotal = document.getElementById('stat-total');
-        const statLive = document.getElementById('stat-live');
-        const statDead = document.getElementById('stat-dead');
-        const statRate = document.getElementById('stat-rate');
-        const downloadButtons = document.getElementById('download-buttons');
-        const downloadLiveBtn = document.getElementById('download-live');
-        const downloadDeadBtn = document.getElementById('download-dead');
-        const downloadAllBtn = document.getElementById('download-all');
-        const logList = document.getElementById('log-list');
-        const rateLimitInput = document.getElementById('rate-limit');
-        const maxCardsInput = document.getElementById('max-cards');
-        const saveSettingsBtn = document.getElementById('save-settings-btn');
-        const gatewayItems = document.querySelectorAll('.gateway-item');
-        const adminGatewayItems = document.querySelectorAll('#admin-gateway-selection .gateway-item');
-
-        // Sayfa yüklendiğinde
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(() => {
-                loadingScreen.style.opacity = '0';
-                setTimeout(() => {
-                    loadingScreen.style.display = 'none';
-                    showCheckerPanel();
-                }, 500);
-            }, 2000);
-
-            loadSettings();
-            loadLogs();
-            
-            if (logs.length === 0) {
-                addLog("Sistem başlatıldı", "system");
-            }
-        });
-
-        // Event Listeners
-        adminLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            showAdminModal();
-        });
-        
-        homeLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            showCheckerPanel();
-        });
-        
-        adminLoginBtn.addEventListener('click', handleAdminLogin);
-        closeAdminModal.addEventListener('click', closeAdminModalFunc);
-        adminLogoutBtn.addEventListener('click', handleAdminLogout);
-        
-        fileUpload.addEventListener('click', function() {
-            fileInput.click();
-        });
-        
-        fileInput.addEventListener('change', handleFileUpload);
-        checkBtn.addEventListener('click', checkCards);
-        adminCheckBtn.addEventListener('click', adminCheckCards);
-        downloadLiveBtn.addEventListener('click', () => downloadCards('live'));
-        downloadDeadBtn.addEventListener('click', () => downloadCards('dead'));
-        downloadAllBtn.addEventListener('click', () => downloadCards('all'));
-        saveSettingsBtn.addEventListener('click', saveSettings);
-
-             // Gateway seçimi
-        gatewayItems.forEach(item => {
-            item.addEventListener('click', function() {
-                gatewayItems.forEach(i => i.classList.remove('selected'));
-                this.classList.add('selected');
-                selectedGateway = this.getAttribute('data-gateway');
-            });
-        });
-        
-        adminGatewayItems.forEach(item => {
-            item.addEventListener('click', function() {
-                adminGatewayItems.forEach(i => i.classList.remove('selected'));
-                this.classList.add('selected');
-                selectedAdminGateway = this.getAttribute('data-gateway');
-            });
-        });
-
-        // Admin tabları
-        adminTabs.forEach(tab => {
-            tab.addEventListener('click', function() {
-                const tabId = this.getAttribute('data-tab');
-                
-                adminTabs.forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                
-                adminContents.forEach(content => {
-                    content.classList.remove('active');
-                    if (content.id === `${tabId}-content`) {
-                        content.classList.add('active');
+        // Backend API çağrıları
+        async function apiCall(endpoint, method = 'GET', data = null) {
+            try {
+                const options = {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
                     }
-                });
-            });
-        });
+                };
 
-        // Fonksiyonlar
-        function showAdminModal() {
-            adminModal.style.display = 'flex';
-            adminUsername.value = '';
-            adminPassword.value = '';
+                if (data) {
+                    options.body = JSON.stringify(data);
+                }
+
+                const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
+                return await response.json();
+            } catch (error) {
+                console.error('API Hatası:', error);
+                showNotification('🌐 Sunucu bağlantı hatası!', 'error');
+                return { success: false, message: 'Bağlantı hatası' };
+            }
         }
 
-        function closeAdminModalFunc() {
-            adminModal.style.display = 'none';
-        }
-
-        function handleAdminLogin() {
-            const username = adminUsername.value;
-            const password = adminPassword.value;
+        // Giriş fonksiyonu - GERÇEK
+        async function login() {
+            const key = document.getElementById('accessKey').value.trim();
             
-            if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-                isAdmin = true;
-                adminModal.style.display = 'none';
-                showAdminPanel();
-                showNotification('Admin paneline hoş geldiniz!', 'success');
-                addLog("Admin giriş yaptı", "admin");
+            if (!key) {
+                showNotification('⚠️ Lütfen anahtar girin!', 'warning');
+                return;
+            }
+
+            const result = await apiCall('/api/login', 'POST', { api_key: key });
+            
+            if (result.success) {
+                currentUser = {
+                    id: result.user_id,
+                    isAdmin: result.is_admin
+                };
+                
+                showDashboard();
+                showNotification('🎉 Giriş başarılı! Botlarınız yükleniyor...', 'success');
+                loadBots();
             } else {
-                showNotification('Kullanıcı adı veya şifre hatalı!', 'error');
+                showNotification('❌ ' + result.message, 'error');
             }
         }
 
-        function handleAdminLogout() {
-            isAdmin = false;
-            showCheckerPanel();
-            showNotification('Admin panelinden çıkış yapıldı!', 'info');
-            addLog("Admin çıkış yaptı", "admin");
-        }
+        // Bot ekleme - GERÇEK
+        async function addBot() {
+            const token = document.getElementById('botToken').value.trim();
+            const name = document.getElementById('botName').value.trim();
 
-        function loadSettings() {
-            rateLimitInput.value = systemSettings.rateLimit;
-            maxCardsInput.value = systemSettings.maxCards;
-        }
-
-        function saveSettings() {
-            systemSettings.rateLimit = parseInt(rateLimitInput.value);
-            systemSettings.maxCards = parseInt(maxCardsInput.value);
-            
-            localStorage.setItem('dearsiber_settings', JSON.stringify(systemSettings));
-            showNotification('Ayarlar kaydedildi!', 'success');
-            addLog("Sistem ayarları güncellendi", "admin");
-        }
-
-        function showCheckerPanel() {
-            checkerPanel.style.display = 'block';
-            adminPanel.style.display = 'none';
-        }
-
-        function showAdminPanel() {
-            if (!isAdmin) {
-                showAdminModal();
+            if (!token || !name) {
+                showNotification('📝 Lütfen tüm alanları doldurun!', 'error');
                 return;
             }
-            checkerPanel.style.display = 'none';
-            adminPanel.style.display = 'block';
-        }
 
-        function handleFileUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                cardInput.value = e.target.result;
-                showNotification('Dosya yüklendi!', 'success');
-            };
-            reader.readAsText(file);
-        }
-
-        function checkCards() {
-            if (isChecking) {
-                showNotification('Zaten kontrol yapılıyor!', 'error');
-                return;
-            }
-            
-            if (!selectedGateway) {
-                showNotification('Gateway seçin!', 'error');
-                return;
-            }
-            
-            const cardData = cardInput.value.trim();
-            if (!cardData) {
-                showNotification('Kart bilgilerini girin!', 'error');
-                return;
-            }
-            
-            const cards = parseCardData(cardData);
-            if (cards.length === 0) {
-                showNotification('Geçerli kart formatı bulunamadı!', 'error');
-                return;
-            }
-            
-            if (cards.length > systemSettings.maxCards) {
-                showNotification(`Maksimum ${systemSettings.maxCards} kart kontrol edebilirsiniz!`, 'error');
-                return;
-            }
-            
-            isChecking = true;
-            checkBtn.disabled = true;
-            checkBtn.textContent = 'KONTROL EDİLİYOR...';
-            
-            resultsContainer.innerHTML = '';
-            statsContainer.style.display = 'grid';
-            downloadButtons.style.display = 'flex';
-            statTotal.textContent = '0';
-            statLive.textContent = '0';
-            statDead.textContent = '0';
-            statRate.textContent = '0%';
-            currentResults = [];
-            
-            addLog(`${cards.length} kart kontrol edildi`, "check");
-            
-            progressBar.style.width = '0%';
-            
-            let processed = 0;
-            let liveCount = 0;
-            let deadCount = 0;
-            
-            cards.forEach((card, index) => {
-                setTimeout(() => {
-                    const validation = validateCard(card);
-                    if (!validation.valid) {
-                        const result = {
-                            card: card,
-                            gateway: selectedGateway,
-                            approved: false,
-                            message: validation.message
-                        };
-                        currentResults.push(result);
-                        displayResult(result, resultsContainer);
-                        deadCount++;
-                    } else {
-                        const result = simulateCardCheck(card, selectedGateway);
-                        currentResults.push(result);
-                        if (result.approved) liveCount++;
-                        else deadCount++;
-                        
-                        displayResult(result, resultsContainer);
-                    }
-                    
-                    processed++;
-                    
-                    const progress = (processed / cards.length) * 100;
-                    progressBar.style.width = `${progress}%`;
-                    
-                    statTotal.textContent = processed;
-                    statLive.textContent = liveCount;
-                    statDead.textContent = deadCount;
-                    statRate.textContent = cards.length > 0 ? `${((liveCount / processed) * 100).toFixed(1)}%` : '0%';
-                    
-                    if (processed === cards.length) {
-                        showNotification('Kontrol tamamlandı!', 'success');
-                        progressBar.style.width = '100%';
-                        
-                        isChecking = false;
-                        checkBtn.disabled = false;
-                        checkBtn.textContent = 'KARTLARI KONTROL ET';
-                        
-                        addLog(`Kontrol tamamlandı: ${liveCount} live, ${deadCount} dead`, "check");
-                    }
-                }, index * systemSettings.rateLimit * 1000);
+            const result = await apiCall('/api/add_bot', 'POST', {
+                bot_token: token,
+                bot_name: name,
+                user_id: currentUser.id
             });
-        }
 
-        function adminCheckCards() {
-            if (isChecking) {
-                showNotification('Zaten kontrol yapılıyor!', 'error');
-                return;
-            }
-            
-            if (!selectedAdminGateway) {
-                showNotification('Gateway seçin!', 'error');
-                return;
-            }
-            
-            const cardData = adminCardInput.value.trim();
-            if (!cardData) {
-                showNotification('Kart bilgilerini girin!', 'error');
-                return;
-            }
-            
-            const cards = parseCardData(cardData);
-            if (cards.length === 0) {
-                showNotification('Geçerli kart formatı bulunamadı!', 'error');
-                return;
-            }
-            
-            isChecking = true;
-            adminCheckBtn.disabled = true;
-            adminCheckBtn.textContent = 'KONTROL EDİLİYOR...';
-            
-            adminResultsContainer.innerHTML = '';
-            
-            addLog(`Admin ${cards.length} kart kontrol etti`, "admin");
-            
-            let processed = 0;
-            
-            cards.forEach((card, index) => {
-                setTimeout(() => {
-                    const validation = validateCard(card);
-                    if (!validation.valid) {
-                        const result = {
-                            card: card,
-                            gateway: selectedAdminGateway,
-                            approved: false,
-                            message: validation.message
-                        };
-                        displayResult(result, adminResultsContainer);
-                    } else {
-                        const result = simulateCardCheck(card, selectedAdminGateway);
-                        displayResult(result, adminResultsContainer);
-                    }
-                    
-                    processed++;
-                    
-                    if (processed === cards.length) {
-                        isChecking = false;
-                        adminCheckBtn.disabled = false;
-                        adminCheckBtn.textContent = 'KARTLARI KONTROL ET';
-                    }
-                }, index * systemSettings.rateLimit * 1000);
-            });
-            
-            showNotification('Admin kontrolü başlatıldı!', 'info');
-        }
-
-        function parseCardData(data) {
-            const lines = data.split('\n');
-            const cards = [];
-            
-            lines.forEach(line => {
-                line = line.trim();
-                if (!line) return;
-                
-                let parts;
-                if (line.includes('|')) {
-                    parts = line.split('|');
-                } else if (line.includes(':')) {
-                    parts = line.split(':');
-                } else if (line.includes(' ')) {
-                    parts = line.split(' ');
-                } else if (line.includes('-')) {
-                    parts = line.split('-');
-                } else {
-                    return;
-                }
-                
-                if (parts.length < 4) return;
-                
-                const cardNumber = parts[0].replace(/\s/g, '');
-                let month = parts[1];
-                let year = parts[2];
-                const cvv = parts[3];
-                
-                if (cardNumber.length < 15 || cardNumber.length > 16) return;
-                
-                if (year.length === 2) {
-                    year = '20' + year;
-                }
-                
-                cards.push({
-                    number: cardNumber,
-                    month: month.padStart(2, '0'),
-                    year: year,
-                    cvv: cvv
-                });
-            });
-            
-            return cards;
-        }
-
-        function validateCard(card) {
-            if (!luhnCheck(card.number)) {
-                return { valid: false, message: 'Geçersiz kart numarası' };
-            }
-            
-            const currentDate = new Date();
-            const currentYear = currentDate.getFullYear();
-            const currentMonth = currentDate.getMonth() + 1;
-            
-            const cardYear = parseInt(card.year);
-            const cardMonth = parseInt(card.month);
-            
-            if (cardYear < currentYear || (cardYear === currentYear && cardMonth < currentMonth)) {
-                return { valid: false, message: 'Kartın süresi dolmuş' };
-            }
-            
-            if (card.cvv.length < 3 || card.cvv.length > 4) {
-                return { valid: false, message: 'Geçersiz CVV' };
-            }
-            
-            return { valid: true, message: 'Kart geçerli' };
-        }
-
-        function luhnCheck(cardNumber) {
-            let sum = 0;
-            let isEven = false;
-            
-            for (let i = cardNumber.length - 1; i >= 0; i--) {
-                let digit = parseInt(cardNumber.charAt(i));
-                
-                if (isEven) {
-                    digit *= 2;
-                    if (digit > 9) {
-                        digit -= 9;
-                    }
-                }
-                
-                sum += digit;
-                isEven = !isEven;
-            }
-            
-            return sum % 10 === 0;
-        }
-
-        function simulateCardCheck(card, gateway) {
-            const approved = Math.random() < 0.01; // %1 live oranı
-            
-            return {
-                card: card,
-                gateway: gateway,
-                approved: approved,
-                message: approved ? 'Ödeme başarılı' : 'Ödeme reddedildi'
-            };
-        }
-
-        function displayResult(result, container) {
-            const resultItem = document.createElement('div');
-            resultItem.className = `result-item ${result.approved ? 'live' : 'dead'}`;
-            
-            const cardInfo = document.createElement('div');
-            cardInfo.className = 'card-info';
-            
-            const cardNumber = document.createElement('div');
-            cardNumber.className = 'card-number';
-            cardNumber.textContent = result.card.number.replace(/(\d{4})/g, '$1 ').trim();
-            
-            const cardDetails = document.createElement('div');
-            cardDetails.className = 'card-details';
-            cardDetails.textContent = `${result.card.month}/${result.card.year} | ${result.card.cvv} | ${result.message}`;
-            
-            cardInfo.appendChild(cardNumber);
-            cardInfo.appendChild(cardDetails);
-            
-            const status = document.createElement('div');
-            status.className = `status ${result.approved ? 'approved' : 'declined'}`;
-            status.textContent = result.approved ? 'LIVE' : 'DEAD';
-            
-            resultItem.appendChild(cardInfo);
-            resultItem.appendChild(status);
-            container.appendChild(resultItem);
-        }
-
-        function downloadCards(type) {
-            let cardsToDownload = [];
-            
-            if (type === 'live') {
-                cardsToDownload = currentResults.filter(r => r.approved);
-            } else if (type === 'dead') {
-                cardsToDownload = currentResults.filter(r => !r.approved);
+            if (result.success) {
+                showNotification('🚀 ' + result.message, 'success');
+                document.getElementById('botToken').value = '';
+                document.getElementById('botName').value = '';
+                loadBots();
             } else {
-                cardsToDownload = currentResults;
+                showNotification('❌ ' + result.message, 'error');
             }
+        }
+
+        // Botları yükle - GERÇEK
+        async function loadBots() {
+            const result = await apiCall(`/api/get_bots?user_id=${currentUser.id}`);
             
-            if (cardsToDownload.length === 0) {
-                showNotification('İndirilecek kart bulunamadı!', 'error');
+            if (result.success) {
+                bots = result.bots;
+                updateBotList();
+                updateStats();
+            }
+        }
+
+        // Bot durdur - GERÇEK
+        async function stopBot(botId) {
+            const result = await apiCall('/api/stop_bot', 'POST', {
+                bot_id: botId,
+                user_id: currentUser.id
+            });
+
+            if (result.success) {
+                showNotification('⏸️ ' + result.message, 'success');
+                loadBots();
+            }
+        }
+
+        // Bot başlat - GERÇEK
+        async function startBot(botId) {
+            const result = await apiCall('/api/start_bot', 'POST', {
+                bot_id: botId,
+                user_id: currentUser.id
+            });
+
+            if (result.success) {
+                showNotification('🎯 ' + result.message, 'success');
+                loadBots();
+            } else {
+                showNotification('❌ ' + result.message, 'error');
+            }
+        }
+
+        // Bot sil - GERÇEK
+        async function deleteBot(botId) {
+            if (confirm('🤔 Bu botu silmek istediğinizden emin misiniz?')) {
+                const result = await apiCall('/api/delete_bot', 'POST', {
+                    bot_id: botId,
+                    user_id: currentUser.id
+                });
+
+                if (result.success) {
+                    showNotification('🗑️ ' + result.message, 'success');
+                    loadBots();
+                }
+            }
+        }
+
+        // Anahtar oluştur - GERÇEK
+        async function generateKey() {
+            const keyName = document.getElementById('newKeyName').value.trim();
+            const expiryDays = parseInt(document.getElementById('keyExpiryDays').value);
+
+            if (!keyName) {
+                showNotification('📝 Lütfen anahtar ismi girin!', 'error');
                 return;
             }
-            
-            const cardText = cardsToDownload.map(result => 
-                `${result.card.number}|${result.card.month}|${result.card.year}|${result.card.cvv}`
-            ).join('\n');
-            
-            downloadFile(cardText, `kartlar_${type}_${new Date().toISOString().split('T')[0]}.txt`);
-            showNotification(`${cardsToDownload.length} kart indirildi!`, 'success');
-        }
 
-        function downloadFile(content, filename) {
-            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
+            const result = await apiCall('/api/generate_key', 'POST', {
+                key_name: keyName,
+                days: expiryDays,
+                admin_id: currentUser.id
+            });
 
-        function addLog(message, type) {
-            const log = {
-                timestamp: new Date().toISOString(),
-                message: message,
-                type: type
-            };
-            
-            logs.push(log);
-            localStorage.setItem('dearsiber_logs', JSON.stringify(logs));
-            
-            if (adminPanel.style.display === 'block') {
-                loadLogs();
+            if (result.success) {
+                showNotification('🔑 ' + result.message + ': ' + result.key, 'success');
+                document.getElementById('newKeyName').value = '';
+            } else {
+                showNotification('❌ ' + result.message, 'error');
             }
         }
 
-        function loadLogs() {
-            logList.innerHTML = '';
+        // Dashboard'u göster
+        function showDashboard() {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
             
-            if (logs.length === 0) {
-                logList.innerHTML = '<div class="log-item">Henüz log bulunmamaktadır</div>';
-                return;
+            if (currentUser.isAdmin) {
+                document.getElementById('adminPanel').style.display = 'block';
             }
-            
-            const reversedLogs = [...logs].reverse();
-            
-            reversedLogs.forEach(log => {
-                const logItem = document.createElement('div');
-                logItem.className = 'log-item';
-                
-                const date = new Date(log.timestamp);
-                
-                logItem.innerHTML = `
-                    <div>
-                        <strong>${log.type.toUpperCase()}</strong>
-                        <div>${date.toLocaleString('tr-TR')}</div>
+        }
+
+        // Bot listesini güncelle
+        function updateBotList() {
+            const container = document.getElementById('botListContainer');
+            let html = '<h2 style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;"><i class="fas fa-list"></i> Bot Listesi</h2>';
+
+            if (bots.length === 0) {
+                html += `
+                    <div class="bot-card" style="text-align: center; padding: 50px 20px;">
+                        <div style="font-size: 4rem; margin-bottom: 20px;">🤖</div>
+                        <h3 style="color: var(--dark); margin-bottom: 10px;">Henüz bot eklenmemiş</h3>
+                        <p style="color: var(--text); opacity: 0.7;">İlk botunuzu ekleyerek başlayın! 🎯</p>
                     </div>
-                    <div>${log.message}</div>
                 `;
-                
-                logList.appendChild(logItem);
-            });
+            } else {
+                bots.forEach(bot => {
+                    html += `
+                        <div class="bot-card">
+                            <div class="bot-header">
+                                <div class="bot-name">
+                                    <i class="fas fa-robot"></i>
+                                    ${bot.name}
+                                </div>
+                                <span class="bot-status ${bot.status === 'active' ? 'status-active' : 'status-inactive'}">
+                                    ${bot.status === 'active' ? '🟢 Aktif' : '🔴 Pasif'}
+                                </span>
+                            </div>
+                            <div class="bot-details">
+                                <div class="bot-detail">
+                                    <strong>🆔 ID:</strong> ${bot.id}
+                                </div>
+                                <div class="bot-detail">
+                                    <strong>📅 Oluşturulma:</strong> ${new Date(bot.created_at).toLocaleString('tr-TR')}
+                                </div>
+                                <div class="bot-detail">
+                                    <strong>🔐 Token:</strong> ${bot.token.substring(0, 15)}...
+                                </div>
+                            </div>
+                            <div class="bot-actions">
+                                <button class="btn ${bot.status === 'active' ? 'btn-warning' : 'btn-success'}" 
+                                        onclick="${bot.status === 'active' ? 'stopBot' : 'startBot'}(${bot.id})">
+                                    <i class="fas ${bot.status === 'active' ? 'fa-pause' : 'fa-play'}"></i>
+                                    ${bot.status === 'active' ? 'Durdur' : 'Başlat'}
+                                </button>
+                                <button class="btn btn-danger" onclick="deleteBot(${bot.id})">
+                                    <i class="fas fa-trash"></i> Sil
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            container.innerHTML = html;
         }
 
-        function showNotification(message, type = 'success') {
-            notification.textContent = message;
-            notification.className = 'notification';
-            
-            if (type === 'error') {
-                notification.classList.add('error');
-            }
-            
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
+        // İstatistikleri güncelle
+        function updateStats() {
+            document.getElementById('totalBots').textContent = bots.length;
+            document.getElementById('activeBots').textContent = bots.filter(b => b.status === 'active').length;
+            document.getElementById('inactiveBots').textContent = bots.filter(b => b.status === 'inactive').length;
         }
+
+        // Çalışma süresi
+        function updateUptime() {
+            systemUptime++;
+            const uptimeElement = document.getElementById('uptime');
+            const hours = Math.floor(systemUptime / 3600);
+            const minutes = Math.floor((systemUptime % 3600) / 60);
+            const seconds = systemUptime % 60;
+            
+            if (hours > 0) {
+                uptimeElement.textContent = `${hours}s ${minutes}d ${seconds}sn`;
+            } else if (minutes > 0) {
+                uptimeElement.textContent = `${minutes}d ${seconds}sn`;
+            } else {
+                uptimeElement.textContent = `${seconds}sn`;
+            }
+        }
+
+        // Toplu işlemler
+        async function startAllBots() {
+            for (const bot of bots) {
+                if (bot.status === 'inactive') {
+                    await startBot(bot.id);
+                }
+            }
+            showNotification('🎯 Tüm botlar başlatıldı!', 'success');
+        }
+
+        async function stopAllBots() {
+            for (const bot of bots) {
+                if (bot.status === 'active') {
+                    await stopBot(bot.id);
+                }
+            }
+            showNotification('⏸️ Tüm botlar durduruldu!', 'warning');
+        }
+
+        function refreshDashboard() {
+            loadBots();
+            showNotification('🔄 Dashboard yenilendi!', 'success');
+        }
+
+        // Bildirim fonksiyonu
+        function showNotification(message, type) {
+            const existingNotifications = document.querySelectorAll('.notification');
+            existingNotifications.forEach(notif => notif.remove());
+
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 
+                                 type === 'error' ? 'exclamation-circle' : 
+                                 'exclamation-triangle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideInRight 0.5s ease reverse';
+                setTimeout(() => notification.remove(), 500);
+            }, 5000);
+        }
+
+                // Sayfa yüklendiğinde
+        document.addEventListener('DOMContentLoaded', function() {
+            // Çalışma süresi sayacını başlat
+            setInterval(updateUptime, 1000);
+            
+            // Enter tuşu ile giriş
+            document.getElementById('accessKey').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    login();
+                }
+            });
+            
+            // Demo modu
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('demo') === 'true') {
+                document.getElementById('accessKey').value = 'DJF27DJF';
+                setTimeout(login, 1000);
+            }
+        });
     </script>
 </body>
 </html>
