@@ -3,9 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEARSİBER - Tehlikeli Grup</title>
+    <title>DEARSİBER | Siber Güvenlik Ekibi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Rajdhani:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #00ff88;
+            --secondary: #0088ff;
+            --accent: #ff4444;
+            --dark: #0a0f1e;
+            --darker: #050913;
+            --text: #e0e0e0;
+        }
         
         * {
             margin: 0;
@@ -14,332 +24,671 @@
         }
         
         body {
-            background-color: #0a0a0a;
-            color: #00ff00;
-            font-family: 'Share Tech Mono', monospace;
-            overflow-x: hidden;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
             line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
         }
         
-        .matrix-bg {
+        .noise-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
-            opacity: 0.3;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 100;
         }
         
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
         }
         
+        /* Header Styles */
         header {
-            text-align: center;
             padding: 40px 0;
-            border-bottom: 2px solid #ff0000;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+            position: relative;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-right: 15px;
+            text-shadow: 0 0 15px var(--primary);
+        }
+        
+        .logo-text {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+        
+        .tagline {
+            text-align: center;
+            font-size: 1.2rem;
+            color: rgba(224, 224, 224, 0.8);
+            margin-top: 10px;
+            font-weight: 300;
+        }
+        
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+        
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-links a:hover::after {
+            width: 80%;
+        }
+        
+        /* Section Styles */
+        section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        
+        .about-text {
+            font-size: 1.1rem;
+        }
+        
+        .about-text p {
+            margin-bottom: 20px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .feature-card {
+            background: rgba(10, 15, 30, 0.7);
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            border-radius: 8px;
+            padding: 30px;
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
         
-        .glitch {
-            font-size: 4rem;
-            font-weight: 900;
-            font-family: 'Orbitron', sans-serif;
-            text-transform: uppercase;
-            position: relative;
-            text-shadow: 0.05em 0 0 #ff0000, -0.03em -0.04em 0 #00ff00, 0.025em 0.04em 0 #0000ff;
-            animation: glitch 725ms infinite;
-            margin-bottom: 20px;
-        }
-        
-        .glitch span {
+        .feature-card::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.05) 0%, rgba(0, 136, 255, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
         
-        .subtitle {
-            font-size: 1.5rem;
-            color: #ff0000;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px #ff0000;
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 255, 136, 0.3);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
         
-        .danger-icon {
-            font-size: 2rem;
-            margin: 0 10px;
-            animation: pulse 2s infinite;
+        .feature-card:hover::before {
+            opacity: 1;
         }
         
-        section {
-            padding: 40px 0;
-            border-bottom: 1px dashed #333;
-        }
-        
-        h2 {
-            font-family: 'Orbitron', sans-serif;
+        .feature-icon {
             font-size: 2.5rem;
+            color: var(--primary);
             margin-bottom: 20px;
-            color: #ff0000;
-            text-shadow: 0 0 5px #ff0000;
         }
         
-        p {
-            font-size: 1.2rem;
+        .feature-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
             margin-bottom: 15px;
         }
         
-        .warning {
-            background-color: rgba(255, 0, 0, 0.1);
-            border-left: 5px solid #ff0000;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 5px;
+        /* Services */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
         }
         
-        .contact-box {
-            background-color: rgba(0, 0, 0, 0.7);
-            border: 1px solid #00ff00;
-            padding: 20px;
-            border-radius: 5px;
-            text-align: center;
-            margin: 20px 0;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+        .service-item {
+            background: rgba(10, 15, 30, 0.7);
+            border-left: 4px solid var(--primary);
+            padding: 25px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
         }
         
-        .telegram-link {
-            display: inline-block;
-            background-color: #0088cc;
+        .service-item:hover {
+            transform: translateX(5px);
+            background: rgba(10, 15, 30, 0.9);
+        }
+        
+        .service-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .service-icon {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+        
+        /* Contact */
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .contact-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 50%;
+        }
+        
+        .contact-details h3 {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .contact-details p {
+            color: rgba(224, 224, 224, 0.7);
+        }
+        
+        .telegram-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
-            padding: 10px 20px;
             text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
             margin-top: 10px;
-            transition: all 0.3s;
         }
         
-        .telegram-link:hover {
-            background-color: #006699;
-            transform: scale(1.05);
+        .telegram-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 136, 255, 0.3);
         }
         
-        .hacker-animation {
-            height: 200px;
-            background-color: rgba(0, 0, 0, 0.5);
-            border: 1px solid #333;
-            margin: 30px 0;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .code-line {
-            position: absolute;
-            width: 100%;
-            font-size: 1.1rem;
-            color: #00ff00;
-            padding: 5px 10px;
-            animation: scrollUp 20s linear infinite;
-        }
-        
+        /* Footer */
         footer {
+            background: rgba(5, 9, 19, 0.9);
+            padding: 40px 0;
             text-align: center;
-            padding: 20px 0;
-            font-size: 0.9rem;
-            color: #666;
+            border-top: 1px solid rgba(0, 255, 136, 0.1);
+            margin-top: 80px;
         }
         
-        @keyframes glitch {
-            0% {
-                text-shadow: 0.05em 0 0 #ff0000, -0.03em -0.04em 0 #00ff00, 0.025em 0.04em 0 #0000ff;
-            }
-            15% {
-                text-shadow: 0.05em 0 0 #ff0000, -0.03em -0.04em 0 #00ff00, 0.025em 0.04em 0 #0000ff;
-            }
-            16% {
-                text-shadow: -0.05em -0.025em 0 #ff0000, 0.025em 0.035em 0 #00ff00, -0.05em -0.05em 0 #0000ff;
-            }
-            49% {
-                text-shadow: -0.05em -0.025em 0 #ff0000, 0.025em 0.035em 0 #00ff00, -0.05em -0.05em 0 #0000ff;
-            }
-            50% {
-                text-shadow: 0.05em 0.05em 0 #ff0000, 0.05em 0 0 #00ff00, 0 -0.04em 0 #0000ff;
-            }
-            99% {
-                text-shadow: 0.05em 0.05em 0 #ff0000, 0.05em 0 0 #00ff00, 0 -0.04em 0 #0000ff;
-            }
-            100% {
-                text-shadow: -0.05em 0 0 #ff0000, -0.025em -0.04em 0 #00ff00, -0.04em -0.025em 0 #0000ff;
-            }
+        .footer-logo {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            50% {
-                transform: scale(1.2);
-                opacity: 0.7;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
+        .footer-text {
+            color: rgba(224, 224, 224, 0.6);
+            max-width: 600px;
+            margin: 0 auto 20px;
         }
         
-        @keyframes scrollUp {
-            0% {
-                transform: translateY(200px);
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .floating {
+            animation: float 5s ease-in-out infinite;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .about-content, .contact-content {
+                grid-template-columns: 1fr;
             }
-            100% {
-                transform: translateY(-200px);
+            
+            .nav-links {
+                gap: 20px;
+            }
+            
+            .logo-text {
+                font-size: 2.8rem;
             }
         }
         
         @media (max-width: 768px) {
-            .glitch {
-                font-size: 2.5rem;
+            .nav-links {
+                flex-direction: column;
+                gap: 10px;
+                align-items: center;
             }
             
-            h2 {
+            .logo {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo-icon {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            
+            .section-title {
                 font-size: 2rem;
             }
+        {
+
+        /* Terminal Effect */
+        .terminal {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 8px;
+            padding: 25px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .terminal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(transparent 50%, rgba(0, 255, 136, 0.03) 50%);
+            background-size: 100% 4px;
+            z-index: 0;
+        }
+        
+        .terminal-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .terminal-line {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .terminal-prompt {
+            color: var(--primary);
+            margin-right: 10px;
+            font-weight: 600;
+        }
+        
+        .terminal-command {
+            color: var(--text);
+        }
+        
+        .terminal-output {
+            color: rgba(224, 224, 224, 0.7);
+            margin-left: 20px;
+            margin-top: 5px;
+        }
+        
+        .blinking-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1.2em;
+            background: var(--primary);
+            margin-left: 5px;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
     </style>
 </head>
 <body>
-    <canvas class="matrix-bg" id="matrix"></canvas>
+    <div class="noise-overlay"></div>
     
     <div class="container">
         <header>
-            <h1 class="glitch">DEARSİBER</h1>
-            <p class="subtitle">TEHLİKELİ GRUP</p>
-            <div>
-                <span class="danger-icon">🔪</span>
-                <span class="danger-icon">💀</span>
-                <span class="danger-icon">🖤</span>
-                <span class="danger-icon">⚡</span>
-                <span class="danger-icon">🔫</span>
+            <div class="logo">
+                <div class="logo-icon floating">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="logo-text">DEARSİBER</div>
             </div>
+            <p class="tagline">Gizlilik, Güvenlik, Profesyonellik</p>
+            
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#about">Hakkımızda</a></li>
+                    <li><a href="#services">Hizmetler</a></li>
+                    <li><a href="#expertise">Uzmanlık</a></li>
+                    <li><a href="#contact">İletişim</a></li>
+                </ul>
+            </nav>
         </header>
         
-        <section>
-            <h2>Biz Kimiz?</h2>
-            <p>DEARSİBER, dijital dünyanın karanlık sularında faaliyet gösteren tehlikeli bir gruptur. Sınır tanımayan yeteneklerimiz ve uzmanlığımızla biliniriz.</p>
-            <div class="warning">
-                <p>⚠️ UYARI: Bizimle temas kurmak, kendi riskinizledir. Geri dönüşü olmayan bir yola girebilirsiniz.</p>
+        <section id="about">
+            <h2 class="section-title">Hakkımızda</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>DEARSİBER, siber güvenlik alanında uzmanlaşmış seçkin bir ekiptir. Gizlilik, güvenlik ve profesyonellik ilkeleri doğrultusunda faaliyet gösteriyoruz.</p>
+                    <p>Ekibimiz, siber güvenlik dünyasının en deneyimli ve yetenekli uzmanlarından oluşmaktadır. Müşterilerimize en üst düzey güvenlik çözümleri sunmak için sürekli olarak kendimizi geliştiriyor ve yenilikçi yaklaşımlar benimsiyoruz.</p>
+                    <p>Gizliliğinize verdiğimiz önem nedeniyle, tüm iletişim kanallarımız uçtan uca şifrelenmiş sistemler üzerinden yürütülmektedir.</p>
+                </div>
+                <div class="terminal">
+                    <div class="terminal-content">
+                        <div class="terminal-line">
+                            <span class="terminal-prompt">root@dearsiber:~#</span>
+                            <span class="terminal-command">whoami</span>
+                        </div>
+                        <div class="terminal-output">DEARSİBER Security Team</div>
+                        
+                        <div class="terminal-line">
+                            <span class="terminal-prompt">root@dearsiber:~#</span>
+                            <span class="terminal-command">status --security</span>
+                        </div>
+                        <div class="terminal-output">Operational - All systems secure</div>
+                        
+                        <div class="terminal-line">
+                            <span class="terminal-prompt">root@dearsiber:~#</span>
+                            <span class="terminal-command">contact --encrypted</span>
+                        </div>
+                        <div class="terminal-output">Secure channel established<span class="blinking-cursor"></span></div>
+                    </div>
+                </div>
             </div>
-            <p>Gizlilik, güvenlik ve dijital özgürlük bizim için her şeyden önemlidir. Hedeflerimiz net, yöntemlerimiz etkilidir.</p>
         </section>
         
-        <section>
-            <h2>Yeteneklerimiz</h2>
-            <p>• Gelişmiş siber güvenlik ihlalleri</p>
-            <p>• Veri manipülasyonu ve analizi</p>
-            <p>• Şifreleme ve şifre çözme sistemleri</p>
-            <p>• Anonim iletişim protokolleri</p>
-            <p>• Özel yazılım geliştirme</p>
-            <div class="hacker-animation" id="code-animation">
-                <!-- JavaScript ile doldurulacak -->
+        <section id="services">
+            <h2 class="section-title">Hizmetlerimiz</h2>
+            <div class="services-grid">
+                <div class="service-item">
+                    <h3 class="service-title">
+                        <i class="fas fa-user-shield service-icon"></i>
+                        Penetrasyon Testleri
+                    </h3>
+                    <p>Sistemlerinizin güvenlik açıklarını tespit ediyor, olası saldırı vektörlerini belirliyoruz.</p>
+                </div>
+                
+                <div class="service-item">
+                    <h3 class="service-title">
+                        <i class="fas fa-lock service-icon"></i>
+                        Şifreleme Sistemleri
+                    </h3>
+                    <p>Verilerinizin güvenliğini sağlamak için en son şifreleme teknolojilerini kullanıyoruz.</p>
+                </div>
+                
+                <div class="service-item">
+                    <h3 class="service-title">
+                        <i class="fas fa-network-wired service-icon"></i>
+                        Ağ Güvenliği
+                    </h3>
+                    <p>Ağ altyapınızı güçlendiriyor, izinsiz erişimlere karşı koruma sağlıyoruz.</p>
+                </div>
+                
+                <div class="service-item">
+                    <h3 class="service-title">
+                        <i class="fas fa-bug service-icon"></i>
+                        Zafiyet Analizi
+                    </h3>
+                    <p>Yazılım ve sistemlerinizdeki güvenlik açıklarını derinlemesine analiz ediyoruz.</p>
+                </div>
             </div>
         </section>
         
-        <section>
-            <h2>İletişim</h2>
-            <p>Bizimle iletişime geçmek için aşağıdaki kanalı kullanabilirsiniz:</p>
-            <div class="contact-box">
-                <p>Telegram: <strong>@DearSiber</strong></p>
-                <a href="https://t.me/DearSiber" class="telegram-link" target="_blank">Telegram'da Mesaj Gönder</a>
+        <section id="expertise">
+            <h2 class="section-title">Uzmanlık Alanlarımız</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-fingerprint"></i>
+                    </div>
+                    <h3 class="feature-title">Kimlik Doğrulama Sistemleri</h3>
+                    <p>Çok faktörlü kimlik doğrulama sistemleri ile erişim güvenliğinizi en üst düzeye çıkarıyoruz.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="feature-title">Güvenli Yazılım Geliştirme</h3>
+                    <p>Güvenlik odaklı yazılım geliştirme metodolojileri ile güvenli uygulamalar oluşturuyoruz.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="feature-title">Tehdit İstihbaratı</h3>
+                    <p>Siber tehditleri önceden tespit ederek proaktif güvenlik önlemleri geliştiriyoruz.</p>
+                </div>
             </div>
-            <div class="warning">
-                <p>🔒 Güvenlik nedeniyle, yalnızca Telegram üzerinden iletişim kuruyoruz. Kimliğinizi korumak için güvenli bir bağlantı kullanın.</p>
+        </section>
+        
+        <section id="contact">
+            <h2 class="section-title">İletişim</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fab fa-telegram"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Telegram</h3>
+                            <p>@DearSiber</p>
+                            <a href="https://t.me/DearSiber" class="telegram-btn" target="_blank">
+                                <i class="fab fa-telegram"></i>
+                                Mesaj Gönder
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>E-posta</h3>
+                            <p>Şifreli iletişim için</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Güvenlik Politikası</h3>
+                            <p>Tüm iletişim uçtan uca şifrelenir</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="terminal">
+                    <div class="terminal-content">
+                        <div class="terminal-line">
+                            <span class="terminal-prompt">secure@dearsiber:~#</span>
+                            <span class="terminal-command">initiate_contact --protocol=encrypted</span>
+                        </div>
+                        <div class="terminal-output">Establishing secure connection...</div>
+                        <div class="terminal-output">Encryption: AES-256-GCM</div>
+                        <div class="terminal-output">Handshake: ECDHE-RSA</div>
+                        <div class="terminal-output">Secure channel ready</div>
+                        <div class="terminal-line">
+                            <span class="terminal-prompt">secure@dearsiber:~#</span>
+                            <span class="terminal-command">contact --telegram @DearSiber</span>
+                        </div>
+                        <div class="terminal-output">Connection established<span class="blinking-cursor"></span></div>
+                    </div>
+                </div>
             </div>
         </section>
         
         <footer>
-            <p>DEARSİBER &copy; 2023 - Tüm hakları saklıdır. Bu site sadece tanıtım amaçlıdır.</p>
+            <div class="footer-logo">DEARSİBER</div>
+            <p class="footer-text">Gizlilik ve güvenlik odaklı siber güvenlik çözümleri</p>
+            <p>&copy; 2023 DEARSİBER Security Team. Tüm hakları saklıdır.</p>
         </footer>
     </div>
 
     <script>
-        // Matrix arka plan efekti
-        const canvas = document.getElementById('matrix');
-        const ctx = canvas.getContext('2d');
-        
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        
-        const letters = '010101010101010101DEARSİBER010101010101010101';
-        const lettersArray = letters.split('');
-        
-        const fontSize = 14;
-        const columns = canvas.width / fontSize;
-        
-        const drops = [];
-        for (let i = 0; i < columns; i++) {
-            drops[i] = 1;
-        }
-        
-        function drawMatrix() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        // Dinamik terminal efekti
+        document.addEventListener('DOMContentLoaded', function() {
+            const terminalLines = document.querySelectorAll('.terminal-line');
             
-            ctx.fillStyle = '#0F0';
-            ctx.font = fontSize + 'px monospace';
+            // Terminal yazma efekti
+            terminalLines.forEach((line, index) => {
+                line.style.opacity = '0';
+                setTimeout(() => {
+                    line.style.transition = 'opacity 0.5s ease';
+                    line.style.opacity = '1';
+                }, index * 800);
+            });
             
-            for (let i = 0; i < drops.length; i++) {
-                const text = lettersArray[Math.floor(Math.random() * lettersArray.length)];
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-                
-                drops[i]++;
-            }
-        }
-        
-        setInterval(drawMatrix, 33);
-        
-        // Kod animasyonu
-        const codeLines = [
-            "> sudo apt-get install dearsiber-tools",
-            "> Initializing DEARSİBER protocol...",
-            "> Bypassing security systems...",
-            "> Accessing restricted networks...",
-            "> Encryption keys generated...",
-            "> Establishing secure connection...",
-            "> Welcome to the dark side...",
-            "> DEARSİBER activated successfully",
-            "> System compromised...",
-            "> Data extraction in progress...",
-            "> Firewall disabled...",
-            "> Root access obtained...",
-            "> Tracking countermeasures active...",
-            "> Anonymous routing enabled...",
-            "> Mission parameters set...",
-            "> Ready for operation..."
-        ];
-        
-        const codeAnimation = document.getElementById('code-animation');
-        
-        codeLines.forEach((line, index) => {
-            const codeLine = document.createElement('div');
-            codeLine.className = 'code-line';
-            codeLine.textContent = line;
-            codeLine.style.animationDelay = `${index * 1.5}s`;
-            codeAnimation.appendChild(codeLine);
-        });
-        
-        // Pencere boyutu değiştiğinde canvas'ı yeniden boyutlandır
-        window.addEventListener('resize', function() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            // Floating animasyonu için rastgele gecikmeler
+            const floatingElements = document.querySelectorAll('.floating');
+            floatingElements.forEach((el, index) => {
+                el.style.animationDelay = `${index * 0.5}s`;
+            });
+            
+            // Scroll animasyonu
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Gözlemlenecek elementler
+            const animatedElements = document.querySelectorAll('.feature-card, .service-item');
+            animatedElements.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(el);
+            });
         });
     </script>
 </body>
