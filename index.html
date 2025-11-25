@@ -3,802 +3,344 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚡ DearSiber VDS - Telegram Bot Manager</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>DEARSİBER - Tehlikeli Grup</title>
     <style>
-        :root {
-            --primary: #00ff88;
-            --secondary: #00cc66;
-            --success: #00ff00;
-            --danger: #ff4444;
-            --warning: #ffaa00;
-            --info: #00ffff;
-            --matrix: #00ff00;
-            --dark: #000000;
-            --card: #002200;
-            --shadow: 0 0 20px rgba(0,255,100,0.3);
-        }
-
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Courier New', monospace;
         }
-
+        
         body {
-            background: #001100;
-            color: var(--matrix);
-            min-height: 100vh;
+            background-color: #0a0a0a;
+            color: #00ff00;
+            font-family: 'Share Tech Mono', monospace;
             overflow-x: hidden;
+            line-height: 1.6;
         }
-
-        .loading-screen {
+        
+        .matrix-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--dark);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            color: var(--matrix);
+            z-index: -1;
+            opacity: 0.3;
         }
-
-        .loading-logo {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            animation: pulse 2s infinite;
-        }
-
-        .loading-text {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-
-        .loader {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(0,255,0,0.3);
-            border-radius: 50%;
-            border-top-color: var(--matrix);
-            animation: spin 1s ease-in-out infinite;
-            margin-top: 20px;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
-
-        .header {
-            background: rgba(0, 30, 0, 0.8);
-            color: var(--matrix);
-            padding: 30px;
-            border-radius: 15px;
+        
+        header {
             text-align: center;
-            margin-bottom: 30px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--matrix);
+            padding: 40px 0;
+            border-bottom: 2px solid #ff0000;
+            position: relative;
+            overflow: hidden;
         }
-
-        .logo {
-            font-size: 3rem;
-            margin-bottom: 15px;
-        }
-
-        h1 {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-        }
-
-        .login-section {
-            background: var(--card);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-            margin-bottom: 30px;
-            text-align: center;
-            border: 1px solid var(--matrix);
-        }
-
-        .section-title {
-            font-size: 1.6rem;
+        
+        .glitch {
+            font-size: 4rem;
+            font-weight: 900;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            position: relative;
+            text-shadow: 0.05em 0 0 #ff0000, -0.03em -0.04em 0 #00ff00, 0.025em 0.04em 0 #0000ff;
+            animation: glitch 725ms infinite;
             margin-bottom: 20px;
-            color: var(--matrix);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
         }
-
-        .dashboard {
-            display: none;
+        
+        .glitch span {
+            position: absolute;
+            top: 0;
+            left: 0;
         }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: #ff0000;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #ff0000;
         }
-
-        .stat-card {
-            background: var(--card);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            text-align: center;
-            border: 1px solid var(--matrix);
-        }
-
-        .stat-icon {
+        
+        .danger-icon {
             font-size: 2rem;
-            margin-bottom: 10px;
+            margin: 0 10px;
+            animation: pulse 2s infinite;
         }
-
-        .stat-number {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 5px;
+        
+        section {
+            padding: 40px 0;
+            border-bottom: 1px dashed #333;
         }
-
-        .action-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 25px;
+        
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #ff0000;
+            text-shadow: 0 0 5px #ff0000;
         }
-
-        .action-card {
-            background: var(--card);
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--matrix);
-        }
-
-        .card-title {
+        
+        p {
             font-size: 1.2rem;
             margin-bottom: 15px;
-            color: var(--matrix);
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
-
-        .form-group {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-            color: var(--matrix);
-        }
-
-        input, select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--matrix);
-            border-radius: 8px;
-            font-size: 0.9rem;
-            background: rgba(0, 20, 0, 0.8);
-            color: var(--matrix);
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--success);
-        }
-
-        .btn {
-            padding: 12px 20px;
-            border: 1px solid var(--matrix);
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            width: 100%;
-            background: rgba(0, 30, 0, 0.8);
-            color: var(--matrix);
-        }
-
-        .btn-success {
-            background: linear-gradient(45deg, rgba(0,255,0,0.2), rgba(0,200,0,0.3));
-            border-color: var(--success);
-        }
-
-        .btn-warning {
-            background: linear-gradient(45deg, rgba(255,170,0,0.2), rgba(200,140,0,0.3));
-            border-color: var(--warning);
-        }
-
-        .btn-info {
-            background: linear-gradient(45deg, rgba(0,255,255,0.2), rgba(0,200,200,0.3));
-            border-color: var(--info);
-        }
-
-        .btn-sm {
-            padding: 8px 12px;
-            font-size: 0.8rem;
-            width: auto;
-        }
-
-        .bot-list {
-            display: grid;
-            gap: 12px;
-        }
-
-        .bot-card {
-            background: var(--card);
-            padding: 18px;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--matrix);
-        }
-
-        .bot-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .bot-name {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--matrix);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .bot-status {
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        .status-active {
-            background: rgba(0,255,0,0.2);
-            color: var(--success);
-            border: 1px solid var(--success);
-        }
-
-        .status-inactive {
-            background: rgba(255,68,68,0.2);
-            color: var(--danger);
-            border: 1px solid var(--danger);
-        }
-
-        .bot-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-
-        .bot-detail {
-            background: rgba(0, 20, 0, 0.8);
-            padding: 8px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-        }
-
-        .bot-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .admin-panel {
-            background: var(--card);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            margin-top: 25px;
-            border: 1px solid var(--matrix);
-            display: none;
-        }
-
-        .file-upload {
-            border: 2px dashed rgba(0,255,0,0.5);
-            border-radius: 8px;
+        
+        .warning {
+            background-color: rgba(255, 0, 0, 0.1);
+            border-left: 5px solid #ff0000;
             padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .contact-box {
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 1px solid #00ff00;
+            padding: 20px;
+            border-radius: 5px;
             text-align: center;
-            cursor: pointer;
-            background: rgba(0, 20, 0, 0.8);
+            margin: 20px 0;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
         }
-
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 12px 16px;
-            border-radius: 8px;
-            color: var(--dark);
-            font-weight: 600;
-            box-shadow: var(--shadow);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        
+        .telegram-link {
+            display: inline-block;
+            background-color: #0088cc;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: all 0.3s;
         }
-
-        .notification.success {
-            background: var(--success);
+        
+        .telegram-link:hover {
+            background-color: #006699;
+            transform: scale(1.05);
         }
-
-        .notification.error {
-            background: var(--danger);
+        
+        .hacker-animation {
+            height: 200px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: 1px solid #333;
+            margin: 30px 0;
+            position: relative;
+            overflow: hidden;
         }
-
-        .log-console {
-            background: rgba(0, 10, 0, 0.9);
-            color: var(--matrix);
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            max-height: 150px;
-            overflow-y: auto;
-            margin-top: 8px;
-            border: 1px solid var(--matrix);
+        
+        .code-line {
+            position: absolute;
+            width: 100%;
+            font-size: 1.1rem;
+            color: #00ff00;
+            padding: 5px 10px;
+            animation: scrollUp 20s linear infinite;
         }
-
-        .log-entry {
-            margin-bottom: 4px;
-            padding: 4px;
-            border-left: 2px solid var(--primary);
-            font-size: 0.75rem;
+        
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        @keyframes glitch {
+            0% {
+                text-shadow: 0.05em 0 0 #ff0000, -0.03em -0.04em 0 #00ff00, 0.025em 0.04em 0 #0000ff;
+            }
+            15% {
+                text-shadow: 0.05em 0 0 #ff0000, -0.03em -0.04em 0 #00ff00, 0.025em 0.04em 0 #0000ff;
+            }
+            16% {
+                text-shadow: -0.05em -0.025em 0 #ff0000, 0.025em 0.035em 0 #00ff00, -0.05em -0.05em 0 #0000ff;
+            }
+            49% {
+                text-shadow: -0.05em -0.025em 0 #ff0000, 0.025em 0.035em 0 #00ff00, -0.05em -0.05em 0 #0000ff;
+            }
+            50% {
+                text-shadow: 0.05em 0.05em 0 #ff0000, 0.05em 0 0 #00ff00, 0 -0.04em 0 #0000ff;
+            }
+            99% {
+                text-shadow: 0.05em 0.05em 0 #ff0000, 0.05em 0 0 #00ff00, 0 -0.04em 0 #0000ff;
+            }
+            100% {
+                text-shadow: -0.05em 0 0 #ff0000, -0.025em -0.04em 0 #00ff00, -0.04em -0.025em 0 #0000ff;
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes scrollUp {
+            0% {
+                transform: translateY(200px);
+            }
+            100% {
+                transform: translateY(-200px);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .glitch {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="loading-screen" id="loadingScreen">
-        <div class="loading-logo">⚡</div>
-        <div class="loading-text">SYSTEM BOOTING...</div>
-        <div class="loader"></div>
-    </div>
-
+    <canvas class="matrix-bg" id="matrix"></canvas>
+    
     <div class="container">
-        <header class="header">
-            <div class="logo">⚡</div>
-            <h1>DEARSIBER VDS</h1>
-            <p class="subtitle">TELEGRAM BOT MANAGEMENT SYSTEM</p>
+        <header>
+            <h1 class="glitch">DEARSİBER</h1>
+            <p class="subtitle">TEHLİKELİ GRUP</p>
+            <div>
+                <span class="danger-icon">🔪</span>
+                <span class="danger-icon">💀</span>
+                <span class="danger-icon">🖤</span>
+                <span class="danger-icon">⚡</span>
+                <span class="danger-icon">🔫</span>
+            </div>
         </header>
-
-        <section class="login-section" id="loginSection">
-            <h2 class="section-title">🔐 SYSTEM ACCESS</h2>
-            <div class="form-group">
-                <label for="accessKey">🔑 ACCESS KEY</label>
-                <input type="password" id="accessKey" placeholder="ENTER ADMIN KEY..." required>
+        
+        <section>
+            <h2>Biz Kimiz?</h2>
+            <p>DEARSİBER, dijital dünyanın karanlık sularında faaliyet gösteren tehlikeli bir gruptur. Sınır tanımayan yeteneklerimiz ve uzmanlığımızla biliniriz.</p>
+            <div class="warning">
+                <p>⚠️ UYARI: Bizimle temas kurmak, kendi riskinizledir. Geri dönüşü olmayan bir yola girebilirsiniz.</p>
             </div>
-            <button class="btn btn-success" onclick="login()">
-                <i class="fas fa-terminal"></i> ACCESS SYSTEM
-            </button>
+            <p>Gizlilik, güvenlik ve dijital özgürlük bizim için her şeyden önemlidir. Hedeflerimiz net, yöntemlerimiz etkilidir.</p>
         </section>
-
-        <section class="dashboard" id="dashboard">
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon">🤖</div>
-                    <div class="stat-number" id="totalBots">0</div>
-                    <div class="stat-text">TOTAL BOTS</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">🟢</div>
-                    <div class="stat-number" id="activeBots">0</div>
-                    <div class="stat-text">ACTIVE BOTS</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">🔴</div>
-                    <div class="stat-number" id="inactiveBots">0</div>
-                    <div class="stat-text">INACTIVE BOTS</div>
-                </div>
-            </div>
-
-            <div class="action-grid">
-                <div class="action-card">
-                    <h3 class="card-title"><i class="fas fa-plus"></i> ADD NEW BOT</h3>
-                    <div class="form-group">
-                        <label for="botToken">🤖 BOT TOKEN</label>
-                        <input type="text" id="botToken" placeholder="BOT_TOKEN_HERE..." required>
-                    </div>
-                    <div class="form-group">
-                        <label for="botName">📝 BOT NAME</label>
-                        <input type="text" id="botName" placeholder="BOT_NAME..." required>
-                    </div>
-                    <button class="btn btn-success" onclick="addBot()">
-                        <i class="fas fa-play"></i> START BOT
-                    </button>
-                </div>
-
-                <div class="action-card">
-                    <h3 class="card-title"><i class="fas fa-bolt"></i> QUICK ACTIONS</h3>
-                    <div style="display: grid; gap: 8px;">
-                        <button class="btn btn-info" onclick="startAllBots()">
-                            <i class="fas fa-play"></i> START ALL
-                        </button>
-                        <button class="btn btn-warning" onclick="stopAllBots()">
-                            <i class="fas fa-stop"></i> STOP ALL
-                        </button>
-                    </div>
-                    
-                    <div style="margin-top: 15px;">
-                        <h4 style="margin-bottom: 8px;">📊 SYSTEM LOGS</h4>
-                        <div class="log-console" id="logConsole">
-                            <div class="log-entry">[SYSTEM] READY</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bot-list" id="botListContainer">
-                <h2 class="section-title"><i class="fas fa-list"></i> BOT LIST</h2>
-            </div>
-
-            <div class="admin-panel" id="adminPanel">
-                <h2 class="section-title"><i class="fas fa-shield-alt"></i> ADMIN PANEL</h2>
-                
-                <div class="action-grid">
-                    <div class="action-card">
-                        <h3 class="card-title"><i class="fas fa-key"></i> GENERATE KEY</h3>
-                        <div class="form-group">
-                            <label for="newKeyName">🏷️ KEY NAME</label>
-                            <input type="text" id="newKeyName" placeholder="KEY_NAME...">
-                        </div>
-                        <button class="btn btn-warning" onclick="generateKey()">
-                            <i class="fas fa-key"></i> GENERATE KEY
-                        </button>
-                    </div>
-                </div>
+        
+        <section>
+            <h2>Yeteneklerimiz</h2>
+            <p>• Gelişmiş siber güvenlik ihlalleri</p>
+            <p>• Veri manipülasyonu ve analizi</p>
+            <p>• Şifreleme ve şifre çözme sistemleri</p>
+            <p>• Anonim iletişim protokolleri</p>
+            <p>• Özel yazılım geliştirme</p>
+            <div class="hacker-animation" id="code-animation">
+                <!-- JavaScript ile doldurulacak -->
             </div>
         </section>
+        
+        <section>
+            <h2>İletişim</h2>
+            <p>Bizimle iletişime geçmek için aşağıdaki kanalı kullanabilirsiniz:</p>
+            <div class="contact-box">
+                <p>Telegram: <strong>@DearSiber</strong></p>
+                <a href="https://t.me/DearSiber" class="telegram-link" target="_blank">Telegram'da Mesaj Gönder</a>
+            </div>
+            <div class="warning">
+                <p>🔒 Güvenlik nedeniyle, yalnızca Telegram üzerinden iletişim kuruyoruz. Kimliğinizi korumak için güvenli bir bağlantı kullanın.</p>
+            </div>
+        </section>
+        
+        <footer>
+            <p>DEARSİBER &copy; 2023 - Tüm hakları saklıdır. Bu site sadece tanıtım amaçlıdır.</p>
+        </footer>
     </div>
 
     <script>
-        // Sistem değişkenleri
-        let currentUser = null;
-        let bots = [];
-        let adminKeys = ['DJF27DJF'];
-        let userKeys = {};
-
-        // Sayfa yüklendiğinde
-        document.addEventListener('DOMContentLoaded', function() {
-            // Loading ekranını 2 saniye sonra kapat
-            setTimeout(() => {
-                document.getElementById('loadingScreen').style.display = 'none';
-                document.getElementById('loginSection').style.display = 'block';
-            }, 2000);
-
-            // Enter tuşu ile giriş
-            document.getElementById('accessKey').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') login();
-            });
-
-            loadBots();
-            loadUserKeys();
-            addLog('SYSTEM READY');
-        });
-
-        function addLog(message) {
-            const console = document.getElementById('logConsole');
-            const logEntry = document.createElement('div');
-            logEntry.className = 'log-entry';
-            logEntry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
-            console.appendChild(logEntry);
-            console.scrollTop = console.scrollHeight;
+        // Matrix arka plan efekti
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const letters = '010101010101010101DEARSİBER010101010101010101';
+        const lettersArray = letters.split('');
+        
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        
+        const drops = [];
+        for (let i = 0; i < columns; i++) {
+            drops[i] = 1;
         }
-
-        function loadUserKeys() {
-            const savedKeys = localStorage.getItem('userKeys');
-            if (savedKeys) userKeys = JSON.parse(savedKeys);
-        }
-
-        function saveUserKeys() {
-            localStorage.setItem('userKeys', JSON.stringify(userKeys));
-        }
-
-        function saveBots() {
-            localStorage.setItem('telegramBots', JSON.stringify(bots));
-        }
-
-        function loadBots() {
-            const savedBots = localStorage.getItem('telegramBots');
-            if (savedBots) bots = JSON.parse(savedBots);
-        }
-
-        function login() {
-            const key = document.getElementById('accessKey').value.trim();
+        
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            if (!key) {
-                showNotification('ACCESS KEY REQUIRED', 'error');
-                return;
-            }
-
-            if (adminKeys.includes(key)) {
-                currentUser = { id: 'admin', isAdmin: true, name: 'ADMIN', key: key };
-                showDashboard();
-                showNotification('ADMIN ACCESS GRANTED', 'success');
-                addLog('ADMIN LOGIN SUCCESS');
-            } else if (isValidUserKey(key)) {
-                currentUser = { id: 'user_' + key, isAdmin: false, name: 'USER', key: key };
-                showDashboard();
-                showNotification('USER ACCESS GRANTED', 'success');
-                addLog(`USER LOGIN: ${key.substring(0,8)}...`);
-            } else {
-                showNotification('INVALID ACCESS KEY', 'error');
-                addLog('UNAUTHORIZED ACCESS ATTEMPT');
-            }
-        }
-
-        function isValidUserKey(key) {
-            if (!key.startsWith('USER_')) return false;
-            if (userKeys[key]) {
-                const expiry = userKeys[key].expires;
-                if (new Date() > new Date(expiry)) {
-                    delete userKeys[key];
-                    saveUserKeys();
-                    return false;
-                }
-                return true;
-            }
-            return false;
-        }
-
-        function showDashboard() {
-            document.getElementById('loginSection').style.display = 'none';
-            document.getElementById('dashboard').style.display = 'block';
-            if (currentUser.isAdmin) {
-                document.getElementById('adminPanel').style.display = 'block';
-            }
-            updateBotList();
-            updateStats();
-        }
-
-        async function addBot() {
-            const token = document.getElementById('botToken').value.trim();
-            const name = document.getElementById('botName').value.trim();
-
-            if (!token || !name) {
-                showNotification('TOKEN AND NAME REQUIRED', 'error');
-                return;
-            }
-
-            if (!token.match(/^\d+:[A-Za-z0-9_-]+$/)) {
-                showNotification('INVALID TOKEN FORMAT', 'error');
-                return;
-            }
-
-            addLog(`ADDING BOT: ${name}`);
-
-            // Telegram API ile bot doğrulama
-            try {
-                const response = await fetch(`https://api.telegram.org/bot${token}/getMe`);
-                const data = await response.json();
+            ctx.fillStyle = '#0F0';
+            ctx.font = fontSize + 'px monospace';
+            
+            for (let i = 0; i < drops.length; i++) {
+                const text = lettersArray[Math.floor(Math.random() * lettersArray.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
                 
-                if (data.ok) {
-                    const newBot = {
-                        id: Date.now(),
-                        name: name,
-                        token: token,
-                        status: 'active',
-                        created_at: new Date().toISOString(),
-                        owner: currentUser.key,
-                        username: data.result.username,
-                        messageCount: 0
-                    };
-
-                    bots.push(newBot);
-                    saveBots();
-                    
-                    showNotification('BOT ADDED SUCCESSFULLY', 'success');
-                    addLog(`BOT ADDED: @${data.result.username}`);
-                    
-                    document.getElementById('botToken').value = '';
-                    document.getElementById('botName').value = '';
-                    
-                    updateBotList();
-                    updateStats();
-                } else {
-                    showNotification('BOT VALIDATION FAILED', 'error');
-                    addLog('BOT VALIDATION FAILED');
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
                 }
-            } catch (error) {
-                showNotification('NETWORK ERROR', 'error');
-                addLog('NETWORK ERROR');
+                
+                drops[i]++;
             }
         }
-
-        async function stopBot(botId) {
-            const bot = bots.find(b => b.id === botId);
-            if (bot) {
-                bot.status = 'inactive';
-                saveBots();
-                showNotification('BOT STOPPED', 'success');
-                addLog(`BOT STOPPED: ${bot.name}`);
-               updateBotList();
-                updateStats();
-            }
-        }
-
-        async function startBot(botId) {
-            const bot = bots.find(b => b.id === botId);
-            if (bot) {
-                // Botu tekrar doğrula
-                try {
-                    const response = await fetch(`https://api.telegram.org/bot${bot.token}/getMe`);
-                    const data = await response.json();
-                    
-                    if (data.ok) {
-                        bot.status = 'active';
-                        saveBots();
-                        showNotification('BOT STARTED', 'success');
-                        addLog(`BOT STARTED: ${bot.name}`);
-                        updateBotList();
-                        updateStats();
-                    } else {
-                        showNotification('BOT START FAILED', 'error');
-                    }
-                } catch (error) {
-                    showNotification('NETWORK ERROR', 'error');
-                }
-            }
-        }
-
-        async function deleteBot(botId) {
-            if (confirm('DELETE BOT?')) {
-                const bot = bots.find(b => b.id === botId);
-                bots = bots.filter(b => b.id !== botId);
-                saveBots();
-                showNotification('BOT DELETED', 'success');
-                addLog(`BOT DELETED: ${bot?.name || botId}`);
-                updateBotList();
-                updateStats();
-            }
-        }
-
-        async function startAllBots() {
-            let started = 0;
-            for (const bot of bots) {
-                if (bot.status === 'inactive' && bot.owner === currentUser.key) {
-                    await startBot(bot.id);
-                    started++;
-                }
-            }
-            showNotification(`${started} BOTS STARTED`, 'success');
-            addLog(`BATCH START: ${started} BOTS`);
-        }
-
-        async function stopAllBots() {
-            let stopped = 0;
-            for (const bot of bots) {
-                if (bot.status === 'active' && bot.owner === currentUser.key) {
-                    await stopBot(bot.id);
-                    stopped++;
-                }
-            }
-            showNotification(`${stopped} BOTS STOPPED`, 'warning');
-            addLog(`BATCH STOP: ${stopped} BOTS`);
-        }
-
-        function generateKey() {
-            const keyName = document.getElementById('newKeyName').value.trim();
-
-            if (!keyName) {
-                showNotification('KEY NAME REQUIRED', 'error');
-                return;
-            }
-
-            if (!currentUser.isAdmin) {
-                showNotification('ADMIN ACCESS REQUIRED', 'error');
-                return;
-            }
-
-            const newKey = 'USER_' + Math.random().toString(36).substr(2, 12).toUpperCase();
-            const expiryDate = new Date();
-            expiryDate.setDate(expiryDate.getDate() + 30);
-
-            userKeys[newKey] = {
-                name: keyName,
-                created: new Date().toISOString(),
-                expires: expiryDate.toISOString()
-            };
-            saveUserKeys();
-
-            showNotification('KEY GENERATED: ' + newKey, 'success');
-            addLog(`KEY CREATED: ${keyName}`);
-            document.getElementById('newKeyName').value = '';
-        }
-
-        function updateBotList() {
-            const container = document.getElementById('botListContainer');
-            let html = '<h2 class="section-title"><i class="fas fa-list"></i> BOT LIST</h2>';
-
-            const userBots = currentUser.isAdmin ? bots : bots.filter(bot => bot.owner === currentUser.key);
-
-            if (userBots.length === 0) {
-                html += `
-                    <div class="bot-card" style="text-align: center; padding: 30px 15px;">
-                        <div style="font-size: 2.5rem; margin-bottom: 10px;">🤖</div>
-                        <h3 style="color: var(--matrix); margin-bottom: 8px;">NO BOTS FOUND</h3>
-                        <p style="color: var(--matrix); opacity: 0.7;">ADD YOUR FIRST BOT</p>
-                    </div>
-                `;
-            } else {
-                userBots.forEach(bot => {
-                    html += `
-                        <div class="bot-card">
-                            <div class="bot-header">
-                                <div class="bot-name">
-                                    <i class="fas fa-robot"></i>
-                                    ${bot.name}
-                                    ${bot.username ? ` (@${bot.username})` : ''}
-                                </div>
-                                <span class="bot-status ${bot.status === 'active' ? 'status-active' : 'status-inactive'}">
-                                    ${bot.status === 'active' ? '🟢 ACTIVE' : '🔴 INACTIVE'}
-                                </span>
-                            </div>
-                            <div class="bot-details">
-                                <div class="bot-detail">
-                                    <strong>🆔 ID:</strong> ${bot.id}
-                                </div>
-                                <div class="bot-detail">
-                                    <strong>📅 CREATED:</strong> ${new Date(bot.created_at).toLocaleDateString('tr-TR')}
-                                </div>
-                            </div>
-                            <div class="bot-actions">
-                                <button class="btn ${bot.status === 'active' ? 'btn-warning' : 'btn-success'} btn-sm" 
-                                        onclick="${bot.status === 'active' ? 'stopBot' : 'startBot'}(${bot.id})">
-                                    <i class="fas ${bot.status === 'active' ? 'fa-pause' : 'fa-play'}"></i>
-                                    ${bot.status === 'active' ? 'STOP' : 'START'}
-                                </button>
-                                <button class="btn btn-warning btn-sm" onclick="deleteBot(${bot.id})">
-                                    <i class="fas fa-trash"></i> DELETE
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-
-            container.innerHTML = html;
-        }
-
-        function updateStats() {
-            const userBots = currentUser.isAdmin ? bots : bots.filter(bot => bot.owner === currentUser.key);
-            document.getElementById('totalBots').textContent = userBots.length;
-            document.getElementById('activeBots').textContent = userBots.filter(b => b.status === 'active').length;
-            document.getElementById('inactiveBots').textContent = userBots.filter(b => b.status !== 'active').length;
-        }
-
-        function showNotification(message, type) {
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.innerHTML = `<i class="fas fa-${type === 'success' ? 'check' : 'times'}"></i> ${message}`;
-            document.body.appendChild(notification);
-            setTimeout(() => notification.remove(), 3000);
-        }
+        
+        setInterval(drawMatrix, 33);
+        
+        // Kod animasyonu
+        const codeLines = [
+            "> sudo apt-get install dearsiber-tools",
+            "> Initializing DEARSİBER protocol...",
+            "> Bypassing security systems...",
+            "> Accessing restricted networks...",
+            "> Encryption keys generated...",
+            "> Establishing secure connection...",
+            "> Welcome to the dark side...",
+            "> DEARSİBER activated successfully",
+            "> System compromised...",
+            "> Data extraction in progress...",
+            "> Firewall disabled...",
+            "> Root access obtained...",
+            "> Tracking countermeasures active...",
+            "> Anonymous routing enabled...",
+            "> Mission parameters set...",
+            "> Ready for operation..."
+        ];
+        
+        const codeAnimation = document.getElementById('code-animation');
+        
+        codeLines.forEach((line, index) => {
+            const codeLine = document.createElement('div');
+            codeLine.className = 'code-line';
+            codeLine.textContent = line;
+            codeLine.style.animationDelay = `${index * 1.5}s`;
+            codeAnimation.appendChild(codeLine);
+        });
+        
+        // Pencere boyutu değiştiğinde canvas'ı yeniden boyutlandır
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
     </script>
 </body>
 </html>
