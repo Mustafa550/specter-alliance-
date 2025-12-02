@@ -3,96 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚀 VDS Bot Sistemi - Gerçek Güvenlik</title>
+    <title>VDS Bot Sistemi</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
     <style>
-        :root {
-            --primary: #00ff88;
-            --secondary: #ffffff;
-            --dark: #0a0a0a;
-            --darker: #000000;
-            --danger: #ff0000;
-            --warning: #ff9900;
-            --success: #00ff00;
-            --info: #0099ff;
-            --premium: #ffd700;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Courier New', monospace;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background: var(--darker);
-            color: var(--secondary);
+            background-color: #0a0a0a;
+            color: #ffffff;
             min-height: 100vh;
             overflow-x: hidden;
-            font-size: 14px;
         }
 
-        /* Güvenlik Katmanı */
-        .security-overlay {
+        /* Login Ekranı */
+        .login-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 9999;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            backdrop-filter: blur(20px);
-        }
-
-        .security-alert {
-            background: rgba(255, 0, 0, 0.2);
-            border: 3px solid var(--danger);
-            border-radius: 10px;
-            padding: 30px;
-            max-width: 600px;
-            text-align: center;
-            animation: pulse-red 1s infinite;
-        }
-
-        @keyframes pulse-red {
-            0%, 100% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); }
-            50% { box-shadow: 0 0 40px rgba(255, 0, 0, 0.8); }
-        }
-
-        /* Login Panel */
-        .login-panel {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #000428, #004e92);
-            z-index: 10000;
+            background: linear-gradient(135deg, #001510 0%, #000000 100%);
             display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 1000;
         }
 
         .login-box {
-            background: rgba(0, 0, 0, 0.9);
-            border: 2px solid var(--primary);
+            background: rgba(20, 20, 20, 0.95);
+            border: 2px solid #00ff88;
             border-radius: 10px;
             padding: 40px;
             width: 90%;
             max-width: 400px;
-            box-shadow: 0 0 50px rgba(0, 255, 136, 0.5);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
         }
 
         .login-title {
             text-align: center;
-            color: var(--primary);
-            font-size: 24px;
+            color: #00ff88;
+            font-size: 28px;
             margin-bottom: 30px;
             font-weight: bold;
         }
@@ -100,40 +55,38 @@
         .login-input {
             width: 100%;
             padding: 15px;
-            margin: 10px 0;
+            margin-bottom: 20px;
             background: rgba(255, 255, 255, 0.1);
-            border: 2px solid var(--primary);
+            border: 1px solid #00ff88;
             border-radius: 5px;
             color: white;
             font-size: 16px;
-            letter-spacing: 2px;
         }
 
         .login-input:focus {
             outline: none;
-            box-shadow: 0 0 10px var(--primary);
+            box-shadow: 0 0 10px #00ff88;
         }
 
         .login-btn {
             width: 100%;
             padding: 15px;
-            background: linear-gradient(45deg, var(--primary), #00cc88);
+            background: linear-gradient(45deg, #00ff88, #00cc88);
             border: none;
             border-radius: 5px;
             color: black;
             font-weight: bold;
             font-size: 16px;
             cursor: pointer;
-            margin-top: 20px;
             transition: all 0.3s;
         }
 
         .login-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 20px var(--primary);
+            box-shadow: 0 0 20px #00ff88;
         }
 
-        /* Main Container */
+        /* Ana Container */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -144,105 +97,73 @@
         /* Header */
         .header {
             background: rgba(0, 0, 0, 0.9);
-            border-bottom: 2px solid var(--primary);
-            padding: 15px 0;
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .header::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--primary), transparent);
-            animation: scan 2s linear infinite;
-        }
-
-        @keyframes scan {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+            border-bottom: 2px solid #00ff88;
+            padding: 20px 0;
+            margin-bottom: 30px;
         }
 
         .logo {
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
 
         .logo h1 {
-            color: var(--primary);
-            font-size: 28px;
-            text-shadow: 0 0 10px var(--primary);
+            color: #00ff88;
+            font-size: 32px;
+            text-shadow: 0 0 10px #00ff88;
         }
 
-        .security-status {
+        .status-bar {
             display: flex;
             justify-content: center;
-            gap: 20px;
             flex-wrap: wrap;
+            gap: 15px;
             margin-top: 10px;
         }
 
         .status-item {
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--primary);
+            border: 1px solid #00ff88;
             border-radius: 5px;
-            padding: 10px 20px;
-            font-size: 12px;
+            padding: 10px 15px;
+            font-size: 14px;
         }
 
-        /* Content */
-        .content {
+        /* Grid Sistem */
+        .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
-            margin-top: 20px;
+            margin-bottom: 30px;
         }
 
+        /* Paneller */
         .panel {
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid var(--primary);
-            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #00ff88;
+            border-radius: 8px;
             padding: 20px;
-            position: relative;
-        }
-
-        .panel::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent 30%, rgba(0, 255, 136, 0.05) 50%, transparent 70%);
-            animation: shine 3s infinite;
-        }
-
-        @keyframes shine {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+            margin-bottom: 20px;
         }
 
         .panel-title {
-            color: var(--primary);
+            color: #00ff88;
+            font-size: 20px;
             margin-bottom: 15px;
-            font-size: 18px;
-            border-bottom: 1px solid var(--primary);
-            padding-bottom: 5px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #00ff88;
         }
 
-        /* File Upload */
+        /* Dosya Yükleme Alanı */
         .upload-area {
-            border: 2px dashed var(--primary);
-            border-radius: 5px;
+            border: 2px dashed #00ff88;
+            border-radius: 8px;
             padding: 30px;
             text-align: center;
             margin: 15px 0;
             cursor: pointer;
-            transition: all 0.3s;
             background: rgba(0, 255, 136, 0.05);
+            transition: all 0.3s;
         }
 
         .upload-area:hover {
@@ -250,25 +171,25 @@
             border-color: #00ffcc;
         }
 
-        /* Inputs */
+        /* Input Alanları */
         .input-field {
             width: 100%;
             padding: 12px;
             margin: 10px 0;
             background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--primary);
-            border-radius: 3px;
+            border: 1px solid #00ff88;
+            border-radius: 5px;
             color: white;
             font-size: 14px;
         }
 
-        /* Buttons */
+        /* Butonlar */
         .btn {
             width: 100%;
             padding: 12px;
             margin: 5px 0;
             border: none;
-            border-radius: 3px;
+            border-radius: 5px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
@@ -276,31 +197,36 @@
         }
 
         .btn-primary {
-            background: var(--primary);
+            background: #00ff88;
             color: black;
         }
 
         .btn-primary:hover {
             background: #00cc88;
-            box-shadow: 0 0 10px var(--primary);
+            box-shadow: 0 0 10px #00ff88;
         }
 
         .btn-danger {
-            background: var(--danger);
+            background: #ff0000;
             color: white;
         }
 
         .btn-danger:hover {
             background: #cc0000;
-            box-shadow: 0 0 10px var(--danger);
+            box-shadow: 0 0 10px #ff0000;
         }
 
         .btn-premium {
-            background: var(--premium);
+            background: #ffd700;
             color: black;
         }
 
-        /* Admin Panel */
+        .btn-premium:hover {
+            background: #ffcc00;
+            box-shadow: 0 0 10px #ffd700;
+        }
+
+        /* Admin Paneli */
         .admin-panel {
             position: fixed;
             top: 0;
@@ -308,7 +234,7 @@
             width: 500px;
             height: 100vh;
             background: rgba(0, 0, 0, 0.95);
-            border-left: 2px solid var(--primary);
+            border-left: 2px solid #00ff88;
             z-index: 1000;
             transition: right 0.3s;
             overflow-y: auto;
@@ -323,59 +249,79 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            background: var(--danger);
+            background: #ff0000;
             color: white;
             border: none;
-            border-radius: 3px;
+            border-radius: 5px;
             padding: 5px 10px;
             cursor: pointer;
         }
 
-        /* Tables */
+        /* Tablolar */
         .table {
             width: 100%;
             border-collapse: collapse;
             margin: 10px 0;
-            font-size: 12px;
+            font-size: 14px;
         }
 
         .table th, .table td {
-            border: 1px solid var(--primary);
+            border: 1px solid #00ff88;
             padding: 8px;
             text-align: left;
         }
 
         .table th {
             background: rgba(0, 255, 136, 0.2);
-            color: var(--primary);
+            color: #00ff88;
         }
 
-        .table tr:nth-child(even) {
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        /* Alerts */
+        /* Alert Mesajları */
         .alert {
             padding: 15px;
             margin: 10px 0;
-            border-radius: 3px;
-            border-left: 5px solid;
+            border-radius: 5px;
+            border-left: 4px solid;
             background: rgba(255, 255, 255, 0.05);
         }
 
         .alert-danger {
-            border-color: var(--danger);
-            color: var(--danger);
+            border-color: #ff0000;
+            color: #ff0000;
         }
 
         .alert-success {
-            border-color: var(--success);
-            color: var(--success);
+            border-color: #00ff00;
+            color: #00ff00;
         }
 
         .alert-warning {
-            border-color: var(--warning);
-            color: var(--warning);
+            border-color: #ff9900;
+            color: #ff9900;
+        }
+
+        .alert-info {
+            border-color: #0099ff;
+            color: #0099ff;
+        }
+
+        /* Log Alanı */
+        .log-area {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #00ff88;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        .log-item {
+            margin: 5px 0;
+            padding: 3px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         /* Loading */
@@ -397,7 +343,7 @@
             width: 50px;
             height: 50px;
             border: 5px solid rgba(0, 255, 136, 0.3);
-            border-top: 5px solid var(--primary);
+            border-top: 5px solid #00ff88;
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin-bottom: 20px;
@@ -408,87 +354,100 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Logs */
-        .logs {
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid var(--primary);
-            border-radius: 3px;
-            padding: 10px;
-            margin: 10px 0;
-            max-height: 200px;
+        /* Security Overlay */
+        .security-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 3000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .security-alert {
+            background: rgba(255, 0, 0, 0.2);
+            border: 3px solid #ff0000;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 600px;
+            text-align: center;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(255, 0, 0, 0.8); }
+        }
+
+        /* Bot Listesi */
+        .bot-list {
+            max-height: 300px;
             overflow-y: auto;
-            font-family: monospace;
-            font-size: 11px;
         }
 
-        .log-item {
-            margin: 5px 0;
-            padding: 3px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .log-time {
-            color: var(--primary);
-        }
-
-        .log-error {
-            color: var(--danger);
-        }
-
-        .log-success {
-            color: var(--success);
-        }
-
-        .log-warning {
-            color: var(--warning);
+        .bot-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #00ff88;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
         }
 
         /* Footer */
         .footer {
             text-align: center;
-            margin-top: 30px;
             padding: 20px;
-            border-top: 1px solid var(--primary);
+            margin-top: 30px;
+            border-top: 1px solid #00ff88;
             color: rgba(255, 255, 255, 0.5);
-            font-size: 12px;
+            font-size: 14px;
         }
 
-        /* Hidden Elements */
-        .hidden {
-            display: none !important;
-        }
-
-        /* Mobile Responsive */
+        /* Responsive */
         @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
             .admin-panel {
                 width: 100%;
                 right: -100%;
             }
             
-            .content {
-                grid-template-columns: 1fr;
-            }
-            
-            .security-status {
+            .status-bar {
                 flex-direction: column;
                 align-items: center;
             }
+            
+            .status-item {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* Gizli Elementler */
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <!-- Login Panel -->
-    <div id="loginPanel" class="login-panel">
+    <!-- Giriş Ekranı -->
+    <div id="loginScreen" class="login-screen">
         <div class="login-box">
             <div class="login-title">
                 <i class="fas fa-shield-alt"></i> VDS BOT SİSTEMİ
             </div>
-            <input type="password" id="passwordInput" class="login-input" placeholder="Şifre" autocomplete="off">
-            <button onclick="login()" class="login-btn">
+            <input type="password" id="passwordInput" class="login-input" placeholder="Şifrenizi girin" autocomplete="off">
+            <button onclick="girisYap()" class="login-btn">
                 <i class="fas fa-lock"></i> GİRİŞ YAP
             </button>
             <div id="loginError" class="alert alert-danger hidden" style="margin-top: 10px;">
-                ❌ Hatalı şifre!
+                Hatalı şifre!
             </div>
         </div>
     </div>
@@ -496,40 +455,39 @@
     <!-- Security Overlay -->
     <div id="securityOverlay" class="security-overlay">
         <div class="security-alert">
-            <h2><i class="fas fa-skull-crossbones"></i> GÜVENLİK İHLALİ TESPİT EDİLDİ!</h2>
+            <h2><i class="fas fa-skull-crossbones"></i> GÜVENLİK İHLALİ!</h2>
             <p style="margin: 20px 0; color: #ff4444; font-size: 18px;">
-                ⚠️ <strong>RAT DOSYASI TESPİT EDİLDİ!</strong>
+                RAT DOSYASI TESPİT EDİLDİ!
             </p>
             <p>IP ADRESİNİZ KAYDEDİLDİ VE BANLANDI!</p>
             <p style="margin-top: 20px; color: #cccccc;">
-                Sistem Yöneticisine Bildirildi<br>
-                ID: <span id="banId">-</span>
+                Sistem Yöneticisine Bildirildi
             </p>
         </div>
     </div>
 
-    <!-- Loading Screen -->
+    <!-- Loading -->
     <div id="loadingScreen" class="loading">
         <div class="spinner"></div>
         <div id="loadingText">Güvenlik Kontrolü Yapılıyor...</div>
     </div>
 
-    <!-- Main Container -->
+    <!-- Ana Container -->
     <div id="mainContainer" class="container">
         <!-- Header -->
         <div class="header">
             <div class="logo">
                 <h1><i class="fas fa-robot"></i> VDS BOT SİSTEMİ</h1>
             </div>
-            <div class="security-status">
+            <div class="status-bar">
                 <div class="status-item">
-                    <i class="fas fa-shield-alt"></i> GÜVENLİK: <span id="securityLevel">🔴 MAXIMUM</span>
+                    <i class="fas fa-shield-alt"></i> Güvenlik: <span id="securityLevel">MAXIMUM</span>
                 </div>
                 <div class="status-item">
-                    <i class="fas fa-user"></i> DURUM: <span id="userStatus">ÜCRETSİZ</span>
+                    <i class="fas fa-user"></i> Durum: <span id="userStatus">ÜCRETSİZ</span>
                 </div>
                 <div class="status-item">
-                    <i class="fas fa-robot"></i> BOT: <span id="botCount">0/1</span>
+                    <i class="fas fa-robot"></i> Bot: <span id="botCount">0/1</span>
                 </div>
                 <div class="status-item">
                     <i class="fas fa-id-card"></i> ID: <span id="userId">-</span>
@@ -542,51 +500,49 @@
 
         <!-- Admin Panel -->
         <div id="adminPanel" class="admin-panel">
-            <button class="admin-close" onclick="toggleAdminPanel()">×</button>
+            <button class="admin-close" onclick="adminPanelKapat()">×</button>
             <h2 class="panel-title"><i class="fas fa-user-shield"></i> ADMIN PANELİ</h2>
             
             <div class="panel">
                 <h3><i class="fas fa-ban"></i> BANLI KULLANICILAR</h3>
-                <div class="logs" id="bannedUsersList">
+                <div class="log-area" id="bannedUsersList">
                     Yükleniyor...
                 </div>
-                <button class="btn btn-danger" onclick="clearBans()">Tümünü Temizle</button>
+                <button class="btn btn-danger" onclick="banlariTemizle()">Tümünü Temizle</button>
             </div>
 
             <div class="panel">
-                <h3><i class="fas fa-file-code"></i> TESPİT EDİLEN RAT DOSYALARI</h3>
-                <div class="logs" id="ratFilesList">
-                    Yükleniyor...
-                </div>
+                <h3><i class="fas fa-key"></i> KEY OLUŞTUR</h3>
+                <select id="keyType" class="input-field">
+                    <option value="premium">Premium Key</option>
+                    <option value="admin">Admin Key</option>
+                </select>
+                <input type="number" id="keyDays" class="input-field" placeholder="Kaç gün" min="1" max="365">
+                <button class="btn btn-primary" onclick="keyOlustur()">Key Oluştur</button>
+                <div id="generatedKey" class="alert alert-success hidden" style="margin-top: 10px;"></div>
             </div>
 
             <div class="panel">
                 <h3><i class="fas fa-history"></i> SİSTEM LOGLARI</h3>
-                <div class="logs" id="systemLogs">
+                <div class="log-area" id="systemLogs">
                     Yükleniyor...
                 </div>
-                <button class="btn" onclick="clearLogs()">Logları Temizle</button>
-            </div>
-
-            <div class="panel">
-                <h3><i class="fas fa-cogs"></i> SİSTEM KONTROLLERİ</h3>
-                <button class="btn btn-danger" onclick="emergencyShutdown()">Acil Kapatma</button>
-                <button class="btn" onclick="exportLogs()">Logları İndir</button>
+                <button class="btn" onclick="loglariTemizle()">Logları Temizle</button>
             </div>
         </div>
 
-        <!-- Main Content -->
-        <div class="content">
-            <!-- File Upload Panel -->
+        <!-- Ana İçerik -->
+        <div class="grid">
+            <!-- Dosya Yükleme -->
             <div class="panel">
                 <h2 class="panel-title"><i class="fas fa-upload"></i> DOSYA YÜKLEME</h2>
-                <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-                    <i class="fas fa-file-code fa-3x" style="color: var(--primary); margin-bottom: 10px;"></i>
+                <div class="upload-area" onclick="dosyaSec()">
+                    <i class="fas fa-file-code fa-3x" style="color: #00ff88; margin-bottom: 10px;"></i>
                     <h3>Python Dosyası Yükleyin</h3>
                     <p>Sadece .py uzantılı dosyalar</p>
-                    <p class="alert alert-warning" style="margin-top: 10px;">
+                    <div class="alert alert-warning" style="margin-top: 10px;">
                         <i class="fas fa-exclamation-triangle"></i> RAT dosyası yükleyenler IP BAN yer!
-                    </p>
+                    </div>
                 </div>
                 <input type="file" id="fileInput" accept=".py" class="hidden">
                 
@@ -598,43 +554,43 @@
 
                 <div id="tokenSection" class="hidden">
                     <input type="text" id="tokenInput" class="input-field" placeholder="Bot Token: 1234567890:ABCdefGHIjklMnOpQRstUvWxYz">
-                    <button class="btn btn-primary" onclick="startBot()">
+                    <button class="btn btn-primary" onclick="botBaslat()">
                         <i class="fas fa-play"></i> BOT'U BAŞLAT
                     </button>
                 </div>
             </div>
 
-            <!-- Bot Control Panel -->
+            <!-- Bot Kontrolleri -->
             <div class="panel">
                 <h2 class="panel-title"><i class="fas fa-cogs"></i> BOT KONTROLLERİ</h2>
-                <button class="btn btn-primary" onclick="showMyBots()">
+                <button class="btn btn-primary" onclick="botlarimiGoster()">
                     <i class="fas fa-list"></i> BOTLARIMI GÖSTER
                 </button>
-                <button class="btn btn-danger" onclick="stopAllBots()">
+                <button class="btn btn-danger" onclick="tumBotlariDurdur()">
                     <i class="fas fa-stop"></i> TÜM BOTLARI DURDUR
                 </button>
-                <button class="btn" onclick="showStats()">
+                <button class="btn" onclick="istatistikleriGoster()">
                     <i class="fas fa-chart-bar"></i> İSTATİSTİKLER
                 </button>
-                <button class="btn btn-premium" onclick="buyPremium()">
+                <button class="btn btn-premium" onclick="premiumAl()">
                     <i class="fas fa-crown"></i> PREMIUM AL
                 </button>
-                <button id="adminBtn" class="btn" onclick="toggleAdminPanel()" style="display: none;">
+                <button id="adminBtn" class="btn" onclick="adminPanelAc()" style="display: none;">
                     <i class="fas fa-user-secret"></i> ADMIN
                 </button>
             </div>
 
-            <!-- My Bots Panel -->
+            <!-- Bot Listesi -->
             <div class="panel" id="myBotsPanel" style="display: none;">
                 <h2 class="panel-title"><i class="fas fa-robot"></i> AKTİF BOTLARIM</h2>
-                <div id="botList">
+                <div class="bot-list" id="botList">
                     <div class="alert alert-warning">
                         <i class="fas fa-info-circle"></i> Henüz aktif botunuz yok.
                     </div>
                 </div>
             </div>
 
-            <!-- Statistics Panel -->
+            <!-- İstatistikler -->
             <div class="panel" id="statsPanel" style="display: none;">
                 <h2 class="panel-title"><i class="fas fa-chart-line"></i> SİSTEM İSTATİSTİKLERİ</h2>
                 <table class="table">
@@ -650,7 +606,7 @@
                         <td>Güvenlik Taraması:</td>
                         <td id="statSecurityScans">0</td>
                     </tr>
-                          <tr>
+                    <tr>
                         <td>Banlı Kullanıcı:</td>
                         <td id="statBannedUsers">0</td>
                     </tr>
@@ -658,50 +614,225 @@
                         <td>RAT Tespiti:</td>
                         <td id="statRatDetected">0</td>
                     </tr>
-                    <tr>
-                        <td>Sistem Çalışma Süresi:</td>
-                        <td id="statUptime">0s</td>
-                    </tr>
                 </table>
             </div>
+        </div>
 
-            <!-- Security Logs -->
-            <div class="panel">
-                <h2 class="panel-title"><i class="fas fa-clipboard-list"></i> GÜVENLİK LOGLARI</h2>
-                <div class="logs" id="securityLogs">
-                    Sistem başlatılıyor...
-                </div>
+        <!-- Log Alanı -->
+        <div class="panel">
+            <h2 class="panel-title"><i class="fas fa-clipboard-list"></i> GÜVENLİK LOGLARI</h2>
+            <div class="log-area" id="securityLogs">
+                Sistem başlatılıyor...
             </div>
         </div>
 
         <!-- Footer -->
         <div class="footer">
-            <p>🚀 VDS BOT SİSTEMİ - Gerçek Zamanlı Güvenlik | © 2024</p>
-            <p style="margin-top: 5px; color: var(--primary);">
+            <p>VDS BOT SİSTEMİ - Gerçek Zamanlı Güvenlik | © 2024</p>
+            <p style="margin-top: 5px; color: #00ff88;">
                 <i class="fas fa-shield-alt"></i> RAT KORUMASI AKTİF | IP BAN SİSTEMİ AKTİF
             </p>
         </div>
     </div>
 
     <script>
-        // ==================== ŞİFRELEME SİSTEMİ ====================
-        const SECRET_KEY = 'VDS_BOT_SECURE_SYSTEM_2024';
-        
-        function encrypt(text) {
-            return CryptoJS.AES.encrypt(text, SECRET_KEY).toString();
+        // SİSTEM VERİLERİ
+        let sistemVerileri = {
+            kullanicilar: {},
+            botlar: {},
+            banliIPler: {},
+            ratDosyalari: {},
+            loglar: [],
+            istatistikler: {
+                toplamKullanici: 0,
+                toplamBot: 0,
+                guvenlikTaramasi: 0,
+                banliKullanici: 0,
+                ratTespiti: 0,
+                baslangicZamani: Date.now()
+            },
+                   ayarlar: {
+                adminSifre: 'sirin31',
+                maxUcretsizBot: 1,
+                maxPremiumBot: 5
+            },
+            premiumKeyler: {},
+            adminKeyler: {}
+        };
+
+        // MEVCUT KULLANICI
+        let mevcutKullanici = {
+            id: null,
+            kullaniciAdi: 'Misafir',
+            ip: null,
+            premium: false,
+            admin: false,
+            botSayisi: 0,
+            yuklenenDosya: null
+        };
+
+        let kullaniciBotlari = [];
+
+        // SAYFA YÜKLENİNCE
+        document.addEventListener('DOMContentLoaded', function() {
+            verileriYukle();
+            ipAl();
+        });
+
+        // GİRİŞ YAP
+        function girisYap() {
+            const sifre = document.getElementById('passwordInput').value;
+            const hataDiv = document.getElementById('loginError');
+            
+            if (sifre === sistemVerileri.ayarlar.adminSifre) {
+                mevcutKullanici.admin = true;
+                mevcutKullanici.premium = true;
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('mainContainer').style.display = 'block';
+                document.getElementById('adminBtn').style.display = 'block';
+                
+                logEkle('Admin girişi yapıldı', 'success');
+                kullaniciAyarla();
+            } else if (sifre.startsWith('PREMIUM_')) {
+                // Premium key kontrolü
+                if (sistemVerileri.premiumKeyler[sifre]) {
+                    const key = sistemVerileri.premiumKeyler[sifre];
+                    if (key.bitis > Date.now()) {
+                        mevcutKullanici.premium = true;
+                        document.getElementById('loginScreen').style.display = 'none';
+                        document.getElementById('mainContainer').style.display = 'block';
+                        logEkle('Premium giriş yapıldı', 'success');
+                        kullaniciAyarla();
+                        return;
+                    }
+                }
+                hataDiv.classList.remove('hidden');
+            } else if (sifre.startsWith('ADMIN_')) {
+                // Admin key kontrolü
+                if (sistemVerileri.adminKeyler[sifre]) {
+                    const key = sistemVerileri.adminKeyler[sifre];
+                    if (key.bitis > Date.now()) {
+                        mevcutKullanici.admin = true;
+                        mevcutKullanici.premium = true;
+                        document.getElementById('loginScreen').style.display = 'none';
+                        document.getElementById('mainContainer').style.display = 'block';
+                        document.getElementById('adminBtn').style.display = 'block';
+                        logEkle('Admin key ile giriş yapıldı', 'success');
+                        kullaniciAyarla();
+                        return;
+                    }
+                }
+                hataDiv.classList.remove('hidden');
+            } else {
+                hataDiv.classList.remove('hidden');
+            }
+            
+            setTimeout(function() {
+                hataDiv.classList.add('hidden');
+            }, 3000);
         }
-        
-        function decrypt(ciphertext) {
+
+        // IP AL
+        async function ipAl() {
             try {
-                const bytes = CryptoJS.AES.decrypt(ciphertext, SECRET_KEY);
-                return bytes.toString(CryptoJS.enc.Utf8);
-            } catch {
-                return null;
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                mevcutKullanici.ip = data.ip;
+                document.getElementById('userIp').textContent = mevcutKullanici.ip;
+                
+                // IP ban kontrolü
+                if (sistemVerileri.banliIPler[mevcutKullanici.ip]) {
+                    banEkraniGoster(mevcutKullanici.ip);
+                    return false;
+                }
+                return true;
+            } catch (error) {
+                mevcutKullanici.ip = '192.168.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255);
+                document.getElementById('userIp').textContent = mevcutKullanici.ip;
+                return true;
             }
         }
-        
-        // ==================== GÜVENLİK SİSTEMİ ====================
-        const RAT_PATTERNS = [
+
+        // BAN EKRANI GÖSTER
+        function banEkraniGoster(ip) {
+            document.getElementById('securityOverlay').style.display = 'flex';
+        }
+
+        // KULLANICI AYARLA
+        function kullaniciAyarla() {
+            mevcutKullanici.id = 'KULLANICI_' + Date.now();
+            document.getElementById('userId').textContent = mevcutKullanici.id;
+            guncelleUI();
+            istatistikleriGuncelle();
+        }
+
+        // UI GÜNCELLE
+        function guncelleUI() {
+            document.getElementById('botCount').textContent = mevcutKullanici.botSayisi + '/' + (mevcutKullanici.premium ? 5 : 1);
+            document.getElementById('userStatus').textContent = mevcutKullanici.admin ? '👑 ADMIN' : (mevcutKullanici.premium ? '💎 PREMIUM' : '🆓 ÜCRETSİZ');
+        }
+
+        // DOSYA SEÇ
+        function dosyaSec() {
+            document.getElementById('fileInput').click();
+        }
+
+        // DOSYA YÜKLE
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const dosya = e.target.files[0];
+            if (dosya) {
+                dosyaYukle(dosya);
+            }
+        });
+
+        function dosyaYukle(dosya) {
+            if (!dosya.name.endsWith('.py')) {
+                alertGoster('Sadece .py dosyaları yükleyebilirsiniz!', 'danger');
+                return;
+            }
+
+            if (mevcutKullanici.botSayisi >= (mevcutKullanici.premium ? 5 : 1)) {
+                alertGoster('Bot limitiniz doldu!', 'danger');
+                return;
+            }
+
+            const okuyucu = new FileReader();
+            okuyucu.onload = function(e) {
+                const icerik = e.target.result;
+                
+                // RAT TARAMASI
+                const taramaSonucu = ratTaramasiYap(icerik, dosya.name);
+                
+                if (taramaSonucu.ratVar) {
+                    // RAT tespit edildi, IP ban at
+                    ipBan(mevcutKullanici.ip, 'RAT dosyası: ' + dosya.name);
+                    return;
+                }
+                
+                // Güvenli dosya
+                mevcutKullanici.yuklenenDosya = {
+                    ad: dosya.name,
+                    boyut: dosya.size,
+                    icerik: icerik.substring(0, 1000),
+                    zaman: Date.now()
+                };
+                
+                // UI güncelle
+                document.getElementById('fileInfo').classList.remove('hidden');
+                document.getElementById('fileName').textContent = '✅ ' + dosya.name + ' yüklendi';
+                document.getElementById('tokenSection').classList.remove('hidden');
+                
+                sistemVerileri.istatistikler.guvenlikTaramasi++;
+                logEkle('Güvenli dosya: ' + dosya.name, 'success');
+                istatistikleriGuncelle();
+                verileriKaydet();
+            };
+            
+            okuyucu.readAsText(dosya);
+        }
+
+        // RAT TARAMASI
+        const ratPaternleri = [
             'exec(', 'eval(', 'compile(', '__import__(', 'os.system', 'subprocess',
             'base64.b64decode', 'marshal.loads', 'pickle.loads', 'shutil.',
             'ctypes.', 'pynput', 'keyboard', 'pyautogui', 'psutil',
@@ -715,251 +846,80 @@
             'backdoor', 'reverse_shell', 'bind_shell', 'cmd.exe', '/bin/bash',
             'shell=True', 'Popen', 'call(', 'run(', 'check_output('
         ];
-        
-        // ==================== VERİ DEPOLAMA ====================
-        let systemData = {
-            users: {},
-            bots: {},
-            bannedIPs: {},
-            ratFiles: {},
-            logs: [],
-            stats: {
-                totalUsers: 0,
-                totalBots: 0,
-                securityScans: 0,
-                bannedUsers: 0,
-                ratDetected: 0,
-                startTime: Date.now()
-            },
-            settings: {
-                adminPassword: 'sirin31',
-                maxFreeBots: 1,
-                maxPremiumBots: 5,
-                securityLevel: 'maximum'
-            }
-        };
-        
-        let currentUser = {
-            id: null,
-            username: 'Guest',
-            ip: null,
-            isPremium: false,
-            isAdmin: false,
-            botCount: 0,
-            uploadedFile: null,
-            sessionId: null
-        };
-        
-        let userBots = [];
-        
-        // ==================== BAŞLANGIÇ ====================
-        document.addEventListener('DOMContentLoaded', async () => {
-            await initializeSystem();
-        });
-        
-        async function initializeSystem() {
-            // IP adresini al
-            await getUserIP();
+
+        function ratTaramasiYap(icerik, dosyaAdi) {
+            const tehditler = [];
+            let tehditSeviyesi = 0;
             
-            // Verileri yükle
-            loadData();
-            
-            // Güvenlik kontrolü
-            await securityCheck();
-            
-            // Kullanıcı ID oluştur
-            currentUser.id = generateUserId();
-            currentUser.sessionId = generateSessionId();
-            
-            // UI'ı güncelle
-            updateUI();
-            addLog('Sistem başlatıldı', 'success');
-            addLog(`Kullanıcı ID: ${currentUser.id}`, 'info');
-            addLog(`IP: ${currentUser.ip}`, 'info');
-        }
-        
-        // ==================== IP YÖNETİMİ ====================
-        async function getUserIP() {
-            try {
-                const response = await fetch('https://api.ipify.org?format=json');
-                const data = await response.json();
-                currentUser.ip = data.ip;
-                document.getElementById('userIp').textContent = currentUser.ip;
-                
-                // IP ban kontrolü
-                if (systemData.bannedIPs[currentUser.ip]) {
-                    showBanScreen(currentUser.ip);
-                    return false;
-                }
-                return true;
-            } catch {
-                // Fallback IP
-                currentUser.ip = '192.168.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255);
-                document.getElementById('userIp').textContent = currentUser.ip;
-                return true;
-            }
-        }
-        
-        function banIP(ip, reason) {
-            const banId = 'BAN_' + Date.now();
-            systemData.bannedIPs[ip] = {
-                id: banId,
-                ip: ip,
-                reason: reason,
-                timestamp: Date.now(),
-                userId: currentUser.id,
-                username: currentUser.username
-            };
-            
-            systemData.stats.bannedUsers++;
-            saveData();
-            
-            addLog(`IP BAN: ${ip} - Sebep: ${reason}`, 'error');
-            showBanScreen(ip);
-            return banId;
-        }
-        
-        function showBanScreen(ip) {
-            document.getElementById('banId').textContent = systemData.bannedIPs[ip]?.id || 'UNKNOWN';
-            document.getElementById('securityOverlay').style.display = 'flex';
-            
-            // Admin'e bildir
-            if (systemData.settings.adminPassword) {
-                addLog(`[ADMIN UYARI] IP BAN: ${ip}`, 'warning');
-            }
-        }
-        
-        // ==================== RAT TARAMA ====================
-        function scanForRAT(fileContent, fileName) {
-            const threats = [];
-            let threatLevel = 0;
-            
-            // Pattern taraması
-            for (const pattern of RAT_PATTERNS) {
-                if (fileContent.includes(pattern)) {
-                    threats.push(pattern);
-                    threatLevel++;
+            for (const patern of ratPaternleri) {
+                if (icerik.includes(patern)) {
+                    tehditler.push(patern);
+                    tehditSeviyesi++;
                 }
             }
             
-            // Tehlikeli import taraması
-            const dangerousImports = ['import os', 'import sys', 'import subprocess', 'from os import', 'from sys import'];
-            for (const imp of dangerousImports) {
-                if (fileContent.includes(imp)) {
-                    threatLevel++;
-                }
-            }
-            
-            // Kod uzunluğu kontrolü
-            if (fileContent.length > 10000) {
-                threatLevel++;
-            }
-            
-            // Sonuç
-            if (threatLevel > 0) {
+            if (tehditSeviyesi > 0) {
                 const ratId = 'RAT_' + Date.now();
-                systemData.ratFiles[ratId] = {
+                sistemVerileri.ratDosyalari[ratId] = {
                     id: ratId,
-                    fileName: fileName,
-                    threats: threats,
-                    threatLevel: threatLevel,
-                    userId: currentUser.id,
-                    ip: currentUser.ip,
-                    timestamp: Date.now(),
-                    contentPreview: fileContent.substring(0, 500) + '...'
+                    dosyaAdi: dosyaAdi,
+                    tehditler: tehditler,
+                    tehditSeviyesi: tehditSeviyesi,
+                    kullaniciId: mevcutKullanici.id,
+                    ip: mevcutKullanici.ip,
+                    zaman: Date.now()
                 };
                 
-                systemData.stats.ratDetected++;
-                saveData();
+                sistemVerileri.istatistikler.ratTespiti++;
+                verileriKaydet();
                 
-                // IP BAN
-                const banId = banIP(currentUser.ip, `RAT dosyası: ${fileName}`);
-                
-                // Log
-                addLog(`RAT TESPİT! Dosya: ${fileName}, Tehdit Seviyesi: ${threatLevel}`, 'error');
-                addLog(`Tehditler: ${threats.join(', ')}`, 'error');
+                logEkle('RAT TESPİT! Dosya: ' + dosyaAdi + ', Tehdit Seviyesi: ' + tehditSeviyesi, 'error');
                 
                 return {
-                    isRat: true,
-                    threats: threats,
-                    threatLevel: threatLevel,
-                    banId: banId,
-                    ratId: ratId
+                    ratVar: true,
+                    tehditler: tehditler,
+                    tehditSeviyesi: tehditSeviyesi
                 };
             }
             
-            return { isRat: false, threats: [] };
+            return { ratVar: false, tehditler: [] };
         }
-        
-        // ==================== DOSYA İŞLEMLERİ ====================
-        document.getElementById('fileInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                handleFileUpload(file);
-            }
-        });
-        
-        function handleFileUpload(file) {
-            if (!file.name.endsWith('.py')) {
-                showAlert('Sadece .py dosyaları yükleyebilirsiniz!', 'danger');
-                return;
-            }
-            
-            if (currentUser.botCount >= (currentUser.isPremium ? 5 : 1)) {
-                showAlert('Bot limitiniz doldu!', 'danger');
-                return;
-            }
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const content = e.target.result;
-                
-                // RAT taraması
-                const scanResult = scanForRAT(content, file.name);
-                
-                if (scanResult.isRat) {
-                    // RAT tespit edildi, IP ban atıldı
-                    return;
-                }
-                
-                // Güvenli dosya
-                currentUser.uploadedFile = {
-                    name: file.name,
-                    size: file.size,
-                    content: content.substring(0, 1000), // İlk 1000 karakter
-                    timestamp: Date.now()
-                };
-                
-                // UI güncelle
-                document.getElementById('fileInfo').classList.remove('hidden');
-                document.getElementById('fileName').textContent = `✅ ${file.name} yüklendi`;
-                document.getElementById('tokenSection').classList.remove('hidden');
-                
-                systemData.stats.securityScans++;
-                addLog(`Güvenli dosya: ${file.name}`, 'success');
-                updateStats();
-                saveData();
+
+        // IP BAN
+        function ipBan(ip, sebep) {
+            const banId = 'BAN_' + Date.now();
+            sistemVerileri.banliIPler[ip] = {
+                id: banId,
+                ip: ip,
+                sebep: sebep,
+                zaman: Date.now(),
+                kullaniciId: mevcutKullanici.id
             };
             
-            reader.readAsText(file);
+            sistemVerileri.istatistikler.banliKullanici++;
+            verileriKaydet();
+            
+            logEkle('IP BAN: ' + ip + ' - Sebep: ' + sebep, 'error');
+            banEkraniGoster(ip);
+            return banId;
         }
-        
-               // ==================== BOT İŞLEMLERİ ====================
-        function startBot() {
+
+        // BOT BAŞLAT
+        function botBaslat() {
             const token = document.getElementById('tokenInput').value.trim();
             
             if (!token || !token.includes(':')) {
-                showAlert('Geçersiz token formatı!', 'danger');
+                alertGoster('Geçersiz token formatı!', 'danger');
                 return;
             }
             
-            if (!currentUser.uploadedFile) {
-                showAlert('Önce dosya yükleyin!', 'danger');
+            if (!mevcutKullanici.yuklenenDosya) {
+                alertGoster('Önce dosya yükleyin!', 'danger');
                 return;
             }
             
-            if (currentUser.botCount >= (currentUser.isPremium ? 5 : 1)) {
-                showAlert('Bot limitiniz doldu!', 'danger');
+            if (mevcutKullanici.botSayisi >= (mevcutKullanici.premium ? 5 : 1)) {
+                alertGoster('Bot limitiniz doldu!', 'danger');
                 return;
             }
             
@@ -967,32 +927,33 @@
             const botId = 'BOT_' + Date.now();
             const bot = {
                 id: botId,
-                name: currentUser.uploadedFile.name.replace('.py', ''),
+                ad: mevcutKullanici.yuklenenDosya.ad.replace('.py', ''),
                 token: token.substring(0, 12) + '...',
-                startedAt: Date.now(),
-                status: 'running',
-                userId: currentUser.id
+                baslamaZamani: Date.now(),
+                durum: 'calisiyor',
+                kullaniciId: mevcutKullanici.id
             };
             
-            userBots.push(bot);
-            systemData.bots[botId] = bot;
-            currentUser.botCount++;
-            systemData.stats.totalBots++;
+            kullaniciBotlari.push(bot);
+            sistemVerileri.botlar[botId] = bot;
+            mevcutKullanici.botSayisi++;
+            sistemVerileri.istatistikler.toplamBot++;
             
             // UI güncelle
             document.getElementById('tokenInput').value = '';
             document.getElementById('fileInfo').classList.add('hidden');
             document.getElementById('tokenSection').classList.add('hidden');
             
-            addLog(`Bot başlatıldı: ${bot.name} (${botId})`, 'success');
-            updateUI();
-            updateStats();
-            saveData();
+            logEkle('Bot başlatıldı: ' + bot.ad + ' (' + botId + ')', 'success');
+            guncelleUI();
+            istatistikleriGuncelle();
+            verileriKaydet();
             
-            showAlert(`Bot başarıyla başlatıldı! ID: ${botId}`, 'success');
+            alertGoster('Bot başarıyla başlatıldı! ID: ' + botId, 'success');
         }
-        
-        function showMyBots() {
+
+        // BOTLARIMI GÖSTER
+        function botlarimiGoster() {
             const botList = document.getElementById('botList');
             const myBotsPanel = document.getElementById('myBotsPanel');
             const statsPanel = document.getElementById('statsPanel');
@@ -1000,309 +961,268 @@
             statsPanel.style.display = 'none';
             myBotsPanel.style.display = 'block';
             
-            if (userBots.length === 0) {
+            if (kullaniciBotlari.length === 0) {
                 botList.innerHTML = '<div class="alert alert-warning"><i class="fas fa-info-circle"></i> Henüz aktif botunuz yok.</div>';
                 return;
             }
             
             let html = '';
-            userBots.forEach(bot => {
-                const uptime = Math.floor((Date.now() - bot.startedAt) / 1000);
-                const hours = Math.floor(uptime / 3600);
-                const minutes = Math.floor((uptime % 3600) / 60);
-                const seconds = uptime % 60;
+            kullaniciBotlari.forEach(bot => {
+                const calismaSuresi = Math.floor((Date.now() - bot.baslamaZamani) / 1000);
+                const saat = Math.floor(calismaSuresi / 3600);
+                const dakika = Math.floor((calismaSuresi % 3600) / 60);
+                const saniye = calismaSuresi % 60;
                 
                 html += `
-                    <div class="alert" style="background: rgba(0,255,136,0.1);">
-                        <strong>${bot.name}</strong><br>
+                    <div class="bot-item">
+                        <strong>${bot.ad}</strong><br>
                         <small>ID: ${bot.id}</small><br>
                         <small>Token: ${bot.token}</small><br>
                         <small>Durum: 🟢 Çalışıyor</small><br>
-                        <small>Süre: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}</small>
+                        <small>Süre: ${saat.toString().padStart(2, '0')}:${dakika.toString().padStart(2, '0')}:${saniye.toString().padStart(2, '0')}</small>
                     </div>
                 `;
             });
             
             botList.innerHTML = html;
         }
-        
-        function stopAllBots() {
-            if (userBots.length === 0) {
-                showAlert('Durdurulacak bot yok!', 'warning');
+
+           // TÜM BOTLARI DURDUR
+        function tumBotlariDurdur() {
+            if (kullaniciBotlari.length === 0) {
+                alertGoster('Durdurulacak bot yok!', 'warning');
                 return;
             }
             
-            if (!confirm(`${userBots.length} botunuzu durdurmak istediğinize emin misiniz?`)) {
+            if (!confirm(kullaniciBotlari.length + ' botunuzu durdurmak istediğinize emin misiniz?')) {
                 return;
             }
             
-            const count = userBots.length;
-            userBots.forEach(bot => {
-                bot.status = 'stopped';
-                systemData.stats.totalBots--;
+            const sayi = kullaniciBotlari.length;
+            kullaniciBotlari.forEach(bot => {
+                bot.durum = 'durdu';
             });
             
-            userBots = [];
-            currentUser.botCount = 0;
+            kullaniciBotlari = [];
+            mevcutKullanici.botSayisi = 0;
             
-            addLog(`${count} bot durduruldu`, 'warning');
-            updateUI();
-            updateStats();
-            saveData();
+            logEkle(sayi + ' bot durduruldu', 'warning');
+            guncelleUI();
+            istatistikleriGuncelle();
+            verileriKaydet();
             
-            showAlert(`${count} bot durduruldu!`, 'success');
+            alertGoster(sayi + ' bot durduruldu!', 'success');
         }
-        
-        // ==================== ADMIN SİSTEMİ ====================
-        function login() {
-            const password = document.getElementById('passwordInput').value;
-            const errorDiv = document.getElementById('loginError');
-            
-            if (password === systemData.settings.adminPassword) {
-                currentUser.isAdmin = true;
-                document.getElementById('loginPanel').style.display = 'none';
-                document.getElementById('mainContainer').style.display = 'block';
-                document.getElementById('adminBtn').style.display = 'block';
-                
-                addLog('Admin girişi yapıldı', 'success');
-                updateAdminPanel();
-            } else {
-                errorDiv.classList.remove('hidden');
-                setTimeout(() => errorDiv.classList.add('hidden'), 3000);
-            }
+
+        // İSTATİSTİKLERİ GÖSTER
+        function istatistikleriGoster() {
+            document.getElementById('myBotsPanel').style.display = 'none';
+            document.getElementById('statsPanel').style.display = 'block';
+            istatistikleriGuncelle();
         }
-        
-        function toggleAdminPanel() {
-            if (!currentUser.isAdmin) return;
+
+        // İSTATİSTİKLERİ GÜNCELLE
+        function istatistikleriGuncelle() {
+            document.getElementById('statTotalUsers').textContent = sistemVerileri.istatistikler.toplamKullanici;
+            document.getElementById('statTotalBots').textContent = sistemVerileri.istatistikler.toplamBot;
+            document.getElementById('statSecurityScans').textContent = sistemVerileri.istatistikler.guvenlikTaramasi;
+            document.getElementById('statBannedUsers').textContent = sistemVerileri.istatistikler.banliKullanici;
+            document.getElementById('statRatDetected').textContent = sistemVerileri.istatistikler.ratTespiti;
+        }
+
+        // PREMIUM AL
+        function premiumAl() {
+            alertGoster('Premium almak için: @saltanat_sahibi', 'warning');
+        }
+
+        // ADMIN PANEL AÇ
+        function adminPanelAc() {
+            if (!mevcutKullanici.admin) return;
             
             const panel = document.getElementById('adminPanel');
-            panel.classList.toggle('active');
-            updateAdminPanel();
+            panel.classList.add('active');
+            adminPanelGuncelle();
         }
-        
-        function updateAdminPanel() {
+
+        // ADMIN PANEL KAPAT
+        function adminPanelKapat() {
+            const panel = document.getElementById('adminPanel');
+            panel.classList.remove('active');
+        }
+
+        // ADMIN PANEL GÜNCELLE
+        function adminPanelGuncelle() {
             // Banlı kullanıcılar
             const bannedList = document.getElementById('bannedUsersList');
             let bannedHtml = '';
-            Object.values(systemData.bannedIPs).forEach(ban => {
+            Object.values(sistemVerileri.banliIPler).forEach(ban => {
                 bannedHtml += `
                     <div class="log-item">
-                        <span class="log-time">${new Date(ban.timestamp).toLocaleTimeString()}</span>
-                        <span class="log-error"> IP: ${ban.ip}</span><br>
-                        <small>Sebep: ${ban.reason}</small><br>
+                        <span style="color: #00ff88">${new Date(ban.zaman).toLocaleTimeString()}</span>
+                        <span style="color: #ff0000"> IP: ${ban.ip}</span><br>
+                        <small>Sebep: ${ban.sebep}</small><br>
                         <small>ID: ${ban.id}</small>
                     </div>
                 `;
             });
-            bannedList.innerHTML = bannedHtml || 'Banlı kullanıcı yok';
-            
-            // RAT dosyaları
-            const ratList = document.getElementById('ratFilesList');
-            let ratHtml = '';
-            Object.values(systemData.ratFiles).forEach(rat => {
-                ratHtml += `
-                    <div class="log-item">
-                        <span class="log-time">${new Date(rat.timestamp).toLocaleTimeString()}</span>
-                        <span class="log-error"> ${rat.fileName}</span><br>
-                        <small>IP: ${rat.ip}</small><br>
-                        <small>Tehdit: ${rat.threatLevel} seviye</small>
-                    </div>
-                `;
-            });
-            ratFilesList.innerHTML = ratHtml || 'RAT dosyası yok';
+            bannedUsersList.innerHTML = bannedHtml || 'Banlı kullanıcı yok';
             
             // Sistem logları
             const logsList = document.getElementById('systemLogs');
             let logsHtml = '';
-            systemData.logs.slice(-20).forEach(log => {
+            sistemVerileri.loglar.slice(-20).forEach(log => {
                 logsHtml += `
                     <div class="log-item">
-                        <span class="log-time">${new Date(log.time).toLocaleTimeString()}</span>
-                        <span class="log-${log.type}"> ${log.message}</span>
+                        <span style="color: #00ff88">${new Date(log.zaman).toLocaleTimeString()}</span>
+                        <span style="color: ${log.tip === 'error' ? '#ff0000' : log.tip === 'success' ? '#00ff00' : '#0099ff'}"> ${log.mesaj}</span>
                     </div>
                 `;
             });
             systemLogs.innerHTML = logsHtml || 'Log yok';
         }
-        
-        function clearBans() {
+
+        // KEY OLUŞTUR
+        function keyOlustur() {
+            if (!mevcutKullanici.admin) return;
+            
+            const keyTip = document.getElementById('keyType').value;
+            const gun = parseInt(document.getElementById('keyDays').value);
+            
+            if (!gun || gun < 1) {
+                alertGoster('Geçerli gün sayısı girin!', 'danger');
+                return;
+            }
+            
+            let key;
+            let keyDiv = document.getElementById('generatedKey');
+            
+            if (keyTip === 'premium') {
+                key = 'PREMIUM_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8).toUpperCase();
+                sistemVerileri.premiumKeyler[key] = {
+                    key: key,
+                    tip: 'premium',
+                    olusturma: Date.now(),
+                    bitis: Date.now() + (gun * 24 * 60 * 60 * 1000),
+                    gun: gun
+                };
+                keyDiv.innerHTML = `<strong>Premium Key:</strong><br>${key}<br><small>${gun} gün geçerli</small>`;
+            } else {
+                key = 'ADMIN_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8).toUpperCase();
+                sistemVerileri.adminKeyler[key] = {
+                    key: key,
+                    tip: 'admin',
+                    olusturma: Date.now(),
+                    bitis: Date.now() + (gun * 24 * 60 * 60 * 1000),
+                    gun: gun
+                };
+                keyDiv.innerHTML = `<strong>Admin Key:</strong><br>${key}<br><small>${gun} gün geçerli</small>`;
+            }
+            
+            keyDiv.classList.remove('hidden');
+            verileriKaydet();
+            logEkle(keyTip.toUpperCase() + ' key oluşturuldu: ' + key + ' (' + gun + ' gün)', 'success');
+        }
+
+        // BANLARI TEMİZLE
+        function banlariTemizle() {
             if (confirm('Tüm banları temizlemek istediğinize emin misiniz?')) {
-                systemData.bannedIPs = {};
-                systemData.stats.bannedUsers = 0;
-                saveData();
-                updateAdminPanel();
-                addLog('Tüm banlar temizlendi', 'warning');
+                sistemVerileri.banliIPler = {};
+                sistemVerileri.istatistikler.banliKullanici = 0;
+                verileriKaydet();
+                adminPanelGuncelle();
+                logEkle('Tüm banlar temizlendi', 'warning');
             }
         }
-        
-        function clearLogs() {
+
+        // LOGLARI TEMİZLE
+        function loglariTemizle() {
             if (confirm('Tüm logları temizlemek istediğinize emin misiniz?')) {
-                systemData.logs = [];
-                saveData();
-                updateAdminPanel();
-                addLog('Loglar temizlendi', 'warning');
+                sistemVerileri.loglar = [];
+                verileriKaydet();
+                adminPanelGuncelle();
+                logEkle('Loglar temizlendi', 'warning');
             }
         }
-        
-        function emergencyShutdown() {
-            if (confirm('ACİL KAPATMA: Tüm sistem durdurulacak! Emin misiniz?')) {
-                userBots.forEach(bot => bot.status = 'emergency_stopped');
-                userBots = [];
-                currentUser.botCount = 0;
-                
-                addLog('ACİL KAPATMA AKTİF!', 'error');
-                showAlert('Sistem acil kapatıldı!', 'danger');
-                updateUI();
-                updateStats();
-            }
-        }
-        
-        function exportLogs() {
-            const data = JSON.stringify(systemData.logs, null, 2);
-            const blob = new Blob([data], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `vds_logs_${Date.now()}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-        
-        // ==================== YARDIMCI FONKSİYONLAR ====================
-        function addLog(message, type = 'info') {
+
+        // LOG EKLE
+        function logEkle(mesaj, tip = 'info') {
             const log = {
-                time: Date.now(),
-                message: message,
-                type: type,
-                userId: currentUser.id,
-                ip: currentUser.ip
+                zaman: Date.now(),
+                mesaj: mesaj,
+                tip: tip
             };
             
-            systemData.logs.push(log);
+            sistemVerileri.loglar.push(log);
             
             // UI'da göster
             const logsDiv = document.getElementById('securityLogs');
             const logItem = document.createElement('div');
             logItem.className = 'log-item';
+            
+            let renk = '#0099ff';
+            if (tip === 'error') renk = '#ff0000';
+            if (tip === 'success') renk = '#00ff00';
+            if (tip === 'warning') renk = '#ff9900';
+            
             logItem.innerHTML = `
-                <span class="log-time">${new Date(log.time).toLocaleTimeString()}</span>
-                <span class="log-${type}"> ${message}</span>
+                <span style="color: #00ff88">${new Date(log.zaman).toLocaleTimeString()}</span>
+                <span style="color: ${renk}"> ${mesaj}</span>
             `;
             
             logsDiv.appendChild(logItem);
             logsDiv.scrollTop = logsDiv.scrollHeight;
             
             // Max 100 log tut
-            if (systemData.logs.length > 100) {
-                systemData.logs.shift();
+            if (sistemVerileri.loglar.length > 100) {
+                sistemVerileri.loglar.shift();
             }
             
-            saveData();
+            verileriKaydet();
         }
-        
-        function showAlert(message, type = 'info') {
+
+        // ALERT GÖSTER
+        function alertGoster(mesaj, tip = 'info') {
             const alertDiv = document.createElement('div');
-            alertDiv.className = `alert alert-${type}`;
-            alertDiv.innerHTML = `<i class="fas fa-${type === 'danger' ? 'exclamation-triangle' : 'info-circle'}"></i> ${message}`;
+            alertDiv.className = 'alert alert-' + tip;
             
-            document.querySelector('.content').prepend(alertDiv);
+            let icon = 'info-circle';
+            if (tip === 'danger') icon = 'exclamation-triangle';
+            if (tip === 'success') icon = 'check-circle';
+            if (tip === 'warning') icon = 'exclamation-circle';
             
-            setTimeout(() => {
+            alertDiv.innerHTML = `<i class="fas fa-${icon}"></i> ${mesaj}`;
+            
+            document.querySelector('.grid').prepend(alertDiv);
+            
+            setTimeout(function() {
                 alertDiv.remove();
             }, 5000);
         }
-        
-        function updateUI() {
-            document.getElementById('userId').textContent = currentUser.id;
-            document.getElementById('botCount').textContent = `${currentUser.botCount}/${currentUser.isPremium ? 5 : 1}`;
-            document.getElementById('userStatus').textContent = currentUser.isPremium ? '💎 PREMIUM' : '🆓 ÜCRETSİZ';
-            document.getElementById('securityLevel').textContent = '🔴 MAXIMUM';
-        }
-        
-        function updateStats() {
-            document.getElementById('statTotalUsers').textContent = systemData.stats.totalUsers;
-            document.getElementById('statTotalBots').textContent = systemData.stats.totalBots;
-            document.getElementById('statSecurityScans').textContent = systemData.stats.securityScans;
-            document.getElementById('statBannedUsers').textContent = systemData.stats.bannedUsers;
-            document.getElementById('statRatDetected').textContent = systemData.stats.ratDetected;
-            
-            const uptime = Math.floor((Date.now() - systemData.stats.startTime) / 1000);
-            const hours = Math.floor(uptime / 3600);
-            const minutes = Math.floor((uptime % 3600) / 60);
-            const seconds = uptime % 60;
-            document.getElementById('statUptime').textContent = `${hours}h ${minutes}m ${seconds}s`;
-        }
-        
-        function showStats() {
-            document.getElementById('myBotsPanel').style.display = 'none';
-            document.getElementById('statsPanel').style.display = 'block';
-            updateStats();
-        }
-        
-        function buyPremium() {
-            showAlert('Premium satın almak için: @tahtin_sahibi', 'warning');
-        }
-        
-        async function securityCheck() {
-            // Tarayıcı parmak izi kontrolü
-            const fingerprint = await generateFingerprint();
-            addLog(`Tarayıcı parmak izi: ${fingerprint.substring(0, 16)}...`, 'info');
-        }
-        
-        function generateFingerprint() {
-            const data = navigator.userAgent + navigator.language + screen.width + screen.height + screen.colorDepth;
-            return CryptoJS.SHA256(data).toString();
-        }
-        
-        function generateUserId() {
-            return 'USER_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-        }
-        
-        function generateSessionId() {
-            return 'SESS_' + Date.now() + '_' + Math.random().toString(36).substr(2, 12);
+
+        // VERİLERİ KAYDET
+        function verileriKaydet() {
+            try {
+                localStorage.setItem('vds_sistem_verileri', JSON.stringify(sistemVerileri));
+            } catch (e) {
+                console.log('Veri kaydetme hatası:', e);
+            }
         }
 
-          // ==================== VERİ DEPOLAMA ====================
-        function saveData() {
+        // VERİLERİ YÜKLE
+        function verileriYukle() {
             try {
-                const encrypted = encrypt(JSON.stringify(systemData));
-                localStorage.setItem('vds_system_data', encrypted);
-            } catch (e) {
-                console.error('Veri kaydetme hatası:', e);
-            }
-        }
-        
-        function loadData() {
-            try {
-                const saved = localStorage.getItem('vds_system_data');
-                if (saved) {
-                    const decrypted = decrypt(saved);
-                    if (decrypted) {
-                        systemData = JSON.parse(decrypted);
-                    }
+                const kayitli = localStorage.getItem('vds_sistem_verileri');
+                if (kayitli) {
+                    sistemVerileri = JSON.parse(kayitli);
                 }
             } catch (e) {
-                console.error('Veri yükleme hatası:', e);
+                console.log('Veri yükleme hatası:', e);
             }
         }
-        
-        // ==================== OTOMATİK KAYIT ====================
-        setInterval(saveData, 30000); // 30 saniyede bir kaydet
-        setInterval(updateStats, 10000); // 10 saniyede bir güncelle
-        
-        // ==================== BOT UPTIME GÜNCELLEME ====================
-        setInterval(() => {
-            userBots.forEach(bot => {
-                // Bot uptime güncellemesi
-                if (bot.status === 'running') {
-                    // Her 60 saniyede bir log
-                    const uptime = Date.now() - bot.startedAt;
-                    if (uptime % 60000 < 1000) {
-                        addLog(`Bot ${bot.name} çalışıyor (${Math.floor(uptime/60000)} dakika)`, 'info');
-                    }
-                }
-            });
-        }, 1000);
+
+        // OTOMATİK KAYIT
+        setInterval(verileriKaydet, 30000);
+        setInterval(istatistikleriGuncelle, 10000);
     </script>
 </body>
 </html>
